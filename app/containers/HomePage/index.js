@@ -77,7 +77,7 @@ export function mapDispatchToProps(dispatch) {
     // onChangeUsername: (evt) => dispatch(changeUsername(evt.target.value)),
     onGenerateWallet: (evt) => {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-      console.log(evt);
+      // console.log(evt);
       dispatch(initWallet());
     },
   };
