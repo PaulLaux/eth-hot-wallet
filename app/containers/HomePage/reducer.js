@@ -12,22 +12,28 @@
 import { fromJS } from 'immutable';
 
 import {
-  CREATE_WALLET,
+  INIT_WALLET,
 } from './constants';
 
 // The initial state of the App
 const initialState = fromJS({
   isInitialized: false,
-  isUnlocked: false,
+  isComfirmed: false,
+  password: null,
+  seed: null,
+  adresses: [],
+
+  loading: false,
+  error: false,
 });
 
 function homeReducer(state = initialState, action) {
   switch (action.type) {
-    case CREATE_WALLET:
-
-      // Delete prefixed '@' from the github username
+    case INIT_WALLET:
       return state
-        .set('isInitialized', true);
+        .set('loading', true)
+        .set('error', false)
+        .set('adresses', false);
     default:
       return state;
   }

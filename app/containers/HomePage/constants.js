@@ -9,4 +9,7 @@
  * export const YOUR_ACTION_CONSTANT = 'yourproject/YourContainer/YOUR_ACTION_CONSTANT';
  */
 
-export const CREATE_WALLET = 'eth-hot-wallet/HomePage/CREATE_WALLET';
+export const INIT_WALLET = 'eth-hot-wallet/HomePage/INIT_WALLET';
+export const INIT_WALLET_SUCCESS = 'eth-hot-wallet/HomePage/INIT_WALLET_SUCCESS';
+export const INIT_WALLET_ERROR = 'eth-hot-wallet/HomePage/INIT_WALLET_ERROR';
+

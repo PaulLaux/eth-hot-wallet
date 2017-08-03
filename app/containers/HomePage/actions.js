@@ -16,8 +16,21 @@
  */
 
 import {
-  CREATE_WALLET,
+  INIT_WALLET,
+  INIT_WALLET_SUCCESS,
+  INIT_WALLET_ERROR,
 } from './constants';
+
+/**
+ * Init new wallet
+ * @return {object}    An action object with a type of INIT_WALLET
+ */
+export function initWallet() {
+  return {
+    type: INIT_WALLET,
+  };
+}
+
 
 /**
  * Changes the input field of the form
@@ -28,7 +41,7 @@ import {
  */
 export function changeUsername(name) {
   return {
-    type: CREATE_WALLET,
+    type: INIT_WALLET,
     name,
   };
 }

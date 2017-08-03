@@ -20,14 +20,13 @@ import { createStructuredSelector } from 'reselect';
 import injectReducer from 'utils/injectReducer';
 import injectSaga from 'utils/injectSaga';
 
-import { makeSelectRepos, makeSelectLoading, makeSelectError } from 'containers/App/selectors';
+// import { makeSelectSeed, makeSelectLoading, makeSelectError } from 'containers/App/selectors';
 
-import WalletInfo from 'components/WalletInfo';
+import SeedInfo from 'components/SeedInfo';
 
 import messages from './messages';
-import { loadRepos } from '../App/actions';
-import { changeUsername } from './actions';
-import { makeSelectUsername } from './selectors';
+import { initWallet } from './actions';
+import { makeSelectSeed, makeSelectLoading, makeSelectError } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 
@@ -39,6 +38,13 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
   }*/
 
   render() {
+    const { loading, error, seed } = this.props;
+    const seedViewProps = {
+      loading,
+      error,
+      seed,
+    };
+
     return (
       <div>
         <h1>
@@ -47,7 +53,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
         <button onClick={this.onGenerateWallet}>
           Generate wallet
         </button>
-        <WalletInfo />
+        <SeedInfo {...seedViewProps} />
       </div>
     );
   }
@@ -59,8 +65,8 @@ HomePage.propTypes = {
     PropTypes.object,
     PropTypes.bool,
   ]),
-  adress: PropTypes.object,
-  
+  seed: PropTypes.object,
+
   onGenerateWallet: PropTypes.func,
   // username: PropTypes.string,
   // onChangeUsername: PropTypes.func,
@@ -71,15 +77,14 @@ export function mapDispatchToProps(dispatch) {
     // onChangeUsername: (evt) => dispatch(changeUsername(evt.target.value)),
     onGenerateWallet: (evt) => {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-      // dispatch(loadRepos());
       console.log(evt);
+      dispatch(initWallet());
     },
   };
 }
 
 const mapStateToProps = createStructuredSelector({
-  repos: makeSelectRepos(),
-  username: makeSelectUsername(),
+  seed: makeSelectSeed(),
   loading: makeSelectLoading(),
   error: makeSelectError(),
 });
