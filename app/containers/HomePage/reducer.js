@@ -13,14 +13,15 @@ import { fromJS } from 'immutable';
 
 import {
   INIT_WALLET,
+  INIT_WALLET_SUCCESS,
 } from './constants';
 
 // The initial state of the App
 const initialState = fromJS({
   isInitialized: false,
   isComfirmed: false,
-  password: null,
-  seed: null,
+  password: false,
+  seed: false,
   adresses: [],
 
   loading: false,
@@ -33,7 +34,16 @@ function homeReducer(state = initialState, action) {
       return state
         .set('loading', true)
         .set('error', false)
-        .set('adresses', false);
+        // .set('seed', null)
+        // .set('password', null)
+        // .set('adresses', [])
+        ;
+    case INIT_WALLET_SUCCESS:
+      return state
+        .set('loading', false)
+        .set('seed', action.seed)
+        .set('password', action.password);
+
     default:
       return state;
   }

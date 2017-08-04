@@ -22,7 +22,8 @@ import {
 } from './constants';
 
 /**
- * Init new wallet
+ * Init new wallet - this action starts the init_wallet saga
+ *
  * @return {object}    An action object with a type of INIT_WALLET
  */
 export function initWallet() {
@@ -31,17 +32,32 @@ export function initWallet() {
   };
 }
 
+/**
+ * Dispatched when the wallet initiation is done by the init_wallet saga
+ *
+ * @param  {string} seed The repository data
+ * @param  {string} password The current username
+ *
+ * @return {object}      An action object with a type of INIT_WALLET_SUCCESS passing the repos
+ */
+export function walletInitilized(seed, password) {
+  return {
+    type: INIT_WALLET_SUCCESS,
+    seed,
+    password,
+  };
+}
 
 /**
- * Changes the input field of the form
+ * Dispatched when generating the wallet fails
  *
- * @param  {name} name The new text of the input field
+ * @param  {object} error The error
  *
- * @return {object}    An action object with a type of CHANGE_USERNAME
+ * @return {object} An action object with a type of INIT_WALLET_ERROR passing the error
  */
-export function changeUsername(name) {
+export function initWalletError(error) {
   return {
-    type: INIT_WALLET,
-    name,
+    type: INIT_WALLET_ERROR,
+    error,
   };
 }
