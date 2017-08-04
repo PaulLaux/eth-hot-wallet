@@ -22,11 +22,12 @@ import injectSaga from 'utils/injectSaga';
 
 // import { makeSelectSeed, makeSelectLoading, makeSelectError } from 'containers/App/selectors';
 
-import SeedInfo from 'components/SeedInfo';
+// import SeedInfo from 'components/SeedInfo';
+import SeedView from 'components/SeedView';
 
 import messages from './messages';
 import { initWallet } from './actions';
-import { makeSelectSeed, makeSelectLoading, makeSelectError } from './selectors';
+import { makeSelectSeed, makeSelectLoading, makeSelectError, makeSelectPassword } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 
@@ -38,11 +39,12 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
   }*/
 
   render() {
-    const { loading, error, seed } = this.props;
+    const { loading, error, seed, password } = this.props;
     const seedViewProps = {
       loading,
       error,
       seed,
+      password,
     };
 
     return (
@@ -50,10 +52,10 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
         <h1>
           <FormattedMessage {...messages.header} />
         </h1>
-        <button onClick={this.onGenerateWallet}>
+        <button onClick={this.props.onInitWallet}>
           Generate wallet
         </button>
-        <SeedInfo {...seedViewProps} />
+        <SeedView {...seedViewProps} />
       </div>
     );
   }
@@ -65,19 +67,23 @@ HomePage.propTypes = {
     PropTypes.object,
     PropTypes.bool,
   ]),
-  seed: PropTypes.object,
-
-  onGenerateWallet: PropTypes.func,
-  // username: PropTypes.string,
-  // onChangeUsername: PropTypes.func,
+  seed: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.bool,
+  ]),
+  password: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.bool,
+  ]),
+  onInitWallet: PropTypes.func,
 };
 
 export function mapDispatchToProps(dispatch) {
   return {
     // onChangeUsername: (evt) => dispatch(changeUsername(evt.target.value)),
-    onGenerateWallet: (evt) => {
+    onInitWallet: (evt) => {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-      console.log(evt);
+      // console.log(evt);
       dispatch(initWallet());
     },
   };
@@ -85,6 +91,7 @@ export function mapDispatchToProps(dispatch) {
 
 const mapStateToProps = createStructuredSelector({
   seed: makeSelectSeed(),
+  password: makeSelectPassword(),
   loading: makeSelectLoading(),
   error: makeSelectError(),
 });
