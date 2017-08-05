@@ -14,6 +14,10 @@ import { fromJS } from 'immutable';
 import {
   INIT_WALLET,
   INIT_WALLET_SUCCESS,
+  INIT_WALLET_ERROR,
+  GENERATE_KEYSTORE,
+  GENERATE_KEYSTORE_SUCCESS,
+  GENERATE_KEYSTORE_ERROR,
 } from './constants';
 
 // The initial state of the App
@@ -26,6 +30,8 @@ const initialState = fromJS({
 
   loading: false,
   error: false,
+
+  keystore: false,
 });
 
 function homeReducer(state = initialState, action) {
@@ -33,16 +39,32 @@ function homeReducer(state = initialState, action) {
     case INIT_WALLET:
       return state
         .set('loading', true)
-        .set('error', false)
-        // .set('seed', null)
-        // .set('password', null)
-        // .set('adresses', [])
-        ;
+        .set('error', false);
     case INIT_WALLET_SUCCESS:
       return state
         .set('loading', false)
         .set('seed', action.seed)
         .set('password', action.password);
+    case INIT_WALLET_ERROR:
+      return state
+        .set('loading', false)
+        .set('error', action.error);
+
+
+    case GENERATE_KEYSTORE:
+      return state
+        .set('loading', true)
+        .set('error', false);
+    case GENERATE_KEYSTORE_SUCCESS:
+      return state
+        .set('loading', false)
+        .set('keystore', action.keystore);
+        // .set('password', action.password);
+    case GENERATE_KEYSTORE_ERROR:
+      return state
+        .set('loading', false)
+        .set('error', action.error);
+
 
     default:
       return state;

@@ -7,8 +7,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 // import styled from 'styled-components';
+// import { generateKeystore } from 'containers/HomePage/actions';
 
-function SeedView({ loading, error, seed, password }) {
+
+function SeedView({ loading, error, seed, password, onGenerateKeystore }) {
   if (loading) {
     return <div> Loading....</div>;
   }
@@ -28,10 +30,13 @@ function SeedView({ loading, error, seed, password }) {
         keystore password:
         <br />
         {password}
+        <br />
+        <button onClick={onGenerateKeystore} >
+          Confirm seed
+        </button>
       </div>
     );
   }
-
 
   return null;
 }
@@ -50,6 +55,8 @@ SeedView.propTypes = {
     PropTypes.string,
     PropTypes.bool,
   ]),
+  onGenerateKeystore: PropTypes.func,
 };
+
 
 export default SeedView;

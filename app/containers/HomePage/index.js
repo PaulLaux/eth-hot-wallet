@@ -26,7 +26,9 @@ import injectSaga from 'utils/injectSaga';
 import SeedView from 'components/SeedView';
 
 import messages from './messages';
-import { initWallet } from './actions';
+
+import { initWallet, generateKeystore } from './actions';
+
 import { makeSelectSeed, makeSelectLoading, makeSelectError, makeSelectPassword } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
@@ -40,11 +42,13 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
 
   render() {
     const { loading, error, seed, password } = this.props;
+    const onGenerateKeystore = this.props.onGenerateKeystore;
     const seedViewProps = {
       loading,
       error,
       seed,
       password,
+      onGenerateKeystore,
     };
 
     return (
@@ -65,6 +69,7 @@ HomePage.propTypes = {
   loading: PropTypes.bool,
   error: PropTypes.oneOfType([
     PropTypes.object,
+    PropTypes.string,
     PropTypes.bool,
   ]),
   seed: PropTypes.oneOfType([
@@ -76,6 +81,7 @@ HomePage.propTypes = {
     PropTypes.bool,
   ]),
   onInitWallet: PropTypes.func,
+  onGenerateKeystore: PropTypes.func,
 };
 
 export function mapDispatchToProps(dispatch) {
@@ -85,6 +91,11 @@ export function mapDispatchToProps(dispatch) {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
       // console.log(evt);
       dispatch(initWallet());
+    },
+    onGenerateKeystore: (evt) => {
+      if (evt !== undefined && evt.preventDefault) evt.preventDefault();
+      // console.log(evt);
+      dispatch(generateKeystore());
     },
   };
 }
