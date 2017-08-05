@@ -13,3 +13,6 @@ export const INIT_WALLET = 'eth-hot-wallet/HomePage/INIT_WALLET';
 export const INIT_WALLET_SUCCESS = 'eth-hot-wallet/HomePage/INIT_WALLET_SUCCESS';
 export const INIT_WALLET_ERROR = 'eth-hot-wallet/HomePage/INIT_WALLET_ERROR';
 
+export const GENERATE_KEYSTORE = 'eth-hot-wallet/HomePage/GENERATE_KEYSTORE';
+export const GENERATE_KEYSTORE_SUCCESS = 'eth-hot-wallet/HomePage/GENERATE_KEYSTORE_SUCCESS';
+export const GENERATE_KEYSTORE_ERROR = 'eth-hot-wallet/HomePage/GENERATE_KEYSTORE_ERROR';
