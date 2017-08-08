@@ -24,7 +24,7 @@ import {
   GENERATE_KEYSTORE_ERROR
 } from './constants';
 
-import lightwallet from 'eth-lightwallet';
+// import lightwallet from 'eth-lightwallet';
 
 /**
  * Init new wallet - this action starts the init_wallet saga
@@ -36,7 +36,6 @@ export function initWallet() {
     type: INIT_WALLET,
   };
 }
-
 /**
  * Dispatched when the wallet initiation is done by the init_wallet saga
  *
@@ -52,7 +51,6 @@ export function walletInitilized(seed, password) {
     password,
   };
 }
-
 /**
  * Dispatched when generating the wallet fails
  *
@@ -76,59 +74,33 @@ export function initWalletError(error) {
  * @return {object}    An action object with a type of GENERATE_KEYSTORE
  */
 export function generateKeystore() {
-  // console.log('heeeloo');
-  /*
-  lightwallet.keystore.createVault({ password: 'abc123' }, (err, ks) => {
-    console.log('ss');
-    console.log(err);
-    console.log(ks);
-    ks.keyFromPassword('abc123', function (err, pwDerivedKey) {
-      if (err) throw err;
-
-      // generate five new address/private key pairs
-      // the corresponding private keys are also encrypted
-      ks.generateNewAddress(pwDerivedKey, 5);
-      var addr = ks.getAddresses();
-      console.log(addr);
-
-      ks.passwordProvider = function (callback) {
-        var pw = prompt("Please enter password", "Password");
-        callback(null, pw);
-      };
-    });
-  });*/
-
   return {
     type: GENERATE_KEYSTORE,
   };
 }
-
 /**
  * Dispatched when the wallet initiation is done by the init_wallet saga
  *
- * @param  {string} seed The repository data
- * @param  {string} password The current username
+ * @param  {keystore} keystore The new keystore
  *
- * @return {object}      An action object with a type of INIT_WALLET_SUCCESS passing the repos
+ * @return {object}      An action object with a type of GENERATE_KEYSTORE_SUCCESS passing the repos
  */
-export function keystoreGenerated(seed, password) {
+export function generateKeystoreSuccess(keystore) {
   return {
-    type: INIT_WALLET_SUCCESS,
-    seed,
-    password,
+    type: GENERATE_KEYSTORE_SUCCESS,
+    keystore,
   };
 }
-
 /**
  * Dispatched when generating the wallet fails
  *
  * @param  {object} error The error
  *
- * @return {object} An action object with a type of INIT_WALLET_ERROR passing the error
+ * @return {object} An action object with a type of GENERATE_KEYSTORE_ERROR passing the error
  */
 export function generateKeystoreError(error) {
   return {
-    type: INIT_WALLET_ERROR,
+    type: GENERATE_KEYSTORE_ERROR,
     error,
   };
 }

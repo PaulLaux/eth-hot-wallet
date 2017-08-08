@@ -26,7 +26,7 @@ const initialState = fromJS({
   isComfirmed: false,
   password: false,
   seed: false,
-  adresses: [],
+  adresses: false,
 
   loading: false,
   error: false,
@@ -39,7 +39,8 @@ function homeReducer(state = initialState, action) {
     case INIT_WALLET:
       return state
         .set('loading', true)
-        .set('error', false);
+        .set('error', false)
+        .set('isComfirmed', false);
     case INIT_WALLET_SUCCESS:
       return state
         .set('loading', false)
@@ -58,13 +59,14 @@ function homeReducer(state = initialState, action) {
     case GENERATE_KEYSTORE_SUCCESS:
       return state
         .set('loading', false)
-        .set('keystore', action.keystore);
-        // .set('password', action.password);
+        .set('keystore', action.keystore)
+        .set('seed', false)
+        .set('isComfirmed', true)
+        .set('adresses', action.keystore.getAddresses());
     case GENERATE_KEYSTORE_ERROR:
       return state
         .set('loading', false)
         .set('error', action.error);
-
 
     default:
       return state;

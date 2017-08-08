@@ -26,10 +26,28 @@ const makeSelectPassword = () => createSelector(
   (homeState) => homeState.get('password')
 );
 
+const makeSelectIsComfirmed = () => createSelector(
+  selectHome,
+  (homeState) => homeState.get('isComfirmed')
+);
+
+const makeSelectAddresses = () => createSelector(
+  selectHome,
+  (homeState) => homeState.get('adresses')
+);
+
+const makeSelectKeystore = () => createSelector(
+  selectHome,
+  (homeState) => homeState.get('keystore')
+);
+
 export {
   selectHome,
   makeSelectLoading,
   makeSelectError,
   makeSelectSeed,
   makeSelectPassword,
+  makeSelectIsComfirmed,
+  makeSelectAddresses,
+  makeSelectKeystore,
 };

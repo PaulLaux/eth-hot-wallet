@@ -8,26 +8,15 @@ import { call, put, select, takeLatest } from 'redux-saga/effects';
 
 import { INIT_WALLET, GENERATE_KEYSTORE } from 'containers/HomePage/constants';
 
-import { walletInitilized, initWalletError } from 'containers/HomePage/actions';
+import { walletInitilized, initWalletError, generateKeystoreSuccess, generateKeystoreError } from 'containers/HomePage/actions';
 
 import generateString from 'utils/crypto';
 
 import { makeSelectPassword, makeSelectSeed } from 'containers/HomePage/selectors';
 
-const deriveKeyFromPassword = lightwallet.keystore.deriveKeyFromPassword;
 /* Turn callback into promise to use inside saga
-*  Todo: turn into general function
 *  lightwallet.keystore.deriveKeyFromPassword(password, function (err, pwDerivedKey) {});
 */
-function deriveKeyFromPasswordPromise(param) {
-  return new Promise((resolve, reject) => {
-    deriveKeyFromPassword(param, (err, data) => {
-      if (err !== null) return reject(err);
-      resolve(data);
-    });
-  });
-}
-
 
 function promisify(func, param) {
   return new Promise((resolve, reject) => {
@@ -44,10 +33,7 @@ function promisify(func, param) {
 function createVaultPromise(param) {
   return new Promise((resolve, reject) => {
     lightwallet.keystore.createVault(param, (err, data) => {
-      if (err !== null) {
-        console.log('error in createVaultPromise:' + err);
-        return reject(err);
-      }
+      if (err !== null) return reject(err);
       resolve(data);
     });
   });
@@ -57,17 +43,8 @@ function createVaultPromise(param) {
  * Create new seed and password
  */
 export function* initSeed() {
-  // Select username from store
-  // const username = yield select(makeSelectUsername());
-  // const requestURL = `https://api.github.com/users/${username}/repos?type=all&sort=updated`;
-
   try {
-    // Call our request helper (see 'utils/request')
-    // const repos = yield call(request, requestURL);
     const password = generateString(10);
-    // const pwDerivedKey = yield call(deriveKeyFromPasswordPromise, password);
-    // console.log('deriveKeyFromPasswordPromise success');
-
     const extraEntropy = generateString(10);
     const seed = lightwallet.keystore.generateRandomSeed(extraEntropy);
 
@@ -84,30 +61,30 @@ export function* genKeystore() {
   try {
     const password = yield select(makeSelectPassword());
     const seed = yield select(makeSelectSeed());
-
     const opt = {
       'password': password,
       'seed': seed,
     };
 
     const ks = yield call(createVaultPromise, opt);
-    // console.log(ks);
 
-    const pwDerivedKey = yield call(promisify, ks.keyFromPassword, password);
-    console.log(ks);
-    console.log(pwDerivedKey);
-    console.log(ks.generateNewAddress(pwDerivedKey, 5));
+    function keyFromPasswordPromise(param) {
+      return new Promise((resolve, reject) => {
+        ks.keyFromPassword(param, (err, data) => {
+          if (err !== null) return reject(err);
+          return resolve(data);
+        });
+      });
+    }
 
-    /*
-    const addr = ks.getAddresses();
-    console.log(addr);
-    console.log('end');
-    */
+    const pwDerivedKey = yield call(keyFromPasswordPromise, password);
 
-    // yield put(walletInitilized(seed, password));
+    ks.generateNewAddress(pwDerivedKey, 2);
+
+    yield put(generateKeystoreSuccess(ks));
   } catch (err) {
-    console.log(err);
-    // yield put(initWalletError(err));
+    const errorString = 'Generate Keystore error - ' + err;
+    yield put(generateKeystoreError(errorString));
   }
 }
 
