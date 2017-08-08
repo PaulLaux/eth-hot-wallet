@@ -24,25 +24,23 @@ import injectSaga from 'utils/injectSaga';
 
 // import SeedInfo from 'components/SeedInfo';
 import SeedView from 'components/SeedView';
+import AddressView from 'components/AddressView';
 
 import messages from './messages';
 
 import { initWallet, generateKeystore } from './actions';
 
-import { makeSelectSeed, makeSelectLoading, makeSelectError, makeSelectPassword } from './selectors';
+import { makeSelectSeed, makeSelectLoading, makeSelectError,
+         makeSelectPassword, makeSelectIsComfirmed, makeSelectAddresses, makeSelectKeystore } from './selectors';
+
 import reducer from './reducer';
 import saga from './saga';
 
 
 export class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
-  /*
-  handleClick = () => {
-    console.log('this is:', this);
-  }*/
 
   render() {
-    const { loading, error, seed, password } = this.props;
-    const onGenerateKeystore = this.props.onGenerateKeystore;
+    const { loading, error, seed, password, onGenerateKeystore } = this.props;
     const seedViewProps = {
       loading,
       error,
@@ -50,6 +48,9 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       password,
       onGenerateKeystore,
     };
+
+    const { isComfirmed, addresses, keystore } = this.props;
+    const AddressViewProps = { isComfirmed, addresses, keystore };
 
     return (
       <div>
@@ -60,6 +61,9 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
           Generate wallet
         </button>
         <SeedView {...seedViewProps} />
+        <AddressView {...AddressViewProps} />
+        <br />
+        
       </div>
     );
   }
@@ -82,6 +86,16 @@ HomePage.propTypes = {
   ]),
   onInitWallet: PropTypes.func,
   onGenerateKeystore: PropTypes.func,
+
+  isComfirmed: PropTypes.bool,
+  addresses: PropTypes.oneOfType([
+    PropTypes.bool,
+    PropTypes.array,
+  ]),
+  keystore: PropTypes.oneOfType([
+    PropTypes.bool,
+    PropTypes.object,
+  ]),
 };
 
 export function mapDispatchToProps(dispatch) {
@@ -105,6 +119,9 @@ const mapStateToProps = createStructuredSelector({
   password: makeSelectPassword(),
   loading: makeSelectLoading(),
   error: makeSelectError(),
+  isComfirmed: makeSelectIsComfirmed(),
+  addresses: makeSelectAddresses(),
+  keystore: makeSelectKeystore(),
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
