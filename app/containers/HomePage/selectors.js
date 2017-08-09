@@ -33,7 +33,7 @@ const makeSelectIsComfirmed = () => createSelector(
 
 const makeSelectAddresses = () => createSelector(
   selectHome,
-  (homeState) => homeState.get('adresses')
+  (homeState) => homeState.get('addresses')
 );
 
 const makeSelectKeystore = () => createSelector(
