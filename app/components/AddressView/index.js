@@ -8,26 +8,31 @@ import React from 'react';
 import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 
+import AddressList from 'components/AddressList';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 function AddressView({ isComfirmed, addresses }) {
-  const comfirmed = isComfirmed ? 'yes' : 'no';
-  const keys = isComfirmed ? addresses : 'no keys yet';
+  // const comfirmed = isComfirmed ? 'yes' : 'no';
+  if (isComfirmed) {
+    return (
+      <AddressList items={addresses} />
+    );
+  }
+
   return (
     <div>
       <FormattedMessage {...messages.header} />
-      <br />
-      is seed comfirmed: {comfirmed}
-      <br />
-      list: <br />
-      {keys}
-    </div>
-  );
+      Seed is not confirmed
+    </div>);
 }
 
 AddressView.propTypes = {
   isComfirmed: PropTypes.bool,
+  addresses: PropTypes.oneOfType([
+    PropTypes.bool,
+    PropTypes.array,
+  ]),
 };
 
 export default AddressView;

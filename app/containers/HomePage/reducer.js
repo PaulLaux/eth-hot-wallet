@@ -26,7 +26,7 @@ const initialState = fromJS({
   isComfirmed: false,
   password: false,
   seed: false,
-  adresses: false,
+  addresses: false,
 
   loading: false,
   error: false,
@@ -51,7 +51,6 @@ function homeReducer(state = initialState, action) {
         .set('loading', false)
         .set('error', action.error);
 
-
     case GENERATE_KEYSTORE:
       return state
         .set('loading', true)
@@ -62,7 +61,7 @@ function homeReducer(state = initialState, action) {
         .set('keystore', action.keystore)
         .set('seed', false)
         .set('isComfirmed', true)
-        .set('adresses', action.keystore.getAddresses());
+        .set('addresses', action.keystore.getAddresses());
     case GENERATE_KEYSTORE_ERROR:
       return state
         .set('loading', false)

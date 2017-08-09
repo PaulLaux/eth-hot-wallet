@@ -50,8 +50,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     };
 
     const { isComfirmed, addresses, keystore } = this.props;
-    const AddressViewProps = { isComfirmed, addresses, keystore };
-
+    const addressViewProps = { isComfirmed, addresses, keystore };
     return (
       <div>
         <h1>
@@ -61,9 +60,9 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
           Generate wallet
         </button>
         <SeedView {...seedViewProps} />
-        <AddressView {...AddressViewProps} />
+        <hr />
+        <AddressView {...addressViewProps} />
         <br />
-        
       </div>
     );
   }
