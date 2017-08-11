@@ -22,7 +22,9 @@ import injectSaga from 'utils/injectSaga';
 
 // import { makeSelectSeed, makeSelectLoading, makeSelectError } from 'containers/App/selectors';
 
-// import SeedInfo from 'components/SeedInfo';
+import Header from 'containers/Header';
+import { loadNetwork } from 'containers/Header/actions';
+
 import SeedView from 'components/SeedView';
 import AddressView from 'components/AddressView';
 
@@ -30,15 +32,21 @@ import messages from './messages';
 
 import { initWallet, generateKeystore } from './actions';
 
-import { makeSelectSeed, makeSelectLoading, makeSelectError,
-         makeSelectPassword, makeSelectIsComfirmed, makeSelectAddresses, makeSelectKeystore } from './selectors';
+import {
+  makeSelectSeed,
+  makeSelectLoading,
+  makeSelectError,
+  makeSelectPassword,
+  makeSelectIsComfirmed,
+  makeSelectAddresses,
+  makeSelectKeystore,
+} from './selectors';
 
 import reducer from './reducer';
 import saga from './saga';
 
 
 export class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
-
   render() {
     const { loading, error, seed, password, onGenerateKeystore } = this.props;
     const seedViewProps = {
@@ -51,11 +59,13 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
 
     const { isComfirmed, addresses, keystore } = this.props;
     const addressViewProps = { isComfirmed, addresses, keystore };
+
     return (
       <div>
         <h1>
           <FormattedMessage {...messages.header} />
         </h1>
+        <Header />
         <button onClick={this.props.onInitWallet}>
           Generate wallet
         </button>
@@ -102,13 +112,16 @@ export function mapDispatchToProps(dispatch) {
     // onChangeUsername: (evt) => dispatch(changeUsername(evt.target.value)),
     onInitWallet: (evt) => {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-      // console.log(evt);
       dispatch(initWallet());
     },
     onGenerateKeystore: (evt) => {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-      // console.log(evt);
       dispatch(generateKeystore());
+    },
+    onLoadNetwork: (evt) => {
+      console.log('evt'+evt);
+      if (evt !== undefined && evt.preventDefault) evt.preventDefault();
+      dispatch(loadNetwork('local'));
     },
   };
 }

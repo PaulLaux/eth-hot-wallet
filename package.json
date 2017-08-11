@@ -244,6 +244,7 @@
     "sanitize.css": "5.0.0",
     "styled-components": "2.0.0",
     "warning": "3.0.0",
+    "web3": "0.20.1",
     "whatwg-fetch": "2.0.3"
   },
   "devDependencies": {

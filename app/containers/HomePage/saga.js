@@ -8,15 +8,18 @@ import { call, put, select, takeLatest } from 'redux-saga/effects';
 
 import { INIT_WALLET, GENERATE_KEYSTORE } from 'containers/HomePage/constants';
 
-import { walletInitilized, initWalletError, generateKeystoreSuccess, generateKeystoreError } from 'containers/HomePage/actions';
+import {
+  walletInitilized,
+  initWalletError,
+  generateKeystoreSuccess,
+  generateKeystoreError,
+} from 'containers/HomePage/actions';
 
 import generateString from 'utils/crypto';
 
 import { makeSelectPassword, makeSelectSeed } from 'containers/HomePage/selectors';
 
 /* Turn callback into promise to use inside saga
-*  lightwallet.keystore.deriveKeyFromPassword(password, function (err, pwDerivedKey) {});
-*/
 
 function promisify(func, param) {
   return new Promise((resolve, reject) => {
@@ -25,7 +28,7 @@ function promisify(func, param) {
       resolve(data);
     });
   });
-}
+}*/
 
 
 /* keyStore.createVault({password: password,
@@ -68,7 +71,7 @@ export function* genKeystore() {
 
     const ks = yield call(createVaultPromise, opt);
 
-    function keyFromPasswordPromise(param) {
+    function keyFromPasswordPromise(param) { // eslint-disable-line no-inner-declarations
       return new Promise((resolve, reject) => {
         ks.keyFromPassword(param, (err, data) => {
           if (err !== null) return reject(err);

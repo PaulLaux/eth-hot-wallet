@@ -21,7 +21,7 @@ import {
   INIT_WALLET_ERROR,
   GENERATE_KEYSTORE,
   GENERATE_KEYSTORE_SUCCESS,
-  GENERATE_KEYSTORE_ERROR
+  GENERATE_KEYSTORE_ERROR,
 } from './constants';
 
 // import lightwallet from 'eth-lightwallet';
@@ -37,7 +37,7 @@ export function initWallet() {
   };
 }
 /**
- * Dispatched when the wallet initiation is done by the init_wallet saga
+ * Dispatched when the wallet initiation is done by the initSeed saga
  *
  * @param  {string} seed The repository data
  * @param  {string} password The current username
