@@ -23,7 +23,7 @@ import {
 // The initial state of the App
 const initialState = fromJS({
   isInitialized: false,
-  isComfirmed: false,
+  isComfirmed: false, // if true then we have a valid keystore
   password: false,
   seed: false,
   addresses: false,

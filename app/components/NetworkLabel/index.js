@@ -16,13 +16,14 @@ function NetworkLabel(props) {
   }
 
   if (error !== false) {
-    return <div> Error!</div>;
+    return <div> Error: {error} </div>;
   }
 
+  const networkNameStr = networkName.replace(/_/g, ' ');
   if (networkName !== '') {
     return (
       <div>
-        Network Name:{networkName}
+        Network Name:{networkNameStr}
         <br />
         blockNumber: {blockNumber}
       </div>
