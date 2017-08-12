@@ -5,10 +5,11 @@ import { createSelector } from 'reselect';
  */
 const selectHeaderDomain = (state) => state.get('header');
 
+/*
 const makeSelectHeader = () => createSelector(
   selectHeaderDomain(),
   (substate) => substate.toJS()
-);
+);*/
 
 const makeSelectLoading = () => createSelector(
   selectHeaderDomain,
@@ -30,7 +31,7 @@ const makeSelectBlockNumber = () => createSelector(
   (substate) => substate.get('blockNumber')
 );
 
-export default makeSelectHeader;
+// export default makeSelectHeader;
 export {
   selectHeaderDomain,
   makeSelectLoading,

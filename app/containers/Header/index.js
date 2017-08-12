@@ -73,7 +73,7 @@ function mapDispatchToProps(dispatch) {
   return {
     onLoadNetwork: (evt) => {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-      dispatch(loadNetwork('local'));
+      dispatch(loadNetwork('Ropsten_Test_Net'));
     },
   };
 }

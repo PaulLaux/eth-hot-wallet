@@ -1,4 +1,8 @@
+import Web3 from 'web3';
+import HookedWeb3Provider from 'vendor/hooked-web3-provider/hooked-web3-provider';
+
 import { take, call, put, select, takeLatest } from 'redux-saga/effects';
+import { makeSelectKeystore } from 'containers/HomePage/selectors';
 import {
   // loadNetwork,
   loadNetworkSuccess,
@@ -13,34 +17,37 @@ import {
 
 import Network from './network';
 
-/*
-function keyFromPasswordPromise(param) { // eslint-disable-line no-inner-declarations
-  return new Promise((resolve, reject) => {
-    ks.keyFromPassword(param, (err, data) => {
-      if (err !== null) return reject(err);
-      return resolve(data);
-    });
-  });
-}*/
-
 function timer() {
-  return new Promise((resolve) => setTimeout(_ => resolve('theValue'), 2000));
+  return new Promise((resolve) => setTimeout(() => resolve('timer end'), 600));
 }
 
+// console.log(window);
+const web3 = new Web3();
 
 /**
- * Create new seed and password
+ * connect to rpc and attach keystore as siger provider
  */
 export function* loadNetwork(action) {
   try {
-    console.log('loadNetwork saga, networkName:' + action.networkName);
-    console.log(Network);
+    const rpcAddress = Network[action.networkName];
+    const keystore = yield select(makeSelectKeystore());
 
-    const value = yield call(timer);
-    console.log('timer');
-    yield put(loadNetworkSuccess(1));
+    if (keystore) {
+      const web3Provider = new HookedWeb3Provider({
+        host: rpcAddress,
+        transaction_signer: keystore,
+      });
+      web3.setProvider(web3Provider);
+      const blockNumber = web3.eth.blockNumber;
+      yield call(timer);
+
+      yield put(loadNetworkSuccess(blockNumber));
+    } else {
+      throw new Error('keystore not initiated');
+    }
   } catch (err) {
-    yield put(loadNetworkError(err));
+    const errorString = 'loadNetwork error - ' + err.message;
+    yield put(loadNetworkError(errorString));
   }
 }
 
