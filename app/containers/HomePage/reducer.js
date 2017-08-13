@@ -12,9 +12,9 @@
 import { fromJS } from 'immutable';
 
 import {
-  INIT_WALLET,
-  INIT_WALLET_SUCCESS,
-  INIT_WALLET_ERROR,
+  INIT_SEED,
+  INIT_SEED_SUCCESS,
+  INIT_SEED_ERROR,
   GENERATE_KEYSTORE,
   GENERATE_KEYSTORE_SUCCESS,
   GENERATE_KEYSTORE_ERROR,
@@ -22,31 +22,33 @@ import {
 
 // The initial state of the App
 const initialState = fromJS({
-  isInitialized: false,
+  isRestoringWallet: false,
+
   isComfirmed: false, // if true then we have a valid keystore
+
   password: false,
   seed: false,
-  addresses: false,
 
   loading: false,
   error: false,
 
   keystore: false,
+  addresses: false,
 });
 
 function homeReducer(state = initialState, action) {
   switch (action.type) {
-    case INIT_WALLET:
+    case INIT_SEED:
       return state
         .set('loading', true)
         .set('error', false)
         .set('isComfirmed', false);
-    case INIT_WALLET_SUCCESS:
+    case INIT_SEED_SUCCESS:
       return state
         .set('loading', false)
         .set('seed', action.seed)
         .set('password', action.password);
-    case INIT_WALLET_ERROR:
+    case INIT_SEED_ERROR:
       return state
         .set('loading', false)
         .set('error', action.error);

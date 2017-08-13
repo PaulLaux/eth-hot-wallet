@@ -20,7 +20,7 @@ import { createStructuredSelector } from 'reselect';
 import injectReducer from 'utils/injectReducer';
 import injectSaga from 'utils/injectSaga';
 
-// import { makeSelectSeed, makeSelectLoading, makeSelectError } from 'containers/App/selectors';
+import RestoreWallet from 'components/RestoreWallet';
 
 import Header from 'containers/Header';
 import { loadNetwork } from 'containers/Header/actions';
@@ -30,7 +30,7 @@ import AddressView from 'components/AddressView';
 
 import messages from './messages';
 
-import { initWallet, generateKeystore } from './actions';
+import { initSeed, generateKeystore } from './actions';
 
 import {
   makeSelectSeed,
@@ -40,6 +40,7 @@ import {
   makeSelectIsComfirmed,
   makeSelectAddresses,
   makeSelectKeystore,
+  makeSelectIsRestoringWallet,
 } from './selectors';
 
 import reducer from './reducer';
@@ -60,15 +61,23 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     const { isComfirmed, addresses, keystore } = this.props;
     const addressViewProps = { isComfirmed, addresses, keystore };
 
+    const { isRestoringWallet } = this.props;
+    const restoreWalletProps = { isRestoringWallet };
+
     return (
       <div>
         <h1>
           <FormattedMessage {...messages.header} />
         </h1>
         <Header />
-        <button onClick={this.props.onInitWallet}>
+        <button onClick={this.props.onInitSeed}>
           Generate wallet
         </button>
+        {' '}
+        <button onClick={this.props.onInitSeed}>
+          Restore wallet
+        </button>
+        <RestoreWallet {...restoreWalletProps} />
         <SeedView {...seedViewProps} />
         <hr />
         <AddressView {...addressViewProps} />
@@ -93,9 +102,10 @@ HomePage.propTypes = {
     PropTypes.string,
     PropTypes.bool,
   ]),
-  onInitWallet: PropTypes.func,
+  onInitSeed: PropTypes.func,
   onGenerateKeystore: PropTypes.func,
 
+  isRestoringWallet: PropTypes.bool,
   isComfirmed: PropTypes.bool,
   addresses: PropTypes.oneOfType([
     PropTypes.bool,
@@ -109,17 +119,15 @@ HomePage.propTypes = {
 
 export function mapDispatchToProps(dispatch) {
   return {
-    // onChangeUsername: (evt) => dispatch(changeUsername(evt.target.value)),
-    onInitWallet: (evt) => {
+    onInitSeed: (evt) => {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-      dispatch(initWallet());
+      dispatch(initSeed());
     },
     onGenerateKeystore: (evt) => {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
       dispatch(generateKeystore());
     },
     onLoadNetwork: (evt) => {
-      console.log('evt'+evt);
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
       dispatch(loadNetwork('local'));
     },
@@ -134,6 +142,7 @@ const mapStateToProps = createStructuredSelector({
   isComfirmed: makeSelectIsComfirmed(),
   addresses: makeSelectAddresses(),
   keystore: makeSelectKeystore(),
+  isRestoringWallet: makeSelectIsRestoringWallet(),
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

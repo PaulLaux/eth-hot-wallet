@@ -16,9 +16,9 @@
  */
 
 import {
-  INIT_WALLET,
-  INIT_WALLET_SUCCESS,
-  INIT_WALLET_ERROR,
+  INIT_SEED,
+  INIT_SEED_SUCCESS,
+  INIT_SEED_ERROR,
   GENERATE_KEYSTORE,
   GENERATE_KEYSTORE_SUCCESS,
   GENERATE_KEYSTORE_ERROR,
@@ -27,26 +27,26 @@ import {
 // import lightwallet from 'eth-lightwallet';
 
 /**
- * Init new wallet - this action starts the init_wallet saga
+ * Init seed - this action starts the * saga
  *
  * @return {object}    An action object with a type of INIT_WALLET
  */
-export function initWallet() {
+export function initSeed() {
   return {
-    type: INIT_WALLET,
+    type: INIT_SEED,
   };
 }
 /**
  * Dispatched when the wallet initiation is done by the initSeed saga
  *
- * @param  {string} seed The repository data
+ * @param  {string} seed
  * @param  {string} password The current username
  *
  * @return {object}      An action object with a type of INIT_WALLET_SUCCESS passing the repos
  */
-export function walletInitilized(seed, password) {
+export function seedInitilized(seed, password) {
   return {
-    type: INIT_WALLET_SUCCESS,
+    type: INIT_SEED_SUCCESS,
     seed,
     password,
   };
@@ -58,9 +58,9 @@ export function walletInitilized(seed, password) {
  *
  * @return {object} An action object with a type of INIT_WALLET_ERROR passing the error
  */
-export function initWalletError(error) {
+export function initSeedError(error) {
   return {
-    type: INIT_WALLET_ERROR,
+    type: INIT_SEED_ERROR,
     error,
   };
 }

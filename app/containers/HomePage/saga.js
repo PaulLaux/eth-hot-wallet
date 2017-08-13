@@ -6,18 +6,20 @@ import lightwallet from 'eth-lightwallet';
 
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 
-import { INIT_WALLET, GENERATE_KEYSTORE } from 'containers/HomePage/constants';
-
-import {
-  walletInitilized,
-  initWalletError,
-  generateKeystoreSuccess,
-  generateKeystoreError,
-} from 'containers/HomePage/actions';
+import { INIT_SEED, GENERATE_KEYSTORE } from 'containers/HomePage/constants';
 
 import generateString from 'utils/crypto';
 
 import { makeSelectPassword, makeSelectSeed } from 'containers/HomePage/selectors';
+
+import { loadNetwork } from 'containers/Header/actions';
+
+import {
+  seedInitilized,
+  initSeedError,
+  generateKeystoreSuccess,
+  generateKeystoreError,
+} from './actions';
 
 /* Turn callback into promise to use inside saga
 
@@ -37,7 +39,7 @@ function createVaultPromise(param) {
   return new Promise((resolve, reject) => {
     lightwallet.keystore.createVault(param, (err, data) => {
       if (err !== null) return reject(err);
-      resolve(data);
+      return resolve(data);
     });
   });
 }
@@ -51,9 +53,9 @@ export function* initSeed() {
     const extraEntropy = generateString(10);
     const seed = lightwallet.keystore.generateRandomSeed(extraEntropy);
 
-    yield put(walletInitilized(seed, password));
+    yield put(seedInitilized(seed, password));
   } catch (err) {
-    yield put(initWalletError(err));
+    yield put(initSeedError(err));
   }
 }
 
@@ -85,8 +87,10 @@ export function* genKeystore() {
     ks.generateNewAddress(pwDerivedKey, 2);
 
     yield put(generateKeystoreSuccess(ks));
+    // yield put(loadNetwork('Ropsten_Test_Net'));
+    yield put(loadNetwork('local'));
   } catch (err) {
-    const errorString = 'Generate Keystore error - ' + err;
+    const errorString = 'genKeystore error - ' + err;
     yield put(generateKeystoreError(errorString));
   }
 }
@@ -99,7 +103,7 @@ export default function* walletData() {
   // By using `takeLatest` only the result of the latest API call is applied.
   // It returns task descriptor (just like fork) so we can continue execution
   // It will be cancelled automatically on component unmount
-  yield takeLatest(INIT_WALLET, initSeed);
+  yield takeLatest(INIT_SEED, initSeed);
   yield takeLatest(GENERATE_KEYSTORE, genKeystore);
   /*
   while (yield takeLatest(INIT_WALLET, initSeed)) {
