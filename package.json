@@ -82,6 +82,7 @@
       }
     }
   },
+  "eslintIgnore": ["app/vendor/hooked-web3-provider/hooked-web3-provider.js","app/vendor/**/*.js"],
   "eslintConfig": {
     "parser": "babel-eslint",
     "extends": "airbnb",
