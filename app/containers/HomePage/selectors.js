@@ -41,9 +41,9 @@ const makeSelectKeystore = () => createSelector(
   (homeState) => homeState.get('keystore')
 );
 
-const makeSelectIsRestoringWallet = () => createSelector(
+const makeSelectShowRestoreWallet = () => createSelector(
   selectHome,
-  (homeState) => homeState.get('isRestoringWallet')
+  (homeState) => homeState.get('isShowRestoreWallet')
 );
 
 
@@ -56,5 +56,5 @@ export {
   makeSelectIsComfirmed,
   makeSelectAddresses,
   makeSelectKeystore,
-  makeSelectIsRestoringWallet,
+  makeSelectShowRestoreWallet,
 };

@@ -30,7 +30,7 @@ import AddressView from 'components/AddressView';
 
 import messages from './messages';
 
-import { initSeed, generateKeystore } from './actions';
+import { initSeed, showRestoreWallet, generateKeystore } from './actions';
 
 import {
   makeSelectSeed,
@@ -40,7 +40,7 @@ import {
   makeSelectIsComfirmed,
   makeSelectAddresses,
   makeSelectKeystore,
-  makeSelectIsRestoringWallet,
+  makeSelectShowRestoreWallet,
 } from './selectors';
 
 import reducer from './reducer';
@@ -61,8 +61,8 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     const { isComfirmed, addresses, keystore } = this.props;
     const addressViewProps = { isComfirmed, addresses, keystore };
 
-    const { isRestoringWallet } = this.props;
-    const restoreWalletProps = { isRestoringWallet };
+    const { isShowRestoreWallet } = this.props;
+    const restoreWalletProps = { isShowRestoreWallet };
 
     return (
       <div>
@@ -74,7 +74,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
           Generate wallet
         </button>
         {' '}
-        <button onClick={this.props.onInitSeed}>
+        <button onClick={this.props.onShowRestoreWallet}>
           Restore wallet
         </button>
         <RestoreWallet {...restoreWalletProps} />
@@ -104,8 +104,9 @@ HomePage.propTypes = {
   ]),
   onInitSeed: PropTypes.func,
   onGenerateKeystore: PropTypes.func,
+  onShowRestoreWallet: PropTypes.func,
 
-  isRestoringWallet: PropTypes.bool,
+  isShowRestoreWallet: PropTypes.bool,
   isComfirmed: PropTypes.bool,
   addresses: PropTypes.oneOfType([
     PropTypes.bool,
@@ -131,6 +132,10 @@ export function mapDispatchToProps(dispatch) {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
       dispatch(loadNetwork('local'));
     },
+    onShowRestoreWallet: (evt) => {
+      if (evt !== undefined && evt.preventDefault) evt.preventDefault();
+      dispatch(showRestoreWallet());
+    },
   };
 }
 
@@ -142,7 +147,7 @@ const mapStateToProps = createStructuredSelector({
   isComfirmed: makeSelectIsComfirmed(),
   addresses: makeSelectAddresses(),
   keystore: makeSelectKeystore(),
-  isRestoringWallet: makeSelectIsRestoringWallet(),
+  isShowRestoreWallet: makeSelectShowRestoreWallet(),
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

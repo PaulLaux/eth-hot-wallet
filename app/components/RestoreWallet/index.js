@@ -11,17 +11,32 @@ import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
-function RestoreWallet({ isRestoringWallet }) {
-  return (
-    <div>
-      {isRestoringWallet}
-      <FormattedMessage {...messages.header} />
-    </div>
-  );
+function RestoreWallet({ isShowRestoreWallet }) {
+  // console.log(isShowRestoreWallet);
+  // onSubmit={props.onSubmitForm}
+  if (isShowRestoreWallet) {
+    return (
+      <div>
+        <FormattedMessage {...messages.header} />
+        <form >
+          <label htmlFor="username">
+            <input
+              id="username"
+              type="text"
+              placeholder="mxstbr"
+              value="66" // {this.props.username}
+              // onChange={this.props.onChangeUsername}
+            />
+          </label>
+        </form>
+      </div>
+    );
+  }
+  return null;
 }
 
 RestoreWallet.propTypes = {
-  isRestoringWallet: PropTypes.bool,
+  isShowRestoreWallet: PropTypes.bool,
 };
 
 export default RestoreWallet;

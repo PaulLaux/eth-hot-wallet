@@ -18,11 +18,13 @@ import {
   GENERATE_KEYSTORE,
   GENERATE_KEYSTORE_SUCCESS,
   GENERATE_KEYSTORE_ERROR,
+  SHOW_RESTORE_WALLET,
 } from './constants';
 
 // The initial state of the App
 const initialState = fromJS({
-  isRestoringWallet: false,
+  isShowRestoreWallet: false,
+  restoredSeed: false,
 
   isComfirmed: false, // if true then we have a valid keystore
 
@@ -47,11 +49,16 @@ function homeReducer(state = initialState, action) {
       return state
         .set('loading', false)
         .set('seed', action.seed)
-        .set('password', action.password);
+        .set('password', action.password)
+        .set('isShowRestoreWallet', false);
     case INIT_SEED_ERROR:
       return state
         .set('loading', false)
         .set('error', action.error);
+
+    case SHOW_RESTORE_WALLET:
+      return state
+        .set('isShowRestoreWallet', true);
 
     case GENERATE_KEYSTORE:
       return state
