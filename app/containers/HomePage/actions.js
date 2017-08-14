@@ -22,6 +22,7 @@ import {
   GENERATE_KEYSTORE,
   GENERATE_KEYSTORE_SUCCESS,
   GENERATE_KEYSTORE_ERROR,
+  SHOW_RESTORE_WALLET,
 } from './constants';
 
 // import lightwallet from 'eth-lightwallet';
@@ -65,6 +66,18 @@ export function initSeedError(error) {
   };
 }
 
+/** ****************** Restore wallet *************** */
+
+/**
+ * Show the restore wallet component
+ *
+ * @return {object}    An action object with a type of SHOW_RESTORE_WALLET
+ */
+export function showRestoreWallet() {
+  return {
+    type: SHOW_RESTORE_WALLET,
+  };
+}
 
 /** ******** Confirm seed and generate keystore *********** **/
 
@@ -104,3 +117,4 @@ export function generateKeystoreError(error) {
     error,
   };
 }
+
