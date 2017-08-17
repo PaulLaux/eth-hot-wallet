@@ -14,10 +14,10 @@ import {
 /**
  * Connect to eth network using address from network.js file
  *
- * @return {object}    An action object with a type of INIT_WALLET
+ * @return {object}    An action object with a type of LOAD_NETWORK
  */
 export function loadNetwork(networkName) {
-  console.log('loadNetwork(networkName): '+networkName)
+  console.log('loadNetwork(networkName): '+networkName);
   return {
     type: LOAD_NETWORK,
     networkName,
@@ -29,7 +29,7 @@ export function loadNetwork(networkName) {
  *
  * @param  {string} blockNumber The current block number
  *
- * @return {object}      An action object with a type of INIT_WALLET_SUCCESS passing the repos
+ * @return {object}      An action object with a type of LOAD_NETWORK_SUCCESS passing the repos
  */
 export function loadNetworkSuccess(blockNumber) {
   return {
@@ -43,7 +43,7 @@ export function loadNetworkSuccess(blockNumber) {
  *
  * @param  {object} error The error
  *
- * @return {object} An action object with a type of INIT_WALLET_ERROR passing the error
+ * @return {object} An action object with a type of LOAD_NETWORK_ERROR passing the error
  */
 export function loadNetworkError(error) {
   return {

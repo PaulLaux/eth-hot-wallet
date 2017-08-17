@@ -30,7 +30,7 @@ import AddressView from 'components/AddressView';
 
 import messages from './messages';
 
-import { initSeed, showRestoreWallet, generateKeystore } from './actions';
+import { initSeed, showRestoreWallet, generateKeystore, changeUserSeed } from './actions';
 
 import {
   makeSelectSeed,
@@ -38,6 +38,7 @@ import {
   makeSelectError,
   makeSelectPassword,
   makeSelectIsComfirmed,
+  makeSelectUserSeed,
   makeSelectAddresses,
   makeSelectKeystore,
   makeSelectShowRestoreWallet,
@@ -61,8 +62,8 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     const { isComfirmed, addresses, keystore } = this.props;
     const addressViewProps = { isComfirmed, addresses, keystore };
 
-    const { isShowRestoreWallet } = this.props;
-    const restoreWalletProps = { isShowRestoreWallet };
+    const { isShowRestoreWallet, userSeed, onChangeUserSeed, onInitSeed } = this.props;
+    const restoreWalletProps = { isShowRestoreWallet, userSeed, onChangeUserSeed, onInitSeed };
 
     return (
       <div>
@@ -107,6 +108,9 @@ HomePage.propTypes = {
   onShowRestoreWallet: PropTypes.func,
 
   isShowRestoreWallet: PropTypes.bool,
+  userSeed: PropTypes.string,
+  onChangeUserSeed: PropTypes.func,
+
   isComfirmed: PropTypes.bool,
   addresses: PropTypes.oneOfType([
     PropTypes.bool,
@@ -136,6 +140,10 @@ export function mapDispatchToProps(dispatch) {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
       dispatch(showRestoreWallet());
     },
+    onChangeUserSeed: (evt) => {
+      if (evt !== undefined && evt.preventDefault) evt.preventDefault();
+      dispatch(changeUserSeed(evt.target.value));
+    },
   };
 }
 
@@ -148,6 +156,7 @@ const mapStateToProps = createStructuredSelector({
   addresses: makeSelectAddresses(),
   keystore: makeSelectKeystore(),
   isShowRestoreWallet: makeSelectShowRestoreWallet(),
+  userSeed: makeSelectUserSeed(),
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

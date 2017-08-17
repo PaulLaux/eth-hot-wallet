@@ -10,7 +10,7 @@ import { INIT_SEED, GENERATE_KEYSTORE } from 'containers/HomePage/constants';
 
 import generateString from 'utils/crypto';
 
-import { makeSelectPassword, makeSelectSeed } from 'containers/HomePage/selectors';
+import { makeSelectPassword, makeSelectSeed, makeSelectUserSeed } from 'containers/HomePage/selectors';
 
 import { loadNetwork } from 'containers/Header/actions';
 
@@ -51,9 +51,22 @@ export function* initSeed() {
   try {
     const password = generateString(10);
     const extraEntropy = generateString(10);
-    const seed = lightwallet.keystore.generateRandomSeed(extraEntropy);
 
-    yield put(seedInitilized(seed, password));
+    const userSeed = yield select(makeSelectUserSeed());
+    if (userSeed) {
+      console.log('user seed:' + userSeed);
+      const userSeedValid = lightwallet.keystore.isSeedValid(userSeed)
+      if (!userSeedValid) {
+        console.log('user seed error');
+        // yield put(initSeedError('user seed error'));
+      } else {
+        console.log('user seed success');
+        yield put(seedInitilized(userSeed, password));
+      }
+    } else {
+      const seed = lightwallet.keystore.generateRandomSeed(extraEntropy);
+      yield put(seedInitilized(seed, password));
+    }
   } catch (err) {
     yield put(initSeedError(err));
   }

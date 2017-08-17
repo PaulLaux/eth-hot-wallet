@@ -19,12 +19,13 @@ import {
   GENERATE_KEYSTORE_SUCCESS,
   GENERATE_KEYSTORE_ERROR,
   SHOW_RESTORE_WALLET,
+  CHANGE_USER_SEED,
 } from './constants';
 
 // The initial state of the App
 const initialState = fromJS({
   isShowRestoreWallet: false,
-  restoredSeed: false,
+  userSeed: '',
 
   isComfirmed: false, // if true then we have a valid keystore
 
@@ -58,7 +59,13 @@ function homeReducer(state = initialState, action) {
 
     case SHOW_RESTORE_WALLET:
       return state
-        .set('isShowRestoreWallet', true);
+        .set('isShowRestoreWallet', true)
+        .set('seed', false);
+
+    case CHANGE_USER_SEED:
+        // Delete prefixed space from user seed
+      return state
+        .set('userSeed', action.seed);
 
     case GENERATE_KEYSTORE:
       return state
