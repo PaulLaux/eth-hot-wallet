@@ -11,23 +11,34 @@ import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
-function RestoreWallet({ isShowRestoreWallet }) {
+function RestoreWallet({ isShowRestoreWallet, userSeed, onChangeUserSeed, onInitSeed }) {
   // console.log(isShowRestoreWallet);
   // onSubmit={props.onSubmitForm}
+  /*
+  <textarea       
+   placeholder="Enter seed"
+   onChange={onChangeUserSeed}
+   />
+  */
   if (isShowRestoreWallet) {
     return (
       <div>
+        <br />
         <FormattedMessage {...messages.header} />
-        <form >
-          <label htmlFor="username">
+        <form > { /* todo: cancel default action */}
+          <label htmlFor="restoreWalletBox">
             <input
-              id="username"
+              id="restoreWalletBox"
               type="text"
-              placeholder="mxstbr"
-              value="66" // {this.props.username}
-              // onChange={this.props.onChangeUsername}
+              placeholder="Enter seed"
+              value={userSeed}
+              onInput={onChangeUserSeed}
             />
           </label>
+          <br />
+          <button onClick={onInitSeed}>
+            Restore from seed
+          </button>
         </form>
       </div>
     );
@@ -37,6 +48,9 @@ function RestoreWallet({ isShowRestoreWallet }) {
 
 RestoreWallet.propTypes = {
   isShowRestoreWallet: PropTypes.bool,
+  userSeed: PropTypes.string,
+  onChangeUserSeed: PropTypes.func,
+  onInitSeed: PropTypes.func,
 };
 
 export default RestoreWallet;

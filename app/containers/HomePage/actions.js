@@ -23,6 +23,7 @@ import {
   GENERATE_KEYSTORE_SUCCESS,
   GENERATE_KEYSTORE_ERROR,
   SHOW_RESTORE_WALLET,
+  CHANGE_USER_SEED,
 } from './constants';
 
 // import lightwallet from 'eth-lightwallet';
@@ -76,6 +77,20 @@ export function initSeedError(error) {
 export function showRestoreWallet() {
   return {
     type: SHOW_RESTORE_WALLET,
+  };
+}
+
+/**
+ * Changes the input field for user seed
+ *
+ * @param  {name} seed The new text of the input field
+ *
+ * @return {object}    An action object with a type of CHANGE_USER_SEED
+ */
+export function changeUserSeed(seed) {
+  return {
+    type: CHANGE_USER_SEED,
+    seed,
   };
 }
 

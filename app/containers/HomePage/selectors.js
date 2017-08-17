@@ -46,6 +46,10 @@ const makeSelectShowRestoreWallet = () => createSelector(
   (homeState) => homeState.get('isShowRestoreWallet')
 );
 
+const makeSelectUserSeed = () => createSelector(
+  selectHome,
+  (homeState) => homeState.get('userSeed')
+);
 
 export {
   selectHome,
@@ -57,4 +61,5 @@ export {
   makeSelectAddresses,
   makeSelectKeystore,
   makeSelectShowRestoreWallet,
+  makeSelectUserSeed,
 };
