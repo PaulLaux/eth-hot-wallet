@@ -45,7 +45,7 @@ function createVaultPromise(param) {
 }
 
 /**
- * Create new seed and password
+ * Create new seed and password or use user seed
  */
 export function* initSeed() {
   try {
@@ -55,18 +55,19 @@ export function* initSeed() {
     const userSeed = yield select(makeSelectUserSeed());
     if (userSeed) {
       console.log('user seed:' + userSeed);
-      const userSeedValid = lightwallet.keystore.isSeedValid(userSeed)
-      if (!userSeedValid) {
-        console.log('user seed error');
-        // yield put(initSeedError('user seed error'));
-      } else {
+      // const userSeedValid = lightwallet.keystore.isSeedValid(userSeed);
+      if (lightwallet.keystore.isSeedValid(userSeed)) {
         console.log('user seed success');
         yield put(seedInitilized(userSeed, password));
+      } else {
+        console.log('user seed error');
+        yield put(initSeedError('initSeed Error - Seed supplied by user is invalid'));
       }
     } else {
       const seed = lightwallet.keystore.generateRandomSeed(extraEntropy);
       yield put(seedInitilized(seed, password));
     }
+
   } catch (err) {
     yield put(initSeedError(err));
   }

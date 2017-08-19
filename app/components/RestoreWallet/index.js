@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
-function RestoreWallet({ isShowRestoreWallet, userSeed, onChangeUserSeed, onInitSeed }) {
+function RestoreWallet({ isShowRestoreWallet, userSeed, onChangeUserSeed, onRestoreWalletFromSeed }) {
   // console.log(isShowRestoreWallet);
   // onSubmit={props.onSubmitForm}
   /*
@@ -36,7 +36,7 @@ function RestoreWallet({ isShowRestoreWallet, userSeed, onChangeUserSeed, onInit
             />
           </label>
           <br />
-          <button onClick={onInitSeed}>
+          <button onClick={onRestoreWalletFromSeed}>
             Restore from seed
           </button>
         </form>
@@ -50,7 +50,7 @@ RestoreWallet.propTypes = {
   isShowRestoreWallet: PropTypes.bool,
   userSeed: PropTypes.string,
   onChangeUserSeed: PropTypes.func,
-  onInitSeed: PropTypes.func,
+  onRestoreWalletFromSeed: PropTypes.func,
 };
 
 export default RestoreWallet;

@@ -22,8 +22,12 @@ import {
   GENERATE_KEYSTORE,
   GENERATE_KEYSTORE_SUCCESS,
   GENERATE_KEYSTORE_ERROR,
+  
   SHOW_RESTORE_WALLET,
   CHANGE_USER_SEED,
+  RESTORE_WALLET_FROM_SEED,
+  RESTORE_WALLET_FROM_SEED_SUCCESS,
+  RESTORE_WALLET_FROM_SEED_ERROR,
 } from './constants';
 
 // import lightwallet from 'eth-lightwallet';
@@ -91,6 +95,40 @@ export function changeUserSeed(seed) {
   return {
     type: CHANGE_USER_SEED,
     seed,
+  };
+}
+
+/**
+ * Try to restore wallet from seed provided by user.
+ *
+ * @return {object}    An action object with a type of RESTORE_WALLET_FROM_SEED
+ *
+ */
+export function restoreWalletFromSeed() {
+  return {
+    type: RESTORE_WALLET_FROM_SEED,
+  };
+}
+
+/**
+ * Valid seed provided by user
+ *
+ * @return {object}    An action object with a type of RESTORE_WALLET_FROM_SEED_SUCCESS
+ */
+export function restoreWalletFromSeedSuccess() {
+  return {
+    type: RESTORE_WALLET_FROM_SEED_SUCCESS,
+  };
+}
+
+/**
+ * Invalid seed provided by user
+ *
+ * @return {object}    An action object with a type of RESTORE_WALLET_FROM_SEED_ERROR
+ */
+export function restoreWalletFromSeedError() {
+  return {
+    type: RESTORE_WALLET_FROM_SEED_ERROR,
   };
 }
 
