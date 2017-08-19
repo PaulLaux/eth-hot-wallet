@@ -16,7 +16,7 @@ function SeedView({ loading, error, seed, password, onGenerateKeystore }) {
   }
 
   if (error !== false) {
-    return <div> Error!</div>;
+    return <div> Error: {error} </div>;
   }
 
   if (seed !== false) {
@@ -45,6 +45,7 @@ SeedView.propTypes = {
   loading: PropTypes.bool,
   error: PropTypes.oneOfType([
     PropTypes.object,
+    PropTypes.string,
     PropTypes.bool,
   ]),
   seed: PropTypes.oneOfType([

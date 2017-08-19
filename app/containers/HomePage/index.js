@@ -30,7 +30,13 @@ import AddressView from 'components/AddressView';
 
 import messages from './messages';
 
-import { initSeed, showRestoreWallet, generateKeystore, changeUserSeed } from './actions';
+import {
+  initSeed,
+  showRestoreWallet,
+  generateKeystore,
+  changeUserSeed,
+  restoreWalletFromSeed,
+} from './actions';
 
 import {
   makeSelectSeed,
@@ -62,8 +68,8 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     const { isComfirmed, addresses, keystore } = this.props;
     const addressViewProps = { isComfirmed, addresses, keystore };
 
-    const { isShowRestoreWallet, userSeed, onChangeUserSeed, onInitSeed } = this.props;
-    const restoreWalletProps = { isShowRestoreWallet, userSeed, onChangeUserSeed, onInitSeed };
+    const { isShowRestoreWallet, userSeed, onChangeUserSeed, onRestoreWalletFromSeed } = this.props;
+    const restoreWalletProps = { isShowRestoreWallet, userSeed, onChangeUserSeed, onRestoreWalletFromSeed };
 
     return (
       <div>
@@ -103,9 +109,11 @@ HomePage.propTypes = {
     PropTypes.string,
     PropTypes.bool,
   ]),
+
   onInitSeed: PropTypes.func,
   onGenerateKeystore: PropTypes.func,
   onShowRestoreWallet: PropTypes.func,
+  onRestoreWalletFromSeed: PropTypes.func,
 
   isShowRestoreWallet: PropTypes.bool,
   userSeed: PropTypes.string,
@@ -143,6 +151,10 @@ export function mapDispatchToProps(dispatch) {
     onChangeUserSeed: (evt) => {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
       dispatch(changeUserSeed(evt.target.value));
+    },
+    onRestoreWalletFromSeed: (evt) => {
+      if (evt !== undefined && evt.preventDefault) evt.preventDefault();
+      dispatch(restoreWalletFromSeed());
     },
   };
 }
