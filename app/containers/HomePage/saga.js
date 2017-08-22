@@ -6,7 +6,7 @@ import lightwallet from 'eth-lightwallet';
 
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 
-import { INIT_SEED, GENERATE_KEYSTORE } from 'containers/HomePage/constants';
+import { INIT_SEED, GENERATE_KEYSTORE, RESTORE_WALLET_FROM_SEED } from 'containers/HomePage/constants';
 
 import generateString from 'utils/crypto';
 
@@ -19,7 +19,10 @@ import {
   initSeedError,
   generateKeystoreSuccess,
   generateKeystoreError,
+  restoreWalletFromSeedError,
 } from './actions';
+
+const PasswordLength = 12;
 
 /* Turn callback into promise to use inside saga
 
@@ -45,33 +48,43 @@ function createVaultPromise(param) {
 }
 
 /**
- * Create new seed and password or use user seed
+ * Create new seed and password
  */
 export function* initSeed() {
   try {
-    const password = generateString(10);
-    const extraEntropy = generateString(10);
+    const password = generateString(PasswordLength);
+    const extraEntropy = generateString(PasswordLength);
+    const seed = lightwallet.keystore.generateRandomSeed(extraEntropy);
 
-    const userSeed = yield select(makeSelectUserSeed());
-    if (userSeed) {
-      console.log('user seed:' + userSeed);
-      // const userSeedValid = lightwallet.keystore.isSeedValid(userSeed);
-      if (lightwallet.keystore.isSeedValid(userSeed)) {
-        console.log('user seed success');
-        yield put(seedInitilized(userSeed, password));
-      } else {
-        console.log('user seed error');
-        yield put(initSeedError('initSeed Error - Seed supplied by user is invalid'));
-      }
-    } else {
-      const seed = lightwallet.keystore.generateRandomSeed(extraEntropy);
-      yield put(seedInitilized(seed, password));
-    }
-
+    yield put(seedInitilized(seed, password));
   } catch (err) {
     yield put(initSeedError(err));
   }
 }
+
+/**
+ * Res
+ */
+export function* restoreFromSeed() {
+  try {
+    const password = generateString(PasswordLength);
+    const userSeed = yield select(makeSelectUserSeed());
+
+    if (userSeed) {
+      // const userSeedValid = lightwallet.keystore.isSeedValid(userSeed);
+      if (lightwallet.keystore.isSeedValid(userSeed)) {
+        yield put(seedInitilized(userSeed, password));
+      } else {
+        yield put(initSeedError('initSeed Error - Seed supplied by user is invalid'));
+      }
+    } else {
+      yield put(initSeedError('restoreFromSeed Error - Please provide seed'));
+    }
+  } catch (err) {
+    yield put(restoreWalletFromSeedError(err));
+  }
+}
+
 
 /**
  * Create new keystore and generate some addreses
@@ -119,6 +132,8 @@ export default function* walletData() {
   // It will be cancelled automatically on component unmount
   yield takeLatest(INIT_SEED, initSeed);
   yield takeLatest(GENERATE_KEYSTORE, genKeystore);
+  yield takeLatest(RESTORE_WALLET_FROM_SEED, restoreFromSeed);
+  
   /*
   while (yield takeLatest(INIT_WALLET, initSeed)) {
     // yield takeLatest(GENERATE_KEYSTORE, genKeystore);

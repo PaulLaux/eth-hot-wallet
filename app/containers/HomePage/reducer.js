@@ -21,6 +21,7 @@ import {
   SHOW_RESTORE_WALLET,
   CHANGE_USER_SEED,
   RESTORE_WALLET_FROM_SEED,
+  RESTORE_WALLET_FROM_SEED_ERROR,
 } from './constants';
 
 // The initial state of the App
@@ -66,11 +67,14 @@ function homeReducer(state = initialState, action) {
     case CHANGE_USER_SEED:
       return state
         .set('userSeed', action.seed); // Delete prefixed space from user seed
-    
-    /*case RESTORE_WALLET_FROM_SEED:
+
+    case RESTORE_WALLET_FROM_SEED:
       return state
-        .set('userSeed', action.seed);
-*/
+        .set('error', false)
+        .set('isComfirmed', false);
+    case RESTORE_WALLET_FROM_SEED_ERROR:
+      return state
+        .set('error', action.error);
 
     case GENERATE_KEYSTORE:
       return state
