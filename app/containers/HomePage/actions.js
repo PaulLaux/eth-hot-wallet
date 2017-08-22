@@ -126,9 +126,10 @@ export function restoreWalletFromSeedSuccess() {
  *
  * @return {object}    An action object with a type of RESTORE_WALLET_FROM_SEED_ERROR
  */
-export function restoreWalletFromSeedError() {
+export function restoreWalletFromSeedError(error) {
   return {
     type: RESTORE_WALLET_FROM_SEED_ERROR,
+    error,
   };
 }
 
