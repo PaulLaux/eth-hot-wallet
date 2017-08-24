@@ -63,7 +63,7 @@ export function* initSeed() {
 }
 
 /**
- * Res
+ * check seed given by user
  */
 export function* restoreFromSeed() {
   try {

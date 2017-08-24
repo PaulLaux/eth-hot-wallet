@@ -86,7 +86,7 @@ function homeReducer(state = initialState, action) {
         .set('keystore', action.keystore)
         .set('seed', false)
         .set('isComfirmed', true)
-        .set('addresses', action.keystore.getAddresses());
+        .set('addresses', fromJS(action.addressList));
     case GENERATE_KEYSTORE_ERROR:
       return state
         .set('loading', false)

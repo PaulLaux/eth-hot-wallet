@@ -153,9 +153,22 @@ export function generateKeystore() {
  * @return {object}      An action object with a type of GENERATE_KEYSTORE_SUCCESS passing the repos
  */
 export function generateKeystoreSuccess(keystore) {
+  const addresses = keystore.getAddresses();
+  console.log(typeof (addressList));
+  console.log(addressList);
+
+  const addressList = addresses.map((addressStr, index) => {
+    const addressObj = {};
+    addressObj['address'] = addressStr;
+    addressObj['balance'] = index;
+    return addressObj;
+  });
+  console.log(addressList);
+
   return {
     type: GENERATE_KEYSTORE_SUCCESS,
     keystore,
+    addressList,
   };
 }
 /**
