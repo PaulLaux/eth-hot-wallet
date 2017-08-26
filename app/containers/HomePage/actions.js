@@ -22,14 +22,19 @@ import {
   GENERATE_KEYSTORE,
   GENERATE_KEYSTORE_SUCCESS,
   GENERATE_KEYSTORE_ERROR,
-  
+
   SHOW_RESTORE_WALLET,
   CHANGE_USER_SEED,
   RESTORE_WALLET_FROM_SEED,
   RESTORE_WALLET_FROM_SEED_SUCCESS,
   RESTORE_WALLET_FROM_SEED_ERROR,
+
+  CHANGE_BALANCE,
 } from './constants';
 
+import {
+  makeSelectAddresses,
+} from './selectors';
 // import lightwallet from 'eth-lightwallet';
 
 /**
@@ -146,7 +151,7 @@ export function generateKeystore() {
   };
 }
 /**
- * Dispatched when the wallet initiation is done by the init_wallet saga
+ * create adressList array which contains the properties needed for each adress such as ballance
  *
  * @param  {keystore} keystore The new keystore
  *
@@ -154,16 +159,12 @@ export function generateKeystore() {
  */
 export function generateKeystoreSuccess(keystore) {
   const addresses = keystore.getAddresses();
-  console.log(typeof (addressList));
-  console.log(addressList);
-
   const addressList = addresses.map((addressStr, index) => {
     const addressObj = {};
-    addressObj['address'] = addressStr;
-    addressObj['balance'] = index;
+    addressObj.address = addressStr;
+    addressObj.balance = (index === 0) ? false : index;
     return addressObj;
   });
-  console.log(addressList);
 
   return {
     type: GENERATE_KEYSTORE_SUCCESS,
@@ -171,6 +172,7 @@ export function generateKeystoreSuccess(keystore) {
     addressList,
   };
 }
+
 /**
  * Dispatched when generating the wallet fails
  *
@@ -182,6 +184,32 @@ export function generateKeystoreError(error) {
   return {
     type: GENERATE_KEYSTORE_ERROR,
     error,
+  };
+}
+
+/**
+ * creates action which contains new adressList with updated balance
+ *
+ * @param  {object} error The error
+ *
+ * @return {object} An action object with a type of GENERATE_KEYSTORE_ERROR passing the error
+ */
+export function changeBalance(origAddressList, address, balance) {
+  // const origAddressList = makeSelectAddresses();
+  console.log(origAddressList);
+  const addressList = origAddressList;
+
+  addressList.forEach((item) => {
+    console.log(item);
+    if (item.address === address) {
+      console.log('address found');
+      item.balance = balance;
+    }
+  });
+
+  return {
+    type: CHANGE_BALANCE,
+    addressList,
   };
 }
 

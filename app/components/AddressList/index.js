@@ -16,20 +16,24 @@ function AddressList(props) {
 
   if (props.items) {
     content = props.items.map((item) => (
-      <AddressItem key={`item-${item}`} item={item} />
+      <AddressItem key={`item-${item.address}`} item={item} />
     ));
   }
 
   return (
     <div>
-      { content }
+      {content}
       {content.type}
     </div>
   );
 }
 
 AddressList.propTypes = {
-  items: PropTypes.array,
+  items: PropTypes.oneOfType([
+    // PropTypes.object,
+    PropTypes.bool,
+    PropTypes.array,
+  ]),
 };
 
 export default AddressList;

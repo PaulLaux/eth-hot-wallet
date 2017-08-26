@@ -31,9 +31,9 @@ const makeSelectIsComfirmed = () => createSelector(
   (homeState) => homeState.get('isComfirmed')
 );
 
-const makeSelectAddresses = () => createSelector(
+const makeSelectAddressList = () => createSelector(
   selectHome,
-  (homeState) => homeState.get('addresses')
+  (homeState) => homeState.get('addressList')
 );
 
 const makeSelectKeystore = () => createSelector(
@@ -58,7 +58,7 @@ export {
   makeSelectSeed,
   makeSelectPassword,
   makeSelectIsComfirmed,
-  makeSelectAddresses,
+  makeSelectAddressList,
   makeSelectKeystore,
   makeSelectShowRestoreWallet,
   makeSelectUserSeed,

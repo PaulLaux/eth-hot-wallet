@@ -14,7 +14,8 @@ export const RESTORE_WALLET_FROM_SEED = 'eth-hot-wallet/HomePage/RESTORE_WALLET_
 export const RESTORE_WALLET_FROM_SEED_SUCCESS = 'eth-hot-wallet/HomePage/RESTORE_WALLET_FROM_SEED_SUCCESS';
 export const RESTORE_WALLET_FROM_SEED_ERROR = 'eth-hot-wallet/HomePage/RESTORE_WALLET_FROM_SEED_SUCCESS';
 
-
 export const GENERATE_KEYSTORE = 'eth-hot-wallet/HomePage/GENERATE_KEYSTORE';
 export const GENERATE_KEYSTORE_SUCCESS = 'eth-hot-wallet/HomePage/GENERATE_KEYSTORE_SUCCESS';
 export const GENERATE_KEYSTORE_ERROR = 'eth-hot-wallet/HomePage/GENERATE_KEYSTORE_ERROR';
+
+export const CHANGE_BALANCE = 'eth-hot-wallet/HomePage/CHANGE_BALANCE';

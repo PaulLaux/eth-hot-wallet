@@ -13,6 +13,7 @@ import {
 
 // The initial state of the App
 const initialState = fromJS({
+  networkReady: false, // true only if network initialized and valid keystore attached
   networkName: '',
   blockNumber: 0,
 
@@ -32,11 +33,13 @@ function headerReducer(state = initialState, action) {
       return state
         .set('loading', false)
         .set('error', false)
-        .set('blockNumber', action.blockNumber);
+        .set('blockNumber', action.blockNumber)
+        .set('networkReady', true);
     case LOAD_NETWORK_ERROR:
       return state
         .set('loading', false)
-        .set('error', action.error);
+        .set('error', action.error)
+        .set('networkReady', false);
     default:
       return state;
   }
