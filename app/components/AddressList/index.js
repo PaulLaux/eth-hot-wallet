@@ -15,9 +15,10 @@ function AddressList(props) {
   let content = (<div></div>);
 
   if (props.items) {
-    content = props.items.map((item) => (
-     // console.log('map:' + item)
-      <AddressItem key={`item-${item.get('address')}`} item={item} />
+    content = props.items.entrySeq().map(([key, data]) => (
+      <AddressItem key={`item-${key}`} address={key} data={data} />
+      //console.log(value)
+
     ));
   }
 
@@ -31,9 +32,9 @@ function AddressList(props) {
 
 AddressList.propTypes = {
   items: PropTypes.oneOfType([
-    // PropTypes.object,
+    PropTypes.object,
     PropTypes.bool,
-    PropTypes.array,
+    // PropTypes.array,
   ]),
 };
 
