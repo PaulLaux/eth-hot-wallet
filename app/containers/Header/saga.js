@@ -38,8 +38,18 @@ export function* loadNetwork(action) {
         transaction_signer: keystore,
       });
       web3.setProvider(web3Provider);
-      const blockNumber = web3.eth.blockNumber;
-      yield call(timer);
+
+      function getBlockNumberPromise() { // eslint-disable-line no-inner-declarations
+        return new Promise((resolve, reject) => {
+          web3.eth.getBlockNumber((err, data) => {
+            if (err !== null) return reject(err);
+            return resolve(data);
+          });
+        });
+      }
+      const blockNumber = yield call(getBlockNumberPromise);
+
+      // yield call(timer);
 
       yield put(loadNetworkSuccess(blockNumber));
     } else {

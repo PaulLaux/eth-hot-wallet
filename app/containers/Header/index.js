@@ -10,12 +10,16 @@ import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
+import injectSaga from 'utils/injectSaga';
+import injectReducer from 'utils/injectReducer';
 
 import NetworkLabel from 'components/NetworkLabel';
 
-import injectSaga from 'utils/injectSaga';
-import injectReducer from 'utils/injectReducer';
+import { changeBalance } from 'containers/HomePage/actions';
+import { makeSelectAddressList } from 'containers/HomePage/selectors';
+
 import {
+  makeSelectNetworkReady,
   makeSelectLoading,
   makeSelectError,
   makeSelectNetworkName,
@@ -25,7 +29,6 @@ import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
 import { loadNetwork } from './actions';
-
 
 function Header(props) {
   const { loading, error, networkName, blockNumber } = props;
@@ -42,15 +45,21 @@ function Header(props) {
       <NetworkLabel {...networkLabelProps} />
       <br />
       <button onClick={props.onLoadNetwork}>
-          Load Network
-        </button>
+        Load Network
+      </button>
+      {' '}
+      <button type="button" disabled={!props.networkReady} onClick={() => props.onChangeAddress(props.addressList)}>
+        Check balance
+      </button>
       <hr />
     </div>
   );
 }
 
 Header.propTypes = {
+  networkReady: PropTypes.bool,
   onLoadNetwork: PropTypes.func.isRequired,
+  onChangeAddress: PropTypes.func.isRequired,
   loading: PropTypes.bool,
   error: PropTypes.oneOfType([
     PropTypes.object,
@@ -59,22 +68,32 @@ Header.propTypes = {
   ]),
   networkName: PropTypes.string,
   blockNumber: PropTypes.number,
+  addressList: PropTypes.oneOfType([
+    PropTypes.array,
+    PropTypes.bool,
+  ]),
 };
 
 const mapStateToProps = createStructuredSelector({
-  // header: makeSelectHeader(),
+  networkReady: makeSelectNetworkReady(),
   loading: makeSelectLoading(),
   error: makeSelectError(),
   networkName: makeSelectNetworkName(),
   blockNumber: makeSelectBlockNumber(),
+  addressList: makeSelectAddressList(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     onLoadNetwork: (evt) => {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-      dispatch(loadNetwork('Ropsten_Test_Net'));
+      dispatch(loadNetwork('Local_RPC'));
     },
+    onChangeAddress: (origAddressList) => {
+      // if (evt !== undefined && evt.preventDefault) evt.preventDefault();
+      dispatch(changeBalance(origAddressList, 'aaa', 3.3));
+    },
+
   };
 }
 

@@ -45,7 +45,7 @@ import {
   makeSelectPassword,
   makeSelectIsComfirmed,
   makeSelectUserSeed,
-  makeSelectAddresses,
+  makeSelectAddressList,
   makeSelectKeystore,
   makeSelectShowRestoreWallet,
 } from './selectors';
@@ -65,8 +65,8 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       onGenerateKeystore,
     };
 
-    const { isComfirmed, addresses, keystore } = this.props;
-    const addressViewProps = { isComfirmed, addresses, keystore };
+    const { isComfirmed, addressList, keystore } = this.props;
+    const addressViewProps = { isComfirmed, addressList, keystore };
 
     const { isShowRestoreWallet, userSeed, onChangeUserSeed, onRestoreWalletFromSeed } = this.props;
     const restoreWalletProps = { isShowRestoreWallet, userSeed, onChangeUserSeed, onRestoreWalletFromSeed };
@@ -120,9 +120,9 @@ HomePage.propTypes = {
   onChangeUserSeed: PropTypes.func,
 
   isComfirmed: PropTypes.bool,
-  addresses: PropTypes.oneOfType([
-    PropTypes.bool,
+  addressList: PropTypes.oneOfType([
     PropTypes.array,
+    PropTypes.bool,
   ]),
   keystore: PropTypes.oneOfType([
     PropTypes.bool,
@@ -165,7 +165,7 @@ const mapStateToProps = createStructuredSelector({
   loading: makeSelectLoading(),
   error: makeSelectError(),
   isComfirmed: makeSelectIsComfirmed(),
-  addresses: makeSelectAddresses(),
+  addressList: makeSelectAddressList(),
   keystore: makeSelectKeystore(),
   isShowRestoreWallet: makeSelectShowRestoreWallet(),
   userSeed: makeSelectUserSeed(),

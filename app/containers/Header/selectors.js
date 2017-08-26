@@ -31,9 +31,15 @@ const makeSelectBlockNumber = () => createSelector(
   (substate) => substate.get('blockNumber')
 );
 
+const makeSelectNetworkReady = () => createSelector(
+  selectHeaderDomain,
+  (substate) => substate.get('networkReady')
+);
+
 // export default makeSelectHeader;
 export {
   selectHeaderDomain,
+  makeSelectNetworkReady,
   makeSelectLoading,
   makeSelectError,
   makeSelectNetworkName,

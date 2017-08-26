@@ -12,11 +12,11 @@ import AddressList from 'components/AddressList';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
-function AddressView({ isComfirmed, addresses }) {
+function AddressView({ isComfirmed, addressList }) {
   // const comfirmed = isComfirmed ? 'yes' : 'no';
   if (isComfirmed) {
     return (
-      <AddressList items={addresses} />
+      <AddressList items={addressList} />
     );
   }
 
@@ -29,7 +29,8 @@ function AddressView({ isComfirmed, addresses }) {
 
 AddressView.propTypes = {
   isComfirmed: PropTypes.bool,
-  addresses: PropTypes.oneOfType([
+  addressList: PropTypes.oneOfType([
+    PropTypes.object,
     PropTypes.bool,
     PropTypes.array,
   ]),
