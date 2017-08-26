@@ -69,8 +69,9 @@ Header.propTypes = {
   networkName: PropTypes.string,
   blockNumber: PropTypes.number,
   addressList: PropTypes.oneOfType([
-    PropTypes.array,
+    // PropTypes.array,
     PropTypes.bool,
+    PropTypes.object,
   ]),
 };
 

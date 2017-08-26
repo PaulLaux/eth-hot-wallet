@@ -71,8 +71,6 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     const { isShowRestoreWallet, userSeed, onChangeUserSeed, onRestoreWalletFromSeed } = this.props;
     const restoreWalletProps = { isShowRestoreWallet, userSeed, onChangeUserSeed, onRestoreWalletFromSeed };
 
-    console.log('add:'+addressList);
-    console.log('type:'+ typeof(addressList));
     return (
       <div>
         <h1>
@@ -123,8 +121,9 @@ HomePage.propTypes = {
 
   isComfirmed: PropTypes.bool,
   addressList: PropTypes.oneOfType([
-    PropTypes.array,
+    // PropTypes.array,
     PropTypes.bool,
+    PropTypes.object,
   ]),
   keystore: PropTypes.oneOfType([
     PropTypes.bool,

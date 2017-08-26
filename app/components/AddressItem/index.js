@@ -12,15 +12,17 @@ import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 function AddressItem(props) {
+  const { address, data } = props;
   return (
     <div>
-      {props.item.get('address')} | Ballance: {props.item.get('balance') ? props.item.get('balance') : 'n/a' }
+      {address} | Ballance: {data.get('balance') ? props.data.get('balance') : 'n/a'}
     </div>
   );
 }
 
 AddressItem.propTypes = {
-  item: PropTypes.object,
+  address: PropTypes.string,
+  data: PropTypes.object,
 };
 
 export default AddressItem;

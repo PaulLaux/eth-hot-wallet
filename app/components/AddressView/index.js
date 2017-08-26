@@ -14,7 +14,7 @@ import messages from './messages';
 
 function AddressView({ isComfirmed, addressList }) {
   // const comfirmed = isComfirmed ? 'yes' : 'no';
-  console.log(addressList);
+  // console.log(addressList);
   if (isComfirmed) {
     return (
       <AddressList items={addressList} />
