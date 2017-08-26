@@ -16,7 +16,8 @@ function AddressList(props) {
 
   if (props.items) {
     content = props.items.map((item) => (
-      <AddressItem key={`item-${item.address}`} item={item} />
+     // console.log('map:' + item)
+      <AddressItem key={`item-${item.get('address')}`} item={item} />
     ));
   }
 
