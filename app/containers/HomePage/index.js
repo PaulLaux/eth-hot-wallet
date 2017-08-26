@@ -71,6 +71,8 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     const { isShowRestoreWallet, userSeed, onChangeUserSeed, onRestoreWalletFromSeed } = this.props;
     const restoreWalletProps = { isShowRestoreWallet, userSeed, onChangeUserSeed, onRestoreWalletFromSeed };
 
+    console.log('add:'+addressList);
+    console.log('type:'+ typeof(addressList));
     return (
       <div>
         <h1>

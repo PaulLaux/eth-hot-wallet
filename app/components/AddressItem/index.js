@@ -14,7 +14,7 @@ import messages from './messages';
 function AddressItem(props) {
   return (
     <div>
-      {props.item.address} | Ballance: {props.item.balance ? props.item.balance : 'n/a' }
+      {props.item.get('address')} | Ballance: {props.item.get('balance') ? props.item.get('balance') : 'n/a' }
     </div>
   );
 }
