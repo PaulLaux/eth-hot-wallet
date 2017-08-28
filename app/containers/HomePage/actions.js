@@ -151,7 +151,7 @@ export function generateKeystore() {
   };
 }
 /**
- * create addressList object which contains the properties needed for each adress such as ballance
+ * create addressList object which contains the info needed for each address such as ballance
  *
  * @param  {keystore} keystore The new keystore
  *
@@ -160,20 +160,13 @@ export function generateKeystore() {
 export function generateKeystoreSuccess(keystore) {
   const addresses = keystore.getAddresses();
 
-  /*const addressList = addresses.map((addressStr, index) => {
-    const addressObj = {};
-    addressObj.address = addressStr;
-    addressObj.balance = (index === 0) ? false : index;
-    return addressObj;
-  });*/
-
   const addressList = {};
   for (let i = 0; i < addresses.length; ++i) {
-    if (addresses[i] !== undefined) {
-      addressList[addresses[i]] = {
-        balance: i,
-      };
-    }
+    // if (addresses[i] !== undefined) {
+    addressList[addresses[i]] = {
+      balance: false,
+    };
+    // }
   }
 
   return {
@@ -198,28 +191,21 @@ export function generateKeystoreError(error) {
 }
 
 /**
- * creates action which contains new adressList with updated balance
+ * Changes ballance for a given address
+ * If address dont exist - new address will be created
  *
- * @param  {object} error The error
+ * @param  {object} address
+ * @param  {object} balance
  *
- * @return {object} An action object with a type of GENERATE_KEYSTORE_ERROR passing the error
+ * @return {object} An action object with a type of CHANGE_BALANCE with address and balance
  */
-export function changeBalance(origAddressList, address, balance) {
-  // const origAddressList = makeSelectAddresses();
-  console.log(origAddressList);
-  const addressList = origAddressList;
-
-  addressList.forEach((item) => {
-    console.log(item);
-    if (item.address === address) {
-      console.log('address found');
-      item.balance = balance;
-    }
-  });
-
+export function changeBalance(address, balance) {
+  console.log('cb: ' + address);
+  console.log(balance);
   return {
     type: CHANGE_BALANCE,
-    addressList,
+    address,
+    balance,
   };
 }
 

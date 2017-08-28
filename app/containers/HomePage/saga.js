@@ -71,11 +71,10 @@ export function* restoreFromSeed() {
     const userSeed = yield select(makeSelectUserSeed());
 
     if (userSeed) {
-      // const userSeedValid = lightwallet.keystore.isSeedValid(userSeed);
       if (lightwallet.keystore.isSeedValid(userSeed)) {
         yield put(seedInitilized(userSeed, password));
       } else {
-        yield put(initSeedError('initSeed Error - Seed supplied by user is invalid'));
+        yield put(initSeedError('restoreFromSeed Error - Seed supplied by user is invalid'));
       }
     } else {
       yield put(initSeedError('restoreFromSeed Error - Please provide seed'));
@@ -115,7 +114,7 @@ export function* genKeystore() {
 
     yield put(generateKeystoreSuccess(ks));
     // yield put(loadNetwork('Ropsten_Test_Net'));
-    yield put(loadNetwork('local'));
+    yield put(loadNetwork('Local_RPC'));
   } catch (err) {
     const errorString = 'genKeystore error - ' + err;
     yield put(generateKeystoreError(errorString));

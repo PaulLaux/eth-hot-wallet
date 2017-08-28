@@ -36,6 +36,16 @@ const makeSelectNetworkReady = () => createSelector(
   (substate) => substate.get('networkReady')
 );
 
+const makeSelectCheckingBalances = () => createSelector(
+  selectHeaderDomain,
+  (substate) => substate.get('checkingBalances')
+);
+
+const makeSelectCheckingBalancesError = () => createSelector(
+  selectHeaderDomain,
+  (substate) => substate.get('checkingBalancesError')
+);
+
 // export default makeSelectHeader;
 export {
   selectHeaderDomain,
@@ -44,4 +54,6 @@ export {
   makeSelectError,
   makeSelectNetworkName,
   makeSelectBlockNumber,
+  makeSelectCheckingBalances,
+  makeSelectCheckingBalancesError,
 };
