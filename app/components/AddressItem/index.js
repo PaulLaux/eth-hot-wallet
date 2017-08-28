@@ -15,7 +15,7 @@ function AddressItem(props) {
   const { address, data } = props;
   return (
     <div>
-      {address} | Ballance: {data.get('balance') ? props.data.get('balance') : 'n/a'}
+      {address} | Balance: {data.get('balance')!==false ? props.data.get('balance') : 'n/a'}
     </div>
   );
 }

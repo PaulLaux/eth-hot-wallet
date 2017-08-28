@@ -2,17 +2,21 @@ import Web3 from 'web3';
 import HookedWeb3Provider from 'vendor/hooked-web3-provider/hooked-web3-provider';
 
 import { take, call, put, select, takeLatest } from 'redux-saga/effects';
-import { makeSelectKeystore } from 'containers/HomePage/selectors';
+
+import { makeSelectKeystore, makeSelectAddressList } from 'containers/HomePage/selectors';
+import { changeBalance } from 'containers/HomePage/actions';
+
 import {
-  // loadNetwork,
   loadNetworkSuccess,
   loadNetworkError,
+
+  checkBalancesSuccess,
+  CheckBalancesError,
 } from './actions';
 
 import {
   LOAD_NETWORK,
-  // LOAD_NETWORK_SUCCESS,
-  // LOAD_NETWORK_ERROR,
+  CHECK_BALANCES,
 } from './constants';
 
 import Network from './network';
@@ -30,6 +34,10 @@ const web3 = new Web3();
 export function* loadNetwork(action) {
   try {
     const rpcAddress = Network[action.networkName];
+    if (!rpcAddress) {
+      throw new Error(action.networkName + ' network not found');
+    }
+
     const keystore = yield select(makeSelectKeystore());
 
     if (keystore) {
@@ -49,7 +57,7 @@ export function* loadNetwork(action) {
       }
       const blockNumber = yield call(getBlockNumberPromise);
 
-      // yield call(timer);
+      yield call(timer);
 
       yield put(loadNetworkSuccess(blockNumber));
     } else {
@@ -61,8 +69,36 @@ export function* loadNetwork(action) {
   }
 }
 
+
+export function* checkBalances() {
+  try {
+    const addressList = yield select(makeSelectAddressList());
+    const addressListArr = addressList.keySeq().toArray();
+    console.log(addressListArr);
+
+    addressListArr.forEach((addr) => {
+      console.log(addr);
+      const balance = web3.eth.getBalance(addr);
+      console.log(balance);
+
+    });
+
+    /*
+    for (let i; i < 10; i++){
+      yield put(changeBalance(addr, balance));
+    }*/
+
+
+    yield put(checkBalancesSuccess());
+  } catch (err) {
+    const errorString = 'checkBalances error - ' + err.message;
+    yield put(CheckBalancesError(errorString));
+  }
+}
+
 // Individual exports for testing
 export default function* defaultSaga() {
   // See example in containers/HomePage/saga.js
   yield takeLatest(LOAD_NETWORK, loadNetwork);
+  yield takeLatest(CHECK_BALANCES, checkBalances);
 }

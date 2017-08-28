@@ -97,8 +97,7 @@ function homeReducer(state = initialState, action) {
 
     case CHANGE_BALANCE:
       return state
-        .set('addresses', action.addressList)
-        ;
+        .setIn(['addressList',action.address,'balance'], action.balance);
 
     default:
       return state;

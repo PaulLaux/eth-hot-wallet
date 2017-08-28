@@ -9,6 +9,10 @@ import {
   LOAD_NETWORK,
   LOAD_NETWORK_SUCCESS,
   LOAD_NETWORK_ERROR,
+
+  CHECK_BALANCES,
+  CHECK_BALANCES_SUCCESS,
+  CHECK_BALANCES_ERROR,
 } from './constants';
 
 // The initial state of the App
@@ -19,6 +23,9 @@ const initialState = fromJS({
 
   loading: false,
   error: false,
+
+  checkingBalances: false,
+  checkingBalancesError: false,
 
 });
 
@@ -40,6 +47,21 @@ function headerReducer(state = initialState, action) {
         .set('loading', false)
         .set('error', action.error)
         .set('networkReady', false);
+
+    case CHECK_BALANCES:
+      return state
+        .set('checkingBalances', true)
+        .set('checkingBalancesError', false);
+    case CHECK_BALANCES_SUCCESS:
+      return state
+        .set('checkingBalances', false)
+        .set('checkingBalancesError', false);
+    // .set('blockNumber', action.blockNumber)
+    case CHECK_BALANCES_ERROR:
+      return state
+        .set('checkingBalances', false)
+        .set('checkingBalancesError', action.error);
+
     default:
       return state;
   }
