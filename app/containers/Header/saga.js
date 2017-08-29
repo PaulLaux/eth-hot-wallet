@@ -70,24 +70,27 @@ export function* loadNetwork(action) {
 }
 
 
+function getBalancePromise(address) {
+  return new Promise((resolve, reject) => {
+    web3.eth.getBalance(address, (err, data) => {
+      if (err !== null) return reject(err);
+      return resolve(data);
+    });
+  });
+}
+
 export function* checkBalances() {
   try {
+    let j = 0;
     const addressList = yield select(makeSelectAddressList());
     const addressListArr = addressList.keySeq().toArray();
-    console.log(addressListArr);
 
-    addressListArr.forEach((addr) => {
-      console.log(addr);
-      const balance = web3.eth.getBalance(addr);
-      console.log(balance);
-
-    });
-
-    /*
-    for (let i; i < 10; i++){
+    do {
+      const addr = addressListArr[j];
+      const balance = yield call(getBalancePromise, addr);
       yield put(changeBalance(addr, balance));
-    }*/
-
+      j += 1;
+    } while (j < addressListArr.length);
 
     yield put(checkBalancesSuccess());
   } catch (err) {
