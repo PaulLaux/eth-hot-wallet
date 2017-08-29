@@ -200,8 +200,6 @@ export function generateKeystoreError(error) {
  * @return {object} An action object with a type of CHANGE_BALANCE with address and balance
  */
 export function changeBalance(address, balance) {
-  console.log('cb: ' + address);
-  console.log(balance);
   return {
     type: CHANGE_BALANCE,
     address,

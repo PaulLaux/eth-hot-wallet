@@ -8,6 +8,6 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   header: {
     id: 'app.components.CheckBalancesStatus.header',
-    defaultMessage: 'check balance status: ',
+    defaultMessage: 'check balance status',
   },
 });
