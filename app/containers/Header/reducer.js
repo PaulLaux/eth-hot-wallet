@@ -24,8 +24,11 @@ const initialState = fromJS({
   loading: false,
   error: false,
 
+
+  checkingBalanceDoneTime: false, // should be updated after every succesfull balance check
   checkingBalances: false,
   checkingBalancesError: false,
+
 
 });
 
@@ -51,16 +54,18 @@ function headerReducer(state = initialState, action) {
     case CHECK_BALANCES:
       return state
         .set('checkingBalances', true)
-        .set('checkingBalancesError', false);
+        .set('checkingBalancesError', false)
+        .set('checkingBalanceDoneTime', false);
     case CHECK_BALANCES_SUCCESS:
       return state
         .set('checkingBalances', false)
-        .set('checkingBalancesError', false);
-    // .set('blockNumber', action.blockNumber)
+        .set('checkingBalancesError', false)
+        .set('checkingBalanceDoneTime', action.timeString);
     case CHECK_BALANCES_ERROR:
       return state
         .set('checkingBalances', false)
-        .set('checkingBalancesError', action.error);
+        .set('checkingBalancesError', action.error)
+        .set('checkingBalanceDoneTime', false);
 
     default:
       return state;
