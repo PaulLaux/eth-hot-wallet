@@ -94,7 +94,8 @@ export function* genKeystore() {
     const seed = yield select(makeSelectSeed());
     const opt = {
       'password': password,
-      'seed': seed,
+      'seedPhrase': seed,
+      'hdPathString': `m/44'/60'/0'/0`,  // The default is `m/0'/0'/0'`.
     };
 
     const ks = yield call(createVaultPromise, opt);
@@ -109,7 +110,6 @@ export function* genKeystore() {
     }
 
     const pwDerivedKey = yield call(keyFromPasswordPromise, password);
-
     ks.generateNewAddress(pwDerivedKey, 2);
 
     yield put(generateKeystoreSuccess(ks));

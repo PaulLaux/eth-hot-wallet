@@ -25,6 +25,7 @@ import {
   makeSelectError,
   makeSelectNetworkName,
   makeSelectBlockNumber,
+  makeSelectCheckingBalanceDoneTime,
   makeSelectCheckingBalances,
   makeSelectCheckingBalancesError,
 } from './selectors';
@@ -42,8 +43,8 @@ function Header(props) {
     blockNumber,
   };
 
-  const { checkingBalances, checkingBalancesError } = props;
-  const CheckBalancesStatusProps = { checkingBalances, checkingBalancesError };
+  const { checkingBalanceDoneTime, checkingBalances, checkingBalancesError } = props;
+  const CheckBalancesStatusProps = { checkingBalanceDoneTime, checkingBalances, checkingBalancesError };
 
   return (
     <div>
@@ -82,6 +83,11 @@ Header.propTypes = {
     PropTypes.bool,
     PropTypes.object,
   ]),
+
+  checkingBalanceDoneTime: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.bool,
+  ]),
   checkingBalances: PropTypes.bool,
   checkingBalancesError: PropTypes.oneOfType([
     PropTypes.object,
@@ -97,6 +103,7 @@ const mapStateToProps = createStructuredSelector({
   networkName: makeSelectNetworkName(),
   blockNumber: makeSelectBlockNumber(),
   addressList: makeSelectAddressList(),
+  checkingBalanceDoneTime: makeSelectCheckingBalanceDoneTime(),
   checkingBalances: makeSelectCheckingBalances(),
   checkingBalancesError: makeSelectCheckingBalancesError(),
 });

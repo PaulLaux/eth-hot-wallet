@@ -36,6 +36,11 @@ const makeSelectNetworkReady = () => createSelector(
   (substate) => substate.get('networkReady')
 );
 
+const makeSelectCheckingBalanceDoneTime = () => createSelector(
+  selectHeaderDomain,
+  (substate) => substate.get('checkingBalanceDoneTime')
+);
+
 const makeSelectCheckingBalances = () => createSelector(
   selectHeaderDomain,
   (substate) => substate.get('checkingBalances')
@@ -54,6 +59,7 @@ export {
   makeSelectError,
   makeSelectNetworkName,
   makeSelectBlockNumber,
+  makeSelectCheckingBalanceDoneTime,
   makeSelectCheckingBalances,
   makeSelectCheckingBalancesError,
 };

@@ -72,8 +72,11 @@ export function checkBalances() {
  * @return {object}      An action object with a type of CHECK_BALANCES_SUCCESS
  */
 export function checkBalancesSuccess() {
+  const timeString = new Date().toLocaleTimeString();
+
   return {
     type: CHECK_BALANCES_SUCCESS,
+    timeString,
   };
 }
 
