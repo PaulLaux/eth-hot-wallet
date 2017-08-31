@@ -89,6 +89,8 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
         <hr />
         <AddressView {...addressViewProps} />
         <br />
+        <hr />
+        
       </div>
     );
   }
