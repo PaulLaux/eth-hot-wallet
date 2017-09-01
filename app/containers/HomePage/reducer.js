@@ -41,6 +41,8 @@ const initialState = fromJS({
 
   keystore: false,
   addressList: false,
+
+  showSendToken: true,
 });
 
 function homeReducer(state = initialState, action) {
@@ -97,7 +99,7 @@ function homeReducer(state = initialState, action) {
 
     case CHANGE_BALANCE:
       return state
-        .setIn(['addressList',action.address,'balance'], action.balance);
+        .setIn(['addressList', action.address, 'balance'], action.balance);
 
     default:
       return state;

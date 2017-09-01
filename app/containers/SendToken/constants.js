@@ -4,4 +4,4 @@
  *
  */
 
-export const SHOW_SEND_TOKEN = 'app/SendToken/SHOW_SEND_TOKEN';
+export const DEFAULT_ACTION = 'app/SendToken/DEFAULT_ACTION';

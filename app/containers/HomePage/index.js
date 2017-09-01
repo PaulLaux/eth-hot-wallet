@@ -28,6 +28,8 @@ import { loadNetwork } from 'containers/Header/actions';
 import SeedView from 'components/SeedView';
 import AddressView from 'components/AddressView';
 
+import SendTokenView from 'components/SendTokenView';
+
 import messages from './messages';
 
 import {
@@ -48,6 +50,7 @@ import {
   makeSelectAddressList,
   makeSelectKeystore,
   makeSelectShowRestoreWallet,
+  makeSelectShowSendToken,
 } from './selectors';
 
 import reducer from './reducer';
@@ -71,6 +74,8 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     const { isShowRestoreWallet, userSeed, onChangeUserSeed, onRestoreWalletFromSeed } = this.props;
     const restoreWalletProps = { isShowRestoreWallet, userSeed, onChangeUserSeed, onRestoreWalletFromSeed };
 
+    const { showSendToken } = this.props;
+    
     return (
       <div>
         <h1>
@@ -90,7 +95,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
         <AddressView {...addressViewProps} />
         <br />
         <hr />
-        
+        <SendTokenView {...{ showSendToken }} />
       </div>
     );
   }
@@ -131,6 +136,7 @@ HomePage.propTypes = {
     PropTypes.bool,
     PropTypes.object,
   ]),
+  showSendToken: PropTypes.bool,
 };
 
 export function mapDispatchToProps(dispatch) {
@@ -172,6 +178,7 @@ const mapStateToProps = createStructuredSelector({
   keystore: makeSelectKeystore(),
   isShowRestoreWallet: makeSelectShowRestoreWallet(),
   userSeed: makeSelectUserSeed(),
+  showSendToken: makeSelectShowSendToken(),
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
