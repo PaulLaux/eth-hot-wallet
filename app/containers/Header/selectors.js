@@ -5,12 +5,6 @@ import { createSelector } from 'reselect';
  */
 const selectHeaderDomain = (state) => state.get('header');
 
-/*
-const makeSelectHeader = () => createSelector(
-  selectHeaderDomain(),
-  (substate) => substate.toJS()
-);*/
-
 const makeSelectLoading = () => createSelector(
   selectHeaderDomain,
   (substate) => substate.get('loading')
@@ -63,3 +57,10 @@ export {
   makeSelectCheckingBalances,
   makeSelectCheckingBalancesError,
 };
+
+
+/*
+const makeSelectHeader = () => createSelector(
+  selectHeaderDomain(),
+  (substate) => substate.toJS()
+);*/

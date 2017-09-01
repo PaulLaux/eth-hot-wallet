@@ -6,6 +6,7 @@ import { createSelector } from 'reselect';
 
 const selectHome = (state) => state.get('home');
 
+
 const makeSelectLoading = () => createSelector(
   selectHome,
   (homeState) => homeState.get('loading')
@@ -51,6 +52,11 @@ const makeSelectUserSeed = () => createSelector(
   (homeState) => homeState.get('userSeed')
 );
 
+const makeSelectShowSendToken = () => createSelector(
+  selectHome,
+  (homeState) => homeState.get('showSendToken')
+);
+
 export {
   selectHome,
   makeSelectLoading,
@@ -62,4 +68,5 @@ export {
   makeSelectKeystore,
   makeSelectShowRestoreWallet,
   makeSelectUserSeed,
+  makeSelectShowSendToken,
 };

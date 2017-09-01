@@ -1,25 +1,19 @@
+
 import { createSelector } from 'reselect';
 
 /**
  * Direct selector to the sendToken state domain
  */
-const selectSendTokenDomain = () => (state) => state.get('sendToken');
-
-/**
- * Other specific selectors
- */
+const selectSendTokenDomain = (state) => state.get('sendtoken');
 
 
-/**
- * Default selector used by SendToken
- */
-
-const makeSelectSendToken = () => createSelector(
-  selectSendTokenDomain(),
-  (substate) => substate.toJS()
+const makeSelectShowSendToken = () => createSelector(
+  selectSendTokenDomain,
+  (substate) => { substate.get('showSendToken'); }
 );
 
-export default makeSelectSendToken;
+// export default makeSelectSendToken;
 export {
   selectSendTokenDomain,
+  makeSelectShowSendToken,
 };

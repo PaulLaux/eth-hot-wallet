@@ -13,7 +13,7 @@ import { compose } from 'redux';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import makeSelectSendToken from './selectors';
+import { makeSelectShowSendToken } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
@@ -31,7 +31,7 @@ SendToken.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  sendtoken: makeSelectSendToken(),
+  sendtoken: makeSelectShowSendToken(),
 });
 
 function mapDispatchToProps(dispatch) {
