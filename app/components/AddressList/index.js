@@ -11,14 +11,12 @@ import AddressItem from 'components/AddressItem';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
-function AddressList(props) {
+function AddressList({ items, onChangeFrom }) {
   let content = (<div></div>);
-
-  if (props.items) {
-    content = props.items.entrySeq().map(([key, data]) => (
-      <AddressItem key={`item-${key}`} address={key} data={data} />
-      //console.log(value)
-
+  // const onChangeFrom = props.on
+  if (items) {
+    content = items.entrySeq().map(([key, data]) => (
+      <AddressItem key={`item-${key}`} address={key} data={data} onChangeFrom={onChangeFrom} />
     ));
   }
 
@@ -36,6 +34,7 @@ AddressList.propTypes = {
     PropTypes.bool,
     // PropTypes.array,
   ]),
+  onChangeFrom: PropTypes.func,
 };
 
 export default AddressList;

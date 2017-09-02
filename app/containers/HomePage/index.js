@@ -25,6 +25,8 @@ import RestoreWallet from 'components/RestoreWallet';
 import Header from 'containers/Header';
 import { loadNetwork } from 'containers/Header/actions';
 
+import { changeFrom } from 'containers/SendToken/actions';
+
 import SeedView from 'components/SeedView';
 import AddressView from 'components/AddressView';
 
@@ -38,6 +40,7 @@ import {
   generateKeystore,
   changeUserSeed,
   restoreWalletFromSeed,
+  showSendToken,
 } from './actions';
 
 import {
@@ -50,7 +53,7 @@ import {
   makeSelectAddressList,
   makeSelectKeystore,
   makeSelectShowRestoreWallet,
-  makeSelectShowSendToken,
+  makeSelectSendToken,
 } from './selectors';
 
 import reducer from './reducer';
@@ -68,14 +71,14 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       onGenerateKeystore,
     };
 
-    const { isComfirmed, addressList, keystore } = this.props;
-    const addressViewProps = { isComfirmed, addressList, keystore };
+    const { isComfirmed, addressList, onChangeFrom } = this.props;
+    const addressViewProps = { isComfirmed, addressList, onChangeFrom };
 
     const { isShowRestoreWallet, userSeed, onChangeUserSeed, onRestoreWalletFromSeed } = this.props;
     const restoreWalletProps = { isShowRestoreWallet, userSeed, onChangeUserSeed, onRestoreWalletFromSeed };
 
-    const { showSendToken } = this.props;
-    
+    const { sendToken } = this.props;
+
     return (
       <div>
         <h1>
@@ -95,7 +98,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
         <AddressView {...addressViewProps} />
         <br />
         <hr />
-        <SendTokenView {...{ showSendToken }} />
+        <SendTokenView {...{ sendToken }} />
       </div>
     );
   }
@@ -125,6 +128,7 @@ HomePage.propTypes = {
   isShowRestoreWallet: PropTypes.bool,
   userSeed: PropTypes.string,
   onChangeUserSeed: PropTypes.func,
+  onChangeFrom: PropTypes.func,
 
   isComfirmed: PropTypes.bool,
   addressList: PropTypes.oneOfType([
@@ -136,7 +140,7 @@ HomePage.propTypes = {
     PropTypes.bool,
     PropTypes.object,
   ]),
-  showSendToken: PropTypes.bool,
+  sendToken: PropTypes.bool,
 };
 
 export function mapDispatchToProps(dispatch) {
@@ -165,6 +169,12 @@ export function mapDispatchToProps(dispatch) {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
       dispatch(restoreWalletFromSeed());
     },
+    onChangeFrom: (address) => {
+      // if (evt !== undefined && evt.preventDefault) evt.preventDefault();
+      // dispatch(showSendToken());//.then(
+      dispatch(changeFrom(address));
+
+    },
   };
 }
 
@@ -175,10 +185,10 @@ const mapStateToProps = createStructuredSelector({
   error: makeSelectError(),
   isComfirmed: makeSelectIsComfirmed(),
   addressList: makeSelectAddressList(),
-  keystore: makeSelectKeystore(),
+  // keystore: makeSelectKeystore(),
   isShowRestoreWallet: makeSelectShowRestoreWallet(),
   userSeed: makeSelectUserSeed(),
-  showSendToken: makeSelectShowSendToken(),
+  sendToken: makeSelectSendToken(),
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

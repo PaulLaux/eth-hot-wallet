@@ -6,17 +6,21 @@
 
 import { fromJS } from 'immutable';
 import {
-  DEFAULT_ACTION,
+  CHANGE_FROM,
 } from './constants';
 
 const initialState = fromJS({
-  showSendToken: false,
+  from: false,
+  to: false,
+  amount: 0,
+  gasPrice: 50,
 });
 
 function sendTokenReducer(state = initialState, action) {
   switch (action.type) {
-    case DEFAULT_ACTION:
-      return state;
+    case CHANGE_FROM:
+      return state
+      .set('from', action.address);
     default:
       return state;
   }

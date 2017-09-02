@@ -7,13 +7,19 @@ import { createSelector } from 'reselect';
 const selectSendTokenDomain = (state) => state.get('sendtoken');
 
 
-const makeSelectShowSendToken = () => createSelector(
+const makeSelectFrom = () => createSelector(
   selectSendTokenDomain,
-  (substate) => { substate.get('showSendToken'); }
+  (substate) => substate.get('from')
+);
+
+const makeSelectTo = () => createSelector(
+  selectSendTokenDomain,
+  (substate) => substate.get('to')
 );
 
 // export default makeSelectSendToken;
 export {
   selectSendTokenDomain,
-  makeSelectShowSendToken,
+  makeSelectFrom,
+  makeSelectTo,
 };
