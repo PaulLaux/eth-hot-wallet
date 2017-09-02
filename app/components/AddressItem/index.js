@@ -12,10 +12,14 @@ import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 function AddressItem(props) {
-  const { address, data } = props;
+  const { address, data, onChangeFrom } = props;
   return (
     <div>
-      {address} | Balance: {data.get('balance') !== false ? props.data.get('balance').toString(10) : 'n/a'}
+      {address} |
+      Balance: {data.get('balance') !== false ? props.data.get('balance').toString(10) : 'n/a'}
+      <button onClick={() => onChangeFrom(address)}>
+        Send
+      </button>
     </div>
   );
 }

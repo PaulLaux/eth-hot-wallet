@@ -30,11 +30,12 @@ import {
   RESTORE_WALLET_FROM_SEED_ERROR,
 
   CHANGE_BALANCE,
+
+  SHOW_SEND_TOKEN,
+  HIDE_SEND_TOKEN,
 } from './constants';
 
-import {
-  makeSelectAddresses,
-} from './selectors';
+// import { makeSelectAddresses } from './selectors'; 
 // import lightwallet from 'eth-lightwallet';
 
 /**
@@ -190,6 +191,8 @@ export function generateKeystoreError(error) {
   };
 }
 
+
+/***********************************Change balance ******************/
 /**
  * Changes ballance for a given address
  * If address dont exist - new address will be created
@@ -207,3 +210,25 @@ export function changeBalance(address, balance) {
   };
 }
 
+/** ******************* Show / hide SEND_TOKEN ******************************/
+/**
+ * Show the SendToken container
+ *
+ * @return {object}    An action object with a type of SHOW_SEND_TOKEN
+ */
+export function showSendToken() {
+  return {
+    type: SHOW_SEND_TOKEN,
+  };
+}
+
+/**
+ * Hide the SendToken container
+ *
+ * @return {object}    An action object with a type of HIDE_SEND_TOKEN
+ */
+export function hideSendToken() {
+  return {
+    type: HIDE_SEND_TOKEN,
+  };
+}

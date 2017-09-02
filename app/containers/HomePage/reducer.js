@@ -24,6 +24,9 @@ import {
   RESTORE_WALLET_FROM_SEED_ERROR,
 
   CHANGE_BALANCE,
+
+  SHOW_SEND_TOKEN,
+  HIDE_SEND_TOKEN,
 } from './constants';
 
 // The initial state of the App
@@ -42,7 +45,7 @@ const initialState = fromJS({
   keystore: false,
   addressList: false,
 
-  showSendToken: true,
+  sendToken: true,
 });
 
 function homeReducer(state = initialState, action) {
@@ -90,7 +93,7 @@ function homeReducer(state = initialState, action) {
         .set('keystore', action.keystore)
         .set('seed', false)
         .set('isComfirmed', true)
-       // .set('addressList', action.addressList);
+        // .set('addressList', action.addressList);
         .set('addressList', fromJS(action.addressList));
     case GENERATE_KEYSTORE_ERROR:
       return state
@@ -100,6 +103,13 @@ function homeReducer(state = initialState, action) {
     case CHANGE_BALANCE:
       return state
         .setIn(['addressList', action.address, 'balance'], action.balance);
+
+    case SHOW_SEND_TOKEN:
+      return state
+        .set('sendToken', true);
+    case HIDE_SEND_TOKEN:
+      return state
+        .set('sendToken', false);
 
     default:
       return state;

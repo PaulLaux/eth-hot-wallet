@@ -52,9 +52,9 @@ const makeSelectUserSeed = () => createSelector(
   (homeState) => homeState.get('userSeed')
 );
 
-const makeSelectShowSendToken = () => createSelector(
+const makeSelectSendToken = () => createSelector(
   selectHome,
-  (homeState) => homeState.get('showSendToken')
+  (homeState) => homeState.get('sendToken')
 );
 
 export {
@@ -68,5 +68,5 @@ export {
   makeSelectKeystore,
   makeSelectShowRestoreWallet,
   makeSelectUserSeed,
-  makeSelectShowSendToken,
+  makeSelectSendToken,
 };

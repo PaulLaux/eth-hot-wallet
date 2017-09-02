@@ -12,12 +12,10 @@ import AddressList from 'components/AddressList';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
-function AddressView({ isComfirmed, addressList }) {
-  // const comfirmed = isComfirmed ? 'yes' : 'no';
-  // console.log(addressList);
+function AddressView({ isComfirmed, addressList, onChangeFrom }) {
   if (isComfirmed) {
     return (
-      <AddressList items={addressList} />
+      <AddressList items={addressList} onChangeFrom={onChangeFrom} />
     );
   }
 
@@ -35,6 +33,7 @@ AddressView.propTypes = {
     PropTypes.bool,
     PropTypes.array,
   ]),
+  onChangeFrom: PropTypes.func,
 };
 
 export default AddressView;

@@ -10,13 +10,14 @@ import PropTypes from 'prop-types';
 
 import { FormattedMessage } from 'react-intl';
 
-import SendToken from 'containers/SendToken';
+import SendToken from 'containers/SendToken/Loadable';
 
 import messages from './messages';
 
 
-function SendTokenView({ showSendToken }) {
-  if (showSendToken) {
+function SendTokenView({ sendToken }) {
+  console.log('sendToken: ' + sendToken);
+  if (sendToken) {
     return (
       <div>
         <FormattedMessage {...messages.header} />
@@ -30,7 +31,7 @@ function SendTokenView({ showSendToken }) {
 }
 
 SendTokenView.propTypes = {
-  showSendToken: PropTypes.bool,
+  sendToken: PropTypes.bool,
 };
 
 export default SendTokenView;
