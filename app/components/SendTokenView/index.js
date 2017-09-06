@@ -16,7 +16,6 @@ import messages from './messages';
 
 
 function SendTokenView({ sendToken }) {
-  console.log('sendToken: ' + sendToken);
   if (sendToken) {
     return (
       <div>
