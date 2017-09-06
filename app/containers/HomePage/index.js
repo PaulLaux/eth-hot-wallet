@@ -136,10 +136,6 @@ HomePage.propTypes = {
     PropTypes.bool,
     PropTypes.object,
   ]),
-  keystore: PropTypes.oneOfType([
-    PropTypes.bool,
-    PropTypes.object,
-  ]),
   sendToken: PropTypes.bool,
 };
 

@@ -17,9 +17,15 @@ const makeSelectTo = () => createSelector(
   (substate) => substate.get('to')
 );
 
+const makeSelectAmount = () => createSelector(
+  selectSendTokenDomain,
+  (substate) => substate.get('amount')
+);
+
 // export default makeSelectSendToken;
 export {
   selectSendTokenDomain,
   makeSelectFrom,
   makeSelectTo,
+  makeSelectAmount,
 };

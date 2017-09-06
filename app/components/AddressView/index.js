@@ -15,7 +15,7 @@ import messages from './messages';
 function AddressView({ isComfirmed, addressList, onChangeFrom }) {
   if (isComfirmed) {
     return (
-      <AddressList items={addressList} onChangeFrom={onChangeFrom} />
+      <AddressList addressList={addressList} onChangeFrom={onChangeFrom} />
     );
   }
 
