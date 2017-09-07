@@ -8,6 +8,7 @@ import { fromJS } from 'immutable';
 import {
   CHANGE_FROM,
   CHANGE_AMOUNT,
+  CHANGE_TO,
 } from './constants';
 
 const initialState = fromJS({
@@ -26,6 +27,10 @@ function sendTokenReducer(state = initialState, action) {
     case CHANGE_AMOUNT:
       return state
         .set('amount', action.amount);
+
+    case CHANGE_TO:
+      return state
+        .set('to', action.address);
 
     default:
       return state;

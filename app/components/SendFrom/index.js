@@ -11,23 +11,18 @@ import PropTypes from 'prop-types';
 function SendFrom({ addressList, from, onChangeFrom }) {
   let options;
   if (addressList && addressList.keySeq().toArray()) {
-    //console.log(addressList.keySeq().toArray());
+    // console.log(addressList.keySeq().toArray());
 
     options = addressList.keySeq().toArray().map((address) =>
       <option value={address} key={address}>0x{address} (500ETH)</option>
     );
   }
 
-  /*handleChange(event) {
-    this.setState({ value: event.target.value });
-  }*/
-
   return (
     <div >
-      from {from}
       <br />
-      <label>
-        Address to send from:<br />
+      Address to send from:<br />
+      <label htmlFor="sendFromDropdown">
         <select value={from} onChange={(evt) => onChangeFrom(evt.target.value)}>
           <option value={false}>Select Address</option>
           {options}

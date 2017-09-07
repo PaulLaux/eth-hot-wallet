@@ -7,6 +7,7 @@
 import {
   CHANGE_AMOUNT,
   CHANGE_FROM,
+  CHANGE_TO,
 } from './constants';
 
 
@@ -18,9 +19,16 @@ export function changeFrom(address) {
 }
 
 export function changeAmount(amount) {
-  console.log('action changeAmount');
   return {
     type: CHANGE_AMOUNT,
     amount,
   };
 }
+
+export function changeTo(address) {
+  return {
+    type: CHANGE_TO,
+    address,
+  };
+}
+
