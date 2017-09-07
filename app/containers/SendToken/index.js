@@ -19,24 +19,24 @@ import SendAmount from 'components/SendAmount';
 
 import { makeSelectAddressList } from 'containers/HomePage/selectors';
 
-import { changeFrom, changeAmount } from './actions';
+import { changeFrom, changeAmount, changeTo } from './actions';
 import { makeSelectFrom, makeSelectTo, makeSelectAmount } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
 
 function SendToken(props) {
-  const { from, to, addressList, onChangeFrom, amount, onChangeAmount } = props;
+  const { from, to, addressList, onChangeFrom, amount, onChangeAmount, onChangeTo } = props;
 
   const SendFromProps = { from, addressList, onChangeFrom };
-  const SendToProps = { to };
   const SendAmountProps = { amount, onChangeAmount };
+  const SendToProps = { to, onChangeTo };
 
   return (
     <div>
       <FormattedMessage {...messages.header} />
-      <SendFrom {...SendFromProps} />
-      <SendAmount {...SendAmountProps} />
+      <SendFrom {...SendFromProps} /><br />
+      <SendAmount {...SendAmountProps} /> <br />
       <SendTo {...SendToProps} />
     </div>
   );
@@ -45,6 +45,8 @@ function SendToken(props) {
 SendToken.propTypes = {
   onChangeFrom: PropTypes.func.isRequired,
   onChangeAmount: PropTypes.func.isRequired,
+  onChangeTo: PropTypes.func.isRequired,
+
   from: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.bool,
@@ -71,6 +73,9 @@ function mapDispatchToProps(dispatch) {
     },
     onChangeAmount: (amount) => {
       dispatch(changeAmount(amount));
+    },
+    onChangeTo: (address) => {
+      dispatch(changeTo(address));
     },
   };
 }
