@@ -16,6 +16,7 @@ import injectReducer from 'utils/injectReducer';
 import SendFrom from 'components/SendFrom';
 import SendTo from 'components/SendTo';
 import SendAmount from 'components/SendAmount';
+import SendConfirmation from 'components/SendConfirmation';
 
 import { makeSelectAddressList } from 'containers/HomePage/selectors';
 
@@ -38,6 +39,11 @@ function SendToken(props) {
       <SendFrom {...SendFromProps} /><br />
       <SendAmount {...SendAmountProps} /> <br />
       <SendTo {...SendToProps} />
+      <br />
+      <button onClick={() => console.log('send transaction')}>
+        Send
+      </button>
+      <SendConfirmation />
     </div>
   );
 }
@@ -74,8 +80,8 @@ function mapDispatchToProps(dispatch) {
     onChangeAmount: (amount) => {
       dispatch(changeAmount(amount));
     },
-    onChangeTo: (address) => {
-      dispatch(changeTo(address));
+    onChangeTo: (evt) => {
+      dispatch(changeTo(evt.target.value));
     },
   };
 }
