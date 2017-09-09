@@ -13,10 +13,13 @@ import messages from './messages';
 
 function AddressItem(props) {
   const { address, data, onChangeFrom } = props;
+
+  const ether = '1000000000000000000'; // Wei
+
   return (
     <div>
       {address} |
-      Balance: {data.get('balance') !== false ? props.data.get('balance').toString(10) : 'n/a'}
+      Balance: {data.get('balance') !== false ? props.data.get('balance').div(ether).toString(10) + ' Ether ' : 'n/a'}
       <button onClick={() => onChangeFrom(address)}>
         Send
       </button>
@@ -27,6 +30,7 @@ function AddressItem(props) {
 AddressItem.propTypes = {
   address: PropTypes.string,
   data: PropTypes.object,
+  onChangeFrom: PropTypes.func,
 };
 
 export default AddressItem;

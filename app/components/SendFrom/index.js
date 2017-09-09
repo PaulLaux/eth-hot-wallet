@@ -24,7 +24,7 @@ function SendFrom({ addressList, from, onChangeFrom }) {
       Address to send from:<br />
       <label htmlFor="sendFromDropdown">
         <select value={from} onChange={(evt) => onChangeFrom(evt.target.value)}>
-          <option value={false}>Select Address</option>
+          <option value={''}>Select Address</option>
           {options}
         </select>
       </label>
