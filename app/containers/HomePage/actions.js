@@ -160,7 +160,6 @@ export function generateKeystore() {
  */
 export function generateKeystoreSuccess(keystore) {
   const addresses = keystore.getAddresses();
-
   const addressList = {};
   for (let i = 0; i < addresses.length; ++i) {
     // if (addresses[i] !== undefined) {
@@ -197,8 +196,8 @@ export function generateKeystoreError(error) {
  * Changes ballance for a given address
  * If address dont exist - new address will be created
  *
- * @param  {object} address
- * @param  {object} balance
+ * @param  {object} address as string
+ * @param  {object} balance BigNumber object
  *
  * @return {object} An action object with a type of CHANGE_BALANCE with address and balance
  */
