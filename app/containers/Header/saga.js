@@ -1,10 +1,21 @@
 import Web3 from 'web3';
 import HookedWeb3Provider from 'vendor/hooked-web3-provider/hooked-web3-provider';
-
+import BigNumber from 'bignumber.js';
 import { take, call, put, select, takeLatest } from 'redux-saga/effects';
 
 import { makeSelectKeystore, makeSelectAddressList } from 'containers/HomePage/selectors';
 import { changeBalance } from 'containers/HomePage/actions';
+
+import { confirmSendTransactionSuccess, confirmSendTransactionError } from 'containers/SendToken/actions';
+import {
+  makeSelectFrom,
+  makeSelectTo,
+  makeSelectAmount,
+  makeSelectGasPrice,
+} from 'containers/SendToken/selectors';
+import {
+  COMFIRM_SEND_TRANSACTION,
+} from 'containers/SendToken/constants';
 
 import {
   loadNetworkSuccess,
@@ -25,7 +36,7 @@ function timer() {
   return new Promise((resolve) => setTimeout(() => resolve('timer end'), 600));
 }
 
-// console.log(window);
+console.log('const web3 = new Web3();');
 const web3 = new Web3();
 
 /**
@@ -99,9 +110,47 @@ export function* checkBalances() {
   }
 }
 
+export function* confirmSendTransaction() {
+  try {
+
+
+    const fromAddress = yield select(makeSelectFrom());
+    const amount = yield select(makeSelectAmount());
+    const toAddress = yield select(makeSelectTo());
+    const gasPrice = yield select(makeSelectGasPrice());
+    const maxGas = 21000;
+
+    // web3.isAddress(HexString);
+    if (!web3.isAddress(fromAddress)) {
+      throw new Error('Origin address invalid');
+    }
+
+    if (amount <= 0) {
+      throw new Error('Amount must be possitive');
+    }
+
+    if (!web3.isAddress(toAddress)) {
+      throw new Error('Destenation address invalid');
+    }
+    const Gwei = '1000000000';
+    if (!gasPrice.gte(new BigNumber(1).times(Gwei))) {
+      throw new Error('Gas price must be 1 Gwei at least');
+    }
+
+    /* confirmSendTransactionSuccess, confirmSendTransactionError */
+
+    // yield put(checkBalancesSuccess());
+  } catch (err) {
+    const errorString = 'confirmSendTransaction error - ' + err.message;
+    yield put(confirmSendTransactionError(errorString));
+  }
+}
+
 // Individual exports for testing
 export default function* defaultSaga() {
   // See example in containers/HomePage/saga.js
   yield takeLatest(LOAD_NETWORK, loadNetwork);
   yield takeLatest(CHECK_BALANCES, checkBalances);
+
+  yield takeLatest(COMFIRM_SEND_TRANSACTION, confirmSendTransaction);
 }
