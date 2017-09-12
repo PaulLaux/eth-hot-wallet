@@ -38,6 +38,13 @@ export function changeTo(address) {
 }
 
 export function changeGasPrice(gasPrice) {
+  console.log(gasPrice);
+  if (gasPrice === '') {
+    return {
+      type: CHANGE_GAS_PRICE,
+      gasPrice: 0,
+    };
+  }
   return {
     type: CHANGE_GAS_PRICE,
     gasPrice,
