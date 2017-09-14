@@ -137,11 +137,11 @@ export function* confirmSendTransaction() {
       throw new Error('Gas price must be 1 Gwei at least');
     }
 
-    /* confirmSendTransactionSuccess, confirmSendTransactionError */
-
-    // yield put(checkBalancesSuccess());
+    const msg = `Transaction created successfully. 
+    Sending ${amount} from ...${fromAddress.slice(-5)} to ...${toAddress.slice(-5)}`;
+    yield put(confirmSendTransactionSuccess(msg));
   } catch (err) {
-    const errorString = 'confirmSendTransaction error - ' + err.message;
+    const errorString = `confirmSendTransaction error - ${err.message}`;
     yield put(confirmSendTransactionError(errorString));
   }
 }

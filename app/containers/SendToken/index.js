@@ -67,7 +67,7 @@ function SendToken(props) {
       <SendGasPrice {...SendGasPriceProps} />
       <br />
       <button onClick={onConfirmSendTransaction}>
-        Verify
+        Create transaction
       </button>
       <SendConfirmationView {...SendConfirmationViewProps} />
     </div>

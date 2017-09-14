@@ -13,6 +13,10 @@ import {
   COMFIRM_SEND_TRANSACTION,
   COMFIRM_SEND_TRANSACTION_SUCCESS,
   COMFIRM_SEND_TRANSACTION_ERROR,
+
+  SEND_TRANSACTION,
+  SEND_TRANSACTION_SUCCESS,
+  SEND_TRANSACTION_ERROR,
 } from './constants';
 
 
@@ -38,13 +42,13 @@ export function changeTo(address) {
 }
 
 export function changeGasPrice(gasPrice) {
-  console.log(gasPrice);
   if (gasPrice === '') {
     return {
       type: CHANGE_GAS_PRICE,
       gasPrice: 0,
     };
   }
+
   return {
     type: CHANGE_GAS_PRICE,
     gasPrice,
@@ -58,7 +62,6 @@ export function changeGasPrice(gasPrice) {
  * @return {object}    An action object with a type of COMFIRM_SEND_TRANSACTION
  */
 export function confirmSendTransaction() {
-  console.log('sss');
   return {
     type: COMFIRM_SEND_TRANSACTION,
   };
@@ -69,9 +72,17 @@ export function confirmSendTransaction() {
  *
  * @return {object}    An action object with a type of COMFIRM_SEND_TRANSACTION_SUCCESS
  */
-export function confirmSendTransactionSuccess() {
+export function confirmSendTransactionSuccess(msg) {
+  if (msg) {
+    return {
+      type: COMFIRM_SEND_TRANSACTION_SUCCESS,
+      msg,
+    };
+  }
+
   return {
     type: COMFIRM_SEND_TRANSACTION_SUCCESS,
+    msg: 'Transaction confirmed successfully, Send to transmit',
   };
 }
 
@@ -87,3 +98,37 @@ export function confirmSendTransactionError(error) {
   };
 }
 
+/**
+ * initiate Send
+ *
+ * @return {object}    An action object with a type of SEND_TRANSACTION
+ */
+export function sendTransaction() {
+  return {
+    type: SEND_TRANSACTION,
+  };
+}
+
+/**
+ * transaction sent successfully
+ *
+ * @return {object}    An action object with a type of SEND_TRANSACTION_SUCCESS
+ */
+export function sendTransactionSuccess(tx) {
+  return {
+    type: SEND_TRANSACTION_SUCCESS,
+    tx,
+  };
+}
+
+/**
+ * Error sending transaction
+ *
+ * @return {object}    An action object with a type of SEND_TRANSACTION_ERROR
+ */
+export function sendTransactionError(error) {
+  return {
+    type: SEND_TRANSACTION_ERROR,
+    error,
+  };
+}
