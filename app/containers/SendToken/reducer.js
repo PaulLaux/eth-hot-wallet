@@ -14,6 +14,10 @@ import {
   COMFIRM_SEND_TRANSACTION,
   COMFIRM_SEND_TRANSACTION_SUCCESS,
   COMFIRM_SEND_TRANSACTION_ERROR,
+
+  SEND_TRANSACTION,
+  SEND_TRANSACTION_SUCCESS,
+  SEND_TRANSACTION_ERROR,
 } from './constants';
 
 const Gwei = '1000000000';
@@ -27,6 +31,10 @@ const initialState = fromJS({
   comfirmationLoading: false,
   confirmationError: false,
   confirmationMsg: false,
+
+  sendInProgress: false,
+  sendError: false,
+  sendTx: false,
 
 });
 
@@ -54,11 +62,28 @@ function sendTokenReducer(state = initialState, action) {
     case COMFIRM_SEND_TRANSACTION_SUCCESS:
       return state
         .set('comfirmationLoading', false)
-        .set('confirmationMsg', 'Transaction confirmed successfully, Send to transmit');
+        .set('confirmationMsg', action.msg);
     case COMFIRM_SEND_TRANSACTION_ERROR:
       return state
         .set('comfirmationLoading', false)
         .set('confirmationError', action.error);
+
+    case SEND_TRANSACTION:
+      return state
+        .set('sendInProgress', true)
+        .set('sendError', false)
+        .set('sendTx', false);
+    case SEND_TRANSACTION_SUCCESS:
+      return state
+        .set('sendInProgress', false)
+        .set('sendError', false)
+        .set('sendTx', action.tx);
+    case SEND_TRANSACTION_ERROR:
+      return state
+        .set('sendInProgress', false)
+        .set('sendError', action.error)
+        .set('sendTx', false);
+
     default:
       return state;
   }
