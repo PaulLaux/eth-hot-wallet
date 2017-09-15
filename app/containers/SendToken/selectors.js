@@ -42,6 +42,20 @@ const makeSelectConfirmationMsg = () => createSelector(
   (substate) => substate.get('confirmationMsg')
 );
 
+const makeSelectSendInProgress = () => createSelector(
+  selectSendTokenDomain,
+  (substate) => substate.get('sendInProgress')
+);
+
+const makeSelectSendError = () => createSelector(
+  selectSendTokenDomain,
+  (substate) => substate.get('sendError')
+);
+
+const makeSelectSendTx = () => createSelector(
+  selectSendTokenDomain,
+  (substate) => substate.get('sendTx')
+);
 // export default makeSelectSendToken;
 export {
   selectSendTokenDomain,
@@ -54,4 +68,8 @@ export {
   makeSelectComfirmationLoading,
   makeSelectConfirmationError,
   makeSelectConfirmationMsg,
+
+  makeSelectSendInProgress,
+  makeSelectSendError,
+  makeSelectSendTx,
 };

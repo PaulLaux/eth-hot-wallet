@@ -21,7 +21,7 @@ import SendConfirmationView from 'components/SendConfirmationView';
 
 import { makeSelectAddressList } from 'containers/HomePage/selectors';
 
-import { changeFrom, changeAmount, changeTo, changeGasPrice, confirmSendTransaction } from './actions';
+import { changeFrom, changeAmount, changeTo, changeGasPrice, confirmSendTransaction, sendTransaction } from './actions';
 import {
   makeSelectFrom,
   makeSelectTo,
@@ -30,6 +30,9 @@ import {
   makeSelectComfirmationLoading,
   makeSelectConfirmationError,
   makeSelectConfirmationMsg,
+  makeSelectSendInProgress,
+  makeSelectSendError,
+  makeSelectSendTx,
 } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
@@ -50,13 +53,19 @@ function SendToken(props) {
     confirmationError,
     confirmationMsg,
     onConfirmSendTransaction,
+    onSendTransaction,
+
+    sendInProgress,
+    sendError,
+    sendTx,
     } = props;
 
   const SendFromProps = { from, addressList, onChangeFrom };
   const SendAmountProps = { amount, onChangeAmount };
   const SendToProps = { to, onChangeTo };
   const SendGasPriceProps = { gasPrice, onChangeGasPrice };
-  const SendConfirmationViewProps = { comfirmationLoading, confirmationError, confirmationMsg };
+  const SendConfirmationViewProps = { comfirmationLoading, confirmationError, confirmationMsg, onSendTransaction };
+  const SendProgressProps = { sendInProgress, sendError, sendTx };
 
   return (
     <div>
@@ -70,6 +79,7 @@ function SendToken(props) {
         Create transaction
       </button>
       <SendConfirmationView {...SendConfirmationViewProps} />
+      <SendProgress {...SendProgressProps} />
     </div>
   );
 }
@@ -80,6 +90,7 @@ SendToken.propTypes = {
   onChangeTo: PropTypes.func.isRequired,
   onChangeGasPrice: PropTypes.func.isRequired,
   onConfirmSendTransaction: PropTypes.func.isRequired,
+  onSendTransaction: PropTypes.func.isRequired,
 
   from: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
   to: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
@@ -87,9 +98,14 @@ SendToken.propTypes = {
   amount: PropTypes.number,
   gasPrice: PropTypes.object,
 
-  comfirmationLoading: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
+  comfirmationLoading: PropTypes.oneOfType([PropTypes.bool]),
   confirmationError: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
   confirmationMsg: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
+
+  sendInProgress: PropTypes.oneOfType([PropTypes.bool]),
+  sendError: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
+  sendTx: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
+
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -102,6 +118,11 @@ const mapStateToProps = createStructuredSelector({
   comfirmationLoading: makeSelectComfirmationLoading(),
   confirmationError: makeSelectConfirmationError(),
   confirmationMsg: makeSelectConfirmationMsg(),
+
+  sendInProgress: makeSelectSendInProgress(),
+  sendError: makeSelectSendError(),
+  sendTx: makeSelectSendTx(),
+
 });
 
 function mapDispatchToProps(dispatch) {
@@ -123,16 +144,20 @@ function mapDispatchToProps(dispatch) {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
       dispatch(confirmSendTransaction());
     },
+    onSendTransaction: (evt) => {
+      if (evt !== undefined && evt.preventDefault) evt.preventDefault();
+      dispatch(sendTransaction());
+    },
   };
 }
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
 const withReducer = injectReducer({ key: 'sendtoken', reducer });
-const withSaga = injectSaga({ key: 'sendtoken', saga });
+// const withSaga = injectSaga({ key: 'sendtoken', saga });
 
 export default compose(
   withReducer,
-  withSaga,
+  // withSaga,
   withConnect,
 )(SendToken);
