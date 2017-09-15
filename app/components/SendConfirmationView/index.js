@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
-function SendConfirmationView({ comfirmationLoading, confirmationError, confirmationMsg }) {
+function SendConfirmationView({ comfirmationLoading, confirmationError, confirmationMsg, onSendTransaction }) {
   if (comfirmationLoading) {
     return <div> checking transaction....</div>;
   }
@@ -24,7 +24,7 @@ function SendConfirmationView({ comfirmationLoading, confirmationError, confirma
     return (
       <div>
         transaction is valid: {confirmationMsg} <br />
-        <button onClick={() => console.log('send transaction')} >
+        <button onClick={onSendTransaction} >
           Send ETH
         </button>
 
@@ -41,6 +41,8 @@ SendConfirmationView.propTypes = {
   comfirmationLoading: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
   confirmationError: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
   confirmationMsg: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
+
+  onSendTransaction: PropTypes.func.isRequired,
 };
 
 export default SendConfirmationView;
