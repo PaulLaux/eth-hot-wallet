@@ -104,7 +104,6 @@ export function confirmSendTransactionError(error) {
  * @return {object}    An action object with a type of SEND_TRANSACTION
  */
 export function sendTransaction() {
-  console.log('action');
   return {
     type: SEND_TRANSACTION,
   };

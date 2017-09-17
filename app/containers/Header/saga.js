@@ -6,7 +6,12 @@ import { take, call, put, select, takeLatest } from 'redux-saga/effects';
 import { makeSelectKeystore, makeSelectAddressList } from 'containers/HomePage/selectors';
 import { changeBalance } from 'containers/HomePage/actions';
 
-import { confirmSendTransactionSuccess, confirmSendTransactionError } from 'containers/SendToken/actions';
+import {
+  confirmSendTransactionSuccess,
+  confirmSendTransactionError,
+  sendTransactionSuccess,
+  sendTransactionError,
+} from 'containers/SendToken/actions';
 import {
   makeSelectFrom,
   makeSelectTo,
@@ -15,6 +20,7 @@ import {
 } from 'containers/SendToken/selectors';
 import {
   COMFIRM_SEND_TRANSACTION,
+  SEND_TRANSACTION,
 } from 'containers/SendToken/constants';
 
 import {
@@ -110,17 +116,17 @@ export function* checkBalances() {
   }
 }
 
+const Ether = (1.0e18).toString();
+const Gwei = (1.0e9).toString();
+const maxGas = 25000;
+
 export function* confirmSendTransaction() {
   try {
-
-
     const fromAddress = yield select(makeSelectFrom());
     const amount = yield select(makeSelectAmount());
     const toAddress = yield select(makeSelectTo());
     const gasPrice = yield select(makeSelectGasPrice());
-    const maxGas = 21000;
 
-    // web3.isAddress(HexString);
     if (!web3.isAddress(fromAddress)) {
       throw new Error('Origin address invalid');
     }
@@ -132,7 +138,7 @@ export function* confirmSendTransaction() {
     if (!web3.isAddress(toAddress)) {
       throw new Error('Destenation address invalid');
     }
-    const Gwei = '1000000000';
+
     if (!gasPrice.gte(new BigNumber(1).times(Gwei))) {
       throw new Error('Gas price must be 1 Gwei at least');
     }
@@ -146,6 +152,43 @@ export function* confirmSendTransaction() {
   }
 }
 
+export function* SendTransaction() {
+  try {
+    const fromAddress = yield select(makeSelectFrom());
+    const amount = yield select(makeSelectAmount());
+    const toAddress = yield select(makeSelectTo());
+    const gasPrice = yield select(makeSelectGasPrice());
+
+    const sendAmount = new BigNumber(amount).times(Ether);
+
+    const sendParams = { from: fromAddress, to: toAddress, value: sendAmount, gasPrice: gasPrice, gas: maxGas };
+
+
+    function sendTransactionPromise(params) { // eslint-disable-line no-inner-declarations
+      return new Promise((resolve, reject) => {
+        web3.eth.sendTransaction(params, (err, data) => {
+          if (err !== null) return reject(err);
+          return resolve(data);
+        });
+      });
+    }
+
+    const tx = yield call(sendTransactionPromise, sendParams);
+
+    /*
+    web3.eth.sendTransaction(sendParams, (err, txhash) => {
+      console.log('error: ' + err);
+      console.log('txhash: ' + txhash);
+    });
+    */
+
+    yield put(sendTransactionSuccess(tx));
+  } catch (err) {
+    const errorString = `SendTransaction error - ${err.message}`;
+    yield put(sendTransactionError(errorString));
+  }
+}
+
 // Individual exports for testing
 export default function* defaultSaga() {
   // See example in containers/HomePage/saga.js
@@ -153,4 +196,5 @@ export default function* defaultSaga() {
   yield takeLatest(CHECK_BALANCES, checkBalances);
 
   yield takeLatest(COMFIRM_SEND_TRANSACTION, confirmSendTransaction);
+  yield takeLatest(SEND_TRANSACTION, SendTransaction);
 }

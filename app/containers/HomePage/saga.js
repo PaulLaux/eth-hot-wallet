@@ -93,9 +93,9 @@ export function* genKeystore() {
     const password = yield select(makeSelectPassword());
     const seed = yield select(makeSelectSeed());
     const opt = {
-      'password': password,
-      'seedPhrase': seed,
-      'hdPathString': `m/44'/60'/0'/0`,  // The default is `m/0'/0'/0'`.
+      password: password,
+      seedPhrase: seed,
+      hdPathString: `m/44'/60'/0'/0`,  // The default is `m/0'/0'/0'`.
     };
 
     const ks = yield call(createVaultPromise, opt);
@@ -108,6 +108,11 @@ export function* genKeystore() {
         });
       });
     }
+
+    ks.passwordProvider = function (callback) {
+      const pw = prompt('Please enter password1111', 'Password');
+      callback(null, pw);
+    };
 
     const pwDerivedKey = yield call(keyFromPasswordPromise, password);
     ks.generateNewAddress(pwDerivedKey, 2);

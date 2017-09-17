@@ -62,7 +62,9 @@ function sendTokenReducer(state = initialState, action) {
     case COMFIRM_SEND_TRANSACTION_SUCCESS:
       return state
         .set('comfirmationLoading', false)
-        .set('confirmationMsg', action.msg);
+        .set('confirmationMsg', action.msg)
+        .set('confirmationError', false);
+
     case COMFIRM_SEND_TRANSACTION_ERROR:
       return state
         .set('comfirmationLoading', false)

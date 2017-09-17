@@ -11,13 +11,15 @@ import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
-import injectSaga from 'utils/injectSaga';
+// import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
+
 import SendFrom from 'components/SendFrom';
 import SendTo from 'components/SendTo';
 import SendAmount from 'components/SendAmount';
 import SendGasPrice from 'components/SendGasPrice';
 import SendConfirmationView from 'components/SendConfirmationView';
+import SendProgress from 'components/SendProgress';
 
 import { makeSelectAddressList } from 'containers/HomePage/selectors';
 
@@ -35,7 +37,7 @@ import {
   makeSelectSendTx,
 } from './selectors';
 import reducer from './reducer';
-import saga from './saga';
+// import saga from './saga';
 import messages from './messages';
 
 function SendToken(props) {
