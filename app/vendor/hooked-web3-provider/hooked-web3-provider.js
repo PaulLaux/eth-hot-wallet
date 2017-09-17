@@ -1,3 +1,4 @@
+// import web3_g from 'vendor/web3/web3_global';
 "use strict";
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -154,6 +155,7 @@ var factory = function factory(web3) {
                 } else {
                   var new_nonce = result.result;
                   done(null, web3.toDecimal(new_nonce));
+                  // done(null, (new_nonce));
                 }
               });
             }
@@ -203,8 +205,16 @@ var factory = function factory(web3) {
 };
 
 if (typeof module !== 'undefined') {
-  module.exports = factory(require("web3"));
+  console.log('req1');
+  //console.log(web3_g);
+  const Web3 = require("web3");
+  const web3 = new Web3();
+  //window.web3 = window.web3 ? window.web3 : new (require("web3"))();
+  //const web3 = window.web3;
+  module.exports = factory(web3);
 } else {
-  var web3 = new Web3();
+
+  // var web3 = new Web3();
+  // console.log('web3: ' + web3.toDecimal('0x15'));
   window.HookedWeb3Provider = factory(web3);
 }
