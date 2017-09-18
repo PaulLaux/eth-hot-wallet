@@ -43,7 +43,14 @@ function timer() {
 }
 
 console.log('const web3 = new Web3();');
-const web3 = new Web3();
+let web3 = {};
+if (window.web3) {
+  web3 = window.web3;
+} else {
+  web3 = new Web3();
+  window.web3 = web3;
+}
+
 
 /**
  * connect to rpc and attach keystore as siger provider

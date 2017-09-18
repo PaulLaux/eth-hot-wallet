@@ -204,17 +204,19 @@ var factory = function factory(web3) {
   return HookedWeb3Provider;
 };
 
+let web3 = {};
+if (window.web3) {
+  web3 = window.web3;
+} else {
+  const Web3 = require('web3');
+  web3 = new Web3();
+  window.web3 = web3;
+}
+
 if (typeof module !== 'undefined') {
   console.log('req1');
-  //console.log(web3_g);
-  const Web3 = require("web3");
-  const web3 = new Web3();
-  //window.web3 = window.web3 ? window.web3 : new (require("web3"))();
-  //const web3 = window.web3;
   module.exports = factory(web3);
 } else {
-
-  // var web3 = new Web3();
-  // console.log('web3: ' + web3.toDecimal('0x15'));
+  console.log('req2');
   window.HookedWeb3Provider = factory(web3);
 }
