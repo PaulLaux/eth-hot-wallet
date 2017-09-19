@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 
 
-function SendTo({ to, onChangeTo }) {
+function SendTo({ to, onChangeTo, locked }) {
   const inputStyle = {
     minWidth: 370,
   };
@@ -25,6 +25,7 @@ function SendTo({ to, onChangeTo }) {
           placeholder="Enter destenation address"
           value={to}
           onInput={onChangeTo}
+          disabled={locked}
         />
       </label>
     </div>
@@ -34,6 +35,7 @@ function SendTo({ to, onChangeTo }) {
 SendTo.propTypes = {
   to: PropTypes.string,
   onChangeTo: PropTypes.func,
+  locked: PropTypes.func,
 };
 
 export default SendTo;

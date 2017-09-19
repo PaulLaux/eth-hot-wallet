@@ -56,6 +56,12 @@ const makeSelectSendTx = () => createSelector(
   selectSendTokenDomain,
   (substate) => substate.get('sendTx')
 );
+
+const makeSelectLocked = () => createSelector(
+  selectSendTokenDomain,
+  (substate) => substate.get('locked')
+);
+
 // export default makeSelectSendToken;
 export {
   selectSendTokenDomain,
@@ -64,6 +70,7 @@ export {
   makeSelectTo,
   makeSelectAmount,
   makeSelectGasPrice,
+  makeSelectLocked,
 
   makeSelectComfirmationLoading,
   makeSelectConfirmationError,

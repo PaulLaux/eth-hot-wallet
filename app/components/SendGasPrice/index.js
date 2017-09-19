@@ -12,7 +12,7 @@ import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
-function SendGasPrice({ gasPrice, onChangeGasPrice }) {
+function SendGasPrice({ gasPrice, onChangeGasPrice, locked }) {
   const Gwei = '1000000000';
   return (
     <div>
@@ -24,6 +24,7 @@ function SendGasPrice({ gasPrice, onChangeGasPrice }) {
         min="1"
         max="100"
         step="1"
+        disabled={locked}
         value={gasPrice.dividedToIntegerBy(Gwei).toNumber()} // show price in Gwei
         onChange={(evt) => onChangeGasPrice(evt.target.value)} // Bignumber created by reducer
       /> Gwei
@@ -34,7 +35,7 @@ function SendGasPrice({ gasPrice, onChangeGasPrice }) {
 
 SendGasPrice.propTypes = {
   onChangeGasPrice: PropTypes.func.isRequired,
-
+  locked: PropTypes.bool,
   gasPrice: PropTypes.object,
 };
 

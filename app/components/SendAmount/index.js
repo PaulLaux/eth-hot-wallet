@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
-function SendAmount({ amount, onChangeAmount }) {
+function SendAmount({ amount, onChangeAmount, locked }) {
   return (
     <div>
       <FormattedMessage {...messages.header} />
@@ -22,6 +22,7 @@ function SendAmount({ amount, onChangeAmount }) {
         step="0.01"
         value={amount}
         onChange={(evt) => onChangeAmount(parseFloat(evt.target.value))}
+        disabled={locked}
       />
     </div>
   );
@@ -30,6 +31,7 @@ function SendAmount({ amount, onChangeAmount }) {
 SendAmount.propTypes = {
   amount: PropTypes.number,
   onChangeAmount: PropTypes.func,
+  locked: PropTypes.bool,
 };
 
 export default SendAmount;
