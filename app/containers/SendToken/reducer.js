@@ -15,9 +15,12 @@ import {
   COMFIRM_SEND_TRANSACTION_SUCCESS,
   COMFIRM_SEND_TRANSACTION_ERROR,
 
+  ABORT_TRANSACTION,
   SEND_TRANSACTION,
   SEND_TRANSACTION_SUCCESS,
   SEND_TRANSACTION_ERROR,
+
+
 } from './constants';
 
 const Gwei = '1000000000';
@@ -27,6 +30,7 @@ const initialState = fromJS({
   to: '',
   amount: 0,
   gasPrice: new BigNumber(15).times(Gwei),
+  locked: false,
 
   comfirmationLoading: false,
   confirmationError: false,
@@ -58,17 +62,24 @@ function sendTokenReducer(state = initialState, action) {
 
     case COMFIRM_SEND_TRANSACTION:
       return state
-        .set('comfirmationLoading', true);
+        .set('comfirmationLoading', true)
+        .set('locked', true);
     case COMFIRM_SEND_TRANSACTION_SUCCESS:
       return state
         .set('comfirmationLoading', false)
         .set('confirmationMsg', action.msg)
         .set('confirmationError', false);
-
     case COMFIRM_SEND_TRANSACTION_ERROR:
       return state
         .set('comfirmationLoading', false)
-        .set('confirmationError', action.error);
+        .set('confirmationError', action.error)
+        .set('locked', false);
+    case ABORT_TRANSACTION:
+      return state
+        .set('comfirmationLoading', false)
+        .set('confirmationMsg', false)
+        .set('confirmationError', false)
+        .set('locked', false);
 
     case SEND_TRANSACTION:
       return state

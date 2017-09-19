@@ -8,7 +8,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 
-function SendFrom({ addressList, from, onChangeFrom }) {
+function SendFrom({ addressList, from, onChangeFrom, locked }) {
   let options;
   if (addressList && addressList.keySeq().toArray()) {
     // console.log(addressList.keySeq().toArray());
@@ -23,7 +23,11 @@ function SendFrom({ addressList, from, onChangeFrom }) {
       <br />
       Address to send from:<br />
       <label htmlFor="sendFromDropdown">
-        <select value={from} onChange={(evt) => onChangeFrom(evt.target.value)}>
+        <select
+          value={from}
+          onChange={(evt) => onChangeFrom(evt.target.value)}
+          disabled={locked}
+        >
           <option value={''}>Select Address</option>
           {options}
         </select>
@@ -43,6 +47,7 @@ SendFrom.propTypes = {
     PropTypes.bool,
     // PropTypes.array,
   ]),
+  locked: PropTypes.bool,
 };
 
 export default SendFrom;

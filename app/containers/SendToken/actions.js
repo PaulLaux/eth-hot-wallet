@@ -14,6 +14,7 @@ import {
   COMFIRM_SEND_TRANSACTION_SUCCESS,
   COMFIRM_SEND_TRANSACTION_ERROR,
 
+  ABORT_TRANSACTION,
   SEND_TRANSACTION,
   SEND_TRANSACTION_SUCCESS,
   SEND_TRANSACTION_ERROR,
@@ -99,6 +100,17 @@ export function confirmSendTransactionError(error) {
 }
 
 /**
+ * Abort transaction aftrer it has been confirmed
+ *
+ * @return {object}    An action object with a type of ABORT_TRANSACTION
+ */
+export function abortTransaction() {
+  return {
+    type: ABORT_TRANSACTION,
+  };
+}
+
+/**
  * initiate Send
  *
  * @return {object}    An action object with a type of SEND_TRANSACTION
@@ -132,3 +144,4 @@ export function sendTransactionError(error) {
     error,
   };
 }
+

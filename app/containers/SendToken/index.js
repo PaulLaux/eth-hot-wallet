@@ -23,12 +23,13 @@ import SendProgress from 'components/SendProgress';
 
 import { makeSelectAddressList } from 'containers/HomePage/selectors';
 
-import { changeFrom, changeAmount, changeTo, changeGasPrice, confirmSendTransaction, sendTransaction } from './actions';
+import { changeFrom, changeAmount, changeTo, changeGasPrice, confirmSendTransaction, sendTransaction, abortTransaction } from './actions';
 import {
   makeSelectFrom,
   makeSelectTo,
   makeSelectAmount,
   makeSelectGasPrice,
+  makeSelectLocked,
   makeSelectComfirmationLoading,
   makeSelectConfirmationError,
   makeSelectConfirmationMsg,
@@ -47,6 +48,7 @@ function SendToken(props) {
     addressList,
     onChangeFrom,
     amount,
+    locked,
     onChangeAmount,
     onChangeTo,
     gasPrice,
@@ -56,17 +58,19 @@ function SendToken(props) {
     confirmationMsg,
     onConfirmSendTransaction,
     onSendTransaction,
+    onAbortTransaction,
 
     sendInProgress,
     sendError,
     sendTx,
     } = props;
 
-  const SendFromProps = { from, addressList, onChangeFrom };
-  const SendAmountProps = { amount, onChangeAmount };
-  const SendToProps = { to, onChangeTo };
-  const SendGasPriceProps = { gasPrice, onChangeGasPrice };
-  const SendConfirmationViewProps = { comfirmationLoading, confirmationError, confirmationMsg, onSendTransaction };
+  const SendFromProps = { from, addressList, onChangeFrom, locked };
+  const SendAmountProps = { amount, onChangeAmount, locked };
+  const SendToProps = { to, onChangeTo, locked };
+  const SendGasPriceProps = { gasPrice, onChangeGasPrice, locked };
+
+  const SendConfirmationViewProps = { comfirmationLoading, confirmationError, confirmationMsg, onSendTransaction, onAbortTransaction };
   const SendProgressProps = { sendInProgress, sendError, sendTx };
 
   return (
@@ -93,12 +97,14 @@ SendToken.propTypes = {
   onChangeGasPrice: PropTypes.func.isRequired,
   onConfirmSendTransaction: PropTypes.func.isRequired,
   onSendTransaction: PropTypes.func.isRequired,
+  onAbortTransaction: PropTypes.func.isRequired,
 
   from: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
   to: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
 
   amount: PropTypes.number,
   gasPrice: PropTypes.object,
+  locked: PropTypes.bool,
 
   comfirmationLoading: PropTypes.oneOfType([PropTypes.bool]),
   confirmationError: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
@@ -116,6 +122,7 @@ const mapStateToProps = createStructuredSelector({
   amount: makeSelectAmount(),
   addressList: makeSelectAddressList(),
   gasPrice: makeSelectGasPrice(),
+  locked: makeSelectLocked(),
 
   comfirmationLoading: makeSelectComfirmationLoading(),
   confirmationError: makeSelectConfirmationError(),
@@ -145,6 +152,10 @@ function mapDispatchToProps(dispatch) {
     onConfirmSendTransaction: (evt) => {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
       dispatch(confirmSendTransaction());
+    },
+    onAbortTransaction: (evt) => {
+      if (evt !== undefined && evt.preventDefault) evt.preventDefault();
+      dispatch(abortTransaction());
     },
     onSendTransaction: (evt) => {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
