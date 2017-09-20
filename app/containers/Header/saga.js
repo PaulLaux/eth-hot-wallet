@@ -1,7 +1,7 @@
 import Web3 from 'web3';
 import HookedWeb3Provider from 'vendor/hooked-web3-provider/hooked-web3-provider';
 import BigNumber from 'bignumber.js';
-import { take, call, put, select, takeLatest } from 'redux-saga/effects';
+import { take, call, put, select, takeLatest, race, fork } from 'redux-saga/effects';
 
 import { makeSelectKeystore, makeSelectAddressList } from 'containers/HomePage/selectors';
 import { changeBalance } from 'containers/HomePage/actions';
@@ -59,7 +59,7 @@ export function* loadNetwork(action) {
   try {
     const rpcAddress = Network[action.networkName];
     if (!rpcAddress) {
-      throw new Error(action.networkName + ' network not found');
+      throw new Error(`${action.networkName} network not found`);
     }
 
     const keystore = yield select(makeSelectKeystore());
@@ -93,35 +93,6 @@ export function* loadNetwork(action) {
   }
 }
 
-
-function getBalancePromise(address) {
-  return new Promise((resolve, reject) => {
-    web3.eth.getBalance(address, (err, data) => {
-      if (err !== null) return reject(err);
-      return resolve(data);
-    });
-  });
-}
-
-export function* checkBalances() {
-  try {
-    let j = 0;
-    const addressList = yield select(makeSelectAddressList());
-    const addressListArr = addressList.keySeq().toArray();
-
-    do {
-      const addr = addressListArr[j];
-      const balance = yield call(getBalancePromise, addr);
-      yield put(changeBalance(addr, balance));
-      j += 1;
-    } while (j < addressListArr.length);
-
-    yield put(checkBalancesSuccess());
-  } catch (err) {
-    const errorString = 'checkBalances error - ' + err.message;
-    yield put(CheckBalancesError(errorString));
-  }
-}
 
 const Ether = (1.0e18).toString();
 const Gwei = (1.0e9).toString();
@@ -182,13 +153,6 @@ export function* SendTransaction() {
 
     const tx = yield call(sendTransactionPromise, sendParams);
 
-    /*
-    web3.eth.sendTransaction(sendParams, (err, txhash) => {
-      console.log('error: ' + err);
-      console.log('txhash: ' + txhash);
-    });
-    */
-
     yield put(sendTransactionSuccess(tx));
   } catch (err) {
     const errorString = `SendTransaction error - ${err.message}`;
@@ -196,12 +160,86 @@ export function* SendTransaction() {
   }
 }
 
+
+/* *************  Polling saga and polling flow for check balances ******************/
+function getBalancePromise(address) {
+  return new Promise((resolve, reject) => {
+    web3.eth.getBalance(address, (err, data) => {
+      if (err !== null) return reject(err);
+      return resolve(data);
+    });
+  });
+}
+
+export function* checkBalances() {
+  try {
+    let j = 0;
+    const addressList = yield select(makeSelectAddressList());
+    const addressListArr = addressList.keySeq().toArray();
+
+    do { // Iterate over all addresses and check for balance
+      const addr = addressListArr[j];
+      const balance = yield call(getBalancePromise, addr);
+      yield put(changeBalance(addr, balance));
+      j += 1;
+    } while (j < addressListArr.length);
+
+    yield put(checkBalancesSuccess());
+  } catch (err) {
+    const errorString = `checkBalances error - ${err.message}`;
+    yield put(CheckBalancesError(errorString));
+  }
+}
+
+// Utility function to delay effects
+function delay(millisec) {
+  const promise = new Promise((resolve) => {
+    setTimeout(() => resolve(true), millisec);
+  });
+  return promise;
+}
+
+// Fetch data every 20 seconds                                           
+function* pollData() {
+  try {
+    console.log('pollData');
+    yield call(delay, 1000);
+    // yield put(dataFetch());
+    yield call(checkBalances);
+    //yield put({ type: CHECK_BALANCES });
+  } catch (error) {
+    console.log('pollData Error');
+    // cancellation error -- can handle this if you wish
+  }
+}
+
+// Start Polling on 
+// Wait for successful response, then fire another request
+// Cancel polling if user logs out                                         
+function* watchPollData() {
+  while (true) {
+    yield take(CHECK_BALANCES);
+    yield race([
+      call(pollData),
+      // take(USER_LOGOUT)
+    ]);
+  }
+}
+
+
+/* *****  End of Polling saga and polling flow for check balances *****/
+
 // Individual exports for testing
 export default function* defaultSaga() {
   // See example in containers/HomePage/saga.js
   yield takeLatest(LOAD_NETWORK, loadNetwork);
-  yield takeLatest(CHECK_BALANCES, checkBalances);
+  // yield takeLatest(CHECK_BALANCES, checkBalances);
 
   yield takeLatest(COMFIRM_SEND_TRANSACTION, confirmSendTransaction);
   yield takeLatest(SEND_TRANSACTION, SendTransaction);
+
+  yield [
+    fork(watchPollData),
+    // other watchers here
+  ];
 }
