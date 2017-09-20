@@ -35,7 +35,7 @@ function SendTo({ to, onChangeTo, locked }) {
 SendTo.propTypes = {
   to: PropTypes.string,
   onChangeTo: PropTypes.func,
-  locked: PropTypes.func,
+  locked: PropTypes.bool,
 };
 
 export default SendTo;
