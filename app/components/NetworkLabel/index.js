@@ -16,7 +16,7 @@ function NetworkLabel(props) {
   }
 
   if (error !== false) {
-    return <div> Error: {error} </div>;
+    return <div> {error} </div>;
   }
 
   const networkNameStr = networkName.replace(/_/g, ' ');

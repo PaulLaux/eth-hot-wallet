@@ -11,14 +11,14 @@ import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
-function CheckBalanceStatus({ checkingBalanceDoneTime, checkingBalances, checkingBalancesError }) {
+function CheckBalancesStatus({ checkingBalanceDoneTime, checkingBalances, checkingBalancesError }) {
   // console.log(checkingBalancesError);
   if (checkingBalances) {
     return <div> checkingBalances ....</div>;
   }
 
   if (checkingBalancesError !== false) {
-    return <div> checkingBalancesError: {checkingBalancesError} </div>;
+    return <div> {checkingBalancesError} </div>;
   }
 
   const balanceCheckString = checkingBalanceDoneTime ? 'balances checked on ' + checkingBalanceDoneTime : 'Balances wasnt checked yet';
@@ -29,7 +29,7 @@ function CheckBalanceStatus({ checkingBalanceDoneTime, checkingBalances, checkin
   );
 }
 
-CheckBalanceStatus.propTypes = {
+CheckBalancesStatus.propTypes = {
   checkingBalanceDoneTime: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.bool,
@@ -42,4 +42,4 @@ CheckBalanceStatus.propTypes = {
   ]),
 };
 
-export default CheckBalanceStatus;
+export default CheckBalancesStatus;

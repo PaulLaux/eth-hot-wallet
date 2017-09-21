@@ -20,17 +20,23 @@ import { createStructuredSelector } from 'reselect';
 import injectReducer from 'utils/injectReducer';
 import injectSaga from 'utils/injectSaga';
 
-import RestoreWallet from 'components/RestoreWallet';
-
-import Header from 'containers/Header';
-import { loadNetwork } from 'containers/Header/actions';
-
-import { changeFrom } from 'containers/SendToken/actions';
 
 import SeedView from 'components/SeedView';
 import AddressView from 'components/AddressView';
-
 import SendTokenView from 'components/SendTokenView';
+import RestoreWallet from 'components/RestoreWallet';
+
+import Header from 'containers/Header';
+import { loadNetwork, checkBalances } from 'containers/Header/actions';
+import {
+  makeSelectNetworkReady,
+  makeSelectCheckingBalanceDoneTime,
+  makeSelectCheckingBalances,
+  makeSelectCheckingBalancesError,
+} from 'containers/Header/selectors';
+
+
+import { changeFrom } from 'containers/SendToken/actions';
 
 import messages from './messages';
 
@@ -40,7 +46,7 @@ import {
   generateKeystore,
   changeUserSeed,
   restoreWalletFromSeed,
-  showSendToken,
+  showSendToken, //TODO: FIX
 } from './actions';
 
 import {
@@ -62,7 +68,27 @@ import saga from './saga';
 
 export class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { loading, error, seed, password, onGenerateKeystore } = this.props;
+    const {
+      loading,
+      error,
+      seed,
+      password,
+      onGenerateKeystore,
+      onCheckBalances,
+      isComfirmed,
+      addressList,
+      onChangeFrom,
+      isShowRestoreWallet,
+      userSeed,
+      onChangeUserSeed,
+      onRestoreWalletFromSeed,
+      sendToken,
+      networkReady,
+      checkingBalanceDoneTime,
+      checkingBalances,
+      checkingBalancesError,
+    } = this.props;
+
     const seedViewProps = {
       loading,
       error,
@@ -70,15 +96,12 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       password,
       onGenerateKeystore,
     };
-
-    const { isComfirmed, addressList, onChangeFrom } = this.props;
-    const addressViewProps = { isComfirmed, addressList, onChangeFrom };
-
-    const { isShowRestoreWallet, userSeed, onChangeUserSeed, onRestoreWalletFromSeed } = this.props;
     const restoreWalletProps = { isShowRestoreWallet, userSeed, onChangeUserSeed, onRestoreWalletFromSeed };
 
-    const { sendToken } = this.props;
+    const addressViewProps = {
+      isComfirmed, addressList, onChangeFrom, onCheckBalances, networkReady, checkingBalanceDoneTime, checkingBalances, checkingBalancesError };
 
+    // return null;
     return (
       <div>
         <h1>
@@ -124,6 +147,7 @@ HomePage.propTypes = {
   onGenerateKeystore: PropTypes.func,
   onShowRestoreWallet: PropTypes.func,
   onRestoreWalletFromSeed: PropTypes.func,
+  onCheckBalances: PropTypes.func,
 
   isShowRestoreWallet: PropTypes.bool,
   userSeed: PropTypes.string,
@@ -137,6 +161,11 @@ HomePage.propTypes = {
     PropTypes.object,
   ]),
   sendToken: PropTypes.bool,
+
+  networkReady: PropTypes.bool,
+  checkingBalanceDoneTime: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  checkingBalances: PropTypes.bool,
+  checkingBalancesError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
 };
 
 export function mapDispatchToProps(dispatch) {
@@ -165,11 +194,14 @@ export function mapDispatchToProps(dispatch) {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
       dispatch(restoreWalletFromSeed());
     },
+    onCheckBalances: (evt) => {
+      if (evt !== undefined && evt.preventDefault) evt.preventDefault();
+      dispatch(checkBalances());
+    },
     onChangeFrom: (address) => {
       // if (evt !== undefined && evt.preventDefault) evt.preventDefault();
       // dispatch(showSendToken());//.then(
       dispatch(changeFrom(address));
-
     },
   };
 }
@@ -185,6 +217,11 @@ const mapStateToProps = createStructuredSelector({
   isShowRestoreWallet: makeSelectShowRestoreWallet(),
   userSeed: makeSelectUserSeed(),
   sendToken: makeSelectSendToken(),
+
+  networkReady: makeSelectNetworkReady(),
+  checkingBalanceDoneTime: makeSelectCheckingBalanceDoneTime(),
+  checkingBalances: makeSelectCheckingBalances(),
+  checkingBalancesError: makeSelectCheckingBalancesError(),
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
