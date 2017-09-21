@@ -14,7 +14,6 @@ import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 
 import NetworkLabel from 'components/NetworkLabel';
-import CheckBalancesStatus from 'components/CheckBalancesStatus';
 
 // import { changeBalance } from 'containers/HomePage/actions';
 import { makeSelectAddressList } from 'containers/HomePage/selectors';
@@ -25,14 +24,14 @@ import {
   makeSelectError,
   makeSelectNetworkName,
   makeSelectBlockNumber,
-  makeSelectCheckingBalanceDoneTime,
+  /*makeSelectCheckingBalanceDoneTime,
   makeSelectCheckingBalances,
-  makeSelectCheckingBalancesError,
+  makeSelectCheckingBalancesError,*/
 } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
-import { loadNetwork, checkBalances } from './actions';
+import { loadNetwork } from './actions';
 
 function Header(props) {
   const { loading, error, networkName, blockNumber } = props;
@@ -43,8 +42,7 @@ function Header(props) {
     blockNumber,
   };
 
-  const { checkingBalanceDoneTime, checkingBalances, checkingBalancesError } = props;
-  const CheckBalancesStatusProps = { checkingBalanceDoneTime, checkingBalances, checkingBalancesError };
+  // const { checkingBalanceDoneTime, checkingBalances, checkingBalancesError } = props;
 
   return (
     <div>
@@ -54,21 +52,15 @@ function Header(props) {
       <button onClick={props.onLoadNetwork}>
         Load Network
       </button>
-      {' '}
-      <button type="button" disabled={!props.networkReady} onClick={props.onCheckBalances}>
-        Check balance
-      </button>
       <br />
-      <CheckBalancesStatus {...CheckBalancesStatusProps} />
       <hr />
     </div>
   );
 }
 
 Header.propTypes = {
-  networkReady: PropTypes.bool,
   onLoadNetwork: PropTypes.func.isRequired,
-  onCheckBalances: PropTypes.func.isRequired,
+  // onCheckBalances: PropTypes.func.isRequired,
 
   loading: PropTypes.bool,
   error: PropTypes.oneOfType([
@@ -78,22 +70,11 @@ Header.propTypes = {
   ]),
   networkName: PropTypes.string,
   blockNumber: PropTypes.number,
-  addressList: PropTypes.oneOfType([
-    // PropTypes.array,
-    PropTypes.bool,
-    PropTypes.object,
-  ]),
+  // addressList: PropTypes.oneOfType([ PropTypes.bool,PropTypes.object]),
 
-  checkingBalanceDoneTime: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.bool,
-  ]),
+  checkingBalanceDoneTime: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   checkingBalances: PropTypes.bool,
-  checkingBalancesError: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.string,
-    PropTypes.bool,
-  ]),
+  checkingBalancesError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -103,9 +84,9 @@ const mapStateToProps = createStructuredSelector({
   networkName: makeSelectNetworkName(),
   blockNumber: makeSelectBlockNumber(),
   addressList: makeSelectAddressList(),
-  checkingBalanceDoneTime: makeSelectCheckingBalanceDoneTime(),
+  /*checkingBalanceDoneTime: makeSelectCheckingBalanceDoneTime(),
   checkingBalances: makeSelectCheckingBalances(),
-  checkingBalancesError: makeSelectCheckingBalancesError(),
+  checkingBalancesError: makeSelectCheckingBalancesError(),*/
 });
 
 function mapDispatchToProps(dispatch) {
@@ -113,10 +94,6 @@ function mapDispatchToProps(dispatch) {
     onLoadNetwork: (evt) => {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
       dispatch(loadNetwork('Local_RPC'));
-    },
-    onCheckBalances: (evt) => {
-      if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-      dispatch(checkBalances());
     },
     /*
     onChangeAddress: (evt) => {
