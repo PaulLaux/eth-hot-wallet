@@ -27,6 +27,7 @@ import {
   loadNetworkSuccess,
   loadNetworkError,
 
+  checkBalances,
   checkBalancesSuccess,
   CheckBalancesError,
 } from './actions';
@@ -34,6 +35,9 @@ import {
 import {
   LOAD_NETWORK,
   CHECK_BALANCES,
+  CHECK_BALANCES_SUCCESS,
+  CHECK_BALANCES_ERROR,
+  STOP_POLL_BALANCES,
 } from './constants';
 
 import Network from './network';
@@ -162,6 +166,8 @@ export function* SendTransaction() {
 
 
 /* *************  Polling saga and polling flow for check balances ******************/
+// time in ms between checks
+const timeBetweenChecks = 30000;
 function getBalancePromise(address) {
   return new Promise((resolve, reject) => {
     web3.eth.getBalance(address, (err, data) => {
@@ -171,7 +177,7 @@ function getBalancePromise(address) {
   });
 }
 
-export function* checkBalances() {
+export function* checkAllBalances() {
   try {
     let j = 0;
     const addressList = yield select(makeSelectAddressList());
@@ -199,47 +205,43 @@ function delay(millisec) {
   return promise;
 }
 
-// Fetch data every 20 seconds                                           
+// Fetch data every 20 seconds
 function* pollData() {
   try {
     console.log('pollData');
-    yield call(delay, 1000);
-    // yield put(dataFetch());
-    yield call(checkBalances);
-    //yield put({ type: CHECK_BALANCES });
+    yield call(delay, timeBetweenChecks);
+
+    yield put(checkBalances());
   } catch (error) {
     console.log('pollData Error');
     // cancellation error -- can handle this if you wish
   }
 }
 
-// Start Polling on 
-// Wait for successful response, then fire another request
-// Cancel polling if user logs out                                         
+// Start Polling when first call to checkAllBalances succeded or fails
+// Wait for successful response or fail, then fire another request
+// Cancel polling on STOP_POLL_BALANCES
 function* watchPollData() {
   while (true) {
-    yield take(CHECK_BALANCES);
+    yield take([CHECK_BALANCES_SUCCESS, CHECK_BALANCES_ERROR]);
     yield race([
       call(pollData),
-      // take(USER_LOGOUT)
+      take(STOP_POLL_BALANCES),
     ]);
   }
 }
-
-
 /* *****  End of Polling saga and polling flow for check balances *****/
 
 // Individual exports for testing
 export default function* defaultSaga() {
-  // See example in containers/HomePage/saga.js
   yield takeLatest(LOAD_NETWORK, loadNetwork);
-  // yield takeLatest(CHECK_BALANCES, checkBalances);
-
   yield takeLatest(COMFIRM_SEND_TRANSACTION, confirmSendTransaction);
   yield takeLatest(SEND_TRANSACTION, SendTransaction);
 
+  /* poll check balances */
   yield [
     fork(watchPollData),
-    // other watchers here
+    takeLatest(CHECK_BALANCES, checkAllBalances),
   ];
+  /* End of poll check balances */
 }

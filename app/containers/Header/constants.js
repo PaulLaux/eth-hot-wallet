@@ -12,3 +12,4 @@ export const CHECK_BALANCES = 'app/Header/CHECK_BALANCES';
 export const CHECK_BALANCES_SUCCESS = 'app/Header/CHECK_BALANCES_SUCCESS';
 export const CHECK_BALANCES_ERROR = 'app/Header/CHECK_BALANCES_ERROR';
 
+export const STOP_POLL_BALANCES = 'app/Header/CANCELL_POLL_BALANCES';
