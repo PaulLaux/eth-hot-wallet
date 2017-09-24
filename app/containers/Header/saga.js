@@ -87,12 +87,13 @@ export function* loadNetwork(action) {
 
       yield call(timer);
 
+      yield put(checkBalances());
       yield put(loadNetworkSuccess(blockNumber));
     } else {
       throw new Error('keystore not initiated');
     }
   } catch (err) {
-    const errorString = 'loadNetwork error - ' + err.message;
+    const errorString = `loadNetwork error - ${err.message}`;
     yield put(loadNetworkError(errorString));
   }
 }
@@ -167,7 +168,7 @@ export function* SendTransaction() {
 
 /* *************  Polling saga and polling flow for check balances ******************/
 // time in ms between checks
-const timeBetweenChecks = 30000;
+const timeBetweenChecks = 60000;
 function getBalancePromise(address) {
   return new Promise((resolve, reject) => {
     web3.eth.getBalance(address, (err, data) => {

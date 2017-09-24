@@ -19,30 +19,35 @@ const makeSelectNetworkName = () => createSelector(
   selectHeaderDomain,
   (substate) => substate.get('networkName')
 );
+const makeSelectAvailableNetworks = () => createSelector(
+  selectHeaderDomain,
+  (substate) => substate.get('availableNetworks')
+);
 
 const makeSelectBlockNumber = () => createSelector(
   selectHeaderDomain,
   (substate) => substate.get('blockNumber')
 );
 
+/* Will return null if header didn't loaded yet (initial load)*/
 const makeSelectNetworkReady = () => createSelector(
   selectHeaderDomain,
-  (substate) => substate.get('networkReady')
+  (substate) => substate ? substate.get('networkReady') : null
 );
 
 const makeSelectCheckingBalanceDoneTime = () => createSelector(
   selectHeaderDomain,
-  (substate) => substate.get('checkingBalanceDoneTime')
+  (substate) => substate ? substate.get('checkingBalanceDoneTime') : null
 );
 
 const makeSelectCheckingBalances = () => createSelector(
   selectHeaderDomain,
-  (substate) => substate.get('checkingBalances')
+  (substate) => substate ? substate.get('checkingBalances') : null
 );
 
 const makeSelectCheckingBalancesError = () => createSelector(
   selectHeaderDomain,
-  (substate) => substate.get('checkingBalancesError')
+  (substate) => substate ? substate.get('checkingBalancesError') : null
 );
 
 // export default makeSelectHeader;
@@ -52,6 +57,7 @@ export {
   makeSelectLoading,
   makeSelectError,
   makeSelectNetworkName,
+  makeSelectAvailableNetworks,
   makeSelectBlockNumber,
   makeSelectCheckingBalanceDoneTime,
   makeSelectCheckingBalances,
