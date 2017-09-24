@@ -24,7 +24,7 @@ function SendProgress({ sendInProgress, sendError, sendTx }) {
   if (sendError !== false) {
     return (
       <div>
-        Error - {sendError}
+        {sendError}
       </div>
     );
   }

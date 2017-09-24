@@ -79,7 +79,8 @@ function sendTokenReducer(state = initialState, action) {
         .set('comfirmationLoading', false)
         .set('confirmationMsg', false)
         .set('confirmationError', false)
-        .set('locked', false);
+        .set('locked', false)
+        .set('sendError', false);
 
     case SEND_TRANSACTION:
       return state

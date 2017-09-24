@@ -17,7 +17,7 @@ function SendConfirmationView({ comfirmationLoading, confirmationError, confirma
   }
 
   if (confirmationError !== false) {
-    return <div> Error: {confirmationError} </div>;
+    return <div> {confirmationError} </div>;
   }
 
   if (confirmationMsg !== false) {

@@ -66,6 +66,12 @@ export function* loadNetwork(action) {
       throw new Error(`${action.networkName} network not found`);
     }
 
+    if (action.networkName === 'Offline') {
+      web3.setProvider(null);
+      yield put(loadNetworkSuccess(0));
+      return;
+    }
+
     const keystore = yield select(makeSelectKeystore());
 
     if (keystore) {
