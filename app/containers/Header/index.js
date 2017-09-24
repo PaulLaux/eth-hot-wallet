@@ -14,6 +14,7 @@ import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 
 import NetworkLabel from 'components/NetworkLabel';
+import NetworkSelector from 'components/NetworkSelector';
 
 // import { changeBalance } from 'containers/HomePage/actions';
 import { makeSelectAddressList } from 'containers/HomePage/selectors';
@@ -24,6 +25,7 @@ import {
   makeSelectError,
   makeSelectNetworkName,
   makeSelectBlockNumber,
+  makeSelectAvailableNetworks,
   /*makeSelectCheckingBalanceDoneTime,
   makeSelectCheckingBalances,
   makeSelectCheckingBalancesError,*/
@@ -34,7 +36,7 @@ import messages from './messages';
 import { loadNetwork } from './actions';
 
 function Header(props) {
-  const { loading, error, networkName, blockNumber } = props;
+  const { loading, error, networkName, blockNumber, availableNetworks, onLoadNetwork } = props;
   const networkLabelProps = {
     loading,
     error,
@@ -42,14 +44,17 @@ function Header(props) {
     blockNumber,
   };
 
+  const networkSelectorProps = { networkName, availableNetworks, onLoadNetwork };
+
   // const { checkingBalanceDoneTime, checkingBalances, checkingBalancesError } = props;
 
   return (
     <div>
       <FormattedMessage {...messages.header} />
       <NetworkLabel {...networkLabelProps} />
+      <NetworkSelector {...networkSelectorProps} />
       <br />
-      <button onClick={props.onLoadNetwork}>
+      <button onClick={onLoadNetwork}>
         Load Network
       </button>
       <br />
@@ -69,6 +74,7 @@ Header.propTypes = {
     PropTypes.bool,
   ]),
   networkName: PropTypes.string,
+  availableNetworks: PropTypes.object,
   blockNumber: PropTypes.number,
   // addressList: PropTypes.oneOfType([ PropTypes.bool,PropTypes.object]),
 
@@ -82,6 +88,7 @@ const mapStateToProps = createStructuredSelector({
   loading: makeSelectLoading(),
   error: makeSelectError(),
   networkName: makeSelectNetworkName(),
+  availableNetworks: makeSelectAvailableNetworks(),
   blockNumber: makeSelectBlockNumber(),
   addressList: makeSelectAddressList(),
   /*checkingBalanceDoneTime: makeSelectCheckingBalanceDoneTime(),
@@ -91,9 +98,10 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    onLoadNetwork: (evt) => {
-      if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-      dispatch(loadNetwork('Local_RPC'));
+    onLoadNetwork: (name) => {
+      //if (evt !== undefined && evt.preventDefault) evt.preventDefault();
+      console.log(name);
+      dispatch(loadNetwork(name));
     },
     /*
     onChangeAddress: (evt) => {

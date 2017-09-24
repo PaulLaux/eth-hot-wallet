@@ -15,21 +15,22 @@ import {
   CHECK_BALANCES_ERROR,
 } from './constants';
 
+import Network from './network';
+
+console.log(Object.keys(Network));
 // The initial state of the App
 const initialState = fromJS({
   networkReady: false, // true only if network initialized and valid keystore attached
-  networkName: '',
+  networkName: 'Offline',
   blockNumber: 0,
+  availableNetworks: Object.keys(Network),
 
   loading: false,
   error: false,
 
-
   checkingBalanceDoneTime: false, // should be updated after every succesfull balance check
   checkingBalances: false,
   checkingBalancesError: false,
-
-
 });
 
 function headerReducer(state = initialState, action) {

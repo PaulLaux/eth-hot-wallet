@@ -11,21 +11,21 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+
 import { FormattedMessage } from 'react-intl';
 
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 
-import injectReducer from 'utils/injectReducer';
-import injectSaga from 'utils/injectSaga';
 
-
+/* Components:  */
 import SeedView from 'components/SeedView';
 import AddressView from 'components/AddressView';
 import SendTokenView from 'components/SendTokenView';
 import RestoreWallet from 'components/RestoreWallet';
 
+/* Header: */
 import Header from 'containers/Header';
 import { loadNetwork, checkBalances } from 'containers/Header/actions';
 import {
@@ -35,11 +35,17 @@ import {
   makeSelectCheckingBalancesError,
 } from 'containers/Header/selectors';
 
-
+/* SendToken */
 import { changeFrom } from 'containers/SendToken/actions';
 
+/* General */
+import injectReducer from 'utils/injectReducer';
+import injectSaga from 'utils/injectSaga';
+import reducer from './reducer';
+import saga from './saga';
 import messages from './messages';
 
+/* HomePage */
 import {
   initSeed,
   showRestoreWallet,
@@ -57,13 +63,10 @@ import {
   makeSelectIsComfirmed,
   makeSelectUserSeed,
   makeSelectAddressList,
-  makeSelectKeystore,
+  // makeSelectKeystore,
   makeSelectShowRestoreWallet,
   makeSelectSendToken,
 } from './selectors';
-
-import reducer from './reducer';
-import saga from './saga';
 
 
 export class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
@@ -83,6 +86,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       onChangeUserSeed,
       onRestoreWalletFromSeed,
       sendToken,
+
       networkReady,
       checkingBalanceDoneTime,
       checkingBalances,
@@ -99,9 +103,9 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     const restoreWalletProps = { isShowRestoreWallet, userSeed, onChangeUserSeed, onRestoreWalletFromSeed };
 
     const addressViewProps = {
-      isComfirmed, addressList, onChangeFrom, onCheckBalances, networkReady, checkingBalanceDoneTime, checkingBalances, checkingBalancesError };
+      isComfirmed, addressList, onChangeFrom, onCheckBalances, networkReady, checkingBalanceDoneTime, checkingBalances, checkingBalancesError,
+    };
 
-    // return null;
     return (
       <div>
         <h1>
@@ -110,11 +114,11 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
         <Header />
         <button onClick={this.props.onInitSeed}>
           Generate wallet
-        </button>
+          </button>
         {' '}
         <button onClick={this.props.onShowRestoreWallet}>
           Restore wallet
-        </button>
+          </button>
         <RestoreWallet {...restoreWalletProps} />
         <SeedView {...seedViewProps} />
         <hr />
@@ -234,4 +238,3 @@ export default compose(
   withSaga,
   withConnect,
 )(HomePage);
-
