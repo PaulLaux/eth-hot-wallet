@@ -1,7 +1,6 @@
-## React Boilerplate
+## ETH-HOT-Wallet
 
-Thank you for contributing! Please take a moment to review our [**contributing guidelines**](https://github.com/react-boilerplate/react-boilerplate/blob/master/CONTRIBUTING.md)
-to make the process easy and effective for everyone involved.
+Thank you for contributing! 
 
 **Please open an issue** before embarking on any significant pull request, especially those that
 add a new library or change existing tests, otherwise you risk spending a lot of time working
