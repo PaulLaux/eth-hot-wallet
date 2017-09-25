@@ -118,10 +118,9 @@ export function* genKeystore() {
     ks.generateNewAddress(pwDerivedKey, 2);
 
     yield put(generateKeystoreSuccess(ks));
-    // yield put(loadNetwork('Ropsten_Test_Net'));
     yield put(loadNetwork('Local_RPC'));
   } catch (err) {
-    const errorString = 'genKeystore error - ' + err;
+    const errorString = `genKeystore error - ${err}`;
     yield put(generateKeystoreError(errorString));
   }
 }
@@ -137,7 +136,7 @@ export default function* walletData() {
   yield takeLatest(INIT_SEED, initSeed);
   yield takeLatest(GENERATE_KEYSTORE, genKeystore);
   yield takeLatest(RESTORE_WALLET_FROM_SEED, restoreFromSeed);
-  
+
   /*
   while (yield takeLatest(INIT_WALLET, initSeed)) {
     // yield takeLatest(GENERATE_KEYSTORE, genKeystore);

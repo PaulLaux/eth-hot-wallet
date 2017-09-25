@@ -23,6 +23,8 @@ import {
   GENERATE_KEYSTORE_SUCCESS,
   GENERATE_KEYSTORE_ERROR,
 
+  GENERATE_ADDRESS,
+
   SHOW_RESTORE_WALLET,
   CHANGE_USER_SEED,
   RESTORE_WALLET_FROM_SEED,
@@ -191,7 +193,19 @@ export function generateKeystoreError(error) {
 }
 
 
-/***********************************Change balance ******************/
+/**
+ * Generate new address and attach it to store
+ *
+ *
+ * @return {object} An action object with a type of GENERATE_ADDRESS
+ */
+export function generateAddress() {
+  return {
+    type: GENERATE_ADDRESS,
+  };
+}
+
+/* **********************************Change balance ******************/
 /**
  * Changes ballance for a given address
  * If address dont exist - new address will be created

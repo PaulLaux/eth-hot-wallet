@@ -68,7 +68,7 @@ export function* loadNetwork(action) {
 
     if (action.networkName === 'Offline') {
       web3.setProvider(null);
-      yield put(loadNetworkSuccess(0));
+      yield put(loadNetworkError('Offline Mode'));
       return;
     }
 

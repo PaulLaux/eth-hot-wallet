@@ -18,6 +18,8 @@ export const GENERATE_KEYSTORE = 'eth-hot-wallet/HomePage/GENERATE_KEYSTORE';
 export const GENERATE_KEYSTORE_SUCCESS = 'eth-hot-wallet/HomePage/GENERATE_KEYSTORE_SUCCESS';
 export const GENERATE_KEYSTORE_ERROR = 'eth-hot-wallet/HomePage/GENERATE_KEYSTORE_ERROR';
 
+export const GENERATE_ADDRESS = 'eth-hot-wallet/HomePage/GENERATE_ADDRESS';
+
 export const CHANGE_BALANCE = 'eth-hot-wallet/HomePage/CHANGE_BALANCE';
 
 export const SHOW_SEND_TOKEN = 'eth-hot-wallet/HomePage/SHOW_SEND_TOKEN';

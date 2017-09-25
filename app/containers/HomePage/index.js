@@ -52,7 +52,8 @@ import {
   generateKeystore,
   changeUserSeed,
   restoreWalletFromSeed,
-  showSendToken, //TODO: FIX
+  showSendToken, // TODO: FIX
+  generateAddress,
 } from './actions';
 
 import {
@@ -77,6 +78,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       seed,
       password,
       onGenerateKeystore,
+      onGenerateAddress,
       onCheckBalances,
       isComfirmed,
       addressList,
@@ -86,7 +88,6 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       onChangeUserSeed,
       onRestoreWalletFromSeed,
       sendToken,
-
       networkReady,
       checkingBalanceDoneTime,
       checkingBalances,
@@ -103,7 +104,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     const restoreWalletProps = { isShowRestoreWallet, userSeed, onChangeUserSeed, onRestoreWalletFromSeed };
 
     const addressViewProps = {
-      isComfirmed, addressList, onChangeFrom, onCheckBalances, networkReady, checkingBalanceDoneTime, checkingBalances, checkingBalancesError,
+      isComfirmed, addressList, onChangeFrom, onCheckBalances, networkReady, checkingBalanceDoneTime, checkingBalances, checkingBalancesError, onGenerateAddress,
     };
 
     return (
@@ -149,6 +150,7 @@ HomePage.propTypes = {
 
   onInitSeed: PropTypes.func,
   onGenerateKeystore: PropTypes.func,
+  onGenerateAddress: PropTypes.func,
   onShowRestoreWallet: PropTypes.func,
   onRestoreWalletFromSeed: PropTypes.func,
   onCheckBalances: PropTypes.func,
@@ -181,6 +183,10 @@ export function mapDispatchToProps(dispatch) {
     onGenerateKeystore: (evt) => {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
       dispatch(generateKeystore());
+    },
+    onGenerateAddress: (evt) => {
+      if (evt !== undefined && evt.preventDefault) evt.preventDefault();
+      dispatch(generateAddress());
     },
     onLoadNetwork: (evt) => {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();

@@ -54,10 +54,6 @@ function Header(props) {
       <NetworkLabel {...networkLabelProps} />
       <NetworkSelector {...networkSelectorProps} />
       <br />
-      <button onClick={onLoadNetwork}>
-        Load Network
-      </button>
-      <br />
       <hr />
     </div>
   );

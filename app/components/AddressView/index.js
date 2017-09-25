@@ -15,7 +15,7 @@ import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 function AddressView(props) {
-  const { isComfirmed, addressList, onChangeFrom, onCheckBalances, networkReady, checkingBalanceDoneTime, checkingBalances, checkingBalancesError } = props;
+  const { isComfirmed, addressList, onChangeFrom, onCheckBalances, onGenerateAddress, networkReady, checkingBalanceDoneTime, checkingBalances, checkingBalancesError } = props;
 
   const addressListProps = { addressList, onChangeFrom, onCheckBalances };
   const CheckBalancesStatusProps = { checkingBalanceDoneTime, checkingBalances, checkingBalancesError };
@@ -24,9 +24,14 @@ function AddressView(props) {
     return (
       <div>
         <AddressList {...addressListProps} />
-        <button type="button" onClick={onCheckBalances}>
+        <button type="button" onClick={onCheckBalances} disabled={!networkReady}>
           Check balances
         </button>
+        {' '}
+        <button type="button" onClick={onGenerateAddress}>
+          Generate new address
+        </button>
+
         <br />
         <CheckBalancesStatus {...CheckBalancesStatusProps} />
       </div>
@@ -50,6 +55,12 @@ AddressView.propTypes = {
   ]),
   onChangeFrom: PropTypes.func,
   onCheckBalances: PropTypes.func,
+  onGenerateAddress: PropTypes.func,
+
+  networkReady: PropTypes.bool,
+  checkingBalanceDoneTime: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  checkingBalances: PropTypes.bool,
+  checkingBalancesError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
 };
 
 export default AddressView;
