@@ -27,10 +27,17 @@ import {
 
   SHOW_SEND_TOKEN,
   HIDE_SEND_TOKEN,
+
+  GENERATE_ADDRESS,
+  GENERATE_ADDRESS_SUCCESS,
+  GENERATE_ADDRESS_ERROR,
 } from './constants';
 
 // The initial state of the App
 const initialState = fromJS({
+  loading: false,
+  error: false,  // if error - no addressList displayed
+
   isShowRestoreWallet: false,
   userSeed: '',
 
@@ -39,11 +46,11 @@ const initialState = fromJS({
   password: false,
   seed: false,
 
-  loading: false,
-  error: false,
-
   keystore: false,
   addressList: false,
+
+  loadingAddress: false, // for loading and error inside addressList
+  errorAddress: false,
 
   sendToken: true,
 });
@@ -111,9 +118,25 @@ function homeReducer(state = initialState, action) {
       return state
         .set('sendToken', false);
 
+
+    case GENERATE_ADDRESS:
+      return state
+        .set('loadingAddress', true)
+        .set('errorAddress', false);
+    case GENERATE_ADDRESS_SUCCESS:
+      return state
+        .set('loadingAddress', false)
+        .set('errorAddress', false)
+        ;
+    case GENERATE_ADDRESS_ERROR:
+      return state
+        .set('loadingAddress', false)
+        .set('errorAddress', action.error);
+
     default:
       return state;
   }
 }
+
 
 export default homeReducer;

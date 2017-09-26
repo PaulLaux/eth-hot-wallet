@@ -23,8 +23,6 @@ import {
   GENERATE_KEYSTORE_SUCCESS,
   GENERATE_KEYSTORE_ERROR,
 
-  GENERATE_ADDRESS,
-
   SHOW_RESTORE_WALLET,
   CHANGE_USER_SEED,
   RESTORE_WALLET_FROM_SEED,
@@ -35,6 +33,10 @@ import {
 
   SHOW_SEND_TOKEN,
   HIDE_SEND_TOKEN,
+
+  GENERATE_ADDRESS,
+  GENERATE_ADDRESS_SUCCESS,
+  GENERATE_ADDRESS_ERROR,
 } from './constants';
 
 // import { makeSelectAddresses } from './selectors'; 
@@ -193,18 +195,6 @@ export function generateKeystoreError(error) {
 }
 
 
-/**
- * Generate new address and attach it to store
- *
- *
- * @return {object} An action object with a type of GENERATE_ADDRESS
- */
-export function generateAddress() {
-  return {
-    type: GENERATE_ADDRESS,
-  };
-}
-
 /* **********************************Change balance ******************/
 /**
  * Changes ballance for a given address
@@ -243,5 +233,57 @@ export function showSendToken() {
 export function hideSendToken() {
   return {
     type: HIDE_SEND_TOKEN,
+  };
+}
+
+
+/* *********************************Generate new address from existing keystore********************************/
+/**
+ * Generate new address and attach it to store
+ *
+ *
+ * @return {object} An action object with a type of GENERATE_ADDRESS
+ */
+export function generateAddress() {
+  return {
+    type: GENERATE_ADDRESS,
+  };
+}
+
+/**
+ * After successfull address generation create new addressList for our store.
+ *
+ * @param  {keystore} keystore the updated keystore
+ *
+ * @return {object}      An action object with a type of GENERATE_ADDRESS_SUCCESS passing the repos
+ */
+export function generateAddressSuccess(keystore) {
+  const addresses = keystore.getAddresses();
+  const addressList = {};
+  for (let i = 0; i < addresses.length; ++i) {
+    // if (addresses[i] !== undefined) {
+    addressList[addresses[i]] = {
+      balance: false,
+    };
+    // }
+  }
+
+  return {
+    type: GENERATE_ADDRESS_SUCCESS,
+    addressList,
+  };
+}
+
+/**
+ * Dispatched when generating new address fails
+ *
+ * @param  {object} error The error
+ *
+ * @return {object} An action object with a type of GENERATE_ADDRESS_ERROR passing the error
+ */
+export function generateAddressError(error) {
+  return {
+    type: GENERATE_ADDRESS_ERROR,
+    error,
   };
 }

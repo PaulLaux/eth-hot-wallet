@@ -6,11 +6,11 @@ import lightwallet from 'eth-lightwallet';
 
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 
-import { INIT_SEED, GENERATE_KEYSTORE, RESTORE_WALLET_FROM_SEED } from 'containers/HomePage/constants';
+import { INIT_SEED, GENERATE_KEYSTORE, RESTORE_WALLET_FROM_SEED, GENERATE_ADDRESS } from 'containers/HomePage/constants';
 
 import generateString from 'utils/crypto';
 
-import { makeSelectPassword, makeSelectSeed, makeSelectUserSeed } from 'containers/HomePage/selectors';
+import { makeSelectPassword, makeSelectSeed, makeSelectUserSeed, makeSelectKeystore } from 'containers/HomePage/selectors';
 
 import { loadNetwork } from 'containers/Header/actions';
 
@@ -84,18 +84,18 @@ export function* restoreFromSeed() {
   }
 }
 
-
+const hdPathString = `m/44'/60'/0'/0`;
 /**
  * Create new keystore and generate some addreses
  */
 export function* genKeystore() {
   try {
     const password = yield select(makeSelectPassword());
-    const seed = yield select(makeSelectSeed());
+    const seedPhrase = yield select(makeSelectSeed());
     const opt = {
-      password: password,
-      seedPhrase: seed,
-      hdPathString: `m/44'/60'/0'/0`,  // The default is `m/0'/0'/0'`.
+      password,
+      seedPhrase,
+      hdPathString,  // The default is `m/0'/0'/0'`.
     };
 
     const ks = yield call(createVaultPromise, opt);
@@ -125,6 +125,50 @@ export function* genKeystore() {
   }
 }
 
+
+/**
+ * Generate new address from same key
+ * will run on GENERATE_ADDRESS action
+ */
+export function* generateAddress() {
+  try {
+    const ks = yield select(makeSelectKeystore());
+    if (!ks) {
+      throw new Error('no keystore found');
+    }
+
+    const password = yield select(makeSelectPassword());
+    if (!password) {
+      throw new Error('no password found');
+    }
+
+    /* ks.passwordProvider = (callback) => {
+      const pw = prompt('Please enter password1112', 'Password');
+      callback(null, pw);
+    }; */
+
+    function keyFromPasswordPromise(param) { // eslint-disable-line no-inner-declarations
+      return new Promise((resolve, reject) => {
+        ks.keyFromPassword(param, (err, data) => {
+          if (err !== null) return reject(err);
+          return resolve(data);
+        });
+      });
+    }
+    //this.ksData[hdPathString].addresses.push(address);
+    console.log(ks);
+    const pwDerivedKey = yield call(keyFromPasswordPromise, password);
+    ks.generateNewAddress(pwDerivedKey, 1);
+    console.log(ks);
+    //yield put(generateKeystoreSuccess(ks));
+    //yield put(loadNetwork('Local_RPC'));
+  } catch (err) {
+    const errorString = `generateAddress error - ${err}`;
+    console.log(errorString);
+    //yield put(generateKeystoreError(errorString));
+  }
+}
+
 /**
  * Root saga manages watcher lifecycle
  */
@@ -135,6 +179,7 @@ export default function* walletData() {
   // It will be cancelled automatically on component unmount
   yield takeLatest(INIT_SEED, initSeed);
   yield takeLatest(GENERATE_KEYSTORE, genKeystore);
+  yield takeLatest(GENERATE_ADDRESS, generateAddress);
   yield takeLatest(RESTORE_WALLET_FROM_SEED, restoreFromSeed);
 
   /*
