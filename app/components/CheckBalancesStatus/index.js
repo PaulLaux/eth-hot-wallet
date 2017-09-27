@@ -21,7 +21,7 @@ function CheckBalancesStatus({ checkingBalanceDoneTime, checkingBalances, checki
     return <div> {checkingBalancesError} </div>;
   }
 
-  const balanceCheckString = checkingBalanceDoneTime ? 'balances checked on ' + checkingBalanceDoneTime : 'Balances wasnt checked yet';
+  const balanceCheckString = checkingBalanceDoneTime ? `balances checked on  + ${checkingBalanceDoneTime}` : 'Balances wasnt checked yet';
   return (
     <div>
       {balanceCheckString}

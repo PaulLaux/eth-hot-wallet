@@ -49,8 +49,9 @@ const initialState = fromJS({
   keystore: false,
   addressList: false,
 
-  loadingAddress: false, // for loading and error inside addressList
-  errorAddress: false,
+  addressListLoading: false, // for loading and error inside addressList
+  addressListError: false,
+  addressListMsg: false,
 
   sendToken: true,
 });
@@ -121,17 +122,20 @@ function homeReducer(state = initialState, action) {
 
     case GENERATE_ADDRESS:
       return state
-        .set('loadingAddress', true)
-        .set('errorAddress', false);
+        .set('addressListLoading', true)
+        .set('addressListError', false)
+        .set('addressListMsg', false);
     case GENERATE_ADDRESS_SUCCESS:
       return state
-        .set('loadingAddress', false)
-        .set('errorAddress', false)
-        ;
+        .set('addressListLoading', false)
+        .set('addressListError', false)
+        .set('addressListMsg', 'New address generated succesfully')
+        // Add new address as key and set balance as false ('n/a')
+        .setIn(['addressList', action.newAddress, 'balance'], false);
     case GENERATE_ADDRESS_ERROR:
       return state
-        .set('loadingAddress', false)
-        .set('errorAddress', action.error);
+        .set('addressListLoading', false)
+        .set('addressListError', action.error);
 
     default:
       return state;

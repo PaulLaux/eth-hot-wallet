@@ -257,8 +257,8 @@ export function generateAddress() {
  *
  * @return {object}      An action object with a type of GENERATE_ADDRESS_SUCCESS passing the repos
  */
-export function generateAddressSuccess(keystore) {
-  const addresses = keystore.getAddresses();
+export function generateAddressSuccess(newAddress) {
+  /*const addresses = keystore.getAddresses();
   const addressList = {};
   for (let i = 0; i < addresses.length; ++i) {
     // if (addresses[i] !== undefined) {
@@ -266,11 +266,11 @@ export function generateAddressSuccess(keystore) {
       balance: false,
     };
     // }
-  }
+  }*/
 
   return {
     type: GENERATE_ADDRESS_SUCCESS,
-    addressList,
+    newAddress,
   };
 }
 

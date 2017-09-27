@@ -67,6 +67,9 @@ import {
   // makeSelectKeystore,
   makeSelectShowRestoreWallet,
   makeSelectSendToken,
+  makeSelectAddressListLoading,
+  makeSelectAddressListError,
+  makeSelectAddressListMsg,
 } from './selectors';
 
 
@@ -88,6 +91,11 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       onChangeUserSeed,
       onRestoreWalletFromSeed,
       sendToken,
+
+      addressListLoading,
+      addressListError,
+      addressListMsg,
+
       networkReady,
       checkingBalanceDoneTime,
       checkingBalances,
@@ -104,7 +112,18 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     const restoreWalletProps = { isShowRestoreWallet, userSeed, onChangeUserSeed, onRestoreWalletFromSeed };
 
     const addressViewProps = {
-      isComfirmed, addressList, onChangeFrom, onCheckBalances, networkReady, checkingBalanceDoneTime, checkingBalances, checkingBalancesError, onGenerateAddress,
+      isComfirmed,
+      addressList,
+      onChangeFrom,
+      onCheckBalances,
+      onGenerateAddress,
+      addressListLoading,
+      addressListError,
+      addressListMsg,
+      networkReady,
+      checkingBalanceDoneTime,
+      checkingBalances,
+      checkingBalancesError,
     };
 
     return (
@@ -168,6 +187,10 @@ HomePage.propTypes = {
   ]),
   sendToken: PropTypes.bool,
 
+  addressListLoading: PropTypes.bool,
+  addressListError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
+  addressListMsg: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+
   networkReady: PropTypes.bool,
   checkingBalanceDoneTime: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   checkingBalances: PropTypes.bool,
@@ -227,6 +250,10 @@ const mapStateToProps = createStructuredSelector({
   isShowRestoreWallet: makeSelectShowRestoreWallet(),
   userSeed: makeSelectUserSeed(),
   sendToken: makeSelectSendToken(),
+
+  addressListLoading: makeSelectAddressListLoading(),
+  addressListError: makeSelectAddressListError(),
+  addressListMsg: makeSelectAddressListMsg(),
 
   networkReady: makeSelectNetworkReady(),
   checkingBalanceDoneTime: makeSelectCheckingBalanceDoneTime(),

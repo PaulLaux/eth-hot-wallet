@@ -57,6 +57,19 @@ const makeSelectSendToken = () => createSelector(
   (homeState) => homeState.get('sendToken')
 );
 
+const makeSelectAddressListLoading = () => createSelector(
+  selectHome,
+  (homeState) => homeState.get('addressListLoading')
+);
+const makeSelectAddressListError = () => createSelector(
+  selectHome,
+  (homeState) => homeState.get('addressListError')
+);
+const makeSelectAddressListMsg = () => createSelector(
+  selectHome,
+  (homeState) => homeState.get('addressListMsg')
+);
+
 export {
   selectHome,
   makeSelectLoading,
@@ -69,4 +82,7 @@ export {
   makeSelectShowRestoreWallet,
   makeSelectUserSeed,
   makeSelectSendToken,
+  makeSelectAddressListLoading,
+  makeSelectAddressListError,
+  makeSelectAddressListMsg,
 };

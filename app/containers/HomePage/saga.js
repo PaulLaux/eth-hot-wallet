@@ -20,6 +20,8 @@ import {
   generateKeystoreSuccess,
   generateKeystoreError,
   restoreWalletFromSeedError,
+  generateAddressSuccess,
+  generateAddressError,
 } from './actions';
 
 const PasswordLength = 12;
@@ -139,6 +141,7 @@ export function* generateAddress() {
 
     const password = yield select(makeSelectPassword());
     if (!password) {
+      // TODO: Handle password
       throw new Error('no password found');
     }
 
@@ -147,6 +150,7 @@ export function* generateAddress() {
       callback(null, pw);
     }; */
 
+    // TODO: remove duplicate
     function keyFromPasswordPromise(param) { // eslint-disable-line no-inner-declarations
       return new Promise((resolve, reject) => {
         ks.keyFromPassword(param, (err, data) => {
@@ -155,17 +159,18 @@ export function* generateAddress() {
         });
       });
     }
-    //this.ksData[hdPathString].addresses.push(address);
-    console.log(ks);
+    // this.ksData[hdPathString].addresses.push(address);
+
     const pwDerivedKey = yield call(keyFromPasswordPromise, password);
     ks.generateNewAddress(pwDerivedKey, 1);
-    console.log(ks);
-    //yield put(generateKeystoreSuccess(ks));
-    //yield put(loadNetwork('Local_RPC'));
+
+    // get last address
+    const newAddress = ks.getAddresses().slice(-1)[0];
+    yield put(generateAddressSuccess(newAddress));
   } catch (err) {
     const errorString = `generateAddress error - ${err}`;
     console.log(errorString);
-    //yield put(generateKeystoreError(errorString));
+    yield put(generateAddressError(errorString));
   }
 }
 
