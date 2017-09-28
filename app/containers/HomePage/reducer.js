@@ -31,6 +31,11 @@ import {
   GENERATE_ADDRESS,
   GENERATE_ADDRESS_SUCCESS,
   GENERATE_ADDRESS_ERROR,
+
+  LOCK_WALLET,
+  UNLOCK_WALLET,
+  UNLOCK_WALLET_SUCCESS,
+  UNLOCK_WALLET_ERROR,
 } from './constants';
 
 // The initial state of the App
@@ -137,10 +142,19 @@ function homeReducer(state = initialState, action) {
         .set('addressListLoading', false)
         .set('addressListError', action.error);
 
+    case LOCK_WALLET:
+      return state
+        .set('password', false);
+        
     default:
       return state;
   }
 }
-
+/*
+LOCK_WALLET,
+  UNLOCK_WALLET,
+  UNLOCK_WALLET_SUCCESS,
+  UNLOCK_WALLET_ERROR,
+*/
 
 export default homeReducer;

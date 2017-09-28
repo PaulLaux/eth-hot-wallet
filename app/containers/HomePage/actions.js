@@ -37,6 +37,11 @@ import {
   GENERATE_ADDRESS,
   GENERATE_ADDRESS_SUCCESS,
   GENERATE_ADDRESS_ERROR,
+
+  LOCK_WALLET,
+  UNLOCK_WALLET,
+  UNLOCK_WALLET_SUCCESS,
+  UNLOCK_WALLET_ERROR,
 } from './constants';
 
 // import { makeSelectAddresses } from './selectors'; 
@@ -255,19 +260,9 @@ export function generateAddress() {
  *
  * @param  {keystore} keystore the updated keystore
  *
- * @return {object}      An action object with a type of GENERATE_ADDRESS_SUCCESS passing the repos
+ * @return {object}      An action object with a type of GENERATE_ADDRESS_SUCCESS and newAddress passing the newly generated address
  */
 export function generateAddressSuccess(newAddress) {
-  /*const addresses = keystore.getAddresses();
-  const addressList = {};
-  for (let i = 0; i < addresses.length; ++i) {
-    // if (addresses[i] !== undefined) {
-    addressList[addresses[i]] = {
-      balance: false,
-    };
-    // }
-  }*/
-
   return {
     type: GENERATE_ADDRESS_SUCCESS,
     newAddress,
@@ -284,6 +279,60 @@ export function generateAddressSuccess(newAddress) {
 export function generateAddressError(error) {
   return {
     type: GENERATE_ADDRESS_ERROR,
+    error,
+  };
+}
+
+
+/* *******************************************LOCK AND UNLOCK WALLET *****************************************/
+
+
+/**
+ * Lock wallet by removing encription password from state (syncronic)
+ *
+ * @return {object} An action object with a type of LOCK_WALLET
+ */
+export function lockWallet() {
+  return {
+    type: LOCK_WALLET,
+  };
+}
+
+/**
+ * Unlock wallet 
+ *
+ * @return {object} An action object with a type of UNLOCK_WALLET
+ */
+export function unlockWallet() {
+  return {
+    type: UNLOCK_WALLET,
+  };
+}
+
+/**
+ * Password given is checked to successfully unlock the wallet
+ *
+ * @param  {keystore} password for unlocking the wallet
+ *
+ * @return {object}      An action object with a type of UNLOCK_WALLET_SUCCESS and the password
+ */
+export function unlockWalletSuccess(password) {
+  return {
+    type: UNLOCK_WALLET_SUCCESS,
+    password,
+  };
+}
+
+/**
+ * Dispatched when password given by user is incorrect
+ *
+ * @param  {object} error The error
+ *
+ * @return {object} An action object with a type of GENERATE_ADDRESS_ERROR passing the error
+ */
+export function unlockWalletError(error) {
+  return {
+    type: UNLOCK_WALLET_ERROR,
     error,
   };
 }
