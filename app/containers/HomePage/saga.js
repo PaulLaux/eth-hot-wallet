@@ -6,7 +6,7 @@ import lightwallet from 'eth-lightwallet';
 
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 
-import { INIT_SEED, GENERATE_KEYSTORE, RESTORE_WALLET_FROM_SEED, GENERATE_ADDRESS } from 'containers/HomePage/constants';
+import { INIT_SEED, GENERATE_KEYSTORE, RESTORE_WALLET_FROM_SEED, GENERATE_ADDRESS, UNLOCK_WALLET } from 'containers/HomePage/constants';
 
 import generateString from 'utils/crypto';
 
@@ -22,6 +22,8 @@ import {
   restoreWalletFromSeedError,
   generateAddressSuccess,
   generateAddressError,
+  unlockWalletSuccess,
+  unlockWalletError
 } from './actions';
 
 const PasswordLength = 12;
@@ -112,7 +114,7 @@ export function* genKeystore() {
     }
 
     ks.passwordProvider = function (callback) {
-      const pw = prompt('Please enter password1111', 'Password');
+      const pw = prompt('Please enter password1115', 'Password');
       callback(null, pw);
     };
 
@@ -142,7 +144,7 @@ export function* generateAddress() {
     const password = yield select(makeSelectPassword());
     if (!password) {
       // TODO: Handle password
-      throw new Error('no password found');
+      throw Error('Wallet Locked');
     }
 
     /* ks.passwordProvider = (callback) => {
@@ -174,6 +176,69 @@ export function* generateAddress() {
   }
 }
 
+// `keystore.isDerivedKeyCorrect(pwDerivedKey)`
+/* ks.passwordProvider = function (callback) {
+  const pw = prompt('Please enter password1111', 'Password');
+  callback(null, pw);
+}; */
+
+/**
+ * Create new keystore and generate some addreses
+ */
+export function* unlockWallet() {
+  try {
+    const currentPassword = yield select(makeSelectPassword());
+    if (currentPassword) {
+      throw Error('Wallet Already unlocked');
+    }
+
+    const ks = yield select(makeSelectKeystore());
+    if (!ks) {
+      throw new Error('No keystore found');
+    }
+
+    const passwordProvider = ks.passwordProvider;
+
+    function passwordProviderPromise() { // eslint-disable-line no-inner-declarations
+      return new Promise((resolve, reject) => {
+        passwordProvider((err, data) => {
+          if (err !== null) return reject(err);
+          return resolve(data);
+        });
+      });
+    }
+
+    function keyFromPasswordPromise(param) { // eslint-disable-line no-inner-declarations
+      return new Promise((resolve, reject) => {
+        ks.keyFromPassword(param, (err, data) => {
+          if (err !== null) return reject(err);
+          return resolve(data);
+        });
+      });
+    }
+
+    const userPassword = yield call(passwordProviderPromise);
+
+    if (!userPassword) {
+      throw Error('No password entered');
+    }
+
+    const pwDerivedKey = yield call(keyFromPasswordPromise, userPassword);
+    // TODO: Move into password provider?
+    const isPasswordCorrect = ks.isDerivedKeyCorrect(pwDerivedKey);
+
+    if (!isPasswordCorrect) {
+      throw Error('Invalid Password');
+    }
+
+    yield put(unlockWalletSuccess(userPassword));
+  } catch (err) {
+    const errorString = `unlockWallet ${err}`;
+    yield put(unlockWalletError(errorString));
+  }
+}
+
+
 /**
  * Root saga manages watcher lifecycle
  */
@@ -186,6 +251,7 @@ export default function* walletData() {
   yield takeLatest(GENERATE_KEYSTORE, genKeystore);
   yield takeLatest(GENERATE_ADDRESS, generateAddress);
   yield takeLatest(RESTORE_WALLET_FROM_SEED, restoreFromSeed);
+  yield takeLatest(UNLOCK_WALLET, unlockWallet);
 
   /*
   while (yield takeLatest(INIT_WALLET, initSeed)) {

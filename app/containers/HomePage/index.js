@@ -54,6 +54,8 @@ import {
   restoreWalletFromSeed,
   showSendToken, // TODO: FIX
   generateAddress,
+  lockWallet,
+  unlockWallet,
 } from './actions';
 
 import {
@@ -100,6 +102,9 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       checkingBalanceDoneTime,
       checkingBalances,
       checkingBalancesError,
+
+      onLockWallet,
+      onUnlockWallet,
     } = this.props;
 
     const seedViewProps = {
@@ -124,6 +129,8 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       checkingBalanceDoneTime,
       checkingBalances,
       checkingBalancesError,
+      onLockWallet,
+      onUnlockWallet,
     };
 
     return (
@@ -178,6 +185,9 @@ HomePage.propTypes = {
   userSeed: PropTypes.string,
   onChangeUserSeed: PropTypes.func,
   onChangeFrom: PropTypes.func,
+
+  onLockWallet: PropTypes.func,
+  onUnlockWallet: PropTypes.func,
 
   isComfirmed: PropTypes.bool,
   addressList: PropTypes.oneOfType([
@@ -235,6 +245,14 @@ export function mapDispatchToProps(dispatch) {
       // if (evt !== undefined && evt.preventDefault) evt.preventDefault();
       // dispatch(showSendToken());//.then(
       dispatch(changeFrom(address));
+    },
+    onLockWallet: (evt) => {
+      if (evt !== undefined && evt.preventDefault) evt.preventDefault();
+      dispatch(lockWallet());
+    },
+    onUnlockWallet: (evt) => {
+      if (evt !== undefined && evt.preventDefault) evt.preventDefault();
+      dispatch(unlockWallet());
     },
   };
 }

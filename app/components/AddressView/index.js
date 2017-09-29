@@ -17,8 +17,12 @@ import messages from './messages';
 
 function AddressView(props) {
   const {
-    isComfirmed, addressList, onChangeFrom, onCheckBalances, onGenerateAddress, networkReady, checkingBalanceDoneTime, checkingBalances, checkingBalancesError,
+    isComfirmed,
+    addressList, onChangeFrom, onCheckBalances,
+    onGenerateAddress,
+    networkReady, checkingBalanceDoneTime, checkingBalances, checkingBalancesError,
     addressListLoading, addressListError, addressListMsg,
+    onLockWallet, onUnlockWallet,
    } = props;
 
   const addressListProps = { addressList, onChangeFrom, onCheckBalances };
@@ -37,6 +41,12 @@ function AddressView(props) {
 
         <button type="button" onClick={onGenerateAddress}>
           Generate new address
+        </button>{' '}
+        <button type="button" onClick={onLockWallet}>
+          Lock Wallet
+        </button>{' '}
+        <button type="button" onClick={onUnlockWallet}>
+          Unlock Wallet
         </button>
         <AddressListStatus {...addressListStatusProps} />
       </div>
@@ -62,10 +72,12 @@ AddressView.propTypes = {
   onCheckBalances: PropTypes.func,
   onGenerateAddress: PropTypes.func,
 
+  onLockWallet: PropTypes.func,
+  onUnlockWallet: PropTypes.func,
+
   addressListLoading: PropTypes.bool,
   addressListError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
   addressListMsg: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-
 
   networkReady: PropTypes.bool,
   checkingBalanceDoneTime: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),

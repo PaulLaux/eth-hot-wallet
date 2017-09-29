@@ -106,6 +106,7 @@ function homeReducer(state = initialState, action) {
         .set('keystore', action.keystore)
         .set('seed', false)
         .set('isComfirmed', true)
+        .set('addressListError', false)
         // .set('addressList', action.addressList);
         .set('addressList', fromJS(action.addressList));
     case GENERATE_KEYSTORE_ERROR:
@@ -142,16 +143,27 @@ function homeReducer(state = initialState, action) {
         .set('addressListLoading', false)
         .set('addressListError', action.error);
 
+
     case LOCK_WALLET:
       return state
-        .set('password', false);
-        
+        .set('password', false)
+        .set('addressListError', false);
+    case UNLOCK_WALLET:
+      return state;
+    case UNLOCK_WALLET_SUCCESS:
+      return state
+        .set('password', action.password)
+        .set('addressListError', 'Wallet Unlocked Succesfully');
+    case UNLOCK_WALLET_ERROR:
+      return state
+        .set('addressListError', action.error);
+
     default:
       return state;
   }
 }
 /*
-LOCK_WALLET,
+  LOCK_WALLET,
   UNLOCK_WALLET,
   UNLOCK_WALLET_SUCCESS,
   UNLOCK_WALLET_ERROR,

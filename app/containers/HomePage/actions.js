@@ -299,7 +299,7 @@ export function lockWallet() {
 }
 
 /**
- * Unlock wallet 
+ * Unlock wallet
  *
  * @return {object} An action object with a type of UNLOCK_WALLET
  */
