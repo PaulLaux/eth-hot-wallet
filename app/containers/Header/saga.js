@@ -42,6 +42,11 @@ import {
 
 import Network from './network';
 
+import { timeBetweenCheckbalances, Ether, Gwei, maxGasForSendEth } from 'utils/constants';
+
+// time in ms between checks
+// const timeBetweenCheckbalances = 60000;
+
 function timer() {
   return new Promise((resolve) => setTimeout(() => resolve('timer end'), 600));
 }
@@ -105,10 +110,6 @@ export function* loadNetwork(action) {
 }
 
 
-const Ether = (1.0e18).toString();
-const Gwei = (1.0e9).toString();
-const maxGas = 25000;
-
 export function* confirmSendTransaction() {
   try {
     const fromAddress = yield select(makeSelectFrom());
@@ -150,7 +151,7 @@ export function* SendTransaction() {
 
     const sendAmount = new BigNumber(amount).times(Ether);
 
-    const sendParams = { from: fromAddress, to: toAddress, value: sendAmount, gasPrice: gasPrice, gas: maxGas };
+    const sendParams = { from: fromAddress, to: toAddress, value: sendAmount, gasPrice: gasPrice, gas: maxGasForSendEth };
 
 
     function sendTransactionPromise(params) { // eslint-disable-line no-inner-declarations
@@ -173,8 +174,6 @@ export function* SendTransaction() {
 
 
 /* *************  Polling saga and polling flow for check balances ******************/
-// time in ms between checks
-const timeBetweenChecks = 60000;
 function getBalancePromise(address) {
   return new Promise((resolve, reject) => {
     web3.eth.getBalance(address, (err, data) => {
@@ -212,11 +211,11 @@ function delay(millisec) {
   return promise;
 }
 
-// Fetch data every 20 seconds
+// Fetch data every X seconds
 function* pollData() {
   try {
     console.log('pollData');
-    yield call(delay, timeBetweenChecks);
+    yield call(delay, timeBetweenCheckbalances);
 
     yield put(checkBalances());
   } catch (error) {

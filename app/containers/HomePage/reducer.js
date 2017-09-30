@@ -54,6 +54,17 @@ const initialState = fromJS({
   keystore: false,
   addressList: false,
 
+  /*
+  addressList: {
+    address1: {
+        order: 1
+        eth: {
+            balance: bigNumber
+            convertBalance: bigNumber
+          }
+      }
+  } */
+
   addressListLoading: false, // for loading and error inside addressList
   addressListError: false,
   addressListMsg: false,
@@ -147,7 +158,8 @@ function homeReducer(state = initialState, action) {
     case LOCK_WALLET:
       return state
         .set('password', false)
-        .set('addressListError', false);
+        .set('addressListError', false)
+        .set('addressListMsg', 'Wallet Locked');
     case UNLOCK_WALLET:
       return state;
     case UNLOCK_WALLET_SUCCESS:

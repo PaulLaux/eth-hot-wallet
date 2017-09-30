@@ -8,11 +8,12 @@ import { call, put, select, takeLatest } from 'redux-saga/effects';
 
 import { INIT_SEED, GENERATE_KEYSTORE, RESTORE_WALLET_FROM_SEED, GENERATE_ADDRESS, UNLOCK_WALLET } from 'containers/HomePage/constants';
 
-import generateString from 'utils/crypto';
-
 import { makeSelectPassword, makeSelectSeed, makeSelectUserSeed, makeSelectKeystore } from 'containers/HomePage/selectors';
 
 import { loadNetwork } from 'containers/Header/actions';
+
+import generateString from 'utils/crypto';
+import { generatedPasswordLength, hdPathString } from 'utils/constants';
 
 import {
   seedInitilized,
@@ -23,13 +24,17 @@ import {
   generateAddressSuccess,
   generateAddressError,
   unlockWalletSuccess,
-  unlockWalletError
+  unlockWalletError,
 } from './actions';
 
+
+/*
 const PasswordLength = 12;
+const hdPathString = `m/44'/60'/0'/0`;
+*/
+
 
 /* Turn callback into promise to use inside saga
-
 function promisify(func, param) {
   return new Promise((resolve, reject) => {
     func(param, (err, data) => {
@@ -56,8 +61,8 @@ function createVaultPromise(param) {
  */
 export function* initSeed() {
   try {
-    const password = generateString(PasswordLength);
-    const extraEntropy = generateString(PasswordLength);
+    const password = generateString(generatedPasswordLength);
+    const extraEntropy = generateString(generatedPasswordLength);
     const seed = lightwallet.keystore.generateRandomSeed(extraEntropy);
 
     yield put(seedInitilized(seed, password));
@@ -71,7 +76,7 @@ export function* initSeed() {
  */
 export function* restoreFromSeed() {
   try {
-    const password = generateString(PasswordLength);
+    const password = generateString(generatedPasswordLength);
     const userSeed = yield select(makeSelectUserSeed());
 
     if (userSeed) {
@@ -88,7 +93,7 @@ export function* restoreFromSeed() {
   }
 }
 
-const hdPathString = `m/44'/60'/0'/0`;
+
 /**
  * Create new keystore and generate some addreses
  */
@@ -114,7 +119,8 @@ export function* genKeystore() {
     }
 
     ks.passwordProvider = function (callback) {
-      const pw = prompt('Please enter password1115', 'Password');
+      // const password = yield select(makeSelectPassword());
+      const pw = prompt('Please enter password1116', 'Password');
       callback(null, pw);
     };
 
