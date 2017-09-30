@@ -29,6 +29,7 @@ function AddressView(props) {
   const checkBalancesStatusProps = { checkingBalanceDoneTime, checkingBalances, checkingBalancesError };
   const addressListStatusProps = { addressListLoading, addressListError, addressListMsg };
 
+  console.log(isComfirmed);
   if (isComfirmed) {
     return (
       <div>

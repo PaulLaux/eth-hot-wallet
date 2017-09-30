@@ -127,7 +127,7 @@ function homeReducer(state = initialState, action) {
 
     case CHANGE_BALANCE:
       return state
-        .setIn(['addressList', action.address, 'balance'], action.balance);
+        .setIn(['addressList', action.address, 'eth', 'balance'], action.balance);
 
     case SHOW_SEND_TOKEN:
       return state
@@ -148,7 +148,7 @@ function homeReducer(state = initialState, action) {
         .set('addressListError', false)
         .set('addressListMsg', 'New address generated succesfully')
         // Add new address as key and set balance as false ('n/a')
-        .setIn(['addressList', action.newAddress, 'balance'], false);
+        .setIn(['addressList', action.newAddress, 'eth', 'balance'], false);
     case GENERATE_ADDRESS_ERROR:
       return state
         .set('addressListLoading', false)

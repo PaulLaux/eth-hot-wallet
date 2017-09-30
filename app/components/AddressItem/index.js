@@ -16,10 +16,13 @@ function AddressItem(props) {
 
   const ether = '1000000000000000000'; // Wei
 
+  const eth = data.get('eth');
+  console.log(eth);
+
   return (
     <div>
       {address} |
-      Balance: {data.get('balance') !== false ? props.data.get('balance').div(ether).toString(10) + ' Ether ' : 'n/a'}
+      Balance: {eth.get('balance') !== false ? eth.get('balance').div(ether).toString(10) + ' Ether ' : 'n/a'}
       <button onClick={() => onChangeFrom(address)}>
         Send
       </button>

@@ -169,14 +169,29 @@ export function generateKeystore() {
  */
 export function generateKeystoreSuccess(keystore) {
   const addresses = keystore.getAddresses();
+  /*
+  addressList: {
+    lastIndex: 8
+    address0: {
+        index: 0
+        eth: {
+            balance: bigNumber
+            convertBalance: bigNumber
+          }
+      }
+  } */
+
   const addressList = {};
-  for (let i = 0; i < addresses.length; ++i) {
-    // if (addresses[i] !== undefined) {
+  for (let i = 0; i < addresses.length; i += 1) {
     addressList[addresses[i]] = {
-      balance: false,
+      index: i,
+      eth: {
+        balance: false,
+        convertBalance: false,
+      },
     };
-    // }
   }
+  // addressList.lastIndex = addresses.length - 1; TodO
 
   return {
     type: GENERATE_KEYSTORE_SUCCESS,
