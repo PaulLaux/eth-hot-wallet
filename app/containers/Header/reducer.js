@@ -13,24 +13,31 @@ import {
   CHECK_BALANCES,
   CHECK_BALANCES_SUCCESS,
   CHECK_BALANCES_ERROR,
+
+  GET_EXCHANGE_RATES,
+  GET_EXCHANGE_RATES_SUCCESS,
+  GET_EXCHANGE_RATES_ERROR,
 } from './constants';
 
 import Network from './network';
 
-console.log(Object.keys(Network));
 // The initial state of the App
 const initialState = fromJS({
+  loading: false,
+  error: false,
   networkReady: false, // true only if network initialized and valid keystore attached
   networkName: 'Offline',
   blockNumber: 0,
   availableNetworks: Object.keys(Network),
 
-  loading: false,
-  error: false,
-
-  checkingBalanceDoneTime: false, // should be updated after every succesfull balance check
+  checkingBalanceDoneTime: false, // should update after every succesfull balance check
   checkingBalances: false,
   checkingBalancesError: false,
+
+  getEchangeRatesDoneTime: false, // should update after every succesfull echange rate check
+  getEchangeRatesLoading: false,
+  getEchangeRatesError: false,
+
 });
 
 function headerReducer(state = initialState, action) {

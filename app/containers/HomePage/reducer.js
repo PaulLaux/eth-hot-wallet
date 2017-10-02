@@ -64,6 +64,7 @@ const initialState = fromJS({
           }
       }
   } */
+  
 
   addressListLoading: false, // for loading and error inside addressList
   addressListError: false,
@@ -118,7 +119,6 @@ function homeReducer(state = initialState, action) {
         .set('seed', false)
         .set('isComfirmed', true)
         .set('addressListError', false)
-        // .set('addressList', action.addressList);
         .set('addressList', fromJS(action.addressList));
     case GENERATE_KEYSTORE_ERROR:
       return state

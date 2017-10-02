@@ -12,6 +12,10 @@ import {
   CHECK_BALANCES,
   CHECK_BALANCES_SUCCESS,
   CHECK_BALANCES_ERROR,
+
+  GET_EXCHANGE_RATES,
+  GET_EXCHANGE_RATES_SUCCESS,
+  GET_EXCHANGE_RATES_ERROR,
 } from './constants';
 
 
@@ -55,6 +59,8 @@ export function loadNetworkError(error) {
   };
 }
 
+
+/* *********************************** Check Balances Actions ********************/
 /**
  * Initiate process to check balance of all known addresses
  *
@@ -90,6 +96,47 @@ export function checkBalancesSuccess() {
 export function CheckBalancesError(error) {
   return {
     type: CHECK_BALANCES_ERROR,
+    error,
+  };
+}
+
+
+/* *********************************** Get Exchange Rate Actions ********************/
+/**
+ * Get exchange rates from api
+ *
+ * @return {object}    An action object with a type of CHECK_BALANCES
+ */
+export function getExchangeRates() {
+  return {
+    type: GET_EXCHANGE_RATES,
+  };
+}
+
+/**
+ * getExchangeRates successful
+ *
+ * @return {object}      An action object with a type of GET_EXCHANGE_RATES_SUCCESS
+ */
+export function getExchangeRatesSuccess() {
+  const timeString = new Date().toLocaleTimeString();
+
+  return {
+    type: GET_EXCHANGE_RATES_SUCCESS,
+    timeString,
+  };
+}
+
+/**
+ * getExchangeRates failed
+ *
+ * @param  {object} error The error
+ *
+ * @return {object} An action object with a type of CHECK_BALANCES_ERROR passing the error
+ */
+export function getExchangeRatesError(error) {
+  return {
+    type: GET_EXCHANGE_RATES_ERROR,
     error,
   };
 }

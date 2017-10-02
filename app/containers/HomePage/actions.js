@@ -215,7 +215,7 @@ export function generateKeystoreError(error) {
 }
 
 
-/* **********************************Change balance ******************/
+/* **********************************Change balance ***********************/
 /**
  * Changes ballance for a given address
  * If address dont exist - new address will be created
@@ -257,7 +257,7 @@ export function hideSendToken() {
 }
 
 
-/* *********************************Generate new address from existing keystore********************************/
+/* ******************* Generate new address from existing keystore***********/
 /**
  * Generate new address and attach it to store
  *
@@ -299,7 +299,7 @@ export function generateAddressError(error) {
 }
 
 
-/* *******************************************LOCK AND UNLOCK WALLET *****************************************/
+/* **********************LOCK AND UNLOCK WALLET ******************************/
 
 
 /**
