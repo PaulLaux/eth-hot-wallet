@@ -50,6 +50,21 @@ const makeSelectCheckingBalancesError = () => createSelector(
   (substate) => substate ? substate.get('checkingBalancesError') : null
 );
 
+const makeSelectGetEchangeRatesDoneTime = () => createSelector(
+  selectHeaderDomain,
+  (substate) => substate.get('getEchangeRatesDoneTime')
+);
+
+const makeSelectGetEchangeRatesLoading = () => createSelector(
+  selectHeaderDomain,
+  (substate) => substate.get('getEchangeRatesLoading')
+);
+
+const makeSelectGetEchangeRatesError = () => createSelector(
+  selectHeaderDomain,
+  (substate) => substate.get('getEchangeRatesError')
+);
+
 // export default makeSelectHeader;
 export {
   selectHeaderDomain,
@@ -62,6 +77,9 @@ export {
   makeSelectCheckingBalanceDoneTime,
   makeSelectCheckingBalances,
   makeSelectCheckingBalancesError,
+  makeSelectGetEchangeRatesDoneTime,
+  makeSelectGetEchangeRatesLoading,
+  makeSelectGetEchangeRatesError,
 };
 
 

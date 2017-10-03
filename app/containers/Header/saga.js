@@ -5,6 +5,7 @@ import { take, call, put, select, takeLatest, race, fork } from 'redux-saga/effe
 
 import { makeSelectKeystore, makeSelectAddressList } from 'containers/HomePage/selectors';
 import { changeBalance } from 'containers/HomePage/actions';
+import request from 'utils/request';
 
 import {
   confirmSendTransactionSuccess,
@@ -30,6 +31,9 @@ import {
   checkBalances,
   checkBalancesSuccess,
   CheckBalancesError,
+
+  getExchangeRatesSuccess,
+  getExchangeRatesError,
 } from './actions';
 
 import {
@@ -38,6 +42,7 @@ import {
   CHECK_BALANCES_SUCCESS,
   CHECK_BALANCES_ERROR,
   STOP_POLL_BALANCES,
+  GET_EXCHANGE_RATES,
 } from './constants';
 
 import Network from './network';
@@ -236,13 +241,32 @@ function* watchPollData() {
     ]);
   }
 }
-/* *****  End of Polling saga and polling flow for check balances *****/
+/* *********************************************************************************/
+
+/**
+ * Github repos request/response handler
+ */
+export function* getExchangeRates() {
+  const requestURL = '';
+
+  try {
+    // Call our request helper (see 'utils/request')
+    const aggregatePrices = yield call(request, requestURL);
+    console.log(aggregatePrices);
+    yield put(getExchangeRatesSuccess());
+  } catch (err) {
+    console.log(err);
+    yield put(getExchangeRatesError(err));
+  }
+}
+
 
 // Individual exports for testing
 export default function* defaultSaga() {
   yield takeLatest(LOAD_NETWORK, loadNetwork);
   yield takeLatest(COMFIRM_SEND_TRANSACTION, confirmSendTransaction);
   yield takeLatest(SEND_TRANSACTION, SendTransaction);
+  yield takeLatest(GET_EXCHANGE_RATES, getExchangeRates);
 
   /* poll check balances */
   yield [

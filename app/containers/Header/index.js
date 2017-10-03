@@ -33,10 +33,10 @@ import {
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
-import { loadNetwork } from './actions';
+import { loadNetwork, getExchangeRates } from './actions';
 
 function Header(props) {
-  const { loading, error, networkName, blockNumber, availableNetworks, onLoadNetwork } = props;
+  const { loading, error, networkName, blockNumber, availableNetworks, onLoadNetwork, onGetExchangeRates } = props;
   const networkLabelProps = {
     loading,
     error,
@@ -54,6 +54,9 @@ function Header(props) {
       <NetworkLabel {...networkLabelProps} />
       <NetworkSelector {...networkSelectorProps} />
       <br />
+      <button onClick={onGetExchangeRates}>
+        GetExchangeRates
+      </button>
       <hr />
     </div>
   );
@@ -61,6 +64,7 @@ function Header(props) {
 
 Header.propTypes = {
   onLoadNetwork: PropTypes.func.isRequired,
+  onGetExchangeRates: PropTypes.func.isRequired,
   // onCheckBalances: PropTypes.func.isRequired,
 
   loading: PropTypes.bool,
@@ -72,11 +76,12 @@ Header.propTypes = {
   networkName: PropTypes.string,
   availableNetworks: PropTypes.object,
   blockNumber: PropTypes.number,
+
   // addressList: PropTypes.oneOfType([ PropTypes.bool,PropTypes.object]),
 
-  checkingBalanceDoneTime: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  /* checkingBalanceDoneTime: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   checkingBalances: PropTypes.bool,
-  checkingBalancesError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
+  checkingBalancesError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),*/
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -87,7 +92,7 @@ const mapStateToProps = createStructuredSelector({
   availableNetworks: makeSelectAvailableNetworks(),
   blockNumber: makeSelectBlockNumber(),
   addressList: makeSelectAddressList(),
-  /*checkingBalanceDoneTime: makeSelectCheckingBalanceDoneTime(),
+  /* checkingBalanceDoneTime: makeSelectCheckingBalanceDoneTime(),
   checkingBalances: makeSelectCheckingBalances(),
   checkingBalancesError: makeSelectCheckingBalancesError(),*/
 });
@@ -95,15 +100,14 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     onLoadNetwork: (name) => {
-      //if (evt !== undefined && evt.preventDefault) evt.preventDefault();
+      // if (evt !== undefined && evt.preventDefault) evt.preventDefault();
       console.log(name);
       dispatch(loadNetwork(name));
     },
-    /*
-    onChangeAddress: (evt) => {
-      if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-      dispatch(changeBalance('5676e455eec7464b44ecf4d0a8f00342166b80ad', 5));
-    },*/
+    onGetExchangeRates: () => {
+      // if (evt !== undefined && evt.preventDefault) evt.preventDefault();
+      dispatch(getExchangeRates());
+    },
   };
 }
 

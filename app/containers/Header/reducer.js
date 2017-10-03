@@ -75,6 +75,22 @@ function headerReducer(state = initialState, action) {
         .set('checkingBalancesError', action.error)
         .set('checkingBalanceDoneTime', false);
 
+    case GET_EXCHANGE_RATES:
+      return state
+        .set('getEchangeRatesLoading', true)
+        .set('getEchangeRatesError', false)
+        .set('getEchangeRatesDoneTime', false);
+    case GET_EXCHANGE_RATES_SUCCESS:
+      return state
+        .set('getEchangeRatesLoading', false)
+        .set('getEchangeRatesError', false)
+        .set('getEchangeRatesDoneTime', action.timeString);
+    case GET_EXCHANGE_RATES_ERROR:
+      return state
+        .set('getEchangeRatesLoading', false)
+        .set('getEchangeRatesError', action.error)
+        .set('getEchangeRatesDoneTime', false);
+
     default:
       return state;
   }

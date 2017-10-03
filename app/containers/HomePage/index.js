@@ -145,7 +145,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
         {' '}
         <button onClick={this.props.onShowRestoreWallet}>
           Restore wallet
-          </button>
+        </button>
         <RestoreWallet {...restoreWalletProps} />
         <SeedView {...seedViewProps} />
         <hr />
