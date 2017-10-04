@@ -136,7 +136,6 @@ export function getExchangeRatesSuccess() {
  * @return {object} An action object with a type of CHECK_BALANCES_ERROR passing the error
  */
 export function getExchangeRatesError(error) {
-  console.log('getExchangeRatesError action:'+Error);
   return {
     type: GET_EXCHANGE_RATES_ERROR,
     error,
