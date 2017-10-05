@@ -14,7 +14,7 @@
  *        return { type: YOUR_ACTION_CONSTANT, var: var }
  *    }
  */
-
+import extractRates from 'utils/unitConverter';
 import {
   INIT_SEED,
   INIT_SEED_SUCCESS,
@@ -42,6 +42,8 @@ import {
   UNLOCK_WALLET,
   UNLOCK_WALLET_SUCCESS,
   UNLOCK_WALLET_ERROR,
+
+  SET_EXCHANGE_RATES,
 } from './constants';
 
 // import { makeSelectAddresses } from './selectors'; 
@@ -187,7 +189,7 @@ export function generateKeystoreSuccess(keystore) {
       index: i,
       eth: {
         balance: false,
-        convertBalance: false,
+        // convertBalance: false,
       },
     };
   }
@@ -349,5 +351,29 @@ export function unlockWalletError(error) {
   return {
     type: UNLOCK_WALLET_ERROR,
     error,
+  };
+}
+
+/* **************************************************************/
+
+
+/**
+ * Recives api response and requestUrl used, transforms the api response into the proper format to
+ * save in state
+ * requestUrl is used as identifier of the apiPrices
+ *
+ * @param  {string} requestURL the url used to get apiPrices
+ * @param  {object} apiRates The response from external api
+ *
+ * @return {object} An action object with a type of SET_EXCHANGE_RATES and rates converted to proper format:
+ * 
+ * 
+ */
+export function setExchangeRates(apiRates, requestURL) {
+  const rates = extractRates(apiRates, requestURL);
+  
+  return {
+    type: SET_EXCHANGE_RATES,
+    rates,
   };
 }

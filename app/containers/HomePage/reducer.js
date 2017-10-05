@@ -36,6 +36,8 @@ import {
   UNLOCK_WALLET,
   UNLOCK_WALLET_SUCCESS,
   UNLOCK_WALLET_ERROR,
+
+  SET_EXCHANGE_RATES,
 } from './constants';
 
 // The initial state of the App
@@ -64,7 +66,8 @@ const initialState = fromJS({
           }
       }
   } */
-  
+
+  exchangeRates: {},
 
   addressListLoading: false, // for loading and error inside addressList
   addressListError: false,
@@ -169,6 +172,10 @@ function homeReducer(state = initialState, action) {
     case UNLOCK_WALLET_ERROR:
       return state
         .set('addressListError', action.error);
+
+    case SET_EXCHANGE_RATES:
+      return state
+        .set('exchangeRates', fromJS(action.rates));
 
     default:
       return state;

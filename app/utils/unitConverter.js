@@ -30,39 +30,40 @@ const apiMaps =
   {
     'https://api.coinmarketcap.com/v1/ticker/ethereum/?convert=EUR':
     {
-      eth_usd: { path: 'price_usd', isInverse: false },
-      eth_btc: { path: 'price_btc', isInverse: false },
-      eth_eur: { path: 'price_eur', isInverse: false },
-      // eth_eurX: { path: 'a.b', isInverse: false },
+      eth_usd: { path: 'price_usd', isInverse: false, name: 'USD' },
+      eth_btc: { path: 'price_btc', isInverse: false, name: 'BTC' },
+      eth_eur: { path: 'price_eur', isInverse: false, name: 'EURO' },
     },
   };
 
 
 /**
- * Extract api prices and put the in the proper format according to apiMap
+ * Extract api rates and put the in the proper format according to apiMap
  *
- * @param  {string} apiPrices response from prices api
+ * @param  {string} apiRates response from rates api
  *
  * @param  {string} requestUrl api request address - used as key in apiMaps
  *
- * @return {object}      prices object to insert into state
+ * @return {object}      rates object in native format
  */
-export default function extract(apiPrices, requestUrl) {
+export default function extractRates(apiRates, requestUrl) {
   const apiMap = apiMaps[requestUrl];
-  const prices = {};
+  const rates = {};
   if (!apiMap) {
     // No map for requestUrl:
-    return prices;
+    return rates;
   }
 
   Object.keys(apiMap).forEach((key) => {
-    const value = deepValue(apiPrices, apiMap[key].path);
+    const value = deepValue(apiRates, apiMap[key].path);
     if (value) {
-      prices[key] = apiMap[key].isInverse ? new BigNumber(value).toPower(-1) : new BigNumber(value);
+      rates[key] = {};
+      rates[key].name = apiMap[key].name;
+      rates[key].rate = apiMap[key].isInverse ? new BigNumber(value).toPower(-1) : new BigNumber(value);
     }
   });
   // console.log(prices);
-  return prices;
+  return rates;
 }
 
 /**

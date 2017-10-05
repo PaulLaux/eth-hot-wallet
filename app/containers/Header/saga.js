@@ -4,9 +4,9 @@ import BigNumber from 'bignumber.js';
 import { take, call, put, select, takeLatest, race, fork } from 'redux-saga/effects';
 
 import { makeSelectKeystore, makeSelectAddressList } from 'containers/HomePage/selectors';
-import { changeBalance } from 'containers/HomePage/actions';
+import { changeBalance, setExchangeRates } from 'containers/HomePage/actions';
 import request from 'utils/request';
-import extract from 'utils/unitConverter';
+
 
 import {
   confirmSendTransactionSuccess,
@@ -252,29 +252,30 @@ export function* getExchangeRates() {
 
   try {
     // Call our request helper (see 'utils/request')
-    // const apiPrices = (yield call(request, requestURL))[0];
-    const apiPrices =
+    // const apiRates = (yield call(request, requestURL))[0];
+    const apiRates =
       {
-        "id": "ethereum",
-        "name": "Ethereum",
-        "symbol": "ETH",
-        "rank": "2",
-        "price_usd": "295.412",
-        "price_btc": "0.0684231",
-        "24h_volume_usd": "308964000.0",
-        "market_cap_usd": "28043053731.0",
-        "available_supply": "94928621.0",
-        "total_supply": "94928621.0",
-        "percent_change_1h": "-1.46",
-        "percent_change_24h": "-1.84",
-        "percent_change_7d": "1.35",
-        "last_updated": "1507010353",
-        "price_eur": "252.342998284",
-        "24h_volume_eur": "263919211.548",
-        "market_cap_eur": "23954572799.0",
+        'id': 'ethereum',
+        'name': 'Ethereum',
+        'symbol': 'ETH',
+        'rank': '2',
+        'price_usd': '295.412',
+        'price_btc': '0.0684231',
+        '24h_volume_usd': '308964000.0',
+        'market_cap_usd': '28043053731.0',
+        'available_supply': '94928621.0',
+        'total_supply': '94928621.0',
+        'percent_change_1h': '-1.46',
+        'percent_change_24h': '-1.84',
+        'percent_change_7d': '1.35',
+        'last_updated': '1507010353',
+        'price_eur': '252.342998284',
+        '24h_volume_eur': '263919211.548',
+        'market_cap_eur': '23954572799.0',
       };
-    //console.log(apiPrices);
-    extract(apiPrices, requestURL);
+    // console.log(apiPrices);
+    // extract(apiRates, requestURL);
+    yield put(setExchangeRates(apiRates, requestURL));
     yield put(getExchangeRatesSuccess());
   } catch (err) {
     console.log(err);
