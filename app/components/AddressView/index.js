@@ -11,6 +11,7 @@ import PropTypes from 'prop-types';
 import AddressList from 'components/AddressList';
 import AddressListStatus from 'components/AddressListStatus';
 import CheckBalancesStatus from 'components/CheckBalancesStatus';
+import CurrencySelector from 'components/CurrencySelector';
 
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
@@ -23,15 +24,19 @@ function AddressView(props) {
     networkReady, checkingBalanceDoneTime, checkingBalances, checkingBalancesError,
     addressListLoading, addressListError, addressListMsg,
     onLockWallet, onUnlockWallet,
+    exchangeRates, onSelectCurrency, convertTo,
    } = props;
 
   const addressListProps = { addressList, onChangeFrom, onCheckBalances };
   const checkBalancesStatusProps = { checkingBalanceDoneTime, checkingBalances, checkingBalancesError };
   const addressListStatusProps = { addressListLoading, addressListError, addressListMsg };
 
+  const currencySelectorProps = { exchangeRates, onSelectCurrency, convertTo };
+
   if (isComfirmed) {
     return (
       <div>
+        <CurrencySelector {...currencySelectorProps} />
         <AddressList {...addressListProps} />
         <button type="button" onClick={onCheckBalances} disabled={!networkReady}>
           Check balances
@@ -83,6 +88,10 @@ AddressView.propTypes = {
   checkingBalanceDoneTime: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   checkingBalances: PropTypes.bool,
   checkingBalancesError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
+
+  exchangeRates: PropTypes.object,
+  onSelectCurrency: PropTypes.func,
+  convertTo: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
 };
 
 export default AddressView;

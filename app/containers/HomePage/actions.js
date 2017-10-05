@@ -44,6 +44,7 @@ import {
   UNLOCK_WALLET_ERROR,
 
   SET_EXCHANGE_RATES,
+  SELECT_CURRENCY,
 } from './constants';
 
 // import { makeSelectAddresses } from './selectors'; 
@@ -366,8 +367,6 @@ export function unlockWalletError(error) {
  * @param  {object} apiRates The response from external api
  *
  * @return {object} An action object with a type of SET_EXCHANGE_RATES and rates converted to proper format:
- * 
- * 
  */
 export function setExchangeRates(apiRates, requestURL) {
   const rates = extractRates(apiRates, requestURL);
@@ -375,5 +374,19 @@ export function setExchangeRates(apiRates, requestURL) {
   return {
     type: SET_EXCHANGE_RATES,
     rates,
+  };
+}
+
+/**
+ * Change selected curency to convert to
+ *
+ * @param  {string} convertTo the selected currency to convert from eth
+ *
+ * @return {object} An action object with a type of SELECT_CURRENCY and selected currency
+ */
+export function selectCurrency(convertTo) { 
+  return {
+    type: SELECT_CURRENCY,
+    convertTo,
   };
 }

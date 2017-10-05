@@ -69,6 +69,16 @@ const makeSelectAddressListMsg = () => createSelector(
   selectHome,
   (homeState) => homeState.get('addressListMsg')
 );
+const makeSelectExchangeRates = () => createSelector(
+  selectHome,
+  (homeState) => homeState.get('exchangeRates')
+);
+
+const makeSelectConvertTo = () => createSelector(
+  selectHome,
+  (homeState) => homeState.get('convertTo')
+);
+
 
 export {
   selectHome,
@@ -85,4 +95,6 @@ export {
   makeSelectAddressListLoading,
   makeSelectAddressListError,
   makeSelectAddressListMsg,
+  makeSelectExchangeRates,
+  makeSelectConvertTo,
 };

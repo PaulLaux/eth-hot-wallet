@@ -56,6 +56,7 @@ import {
   generateAddress,
   lockWallet,
   unlockWallet,
+  selectCurrency,
 } from './actions';
 
 import {
@@ -72,6 +73,8 @@ import {
   makeSelectAddressListLoading,
   makeSelectAddressListError,
   makeSelectAddressListMsg,
+  makeSelectExchangeRates,
+  makeSelectConvertTo,
 } from './selectors';
 
 
@@ -105,6 +108,10 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
 
       onLockWallet,
       onUnlockWallet,
+
+      exchangeRates,
+      onSelectCurrency,
+      convertTo,
     } = this.props;
 
     const seedViewProps = {
@@ -131,6 +138,9 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       checkingBalancesError,
       onLockWallet,
       onUnlockWallet,
+      exchangeRates,
+      onSelectCurrency,
+      convertTo,
     };
 
     return (
@@ -205,6 +215,10 @@ HomePage.propTypes = {
   checkingBalanceDoneTime: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   checkingBalances: PropTypes.bool,
   checkingBalancesError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
+
+  exchangeRates: PropTypes.object,
+  onSelectCurrency: PropTypes.func,
+  convertTo: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
 };
 
 export function mapDispatchToProps(dispatch) {
@@ -254,6 +268,10 @@ export function mapDispatchToProps(dispatch) {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
       dispatch(unlockWallet());
     },
+    onSelectCurrency: (convertTo) => {
+      // if (evt !== undefined && evt.preventDefault) evt.preventDefault();
+      dispatch(selectCurrency(convertTo));
+    },
   };
 }
 
@@ -277,6 +295,9 @@ const mapStateToProps = createStructuredSelector({
   checkingBalanceDoneTime: makeSelectCheckingBalanceDoneTime(),
   checkingBalances: makeSelectCheckingBalances(),
   checkingBalancesError: makeSelectCheckingBalancesError(),
+
+  exchangeRates: makeSelectExchangeRates(),
+  convertTo: makeSelectConvertTo(),
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

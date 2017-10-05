@@ -50,19 +50,19 @@ export default function extractRates(apiRates, requestUrl) {
   const apiMap = apiMaps[requestUrl];
   const rates = {};
   if (!apiMap) {
-    // No map for requestUrl:
+    // No map for requestUrl
     return rates;
   }
 
   Object.keys(apiMap).forEach((key) => {
     const value = deepValue(apiRates, apiMap[key].path);
     if (value) {
-      rates[key] = {};
-      rates[key].name = apiMap[key].name;
-      rates[key].rate = apiMap[key].isInverse ? new BigNumber(value).toPower(-1) : new BigNumber(value);
+      rates[key] = {
+        name: apiMap[key].name,
+        rate: apiMap[key].isInverse ? new BigNumber(value).toPower(-1) : new BigNumber(value),
+      };
     }
   });
-  // console.log(prices);
   return rates;
 }
 
