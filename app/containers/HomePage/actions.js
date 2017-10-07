@@ -384,7 +384,7 @@ export function setExchangeRates(apiRates, requestURL) {
  *
  * @return {object} An action object with a type of SELECT_CURRENCY and selected currency
  */
-export function selectCurrency(convertTo) { 
+export function selectCurrency(convertTo) {
   return {
     type: SELECT_CURRENCY,
     convertTo,

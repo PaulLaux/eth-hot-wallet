@@ -14,14 +14,20 @@ import messages from './messages';
 
 
 function AddressItem(props) {
-  const { address, data, onChangeFrom } = props;
+  const { address, data, onChangeFrom, exchangeRates, convertTo } = props;
+  const ethData = data.get('eth');
 
-  const eth = data.get('eth');
+  const rate = exchangeRates.getIn([convertTo, 'rate']);
+  const convertToName = exchangeRates.getIn([convertTo, 'name']);
 
+  const balance = ethData.get('balance') !== false ? `${ethData.get('balance').div(Ether).toString(10)} ETH ` : 'n/a';
+  const convertedBalance = (balance && rate) ? ethData.get('balance').div(Ether).times(rate).toFixed(2).toString(10) : '';
+  
   return (
     <div>
       {address} |
-      Balance: {eth.get('balance') !== false ? `${eth.get('balance').div(Ether).toString(10)} Ether ` : 'n/a'}
+      Balance: {balance}
+      {convertedBalance} {convertToName}
       <button onClick={() => onChangeFrom(address)}>
         Send
       </button>
@@ -33,6 +39,8 @@ AddressItem.propTypes = {
   address: PropTypes.string,
   data: PropTypes.object,
   onChangeFrom: PropTypes.func,
+  exchangeRates: PropTypes.object,
+  convertTo: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
 };
 
 export default AddressItem;

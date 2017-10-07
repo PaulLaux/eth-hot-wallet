@@ -38,6 +38,7 @@ import {
   UNLOCK_WALLET_ERROR,
 
   SET_EXCHANGE_RATES,
+  SELECT_CURRENCY,
 } from './constants';
 
 // The initial state of the App
@@ -177,6 +178,9 @@ function homeReducer(state = initialState, action) {
     case SET_EXCHANGE_RATES:
       return state
         .set('exchangeRates', fromJS(action.rates));
+    case SELECT_CURRENCY:
+      return state
+        .set('convertTo', fromJS(action.convertTo));
 
     default:
       return state;

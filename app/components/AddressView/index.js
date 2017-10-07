@@ -27,7 +27,7 @@ function AddressView(props) {
     exchangeRates, onSelectCurrency, convertTo,
    } = props;
 
-  const addressListProps = { addressList, onChangeFrom, onCheckBalances };
+  const addressListProps = { addressList, onChangeFrom, onCheckBalances, exchangeRates, convertTo };
   const checkBalancesStatusProps = { checkingBalanceDoneTime, checkingBalances, checkingBalancesError };
   const addressListStatusProps = { addressListLoading, addressListError, addressListMsg };
 

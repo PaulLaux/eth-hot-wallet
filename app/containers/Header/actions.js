@@ -108,7 +108,6 @@ export function CheckBalancesError(error) {
  * @return {object}    An action object with a type of CHECK_BALANCES
  */
 export function getExchangeRates() {
-  console.log('getExchangeRates action');
   return {
     type: GET_EXCHANGE_RATES,
   };
@@ -121,7 +120,6 @@ export function getExchangeRates() {
  */
 export function getExchangeRatesSuccess() {
   const timeString = new Date().toLocaleTimeString();
-  console.log('getExchangeRatesSuccess action');
   return {
     type: GET_EXCHANGE_RATES_SUCCESS,
     timeString,

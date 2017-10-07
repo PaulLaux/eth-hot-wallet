@@ -138,8 +138,8 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       checkingBalancesError,
       onLockWallet,
       onUnlockWallet,
-      exchangeRates,
       onSelectCurrency,
+      exchangeRates,
       convertTo,
     };
 

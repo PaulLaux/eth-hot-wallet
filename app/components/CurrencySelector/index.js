@@ -12,18 +12,14 @@ import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 function CurrencySelector({ convertTo, exchangeRates, onSelectCurrency }) {
-  console.log(exchangeRates);
-
   const options = [];
   if (exchangeRates.size > 0) {
     exchangeRates.entrySeq().forEach((entry) => {
-      console.log(`key: ${entry[0]}, value: ${entry[1]}`);
+      // console.log(`key: ${entry[0]}, value: ${entry[1]}`);
       options.push(<option value={entry[0]} key={entry[0]}>{entry[1].get('name')}</option>);
     });
-
-
   }
-  /*if (availableNetworks) {
+  /* if (availableNetworks) {
     options = availableNetworks.map((network) =>
       <option value={network} key={network}>{network} </option>
     );
@@ -32,7 +28,7 @@ function CurrencySelector({ convertTo, exchangeRates, onSelectCurrency }) {
   return (
     <div>
       <FormattedMessage {...messages.header} />
-      <label htmlFor="networkSelectorDropdown">
+      <label htmlFor="currencySelectorDropdown">
         <select
           value={convertTo}
           onChange={(evt) => onSelectCurrency(evt.target.value)}

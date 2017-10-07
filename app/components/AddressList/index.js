@@ -11,13 +11,20 @@ import AddressItem from 'components/AddressItem';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
-function AddressList({ addressList, onChangeFrom, onCheckBalances }) {
+function AddressList({ addressList, onChangeFrom, exchangeRates, convertTo }) {
   let mainList = null;
 
   if (addressList) {
-    mainList = addressList.entrySeq().map(([key, data]) => (
+    mainList = addressList.entrySeq().map(([address, data]) => (
       // if (key ==='lastIndex') return null;
-      <AddressItem key={`item-${key}`} address={key} data={data} onChangeFrom={onChangeFrom} />
+      <AddressItem
+        key={`item-${address}`}
+        address={address}
+        data={data}
+        onChangeFrom={onChangeFrom}
+        exchangeRates={exchangeRates}
+        convertTo={convertTo}
+      />
     ));
   }
 
@@ -32,7 +39,8 @@ function AddressList({ addressList, onChangeFrom, onCheckBalances }) {
 AddressList.propTypes = {
   addressList: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
   onChangeFrom: PropTypes.func,
-  onCheckBalances: PropTypes.func,
+  exchangeRates: PropTypes.object,
+  convertTo: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
 };
 
 export default AddressList;

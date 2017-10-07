@@ -73,7 +73,6 @@ const makeSelectExchangeRates = () => createSelector(
   selectHome,
   (homeState) => homeState.get('exchangeRates')
 );
-
 const makeSelectConvertTo = () => createSelector(
   selectHome,
   (homeState) => homeState.get('convertTo')
