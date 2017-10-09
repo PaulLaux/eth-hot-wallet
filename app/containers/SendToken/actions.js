@@ -35,7 +35,9 @@ export function changeAmount(amount) {
   };
 }
 
-export function changeTo(address) {
+export function changeTo(inputAddress) {
+  // remove unnessesery spaces
+  const address = inputAddress.replace(/^\s+|\s+$/g, '');
   return {
     type: CHANGE_TO,
     address,

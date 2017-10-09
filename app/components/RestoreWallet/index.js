@@ -29,6 +29,7 @@ function RestoreWallet({ isShowRestoreWallet, userSeed, onChangeUserSeed, onRest
           <label htmlFor="restoreWalletBox">
             <input
               id="restoreWalletBox"
+              autoComplete="off"
               type="text"
               placeholder="Enter seed"
               value={userSeed}

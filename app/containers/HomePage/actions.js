@@ -109,7 +109,8 @@ export function showRestoreWallet() {
  *
  * @return {object}    An action object with a type of CHANGE_USER_SEED
  */
-export function changeUserSeed(seed) {
+export function changeUserSeed(userSeed) {
+  const seed = userSeed.replace(/^\s+|\s+$/g, '');
   return {
     type: CHANGE_USER_SEED,
     seed,
@@ -151,7 +152,7 @@ export function restoreWalletFromSeedError(error) {
   };
 }
 
-/** ******** Confirm seed and generate keystore *********** **/
+/** ********************** Confirm seed and generate keystore ************ */
 
 /**
  * Confirm seed and create new keystore
@@ -218,7 +219,7 @@ export function generateKeystoreError(error) {
 }
 
 
-/* **********************************Change balance ***********************/
+/* **********************************Change balance ********************** */
 /**
  * Changes ballance for a given address
  * If address dont exist - new address will be created
@@ -236,7 +237,7 @@ export function changeBalance(address, balance) {
   };
 }
 
-/** ******************* Show / hide SEND_TOKEN ******************************/
+/** ******************* Show / hide SEND_TOKEN ***************************** */
 /**
  * Show the SendToken container
  *
@@ -260,7 +261,7 @@ export function hideSendToken() {
 }
 
 
-/* ******************* Generate new address from existing keystore***********/
+/* ******************* Generate new address from existing keystore********** */
 /**
  * Generate new address and attach it to store
  *
@@ -302,7 +303,7 @@ export function generateAddressError(error) {
 }
 
 
-/* **********************LOCK AND UNLOCK WALLET ******************************/
+/* **********************LOCK AND UNLOCK WALLET ***************************** */
 
 
 /**
@@ -355,7 +356,7 @@ export function unlockWalletError(error) {
   };
 }
 
-/* **************************************************************/
+/* ************************************************************* */
 
 
 /**
@@ -370,7 +371,7 @@ export function unlockWalletError(error) {
  */
 export function setExchangeRates(apiRates, requestURL) {
   const rates = extractRates(apiRates, requestURL);
-  
+
   return {
     type: SET_EXCHANGE_RATES,
     rates,
