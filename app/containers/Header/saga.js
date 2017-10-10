@@ -1,5 +1,5 @@
 import Web3 from 'web3';
-import HookedWeb3Provider from 'vendor/hooked-web3-provider/hooked-web3-provider';
+import SignerProvider from 'vendor/ethjs-provider-signer/ethjs-provider-signer.js';
 import BigNumber from 'bignumber.js';
 import { take, call, put, select, takeLatest, race, fork } from 'redux-saga/effects';
 
@@ -86,11 +86,12 @@ export function* loadNetwork(action) {
     const keystore = yield select(makeSelectKeystore());
 
     if (keystore) {
-      const web3Provider = new HookedWeb3Provider({
-        host: rpcAddress,
-        transaction_signer: keystore,
+      const provider = new SignerProvider(rpcAddress, {
+        signTransaction: keystore.signTransaction.bind(keystore),
+        accounts: (cb) => cb(null, keystore.getAddresses().map((a) => `0x${a}`)),
       });
-      web3.setProvider(web3Provider);
+
+      web3.setProvider(provider);
 
       function getBlockNumberPromise() { // eslint-disable-line no-inner-declarations
         return new Promise((resolve, reject) => {
@@ -173,7 +174,8 @@ export function* SendTransaction() {
 
     yield put(sendTransactionSuccess(tx));
   } catch (err) {
-    const errorString = `SendTransaction error - ${err.message}`;
+    // const errorString = `SendTransaction ${err.message.slice(0, 75)}`;
+    const errorString = `SendTransaction ${err.message}`;
     yield put(sendTransactionError(errorString));
   }
 }

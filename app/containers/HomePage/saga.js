@@ -1,7 +1,6 @@
 /**
  * Wallet operations
  */
-
 import lightwallet from 'eth-lightwallet';
 
 import { call, put, select, takeLatest } from 'redux-saga/effects';
@@ -27,13 +26,6 @@ import {
   unlockWalletError,
 } from './actions';
 
-
-/*
-const PasswordLength = 12;
-const hdPathString = `m/44'/60'/0'/0`;
-*/
-
-
 /* Turn callback into promise to use inside saga
 function promisify(func, param) {
   return new Promise((resolve, reject) => {
@@ -42,8 +34,7 @@ function promisify(func, param) {
       resolve(data);
     });
   });
-}*/
-
+} */
 
 /* keyStore.createVault({password: password,
     seedPhrase: '(opt)seed',entropy: '(opt)additional entropy',salt: '(opt)'}, function (err, ks) {}); */
@@ -104,7 +95,7 @@ export function* genKeystore() {
     const opt = {
       password,
       seedPhrase,
-      hdPathString,  // The default is `m/0'/0'/0'`.
+      hdPathString,  // The light-wallet default is `m/0'/0'/0'`.
     };
 
     const ks = yield call(createVaultPromise, opt);
@@ -118,9 +109,9 @@ export function* genKeystore() {
       });
     }
 
-    ks.passwordProvider = function (callback) {
+    ks.passwordProvider = (callback) => {
       // const password = yield select(makeSelectPassword());
-      const pw = prompt('Please enter password1116', 'Password');
+      const pw = prompt('Please enter keystore password', 'Password');
       callback(null, pw);
     };
 

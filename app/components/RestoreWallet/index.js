@@ -15,7 +15,7 @@ function RestoreWallet({ isShowRestoreWallet, userSeed, onChangeUserSeed, onRest
   // console.log(isShowRestoreWallet);
   // onSubmit={props.onSubmitForm}
   /*
-  <textarea       
+  <textarea
    placeholder="Enter seed"
    onChange={onChangeUserSeed}
    />
