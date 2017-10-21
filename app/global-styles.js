@@ -6,6 +6,7 @@ injectGlobal`
   body {
     height: 100%;
     width: 100%;
+    font-size: 16px !important;
   }
 
   body {
@@ -32,6 +33,8 @@ injectGlobal`
     text-align: center;
   }
   hr {
-    width: 500px;
+    width: 700px;
+    text-align:center !important;
+    margin: 0 auto !important;
   }
 `;

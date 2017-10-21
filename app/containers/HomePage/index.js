@@ -45,6 +45,9 @@ import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
 
+
+import { Button } from 'antd';
+
 /* HomePage */
 import {
   initSeed,
@@ -149,13 +152,14 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
           <FormattedMessage {...messages.header} />
         </h1>
         <Header />
-        <button onClick={this.props.onInitSeed}>
+        <Button type="primary" size="large" onClick={this.props.onInitSeed}>
           Generate wallet
-          </button>
+        </Button>
         {' '}
-        <button onClick={this.props.onShowRestoreWallet}>
+        <Button type="default" size="large" onClick={this.props.onShowRestoreWallet}>
           Restore wallet
-        </button>
+        </Button>
+
         <RestoreWallet {...restoreWalletProps} />
         <SeedView {...seedViewProps} />
         <hr />
