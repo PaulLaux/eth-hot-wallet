@@ -3,6 +3,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const OfflinePlugin = require('offline-plugin');
+const WebpackMonitor = require('webpack-monitor');
 
 module.exports = require('./webpack.base.babel')({
   // In production, we skip all hot-reloading stuff
@@ -41,6 +42,13 @@ module.exports = require('./webpack.base.babel')({
         minifyURLs: true,
       },
       inject: true,
+    }),
+
+    new WebpackMonitor({
+      capture: true, // -> default 'true'
+      target: '../monitor/myStatsStore.json', // default -> '../monitor/stats.json'
+      launch: true, // -> default 'false'
+      port: 3030, // default -> 8081
     }),
 
     // Put it in the end to capture all the HtmlWebpackPlugin's
