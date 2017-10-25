@@ -148,10 +148,11 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
 
     return (
       <div>
+        <Header />
         <h1>
           <FormattedMessage {...messages.header} />
         </h1>
-        <Header />
+        
         <Button type="primary" size="large" onClick={this.props.onInitSeed}>
           Generate wallet
         </Button>
