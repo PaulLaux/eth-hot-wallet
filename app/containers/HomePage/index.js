@@ -149,6 +149,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     return (
       <div>
         <Header />
+        <br /><br /><br /><br /><br />
         <h1>
           <FormattedMessage {...messages.header} />
         </h1>

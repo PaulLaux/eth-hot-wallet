@@ -35,11 +35,14 @@ import saga from './saga';
 import messages from './messages';
 import { loadNetwork, getExchangeRates } from './actions';
 
+import walletLogo from './hot-wallet.svg';
+
+
 import { Layout, Menu, Row, Col, Button, Icon } from 'antd';
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
 // const { Content, Footer } = Layout;
-//const dHeader = Layout.Header;
+// const dHeader = Layout.Header;
 
 function Header(props) {
   const { loading, error, networkName, blockNumber, availableNetworks, onLoadNetwork, onGetExchangeRates } = props;
@@ -53,30 +56,37 @@ function Header(props) {
   const networkSelectorProps = { networkName, availableNetworks, onLoadNetwork };
 
   // const { checkingBalanceDoneTime, checkingBalances, checkingBalancesError } = props;
+  let options;
+  if (availableNetworks) {
+    options = availableNetworks.map((network) =>
+      <Menu.Item key={network}>{network}</Menu.Item>
+    );
+  }
 
   return (
-    <header className="clearfix" style={{ transition: 'opacity 0.5s', background: '#fff', height: 80, marginBottom: 30, padding: '0 48px', width: '100%' }}>
+    <header className="clearfix" style={{ transition: 'opacity 0.5s', background: '#fff', height: 80, marginBottom: 30, padding: '0 52px', width: '100%', fontSize: 16 }}>
       <Row>
-        <Col lg={4} md={5} sm={24} xs={24}>
-          <div className="logo" style={{ float: 'left', height: 80, lineHeight: '80px' }} >
-            <img alt="logo" src="https://t.alipayobjects.com/images/rmsweb/T1B9hfXcdvXXXXXXXX.svg" style={{ height: 80, lineHeight: 80, width: 40, marginRight: 8 }} />
+        <Col lg={4} md={4} sm={10} xs={10}>
+          <div className="logo" style={{ float: 'left', height: '80px', lineHeight: '80px' }} >
+            <img alt="logo" src={walletLogo} style={{ height: 40, lineHeight: '80px', width: 40, marginRight: 10 }} />
             <FormattedMessage {...messages.header} style={{ float: 'right', fontSize: 28, height: 80, lineHeight: 80 }} />
           </div>
         </Col>
-        <Col lg={20} md={19} sm={0} xs={0}>
+        <Col lg={20} md={20} sm={14} xs={14}>
           <Menu
             mode="horizontal"
-            defaultSelectedKeys={['Network']}
+            defaultSelectedKeys={[networkName]}
             style={{ lineHeight: '78px', border: 0, float: 'right' }}
+            onClick={(evt) => onLoadNetwork(evt.key)}
           >
-              <SubMenu title="Network" key="1">
-                <MenuItemGroup title="Select ETH network">
-                  <Menu.Item key="setting:1">Option 1</Menu.Item>
-                  <Menu.Item key="setting:2">Option 2</Menu.Item>
-                </MenuItemGroup>
-              </SubMenu>
+            <SubMenu title={networkName} key="1">
+              <MenuItemGroup title="Select ETH network">
+                {options}
+              </MenuItemGroup>
+            </SubMenu>
           </Menu>
-          <Button shape="circle" icon="reload" style={{ float: 'right', marginTop: 25, marginLeft: 10 }} />
+          <Button loading={loading} shape="circle" icon="reload" style={{ float: 'right', marginTop: 25, marginLeft: 10 }} />
+          {error && error !== 'Offline Mode' ? <Icon type="close-circle-o" style={{ float: 'right', fontSize: 26, color: 'red', marginTop: 26, marginLeft: 10 }} /> : null}
         </Col>
       </Row>
       {/* <Content style={{ padding: '0 50px' }}>
