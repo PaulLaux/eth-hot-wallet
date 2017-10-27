@@ -79,7 +79,7 @@ function Header(props) {
             <Menu
               mode="horizontal"
               defaultSelectedKeys={[networkName]}
-              style={{ lineHeight: '78px', border: 0, textAlign: 'center' }}
+              style={{ lineHeight: '78px', border: 0, textAlign: 'center', zIndex: 1 }}
               onClick={(evt) => onLoadNetwork(evt.key)}
             >
               <SubMenu title={networkName} key="1">
