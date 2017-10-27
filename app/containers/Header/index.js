@@ -16,6 +16,8 @@ import injectReducer from 'utils/injectReducer';
 import NetworkLabel from 'components/NetworkLabel';
 import NetworkSelector from 'components/NetworkSelector';
 
+import NetworkIndicator from 'components/NetworkIndicator';
+
 // import { changeBalance } from 'containers/HomePage/actions';
 import { makeSelectAddressList } from 'containers/HomePage/selectors';
 
@@ -38,7 +40,7 @@ import { loadNetwork, getExchangeRates } from './actions';
 import walletLogo from './hot-wallet.svg';
 
 
-import { Layout, Menu, Row, Col, Button, Icon } from 'antd';
+import { Menu, Row, Col, Button, Icon } from 'antd';
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
 // const { Content, Footer } = Layout;
@@ -55,6 +57,13 @@ function Header(props) {
 
   const networkSelectorProps = { networkName, availableNetworks, onLoadNetwork };
 
+  const networkIndicatorProps = {
+    loading,
+    error,
+    // networkName,
+    blockNumber,
+  };
+
   // const { checkingBalanceDoneTime, checkingBalances, checkingBalancesError } = props;
   let options;
   if (availableNetworks) {
@@ -64,18 +73,17 @@ function Header(props) {
   }
 
   return (
-    <header className="clearfix" style={{ transition: 'opacity 0.5s', background: '#fff', height: 80, marginBottom: 30, padding: '0', width: '100%', fontSize: 16 }}>
-      <Row type="flex" align="middle" justify="space-between" style={{ backgroundColor: 'white' }}>
-        <Col md={{ span: 5, offset: 1 }} sm={6} xs={23}>
+    <header className="clearfix" style={{ transition: 'opacity 0.5s', marginBottom: 30, padding: '0', width: '100%', fontSize: 16 }}>
+      <Row type="flex" align="middle" justify="space-between" style={{ backgroundColor: '#fff' }}>
+        <Col md={{ span: 6, offset: 1 }} sm={6} xs={24}>
           <div className="logo" style={{ height: '80px', lineHeight: '80px', fontSize: 18 }} >
             <img alt="logo" src={walletLogo} style={{ height: 40, lineHeight: '80px', width: 40, marginRight: 10 }} />
             <FormattedMessage {...messages.header} style={{ float: 'right', height: 80, lineHeight: 80 }} />
           </div>
         </Col>
-        <Col md={{ span: 8, offset: 2 }} sm={{ span: 8, offset: 2 }} xs={22}>
+        <Col md={{ span: 8, offset: 2 }} sm={{ span: 8, offset: 2 }} xs={24}>
           <Row type="flex" align="middle" justify="center">
-            <Button loading={loading} shape="circle" icon="reload" style={{}} />
-            {error && error !== 'Offline Mode' ? <Icon type="close-circle-o" style={{ fontSize: 26, color: 'red' }} /> : null}
+            <NetworkIndicator {...networkIndicatorProps} />
             <Menu
               mode="horizontal"
               defaultSelectedKeys={[networkName]}
@@ -98,7 +106,7 @@ function Header(props) {
         Ant Design ©2016 Created by Ant UED
   </Footer> */}
 
-
+      <br />
       <NetworkLabel {...networkLabelProps} />
       <NetworkSelector {...networkSelectorProps} />
       <br />
