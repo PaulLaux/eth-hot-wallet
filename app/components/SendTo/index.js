@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 
 function SendTo({ to, onChangeTo, locked }) {
   const inputStyle = {
-    minWidth: 370,
+    minWidth: 270,
   };
 
   return (
