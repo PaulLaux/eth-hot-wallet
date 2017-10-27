@@ -64,31 +64,33 @@ function Header(props) {
   }
 
   return (
-    <header className="clearfix" style={{ transition: 'opacity 0.5s', background: '#fff', height: 80, marginBottom: 30, padding: '0 52px', width: '100%', fontSize: 16 }}>
-      <Row>
-        <Col lg={4} md={4} sm={10} xs={10}>
-          <div className="logo" style={{ float: 'left', height: '80px', lineHeight: '80px' }} >
+    <header className="clearfix" style={{ transition: 'opacity 0.5s', background: '#fff', height: 80, marginBottom: 30, padding: '0', width: '100%', fontSize: 16 }}>
+      <Row type="flex" align="middle" justify="space-between" style={{ backgroundColor: 'white' }}>
+        <Col md={{ span: 5, offset: 1 }} sm={6} xs={23}>
+          <div className="logo" style={{ height: '80px', lineHeight: '80px', fontSize: 18 }} >
             <img alt="logo" src={walletLogo} style={{ height: 40, lineHeight: '80px', width: 40, marginRight: 10 }} />
-            <FormattedMessage {...messages.header} style={{ float: 'right', fontSize: 28, height: 80, lineHeight: 80 }} />
+            <FormattedMessage {...messages.header} style={{ float: 'right', height: 80, lineHeight: 80 }} />
           </div>
         </Col>
-        <Col lg={20} md={20} sm={14} xs={14}>
-          <Menu
-            mode="horizontal"
-            defaultSelectedKeys={[networkName]}
-            style={{ lineHeight: '78px', border: 0, float: 'right' }}
-            onClick={(evt) => onLoadNetwork(evt.key)}
-          >
-            <SubMenu title={networkName} key="1">
-              <MenuItemGroup title="Select ETH network">
-                {options}
-              </MenuItemGroup>
-            </SubMenu>
-          </Menu>
-          <Button loading={loading} shape="circle" icon="reload" style={{ float: 'right', marginTop: 25, marginLeft: 10 }} />
-          {error && error !== 'Offline Mode' ? <Icon type="close-circle-o" style={{ float: 'right', fontSize: 26, color: 'red', marginTop: 26, marginLeft: 10 }} /> : null}
+        <Col md={{ span: 8, offset: 2 }} sm={{ span: 8, offset: 2 }} xs={22}>
+          <Row type="flex" align="middle" justify="center">
+            <Button loading={loading} shape="circle" icon="reload" style={{}} />
+            {error && error !== 'Offline Mode' ? <Icon type="close-circle-o" style={{ fontSize: 26, color: 'red' }} /> : null}
+            <Menu
+              mode="horizontal"
+              defaultSelectedKeys={[networkName]}
+              style={{ lineHeight: '78px', border: 0, textAlign: 'center' }}
+              onClick={(evt) => onLoadNetwork(evt.key)}
+            >
+              <SubMenu title={networkName} key="1">
+                <MenuItemGroup title="Select ETH network">
+                  {options}
+                </MenuItemGroup>
+              </SubMenu>
+            </Menu>
+          </Row>
         </Col>
-      </Row>
+      </Row >
       {/* <Content style={{ padding: '0 50px' }}>
         <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>Content</div>
       </Content>
