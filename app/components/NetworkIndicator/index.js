@@ -6,27 +6,36 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-// import styled from 'styled-components';
+import styled from 'styled-components';
 
-import { FormattedMessage } from 'react-intl';
-import { Icon } from 'antd';
+// import { FormattedMessage } from 'react-intl';
+import { Icon, Tooltip } from 'antd';
 
-import messages from './messages';
+// import messages from './messages';
+import { offlineModeString } from 'utils/constants';
+
+const Span = styled.span`
+  font-size: 26px;
+  min-width: 30px;
+`;
 
 function NetworkIndicator(props) {
-  const { loading, error, blockNumber } = props;
+  const { loading, error } = props;
   let component = null;
   if (loading) {
     component = <Icon type="loading" />;
   }
-  if (error && error !== 'Offline Mode') {
-    component = <Icon type="close-circle-o" style={{ color: 'red' }} />;
+  if (error && error !== offlineModeString) {
+    component =
+      (<Tooltip placement="bottom" title={error}>
+        <Icon type="close-circle-o" style={{ color: 'red' }} />
+      </Tooltip>);
   }
 
   return (
-    <span style={{ fontSize: 26, minWidth: 40 }}>
+    <Span>
       {component}
-    </span>
+    </Span>
   );
 }
 
@@ -37,7 +46,6 @@ NetworkIndicator.propTypes = {
     PropTypes.string,
     PropTypes.bool,
   ]),
-  blockNumber: PropTypes.number,
 };
 
 export default NetworkIndicator;

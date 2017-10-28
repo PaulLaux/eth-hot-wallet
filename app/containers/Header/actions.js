@@ -3,6 +3,8 @@
  * Header actions
  *
  */
+import { message } from 'antd';
+import { offlineModeString } from 'utils/constants';
 
 import {
   LOAD_NETWORK,
@@ -39,6 +41,7 @@ export function loadNetwork(networkName) {
  * @return {object}      An action object with a type of LOAD_NETWORK_SUCCESS passing the repos
  */
 export function loadNetworkSuccess(blockNumber) {
+  message.success(`Network loaded sucessfully, current block: ${blockNumber}`);
   return {
     type: LOAD_NETWORK_SUCCESS,
     blockNumber,
@@ -53,6 +56,9 @@ export function loadNetworkSuccess(blockNumber) {
  * @return {object} An action object with a type of LOAD_NETWORK_ERROR passing the error
  */
 export function loadNetworkError(error) {
+  if (error !== offlineModeString) {
+    message.error(error);
+  }
   return {
     type: LOAD_NETWORK_ERROR,
     error,
