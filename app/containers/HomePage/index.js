@@ -27,7 +27,7 @@ import RestoreWallet from 'components/RestoreWallet';
 
 /* Header: */
 import Header from 'containers/Header';
-import { loadNetwork, checkBalances } from 'containers/Header/actions';
+import { loadNetwork, checkBalances, getExchangeRates } from 'containers/Header/actions';
 import {
   makeSelectNetworkReady,
   makeSelectCheckingBalanceDoneTime,
@@ -115,6 +115,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       exchangeRates,
       onSelectCurrency,
       convertTo,
+      onGetExchangeRates,
     } = this.props;
 
     const seedViewProps = {
@@ -149,10 +150,6 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     return (
       <div>
         <Header />
-        <h1>
-          <FormattedMessage {...messages.header} />
-        </h1>
-        
         <Button type="primary" size="large" onClick={this.props.onInitSeed}>
           Generate wallet
         </Button>
@@ -166,6 +163,9 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
         <hr />
         <AddressView {...addressViewProps} />
         <br />
+        <button onClick={onGetExchangeRates}>
+          GetExchangeRates
+      </button>
         <hr />
         <SendTokenView {...{ sendToken }} />
       </div>
@@ -224,6 +224,7 @@ HomePage.propTypes = {
   exchangeRates: PropTypes.object,
   onSelectCurrency: PropTypes.func,
   convertTo: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  onGetExchangeRates: PropTypes.func,
 };
 
 export function mapDispatchToProps(dispatch) {
@@ -276,6 +277,10 @@ export function mapDispatchToProps(dispatch) {
     onSelectCurrency: (convertTo) => {
       // if (evt !== undefined && evt.preventDefault) evt.preventDefault();
       dispatch(selectCurrency(convertTo));
+    },
+    onGetExchangeRates: () => {
+      // if (evt !== undefined && evt.preventDefault) evt.preventDefault();
+      dispatch(getExchangeRates());
     },
   };
 }

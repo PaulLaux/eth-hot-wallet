@@ -7,15 +7,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
+// import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 import { Row, Col } from 'antd';
 
-import NetworkLabel from 'components/NetworkLabel';
-import NetworkSelector from 'components/NetworkSelector';
 
 import NetworkIndicator from 'components/NetworkIndicator';
 import Logo from 'components/Logo';
@@ -38,7 +36,7 @@ import {
 import reducer from './reducer';
 import saga from './saga';
 // import messages from './messages';
-import { loadNetwork, getExchangeRates } from './actions';
+import { loadNetwork } from './actions';
 
 const HeaderWrapped = styled.header`
   transition: opacity 0.5s;
@@ -49,7 +47,7 @@ const HeaderWrapped = styled.header`
 `;
 
 function Header(props) {
-  const { loading, error, networkName, blockNumber, availableNetworks, onLoadNetwork, onGetExchangeRates } = props;
+  const { loading, error, networkName, blockNumber, availableNetworks, onLoadNetwork } = props;
 
   const networkIndicatorProps = {
     loading,
@@ -84,18 +82,12 @@ function Header(props) {
       </Footer> */}
       {/* <NetworkLabel {...networkLabelProps} />
       <NetworkSelector {...networkSelectorProps} />*/}
-      <br />
-      <button onClick={onGetExchangeRates}>
-        GetExchangeRates
-      </button>
-      <hr />
     </HeaderWrapped >
   );
 }
 
 Header.propTypes = {
   onLoadNetwork: PropTypes.func.isRequired,
-  onGetExchangeRates: PropTypes.func.isRequired,
   // onCheckBalances: PropTypes.func.isRequired,
 
   loading: PropTypes.bool,
@@ -132,12 +124,7 @@ function mapDispatchToProps(dispatch) {
   return {
     onLoadNetwork: (name) => {
       // if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-      console.log(name);
       dispatch(loadNetwork(name));
-    },
-    onGetExchangeRates: () => {
-      // if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-      dispatch(getExchangeRates());
     },
   };
 }
