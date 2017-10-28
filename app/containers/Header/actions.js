@@ -41,7 +41,7 @@ export function loadNetwork(networkName) {
  * @return {object}      An action object with a type of LOAD_NETWORK_SUCCESS passing the repos
  */
 export function loadNetworkSuccess(blockNumber) {
-  message.success(`Network loaded sucessfully, current block: ${blockNumber}`);
+  message.success(`Conencted sucessfully, current block: ${blockNumber}`);
   return {
     type: LOAD_NETWORK_SUCCESS,
     blockNumber,
