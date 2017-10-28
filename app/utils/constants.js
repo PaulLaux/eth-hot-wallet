@@ -21,3 +21,7 @@ export const maxGasForSendEth = 25000;
 export const Ether = (1.0e18).toString();
 export const Gwei = (1.0e9).toString();
 
+/*
+    offline mode is special case of error
+*/
+export const offlineModeString = 'Offline Mode';

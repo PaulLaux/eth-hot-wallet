@@ -119,7 +119,7 @@ export function* genKeystore() {
     ks.generateNewAddress(pwDerivedKey, 2);
 
     yield put(generateKeystoreSuccess(ks));
-    yield put(loadNetwork('Local_RPC'));
+    yield put(loadNetwork('Local RPC'));
   } catch (err) {
     const errorString = `genKeystore error - ${err}`;
     yield put(generateKeystoreError(errorString));

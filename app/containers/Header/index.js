@@ -3,20 +3,23 @@
  * Header
  *
  */
-
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
+import { Row, Col } from 'antd';
 
 import NetworkLabel from 'components/NetworkLabel';
 import NetworkSelector from 'components/NetworkSelector';
 
 import NetworkIndicator from 'components/NetworkIndicator';
+import Logo from 'components/Logo';
+import NetworkMenu from 'components/NetworkMenu';
 
 // import { changeBalance } from 'containers/HomePage/actions';
 import { makeSelectAddressList } from 'containers/HomePage/selectors';
@@ -28,74 +31,48 @@ import {
   makeSelectNetworkName,
   makeSelectBlockNumber,
   makeSelectAvailableNetworks,
-  /*makeSelectCheckingBalanceDoneTime,
+  /* makeSelectCheckingBalanceDoneTime,
   makeSelectCheckingBalances,
-  makeSelectCheckingBalancesError,*/
+  makeSelectCheckingBalancesError, */
 } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import messages from './messages';
+// import messages from './messages';
 import { loadNetwork, getExchangeRates } from './actions';
 
-import walletLogo from './hot-wallet.svg';
-
-
-import { Menu, Row, Col, Button, Icon } from 'antd';
-const SubMenu = Menu.SubMenu;
-const MenuItemGroup = Menu.ItemGroup;
-// const { Content, Footer } = Layout;
-// const dHeader = Layout.Header;
+const HeaderWrapped = styled.header`
+  transition: opacity 0.5s;
+  margin-bottom: 30px;
+  padding: 0;
+  width: 100%;
+  font-size: 16px;
+`;
 
 function Header(props) {
   const { loading, error, networkName, blockNumber, availableNetworks, onLoadNetwork, onGetExchangeRates } = props;
-  const networkLabelProps = {
-    loading,
-    error,
-    networkName,
-    blockNumber,
-  };
-
-  const networkSelectorProps = { networkName, availableNetworks, onLoadNetwork };
 
   const networkIndicatorProps = {
     loading,
     error,
-    // networkName,
     blockNumber,
   };
 
-  // const { checkingBalanceDoneTime, checkingBalances, checkingBalancesError } = props;
-  let options;
-  if (availableNetworks) {
-    options = availableNetworks.map((network) =>
-      <Menu.Item key={network}>{network}</Menu.Item>
-    );
-  }
+  const networkMenuProps = {
+    availableNetworks,
+    networkName,
+    onLoadNetwork,
+  };
 
   return (
-    <header className="clearfix" style={{ transition: 'opacity 0.5s', marginBottom: 30, padding: '0', width: '100%', fontSize: 16 }}>
+    <HeaderWrapped className="clearfix">
       <Row type="flex" align="middle" justify="space-between" style={{ backgroundColor: '#fff' }}>
-        <Col md={{ span: 6, offset: 1 }} sm={6} xs={24}>
-          <div className="logo" style={{ height: '80px', lineHeight: '80px', fontSize: 18 }} >
-            <img alt="logo" src={walletLogo} style={{ height: 40, lineHeight: '80px', width: 40, marginRight: 10 }} />
-            <FormattedMessage {...messages.header} style={{ float: 'right', height: 80, lineHeight: 80 }} />
-          </div>
+        <Col sm={{ span: 6, offset: 1 }} xs={24}>
+          <Logo />
         </Col>
-        <Col md={{ span: 8, offset: 2 }} sm={{ span: 8, offset: 2 }} xs={24}>
+        <Col sm={{ span: 8, offset: 2 }} xs={24}>
           <Row type="flex" align="middle" justify="center">
             <NetworkIndicator {...networkIndicatorProps} />
-            <Menu
-              mode="horizontal"
-              defaultSelectedKeys={[networkName]}
-              style={{ lineHeight: '78px', border: 0, textAlign: 'center', zIndex: 1 }}
-              onClick={(evt) => onLoadNetwork(evt.key)}
-            >
-              <SubMenu title={networkName} key="1">
-                <MenuItemGroup title="Select ETH network">
-                  {options}
-                </MenuItemGroup>
-              </SubMenu>
-            </Menu>
+            <NetworkMenu {...networkMenuProps} />
           </Row>
         </Col>
       </Row >
@@ -104,17 +81,15 @@ function Header(props) {
       </Content>
       <Footer style={{ textAlign: 'center' }}>
         Ant Design ©2016 Created by Ant UED
-  </Footer> */}
-
-      <br />
-      <NetworkLabel {...networkLabelProps} />
-      <NetworkSelector {...networkSelectorProps} />
+      </Footer> */}
+      {/* <NetworkLabel {...networkLabelProps} />
+      <NetworkSelector {...networkSelectorProps} />*/}
       <br />
       <button onClick={onGetExchangeRates}>
         GetExchangeRates
       </button>
       <hr />
-    </header >
+    </HeaderWrapped >
   );
 }
 

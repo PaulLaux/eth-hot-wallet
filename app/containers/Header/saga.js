@@ -7,7 +7,6 @@ import { makeSelectKeystore, makeSelectAddressList } from 'containers/HomePage/s
 import { changeBalance, setExchangeRates } from 'containers/HomePage/actions';
 import request from 'utils/request';
 
-
 import {
   confirmSendTransactionSuccess,
   confirmSendTransactionError,
@@ -48,8 +47,7 @@ import {
 
 import Network from './network';
 
-import { timeBetweenCheckbalances, Ether, Gwei, maxGasForSendEth } from 'utils/constants';
-
+import { timeBetweenCheckbalances, Ether, Gwei, maxGasForSendEth, offlineModeString } from 'utils/constants';
 // time in ms between checks
 // const timeBetweenCheckbalances = 60000;
 
@@ -79,7 +77,7 @@ export function* loadNetwork(action) {
 
     if (action.networkName === 'Offline') {
       web3.setProvider(null);
-      yield put(loadNetworkError('Offline Mode'));
+      yield put(loadNetworkError(offlineModeString));
       return;
     }
 
