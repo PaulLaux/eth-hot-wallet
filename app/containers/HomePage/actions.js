@@ -16,6 +16,11 @@
  */
 import extractRates from 'utils/unitConverter';
 import {
+  GENERATE_WALLET,
+  GENERATE_WALLET_SUCCESS,
+  GENERATE_WALLET_ERROR,
+  GENERATE_WALLET_CANCEL,
+
   INIT_SEED,
   INIT_SEED_SUCCESS,
   INIT_SEED_ERROR,
@@ -47,8 +52,59 @@ import {
   SELECT_CURRENCY,
 } from './constants';
 
-// import { makeSelectAddresses } from './selectors'; 
-// import lightwallet from 'eth-lightwallet';
+
+/* ********************************Generate Wallet ******************************* */
+
+/**
+ * Open generate wallet modal and generate new random seed and password
+ *
+ * @return {object}    An action object with a type of GENERATE_WALLET
+ */
+export function generateWallet() {
+  return {
+    type: GENERATE_WALLET,
+  };
+}
+/**
+ * New Seed and password genetated successfully
+ *
+ * @param  {string} seed
+ * @param  {string} password The current username
+ *
+ * @return {object}      An action object with a type of GENERATE_WALLET_SUCCESS passing the repos
+ */
+export function generateWalletSucces(seed, password) {
+  return {
+    type: GENERATE_WALLET_SUCCESS,
+    seed,
+    password,
+  };
+}
+/**
+ * Dispatched when generating the seed / password fails
+ *
+ * @param  {object} error The error
+ *
+ * @return {object} An action object with a type of GENERATE_WALLET_ERROR passing the error
+ */
+export function generateWalletError(error) {
+  return {
+    type: GENERATE_WALLET_ERROR,
+    error,
+  };
+}
+/**
+ * Generate wallet is canceled by user
+ *
+ * @return {object}    An action object with a type of GENERATE_WALLET_CANCEL
+ */
+export function generateWalletCancel() {
+  return {
+    type: GENERATE_WALLET_CANCEL,
+  };
+}
+
+/* **********************************************Init Seed ************************* */
 
 /**
  * Init seed - this action starts the * saga

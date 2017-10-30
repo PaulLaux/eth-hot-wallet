@@ -12,18 +12,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { FormattedMessage } from 'react-intl';
+// import { FormattedMessage } from 'react-intl';
 
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 
+import { Button } from 'antd';
 
 /* Components:  */
 import SeedView from 'components/SeedView';
 import AddressView from 'components/AddressView';
 import SendTokenView from 'components/SendTokenView';
 import RestoreWallet from 'components/RestoreWallet';
+import GenerateWalletModal from 'components/GenerateWalletModal';
 
 /* Header: */
 import Header from 'containers/Header';
@@ -43,13 +45,13 @@ import injectReducer from 'utils/injectReducer';
 import injectSaga from 'utils/injectSaga';
 import reducer from './reducer';
 import saga from './saga';
-import messages from './messages';
+// import messages from './messages';
 
-
-import { Button } from 'antd';
 
 /* HomePage */
 import {
+  generateWallet,
+  generateWalletCancel,
   initSeed,
   showRestoreWallet,
   generateKeystore,
@@ -63,6 +65,9 @@ import {
 } from './actions';
 
 import {
+  makeSelectIsShowGenerateWallet,
+  makeSelectGenerateWalletLoading,
+  makeSelectGenerateWalletError,
   makeSelectSeed,
   makeSelectLoading,
   makeSelectError,
@@ -84,6 +89,12 @@ import {
 export class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   render() {
     const {
+      onGenerateWallet,
+      onGenerateWalletCancel,
+      isShowGenerateWallet,
+      generateWalletLoading,
+      generateWalletError,
+
       loading,
       error,
       seed,
@@ -125,6 +136,20 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       password,
       onGenerateKeystore,
     };
+
+    const generateWalletProps = {
+      isShowGenerateWallet,
+      generateWalletLoading,
+      generateWalletError,
+
+      seed,
+      password,
+
+      onGenerateWallet,
+      onGenerateWalletCancel,
+      onGenerateKeystore,
+    };
+
     const restoreWalletProps = { isShowRestoreWallet, userSeed, onChangeUserSeed, onRestoreWalletFromSeed };
 
     const addressViewProps = {
@@ -150,13 +175,15 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     return (
       <div>
         <Header />
-        <Button type="primary" size="large" onClick={this.props.onInitSeed}>
+        <Button type="primary" size="large" onClick={onGenerateWallet}>
           Generate wallet
         </Button>
         {' '}
         <Button type="default" size="large" onClick={this.props.onShowRestoreWallet}>
           Restore wallet
         </Button>
+
+        <GenerateWalletModal {...generateWalletProps} />
 
         <RestoreWallet {...restoreWalletProps} />
         <SeedView {...seedViewProps} />
@@ -174,12 +201,16 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
 }
 
 HomePage.propTypes = {
-  loading: PropTypes.bool,
-  error: PropTypes.oneOfType([
+  onGenerateWallet: PropTypes.func,
+  onGenerateWalletCancel: PropTypes.func,
+  isShowGenerateWallet: PropTypes.bool,
+  generateWalletLoading: PropTypes.bool,
+  generateWalletError: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.string,
     PropTypes.bool,
   ]),
+
   seed: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.bool,
@@ -189,7 +220,14 @@ HomePage.propTypes = {
     PropTypes.bool,
   ]),
 
-  onInitSeed: PropTypes.func,
+  loading: PropTypes.bool,
+  error: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.string,
+    PropTypes.bool,
+  ]),
+
+  // onInitSeed: PropTypes.func,
   onGenerateKeystore: PropTypes.func,
   onGenerateAddress: PropTypes.func,
   onShowRestoreWallet: PropTypes.func,
@@ -229,6 +267,14 @@ HomePage.propTypes = {
 
 export function mapDispatchToProps(dispatch) {
   return {
+    onGenerateWallet: (evt) => {
+      if (evt !== undefined && evt.preventDefault) evt.preventDefault();
+      dispatch(generateWallet());
+    },
+    onGenerateWalletCancel: (evt) => {
+      if (evt !== undefined && evt.preventDefault) evt.preventDefault();
+      dispatch(generateWalletCancel());
+    },
     onInitSeed: (evt) => {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
       dispatch(initSeed());
@@ -286,6 +332,10 @@ export function mapDispatchToProps(dispatch) {
 }
 
 const mapStateToProps = createStructuredSelector({
+  isShowGenerateWallet: makeSelectIsShowGenerateWallet(),
+  generateWalletLoading: makeSelectGenerateWalletLoading(),
+  generateWalletError: makeSelectGenerateWalletError(),
+
   seed: makeSelectSeed(),
   password: makeSelectPassword(),
   loading: makeSelectLoading(),

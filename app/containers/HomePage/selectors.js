@@ -7,6 +7,22 @@ import { createSelector } from 'reselect';
 const selectHome = (state) => state.get('home');
 
 
+const makeSelectIsShowGenerateWallet = () => createSelector(
+  selectHome,
+  (homeState) => homeState.get('isShowGenerateWallet')
+);
+
+const makeSelectGenerateWalletLoading = () => createSelector(
+  selectHome,
+  (homeState) => homeState.get('generateWalletLoading')
+);
+
+const makeSelectGenerateWalletError = () => createSelector(
+  selectHome,
+  (homeState) => homeState.get('generateWalletError')
+);
+
+
 const makeSelectLoading = () => createSelector(
   selectHome,
   (homeState) => homeState.get('loading')
@@ -81,6 +97,9 @@ const makeSelectConvertTo = () => createSelector(
 
 export {
   selectHome,
+  makeSelectIsShowGenerateWallet,
+  makeSelectGenerateWalletLoading,
+  makeSelectGenerateWalletError,
   makeSelectLoading,
   makeSelectError,
   makeSelectSeed,

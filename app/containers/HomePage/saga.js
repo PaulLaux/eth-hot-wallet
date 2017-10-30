@@ -5,7 +5,7 @@ import lightwallet from 'eth-lightwallet';
 
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 
-import { INIT_SEED, GENERATE_KEYSTORE, RESTORE_WALLET_FROM_SEED, GENERATE_ADDRESS, UNLOCK_WALLET } from 'containers/HomePage/constants';
+import { GENERATE_WALLET, INIT_SEED, GENERATE_KEYSTORE, RESTORE_WALLET_FROM_SEED, GENERATE_ADDRESS, UNLOCK_WALLET } from 'containers/HomePage/constants';
 
 import { makeSelectPassword, makeSelectSeed, makeSelectUserSeed, makeSelectKeystore } from 'containers/HomePage/selectors';
 
@@ -15,6 +15,8 @@ import generateString from 'utils/crypto';
 import { generatedPasswordLength, hdPathString } from 'utils/constants';
 
 import {
+  generateWalletSucces,
+  generateWalletError,
   seedInitilized,
   initSeedError,
   generateKeystoreSuccess,
@@ -50,6 +52,22 @@ function createVaultPromise(param) {
 /**
  * Create new seed and password
  */
+export function* generateWallet() {
+  try {
+    const password = generateString(generatedPasswordLength);
+    const extraEntropy = generateString(generatedPasswordLength);
+    const seed = lightwallet.keystore.generateRandomSeed(extraEntropy);
+
+    yield put(generateWalletSucces(seed, password));
+  } catch (err) {
+    yield put(generateWalletError(err));
+  }
+}
+
+/**
+ * Create new seed and password
+ */
+/*
 export function* initSeed() {
   try {
     const password = generateString(generatedPasswordLength);
@@ -60,7 +78,7 @@ export function* initSeed() {
   } catch (err) {
     yield put(initSeedError(err));
   }
-}
+} */
 
 /**
  * check seed given by user
@@ -244,7 +262,9 @@ export default function* walletData() {
   // By using `takeLatest` only the result of the latest API call is applied.
   // It returns task descriptor (just like fork) so we can continue execution
   // It will be cancelled automatically on component unmount
-  yield takeLatest(INIT_SEED, initSeed);
+
+  // yield takeLatest(INIT_SEED, initSeed);
+  yield takeLatest(GENERATE_WALLET, generateWallet);
   yield takeLatest(GENERATE_KEYSTORE, genKeystore);
   yield takeLatest(GENERATE_ADDRESS, generateAddress);
   yield takeLatest(RESTORE_WALLET_FROM_SEED, restoreFromSeed);

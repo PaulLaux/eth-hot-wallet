@@ -12,6 +12,11 @@
 import { fromJS } from 'immutable';
 
 import {
+  GENERATE_WALLET,
+  GENERATE_WALLET_SUCCESS,
+  GENERATE_WALLET_ERROR,
+  GENERATE_WALLET_CANCEL,
+
   INIT_SEED,
   INIT_SEED_SUCCESS,
   INIT_SEED_ERROR,
@@ -43,20 +48,23 @@ import {
 
 // The initial state of the App
 const initialState = fromJS({
+  isShowGenerateWallet: false,
+  generateWalletLoading: false,
+  generateWalletError: false,
+
   loading: false,
   error: false,  // if error - no addressList displayed
 
   isShowRestoreWallet: false,
   userSeed: '',
 
-  isComfirmed: false, // if true then we have a valid keystore
-
   password: false,
   seed: false,
 
+  isComfirmed: false, // if true then we have a valid keystore
+
   keystore: false,
   addressList: false,
-
   /*
   addressList: {
     address1: {
@@ -80,6 +88,29 @@ const initialState = fromJS({
 
 function homeReducer(state = initialState, action) {
   switch (action.type) {
+
+    case GENERATE_WALLET:
+      return state
+        .set('isShowGenerateWallet', true)
+        .set('generateWalletLoading', true)
+        .set('generateWalletError', false);
+    case GENERATE_WALLET_SUCCESS:
+      return state
+        .set('generateWalletLoading', false)
+        .set('seed', action.seed)
+        .set('password', action.password);
+    case GENERATE_WALLET_ERROR:
+      return state
+        .set('loading', false)
+        .set('generateWalletError', action.error);
+    case GENERATE_WALLET_CANCEL:
+      return state
+        .set('isShowGenerateWallet', false)
+        .set('generateWalletLoading', true)
+        .set('generateWalletError', false)
+        .set('password', false)
+        .set('seed', false);
+
     case INIT_SEED:
       return state
         .set('loading', true)
