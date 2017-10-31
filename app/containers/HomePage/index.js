@@ -69,8 +69,8 @@ import {
   makeSelectGenerateWalletLoading,
   makeSelectGenerateWalletError,
   makeSelectSeed,
-  makeSelectLoading,
-  makeSelectError,
+  makeSelectGenerateKeystoreLoading,
+  makeSelectGenerateKeystoreError,
   makeSelectPassword,
   makeSelectIsComfirmed,
   makeSelectUserSeed,
@@ -95,8 +95,8 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       generateWalletLoading,
       generateWalletError,
 
-      loading,
-      error,
+      generateKeystoreLoading,
+      generateKeystoreError,
       seed,
       password,
       onGenerateKeystore,
@@ -129,13 +129,14 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       onGetExchangeRates,
     } = this.props;
 
+    /*
     const seedViewProps = {
       loading,
       error,
       seed,
       password,
       onGenerateKeystore,
-    };
+    }; */
 
     const generateWalletProps = {
       isShowGenerateWallet,
@@ -153,6 +154,8 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     const restoreWalletProps = { isShowRestoreWallet, userSeed, onChangeUserSeed, onRestoreWalletFromSeed };
 
     const addressViewProps = {
+      generateKeystoreLoading,
+      generateKeystoreError,
       isComfirmed,
       addressList,
       onChangeFrom,
@@ -186,7 +189,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
         <GenerateWalletModal {...generateWalletProps} />
 
         <RestoreWallet {...restoreWalletProps} />
-        <SeedView {...seedViewProps} />
+        {/* <SeedView {...seedViewProps} /> */}
         <hr />
         <AddressView {...addressViewProps} />
         <br />
@@ -210,7 +213,6 @@ HomePage.propTypes = {
     PropTypes.string,
     PropTypes.bool,
   ]),
-
   seed: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.bool,
@@ -220,8 +222,8 @@ HomePage.propTypes = {
     PropTypes.bool,
   ]),
 
-  loading: PropTypes.bool,
-  error: PropTypes.oneOfType([
+  generateKeystoreLoading: PropTypes.bool,
+  generateKeystoreError: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.string,
     PropTypes.bool,
@@ -335,11 +337,11 @@ const mapStateToProps = createStructuredSelector({
   isShowGenerateWallet: makeSelectIsShowGenerateWallet(),
   generateWalletLoading: makeSelectGenerateWalletLoading(),
   generateWalletError: makeSelectGenerateWalletError(),
-
   seed: makeSelectSeed(),
   password: makeSelectPassword(),
-  loading: makeSelectLoading(),
-  error: makeSelectError(),
+
+  generateKeystoreLoading: makeSelectGenerateKeystoreLoading(),
+  generateKeystoreError: makeSelectGenerateKeystoreError(),
   isComfirmed: makeSelectIsComfirmed(),
   addressList: makeSelectAddressList(),
   // keystore: makeSelectKeystore(),

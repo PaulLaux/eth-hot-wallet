@@ -10,20 +10,26 @@ import PropTypes from 'prop-types';
 import { Modal, Button } from 'antd';
 
 function GenerateWalletModal(props) {
-  const { isShowGenerateWallet, generateWalletLoading, generateWalletError, seed, password, onGenerateWallet, onGenerateWalletCancel, onGenerateKeystore } = props;
+  const {
+    isShowGenerateWallet,
+    generateWalletLoading,
+    generateWalletError,
+    seed,
+    password,
+
+    onGenerateWallet,
+    onGenerateWalletCancel,
+    onGenerateKeystore,
+    } = props;
 
   return (
     <Modal
       visible={isShowGenerateWallet}
-      title="Generate New Wallet"
+      title="New Wallet"
       onOk={onGenerateWalletCancel}
       onCancel={onGenerateWalletCancel}
       footer={[
-        <Button key="back" size="large" onClick={onGenerateWalletCancel}>
-          Return
-        </Button>,
-
-        <Button key="submit" type="primary" size="large" onClick={onGenerateWalletCancel}>
+        <Button key="submit" type="primary" size="large" onClick={onGenerateKeystore}>
           Submit
         </Button>,
       ]}
@@ -31,7 +37,7 @@ function GenerateWalletModal(props) {
       <p>{seed}</p>
       <p>{password}</p>
       <Button key="back" size="large" onClick={onGenerateWallet}>
-          Regenerate
+        RE
       </Button>
     </Modal>
   );
@@ -50,6 +56,12 @@ GenerateWalletModal.propTypes = {
     PropTypes.bool,
   ]),
   password: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.bool,
+  ]),
+  generateKeystoreLoading: PropTypes.bool,
+  generateKeystoreError: PropTypes.oneOfType([
+    PropTypes.object,
     PropTypes.string,
     PropTypes.bool,
   ]),

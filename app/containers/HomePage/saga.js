@@ -38,16 +38,6 @@ function promisify(func, param) {
   });
 } */
 
-/* keyStore.createVault({password: password,
-    seedPhrase: '(opt)seed',entropy: '(opt)additional entropy',salt: '(opt)'}, function (err, ks) {}); */
-function createVaultPromise(param) {
-  return new Promise((resolve, reject) => {
-    lightwallet.keystore.createVault(param, (err, data) => {
-      if (err !== null) return reject(err);
-      return resolve(data);
-    });
-  });
-}
 
 /**
  * Create new seed and password
@@ -102,7 +92,16 @@ export function* restoreFromSeed() {
   }
 }
 
-
+/* keyStore.createVault({password: password,
+    seedPhrase: '(opt)seed',entropy: '(opt)additional entropy',salt: '(opt)'}, function (err, ks) {}); */
+function createVaultPromise(param) {
+  return new Promise((resolve, reject) => {
+    lightwallet.keystore.createVault(param, (err, data) => {
+      if (err !== null) return reject(err);
+      return resolve(data);
+    });
+  });
+}
 /**
  * Create new keystore and generate some addreses
  */
@@ -116,8 +115,9 @@ export function* genKeystore() {
       hdPathString,  // The light-wallet default is `m/0'/0'/0'`.
     };
 
-    const ks = yield call(createVaultPromise, opt);
+    yield call(() => { return new Promise((resolve) => setTimeout(() => resolve('timer end'), 150)); });
 
+    const ks = yield call(createVaultPromise, opt);
     function keyFromPasswordPromise(param) { // eslint-disable-line no-inner-declarations
       return new Promise((resolve, reject) => {
         ks.keyFromPassword(param, (err, data) => {
@@ -273,5 +273,5 @@ export default function* walletData() {
   /*
   while (yield takeLatest(INIT_WALLET, initSeed)) {
     // yield takeLatest(GENERATE_KEYSTORE, genKeystore);
-  }*/
+  } */
 }

@@ -49,17 +49,16 @@ import {
 // The initial state of the App
 const initialState = fromJS({
   isShowGenerateWallet: false,
-  generateWalletLoading: false,
+  generateWalletLoading: false,  // generate new seed and password
   generateWalletError: false,
+  password: false,
+  seed: false,
 
-  loading: false,
-  error: false,  // if error - no addressList displayed
+  generateKeystoreLoading: false,
+  generateKeystoreError: false,  // if error - no addressList displayed
 
   isShowRestoreWallet: false,
   userSeed: '',
-
-  password: false,
-  seed: false,
 
   isComfirmed: false, // if true then we have a valid keystore
 
@@ -101,7 +100,7 @@ function homeReducer(state = initialState, action) {
         .set('password', action.password);
     case GENERATE_WALLET_ERROR:
       return state
-        .set('loading', false)
+        .set('generateWalletLoading', false)
         .set('generateWalletError', action.error);
     case GENERATE_WALLET_CANCEL:
       return state
@@ -111,6 +110,25 @@ function homeReducer(state = initialState, action) {
         .set('password', false)
         .set('seed', false);
 
+    case GENERATE_KEYSTORE:
+      return state
+        .set('isShowGenerateWallet', false)
+        .set('generateKeystoreLoading', true)
+        .set('generateKeystoreError', false);
+    case GENERATE_KEYSTORE_SUCCESS:
+      return state
+        .set('keystore', action.keystore)
+        .set('seed', false)
+        .set('isComfirmed', true)
+        .set('addressListError', false)
+        .set('addressList', fromJS(action.addressList))
+        .set('generateKeystoreLoading', false);
+    case GENERATE_KEYSTORE_ERROR:
+      return state
+        .set('generateKeystoreLoading', false)
+        .set('generateKeystoreError', action.error);
+
+    /*
     case INIT_SEED:
       return state
         .set('loading', true)
@@ -126,6 +144,7 @@ function homeReducer(state = initialState, action) {
       return state
         .set('loading', false)
         .set('error', action.error);
+    */
 
     case SHOW_RESTORE_WALLET:
       return state
@@ -144,22 +163,6 @@ function homeReducer(state = initialState, action) {
       return state
         .set('error', action.error);
 
-    case GENERATE_KEYSTORE:
-      return state
-        .set('loading', true)
-        .set('error', false);
-    case GENERATE_KEYSTORE_SUCCESS:
-      return state
-        .set('loading', false)
-        .set('keystore', action.keystore)
-        .set('seed', false)
-        .set('isComfirmed', true)
-        .set('addressListError', false)
-        .set('addressList', fromJS(action.addressList));
-    case GENERATE_KEYSTORE_ERROR:
-      return state
-        .set('loading', false)
-        .set('error', action.error);
 
     case CHANGE_BALANCE:
       return state
@@ -171,7 +174,6 @@ function homeReducer(state = initialState, action) {
     case HIDE_SEND_TOKEN:
       return state
         .set('sendToken', false);
-
 
     case GENERATE_ADDRESS:
       return state

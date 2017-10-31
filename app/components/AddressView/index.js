@@ -6,6 +6,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Spin } from 'antd';
 // import styled from 'styled-components';
 
 import AddressList from 'components/AddressList';
@@ -18,6 +19,7 @@ import messages from './messages';
 
 function AddressView(props) {
   const {
+    generateKeystoreLoading, generateKeystoreError,
     isComfirmed,
     addressList, onChangeFrom, onCheckBalances,
     onGenerateAddress,
@@ -35,38 +37,48 @@ function AddressView(props) {
 
   if (isComfirmed) {
     return (
-      <div>
-        <CurrencySelector {...currencySelectorProps} />
-        <AddressList {...addressListProps} />
-        <button type="button" onClick={onCheckBalances} disabled={!networkReady}>
-          Check balances
+      <Spin spinning={generateKeystoreLoading} style={{ position: 'static' }}>
+        <div >
+          <CurrencySelector {...currencySelectorProps} />
+          <AddressList {...addressListProps} />
+          <button type="button" onClick={onCheckBalances} disabled={!networkReady}>
+            Check balances
         </button>
-        <br />
-        <CheckBalancesStatus {...checkBalancesStatusProps} />
+          <br />
+          <CheckBalancesStatus {...checkBalancesStatusProps} />
 
-        <button type="button" onClick={onGenerateAddress}>
-          Generate new address
+          <button type="button" onClick={onGenerateAddress}>
+            Generate new address
         </button>{' '}
-        <button type="button" onClick={onLockWallet}>
-          Lock Wallet
+          <button type="button" onClick={onLockWallet}>
+            Lock Wallet
         </button>{' '}
-        <button type="button" onClick={onUnlockWallet}>
-          Unlock Wallet
+          <button type="button" onClick={onUnlockWallet}>
+            Unlock Wallet
         </button>
-        <AddressListStatus {...addressListStatusProps} />
-      </div>
+          <AddressListStatus {...addressListStatusProps} />
+        </div>
+      </Spin>
     );
   }
 
   return (
-    <div>
-      <FormattedMessage {...messages.header} />
-      Seed is not confirmed
+    <Spin spinning={generateKeystoreLoading} style={{ position: 'static' }}>
+      <div style={{ minHeight: 50 }}>
+        <FormattedMessage {...messages.header} />
+        Seed is not confirmed
     </div>
+    </Spin>
   );
 }
 
 AddressView.propTypes = {
+  generateKeystoreLoading: PropTypes.bool,
+  generateKeystoreError: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.string,
+    PropTypes.bool,
+  ]),
   isComfirmed: PropTypes.bool,
   addressList: PropTypes.oneOfType([
     PropTypes.object,
