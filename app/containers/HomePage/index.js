@@ -178,8 +178,9 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     return (
       <div>
         <Header />
+
         <Button type="primary" size="large" onClick={onGenerateWallet}>
-          Generate wallet
+          New wallet
         </Button>
         {' '}
         <Button type="default" size="large" onClick={this.props.onShowRestoreWallet}>
@@ -190,12 +191,12 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
 
         <RestoreWallet {...restoreWalletProps} />
         {/* <SeedView {...seedViewProps} /> */}
-        <hr />
+
         <AddressView {...addressViewProps} />
-        <br />
+        <br /> <hr />
         <button onClick={onGetExchangeRates}>
           GetExchangeRates
-      </button>
+        </button>
         <hr />
         <SendTokenView {...{ sendToken }} />
       </div>

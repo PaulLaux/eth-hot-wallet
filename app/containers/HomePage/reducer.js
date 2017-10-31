@@ -126,7 +126,8 @@ function homeReducer(state = initialState, action) {
     case GENERATE_KEYSTORE_ERROR:
       return state
         .set('generateKeystoreLoading', false)
-        .set('generateKeystoreError', action.error);
+        .set('generateKeystoreError', action.error)
+        .set('isComfirmed', false);
 
     /*
     case INIT_SEED:

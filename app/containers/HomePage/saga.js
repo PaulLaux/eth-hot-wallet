@@ -115,6 +115,8 @@ export function* genKeystore() {
       hdPathString,  // The light-wallet default is `m/0'/0'/0'`.
     };
 
+    //throw Error('Wallet Locked');
+    // allow time to render components before cpu intensive tasks:
     yield call(() => { return new Promise((resolve) => setTimeout(() => resolve('timer end'), 150)); });
 
     const ks = yield call(createVaultPromise, opt);

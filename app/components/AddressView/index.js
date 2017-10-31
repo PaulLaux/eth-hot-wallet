@@ -6,16 +6,27 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Spin } from 'antd';
-// import styled from 'styled-components';
+import { Spin, Alert } from 'antd';
+import styled from 'styled-components';
 
 import AddressList from 'components/AddressList';
 import AddressListStatus from 'components/AddressListStatus';
 import CheckBalancesStatus from 'components/CheckBalancesStatus';
 import CurrencySelector from 'components/CurrencySelector';
 
+/*
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
+*/
+
+const Div = styled.div`
+  padding: 30px;
+  min-height: 100px;
+`;
+
+const Span = styled.span`
+  font-size: 22px;
+`;
 
 function AddressView(props) {
   const {
@@ -32,42 +43,55 @@ function AddressView(props) {
   const addressListProps = { addressList, onChangeFrom, onCheckBalances, exchangeRates, convertTo };
   const checkBalancesStatusProps = { checkingBalanceDoneTime, checkingBalances, checkingBalancesError };
   const addressListStatusProps = { addressListLoading, addressListError, addressListMsg };
-
   const currencySelectorProps = { exchangeRates, onSelectCurrency, convertTo };
 
-  if (isComfirmed) {
-    return (
-      <Spin spinning={generateKeystoreLoading} style={{ position: 'static' }}>
-        <div >
-          <CurrencySelector {...currencySelectorProps} />
-          <AddressList {...addressListProps} />
-          <button type="button" onClick={onCheckBalances} disabled={!networkReady}>
-            Check balances
-        </button>
-          <br />
-          <CheckBalancesStatus {...checkBalancesStatusProps} />
+  let addressViewContent = (
+    <Div>
+      {generateKeystoreError ?
+        <Alert
+          message="Generate Keystore Error"
+          description={generateKeystoreError}
+          type="error"
+          showIcon
+        />
+        :
+        <Span>Wellcome to ETH Hot Wallet <br />To begin create or restore wallet</Span>}
+    </Div>
+  );
 
-          <button type="button" onClick={onGenerateAddress}>
-            Generate new address
-        </button>{' '}
-          <button type="button" onClick={onLockWallet}>
-            Lock Wallet
-        </button>{' '}
-          <button type="button" onClick={onUnlockWallet}>
-            Unlock Wallet
+  if (isComfirmed) {
+    addressViewContent = (
+      <Div>
+        <CurrencySelector {...currencySelectorProps} />
+        <AddressList {...addressListProps} />
+        <button type="button" onClick={onCheckBalances} disabled={!networkReady}>
+          Check balances
         </button>
-          <AddressListStatus {...addressListStatusProps} />
-        </div>
-      </Spin>
+        <br />
+        <CheckBalancesStatus {...checkBalancesStatusProps} />
+
+        <button type="button" onClick={onGenerateAddress}>
+          Generate new address
+          </button>{' '}
+        <button type="button" onClick={onLockWallet}>
+          Lock Wallet
+          </button>{' '}
+        <button type="button" onClick={onUnlockWallet}>
+          Unlock Wallet
+          </button>
+        <AddressListStatus {...addressListStatusProps} />
+      </Div>
     );
   }
 
   return (
-    <Spin spinning={generateKeystoreLoading} style={{ position: 'static' }}>
-      <div style={{ minHeight: 50 }}>
-        <FormattedMessage {...messages.header} />
-        Seed is not confirmed
-    </div>
+    <Spin
+      spinning={generateKeystoreLoading}
+      style={{ position: 'static' }}
+      size="large"
+      tip="Loading..."
+    >
+      {addressViewContent}
     </Spin>
   );
 }
