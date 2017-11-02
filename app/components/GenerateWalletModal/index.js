@@ -7,7 +7,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 // import styled from 'styled-components';
-import { Modal, Button } from 'antd';
+import { Modal, Button, Alert } from 'antd';
 
 function GenerateWalletModal(props) {
   const {
@@ -34,8 +34,34 @@ function GenerateWalletModal(props) {
         </Button>,
       ]}
     >
-      <p>{seed}</p>
-      <p>{password}</p>
+      <Alert
+        message="The seed is imposible to recover if lost"
+        description="Copy the generated seed to safe location."
+        type="warning"
+        showIcon
+        closable
+      />
+      <br />
+      <Alert
+        message="Seed"
+        description={seed}
+        type="info"
+      />
+      <br />
+      <Alert
+        message="In the browser, keystore is encrypted using the password"
+        description="Password is required for various actions including send. if password is lost recover the wallet using the seed."
+        type="warning"
+        showIcon
+        closable
+      />
+      <br />
+      <Alert
+        message="Password"
+        description={password}
+        type="info"
+      />
+      <br />
       <Button shape="circle" icon="reload" loading={generateWalletLoading} key="back" size="large" onClick={onGenerateWallet} />
     </Modal>
   );

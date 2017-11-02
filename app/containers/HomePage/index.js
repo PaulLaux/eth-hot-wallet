@@ -53,7 +53,6 @@ import saga from './saga';
 import {
   generateWallet,
   generateWalletCancel,
-  initSeed,
   showRestoreWallet,
   restoreWalletCancel,
   generateKeystore,
@@ -299,10 +298,6 @@ export function mapDispatchToProps(dispatch) {
     onGenerateWalletCancel: (evt) => {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
       dispatch(generateWalletCancel());
-    },
-    onInitSeed: (evt) => {
-      if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-      dispatch(initSeed());
     },
     onGenerateKeystore: (evt) => {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();

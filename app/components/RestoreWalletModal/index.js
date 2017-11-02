@@ -59,7 +59,6 @@ function RestoreWalletModal(props) {
           onChange={onChangeUserPassword}
         />
       </Div>
-
     </Modal>
   );
 }
