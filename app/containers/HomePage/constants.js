@@ -8,10 +8,6 @@ export const GENERATE_WALLET_SUCCESS = 'eth-hot-wallet/HomePage/GENERATE_WALLET_
 export const GENERATE_WALLET_ERROR = 'eth-hot-wallet/HomePage/GENERATE_WALLET_ERROR';
 export const GENERATE_WALLET_CANCEL = 'eth-hot-wallet/HomePage/GENERATE_WALLET_CANCEL';
 
-export const INIT_SEED = 'eth-hot-wallet/HomePage/INIT_SEED';
-export const INIT_SEED_SUCCESS = 'eth-hot-wallet/HomePage/INIT_SEED_SUCCESS';
-export const INIT_SEED_ERROR = 'eth-hot-wallet/HomePage/INIT_SEED_ERROR';
-
 export const SHOW_RESTORE_WALLET = 'eth-hot-wallet/HomePage/SHOW_RESTORE_WALLET';
 export const RESTORE_WALLET_CANCEL = 'eth-hot-wallet/HomePage/RESTORE_WALLET_CANCEL';
 export const CHANGE_USER_SEED = 'eth-hot-wallet/HomePage/CHANGE_USER_SEED';

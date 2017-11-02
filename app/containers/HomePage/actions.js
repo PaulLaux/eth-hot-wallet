@@ -107,47 +107,6 @@ export function generateWalletCancel() {
   };
 }
 
-/* **********************************************Init Seed ************************* */
-
-/**
- * Init seed - this action starts the * saga
- *
- * @return {object}    An action object with a type of INIT_WALLET
- */
-export function initSeed() {
-  return {
-    type: INIT_SEED,
-  };
-}
-/**
- * Dispatched when the wallet initiation is done by the initSeed saga
- *
- * @param  {string} seed
- * @param  {string} password The current username
- *
- * @return {object}      An action object with a type of INIT_WALLET_SUCCESS passing the repos
- */
-export function seedInitilized(seed, password) {
-  return {
-    type: INIT_SEED_SUCCESS,
-    seed,
-    password,
-  };
-}
-/**
- * Dispatched when generating the wallet fails
- *
- * @param  {object} error The error
- *
- * @return {object} An action object with a type of INIT_WALLET_ERROR passing the error
- */
-export function initSeedError(error) {
-  return {
-    type: INIT_SEED_ERROR,
-    error,
-  };
-}
-
 /** ****************** Restore wallet *************** */
 
 /**

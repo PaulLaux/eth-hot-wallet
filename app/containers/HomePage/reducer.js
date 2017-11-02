@@ -17,9 +17,6 @@ import {
   GENERATE_WALLET_ERROR,
   GENERATE_WALLET_CANCEL,
 
-  INIT_SEED,
-  INIT_SEED_SUCCESS,
-  INIT_SEED_ERROR,
   GENERATE_KEYSTORE,
   GENERATE_KEYSTORE_SUCCESS,
   GENERATE_KEYSTORE_ERROR,
@@ -133,24 +130,6 @@ function homeReducer(state = initialState, action) {
         .set('generateKeystoreLoading', false)
         .set('generateKeystoreError', action.error)
         .set('isComfirmed', false);
-
-    /*
-    case INIT_SEED:
-      return state
-        .set('loading', true)
-        .set('error', false)
-        .set('isComfirmed', false);
-    case INIT_SEED_SUCCESS:
-      return state
-        .set('loading', false)
-        .set('seed', action.seed)
-        .set('password', action.password)
-        .set('isShowRestoreWallet', false);
-    case INIT_SEED_ERROR:
-      return state
-        .set('loading', false)
-        .set('error', action.error);
-    */
 
     case SHOW_RESTORE_WALLET:
       return state
