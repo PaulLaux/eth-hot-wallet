@@ -33,6 +33,11 @@ const makeSelectGenerateKeystoreError = () => createSelector(
   (homeState) => homeState.get('generateKeystoreError')
 );
 
+const makeSelectRestoreWalletError = () => createSelector(
+  selectHome,
+  (homeState) => homeState.get('restoreWalletError')
+);
+
 const makeSelectSeed = () => createSelector(
   selectHome,
   (homeState) => homeState.get('seed')
@@ -66,6 +71,10 @@ const makeSelectShowRestoreWallet = () => createSelector(
 const makeSelectUserSeed = () => createSelector(
   selectHome,
   (homeState) => homeState.get('userSeed')
+);
+const makeSelectUserPassword = () => createSelector(
+  selectHome,
+  (homeState) => homeState.get('userPassword')
 );
 
 const makeSelectSendToken = () => createSelector(
@@ -102,6 +111,7 @@ export {
   makeSelectGenerateWalletError,
   makeSelectGenerateKeystoreLoading,
   makeSelectGenerateKeystoreError,
+  makeSelectRestoreWalletError,
   makeSelectSeed,
   makeSelectPassword,
   makeSelectIsComfirmed,
@@ -109,6 +119,7 @@ export {
   makeSelectKeystore,
   makeSelectShowRestoreWallet,
   makeSelectUserSeed,
+  makeSelectUserPassword,
   makeSelectSendToken,
   makeSelectAddressListLoading,
   makeSelectAddressListError,

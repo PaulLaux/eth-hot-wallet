@@ -15,6 +15,7 @@
  *    }
  */
 import extractRates from 'utils/unitConverter';
+import { message } from 'antd';
 import {
   GENERATE_WALLET,
   GENERATE_WALLET_SUCCESS,
@@ -29,7 +30,9 @@ import {
   GENERATE_KEYSTORE_ERROR,
 
   SHOW_RESTORE_WALLET,
+  RESTORE_WALLET_CANCEL,
   CHANGE_USER_SEED,
+  CHANGE_USER_PASSWORD,
   RESTORE_WALLET_FROM_SEED,
   RESTORE_WALLET_FROM_SEED_SUCCESS,
   RESTORE_WALLET_FROM_SEED_ERROR,
@@ -159,6 +162,17 @@ export function showRestoreWallet() {
 }
 
 /**
+ * close restore wallet modal
+ *
+ * @return {object}    An action object with a type of RESTORE_WALLET_CANCEL
+ */
+export function restoreWalletCancel() {
+  return {
+    type: RESTORE_WALLET_CANCEL,
+  };
+}
+
+/**
  * Changes the input field for user seed
  *
  * @param  {name} seed The new text of the input field
@@ -166,10 +180,24 @@ export function showRestoreWallet() {
  * @return {object}    An action object with a type of CHANGE_USER_SEED
  */
 export function changeUserSeed(userSeed) {
-  const seed = userSeed.replace(/^\s+|\s+$/g, '');
   return {
     type: CHANGE_USER_SEED,
-    seed,
+    userSeed,
+  };
+}
+
+/**
+ * Changes the input field for user password
+ *
+ * @param  {name} seed The new text of the input field
+ *
+ * @return {object}    An action object with a type of CHANGE_USER_SEED
+ */
+export function changeUserPassword(userPassword) {
+  const password = userPassword;// .replace(/^\s+|\s+$/g, '');
+  return {
+    type: CHANGE_USER_PASSWORD,
+    password,
   };
 }
 
@@ -190,9 +218,11 @@ export function restoreWalletFromSeed() {
  *
  * @return {object}    An action object with a type of RESTORE_WALLET_FROM_SEED_SUCCESS
  */
-export function restoreWalletFromSeedSuccess() {
+export function restoreWalletFromSeedSuccess(userSeed, userPassword) {
   return {
     type: RESTORE_WALLET_FROM_SEED_SUCCESS,
+    userSeed,
+    userPassword,
   };
 }
 
@@ -202,6 +232,7 @@ export function restoreWalletFromSeedSuccess() {
  * @return {object}    An action object with a type of RESTORE_WALLET_FROM_SEED_ERROR
  */
 export function restoreWalletFromSeedError(error) {
+  message.error(error);
   return {
     type: RESTORE_WALLET_FROM_SEED_ERROR,
     error,

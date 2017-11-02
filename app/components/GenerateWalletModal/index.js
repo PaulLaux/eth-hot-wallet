@@ -26,19 +26,17 @@ function GenerateWalletModal(props) {
     <Modal
       visible={isShowGenerateWallet}
       title="New Wallet"
-      onOk={onGenerateWalletCancel}
+      onOk={onGenerateKeystore}
       onCancel={onGenerateWalletCancel}
       footer={[
         <Button key="submit" type="primary" size="large" onClick={onGenerateKeystore}>
-          Submit
+          Create
         </Button>,
       ]}
     >
       <p>{seed}</p>
       <p>{password}</p>
-      <Button key="back" size="large" onClick={onGenerateWallet}>
-        RE
-      </Button>
+      <Button shape="circle" icon="reload" loading={generateWalletLoading} key="back" size="large" onClick={onGenerateWallet} />
     </Modal>
   );
 }
@@ -56,12 +54,6 @@ GenerateWalletModal.propTypes = {
     PropTypes.bool,
   ]),
   password: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.bool,
-  ]),
-  generateKeystoreLoading: PropTypes.bool,
-  generateKeystoreError: PropTypes.oneOfType([
-    PropTypes.object,
     PropTypes.string,
     PropTypes.bool,
   ]),

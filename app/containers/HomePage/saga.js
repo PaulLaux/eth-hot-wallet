@@ -7,7 +7,7 @@ import { call, put, select, takeLatest } from 'redux-saga/effects';
 
 import { GENERATE_WALLET, INIT_SEED, GENERATE_KEYSTORE, RESTORE_WALLET_FROM_SEED, GENERATE_ADDRESS, UNLOCK_WALLET } from 'containers/HomePage/constants';
 
-import { makeSelectPassword, makeSelectSeed, makeSelectUserSeed, makeSelectKeystore } from 'containers/HomePage/selectors';
+import { makeSelectPassword, makeSelectSeed, makeSelectUserSeed, makeSelectUserPassword, makeSelectKeystore } from 'containers/HomePage/selectors';
 
 import { loadNetwork } from 'containers/Header/actions';
 
@@ -21,7 +21,10 @@ import {
   initSeedError,
   generateKeystoreSuccess,
   generateKeystoreError,
+  changeUserSeed,
+  generateKeystore,
   restoreWalletFromSeedError,
+  restoreWalletFromSeedSuccess,
   generateAddressSuccess,
   generateAddressError,
   unlockWalletSuccess,
@@ -47,6 +50,8 @@ export function* generateWallet() {
     const password = generateString(generatedPasswordLength);
     const extraEntropy = generateString(generatedPasswordLength);
     const seed = lightwallet.keystore.generateRandomSeed(extraEntropy);
+
+    yield call(() => { return new Promise((resolve) => setTimeout(() => resolve('timer end'), 300)); });
 
     yield put(generateWalletSucces(seed, password));
   } catch (err) {
@@ -75,18 +80,35 @@ export function* initSeed() {
  */
 export function* restoreFromSeed() {
   try {
-    const password = generateString(generatedPasswordLength);
-    const userSeed = yield select(makeSelectUserSeed());
+    const userPassword = yield select(makeSelectUserPassword());
+    let userSeed = yield select(makeSelectUserSeed());
 
-    if (userSeed) {
+    // remove trailing spaces if needed
+    yield put(changeUserSeed(userSeed.replace(/^\s+|\s+$/g, '')));
+    userSeed = yield select(makeSelectUserSeed());
+
+    if (!lightwallet.keystore.isSeedValid(userSeed)) {
+      yield put(restoreWalletFromSeedError('Invalid seed'));
+      return;
+    }
+
+    if (userPassword.length < 8) {
+      yield put(restoreWalletFromSeedError('Password length must be 8 characters at least'));
+      return;
+    }
+
+    yield put(restoreWalletFromSeedSuccess(userSeed, userPassword));
+    yield put(generateKeystore());
+
+    /* if (userSeed) {
       if (lightwallet.keystore.isSeedValid(userSeed)) {
-        yield put(seedInitilized(userSeed, password));
+        yield put(seedInitilized(userSeed, userPassword));
       } else {
-        yield put(initSeedError('restoreFromSeed Error - Seed supplied by user is invalid'));
+        yield put(restoreWalletFromSeedError('restoreFromSeed Error - Seed supplied by user is invalid'));
       }
     } else {
-      yield put(initSeedError('restoreFromSeed Error - Please provide seed'));
-    }
+      yield put(restoreWalletFromSeedError('restoreFromSeed Error - Please provide seed'));
+    } */
   } catch (err) {
     yield put(restoreWalletFromSeedError(err));
   }
@@ -115,7 +137,7 @@ export function* genKeystore() {
       hdPathString,  // The light-wallet default is `m/0'/0'/0'`.
     };
 
-    //throw Error('Wallet Locked');
+    // throw Error('Wallet Locked');
     // allow time to render components before cpu intensive tasks:
     yield call(() => { return new Promise((resolve) => setTimeout(() => resolve('timer end'), 150)); });
 

@@ -24,9 +24,12 @@ import {
   GENERATE_KEYSTORE_SUCCESS,
   GENERATE_KEYSTORE_ERROR,
   SHOW_RESTORE_WALLET,
+  RESTORE_WALLET_CANCEL,
   CHANGE_USER_SEED,
+  CHANGE_USER_PASSWORD,
   RESTORE_WALLET_FROM_SEED,
   RESTORE_WALLET_FROM_SEED_ERROR,
+  RESTORE_WALLET_FROM_SEED_SUCCESS,
 
   CHANGE_BALANCE,
 
@@ -59,6 +62,8 @@ const initialState = fromJS({
 
   isShowRestoreWallet: false,
   userSeed: '',
+  userPassword: '',
+  restoreWalletError: false,
 
   isComfirmed: false, // if true then we have a valid keystore
 
@@ -152,17 +157,32 @@ function homeReducer(state = initialState, action) {
         .set('isShowRestoreWallet', true)
         .set('seed', false)
         .set('userSeed', '');
+    case RESTORE_WALLET_CANCEL:
+      return state
+        .set('isShowRestoreWallet', false)
+        .set('userPassword', '')
+        .set('userSeed', '')
+        .set('restoreWalletError', false);
     case CHANGE_USER_SEED:
       return state
-        .set('userSeed', action.seed); // Delete prefixed space from user seed
-
+        .set('userSeed', action.userSeed); // Delete prefixed space from user seed
+    case CHANGE_USER_PASSWORD:
+      return state
+        .set('userPassword', action.password);
     case RESTORE_WALLET_FROM_SEED:
       return state
-        .set('error', false)
+        .set('restoreWalletError', false)
         .set('isComfirmed', false);
     case RESTORE_WALLET_FROM_SEED_ERROR:
       return state
-        .set('error', action.error);
+        .set('restoreWalletError', action.error);
+    case RESTORE_WALLET_FROM_SEED_SUCCESS:
+      return state
+        .set('isShowRestoreWallet', false)
+        .set('seed', action.userSeed)
+        .set('password', action.userPassword)
+        .set('userSeed', '')
+        .set('userPassword', '');
 
 
     case CHANGE_BALANCE:

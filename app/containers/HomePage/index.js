@@ -21,11 +21,12 @@ import { createStructuredSelector } from 'reselect';
 import { Button } from 'antd';
 
 /* Components:  */
-import SeedView from 'components/SeedView';
+//import SeedView from 'components/SeedView';
 import AddressView from 'components/AddressView';
 import SendTokenView from 'components/SendTokenView';
 import RestoreWallet from 'components/RestoreWallet';
 import GenerateWalletModal from 'components/GenerateWalletModal';
+import RestoreWalletModal from 'components/RestoreWalletModal';
 
 /* Header: */
 import Header from 'containers/Header';
@@ -54,8 +55,10 @@ import {
   generateWalletCancel,
   initSeed,
   showRestoreWallet,
+  restoreWalletCancel,
   generateKeystore,
   changeUserSeed,
+  changeUserPassword,
   restoreWalletFromSeed,
   showSendToken, // TODO: FIX
   generateAddress,
@@ -71,9 +74,11 @@ import {
   makeSelectSeed,
   makeSelectGenerateKeystoreLoading,
   makeSelectGenerateKeystoreError,
+  makeSelectRestoreWalletError,
   makeSelectPassword,
   makeSelectIsComfirmed,
   makeSelectUserSeed,
+  makeSelectUserPassword,
   makeSelectAddressList,
   // makeSelectKeystore,
   makeSelectShowRestoreWallet,
@@ -99,6 +104,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       generateKeystoreError,
       seed,
       password,
+      restoreWalletError,
       onGenerateKeystore,
       onGenerateAddress,
       onCheckBalances,
@@ -107,8 +113,12 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       onChangeFrom,
       isShowRestoreWallet,
       userSeed,
+      userPassword,
       onChangeUserSeed,
+      onChangeUserPassword,
       onRestoreWalletFromSeed,
+      onRestoreWalletCancel,
+
       sendToken,
 
       addressListLoading,
@@ -153,6 +163,8 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
 
     const restoreWalletProps = { isShowRestoreWallet, userSeed, onChangeUserSeed, onRestoreWalletFromSeed };
 
+    const restoreWalletModalProps = { isShowRestoreWallet, userSeed, userPassword, restoreWalletError, onChangeUserSeed, onChangeUserPassword, onRestoreWalletCancel, onRestoreWalletFromSeed };
+
     const addressViewProps = {
       generateKeystoreLoading,
       generateKeystoreError,
@@ -188,6 +200,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
         </Button>
 
         <GenerateWalletModal {...generateWalletProps} />
+        <RestoreWalletModal {...restoreWalletModalProps} />
 
         <RestoreWallet {...restoreWalletProps} />
         {/* <SeedView {...seedViewProps} /> */}
@@ -234,12 +247,21 @@ HomePage.propTypes = {
   onGenerateKeystore: PropTypes.func,
   onGenerateAddress: PropTypes.func,
   onShowRestoreWallet: PropTypes.func,
-  onRestoreWalletFromSeed: PropTypes.func,
-  onCheckBalances: PropTypes.func,
 
   isShowRestoreWallet: PropTypes.bool,
   userSeed: PropTypes.string,
+  userPassword: PropTypes.string,
   onChangeUserSeed: PropTypes.func,
+  restoreWalletError: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.string,
+    PropTypes.bool,
+  ]),
+  onRestoreWalletFromSeed: PropTypes.func,
+  onRestoreWalletCancel: PropTypes.func,
+
+  onCheckBalances: PropTypes.func,
+
   onChangeFrom: PropTypes.func,
 
   onLockWallet: PropTypes.func,
@@ -298,9 +320,19 @@ export function mapDispatchToProps(dispatch) {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
       dispatch(showRestoreWallet());
     },
+    onRestoreWalletCancel: (evt) => {
+      if (evt !== undefined && evt.preventDefault) evt.preventDefault();
+      dispatch(restoreWalletCancel());
+    },
     onChangeUserSeed: (evt) => {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
+      // console.log(evt.target);
       dispatch(changeUserSeed(evt.target.value));
+    },
+    onChangeUserPassword: (evt) => {
+      if (evt !== undefined && evt.preventDefault) evt.preventDefault();
+      // console.log(evt.target);
+      dispatch(changeUserPassword(evt.target.value));
     },
     onRestoreWalletFromSeed: (evt) => {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
@@ -343,11 +375,14 @@ const mapStateToProps = createStructuredSelector({
 
   generateKeystoreLoading: makeSelectGenerateKeystoreLoading(),
   generateKeystoreError: makeSelectGenerateKeystoreError(),
+  restoreWalletError: makeSelectRestoreWalletError(),
   isComfirmed: makeSelectIsComfirmed(),
   addressList: makeSelectAddressList(),
   // keystore: makeSelectKeystore(),
   isShowRestoreWallet: makeSelectShowRestoreWallet(),
   userSeed: makeSelectUserSeed(),
+  userPassword: makeSelectUserPassword(),
+
   sendToken: makeSelectSendToken(),
 
   addressListLoading: makeSelectAddressListLoading(),
