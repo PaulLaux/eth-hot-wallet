@@ -24,4 +24,4 @@ export const Gwei = (1.0e9).toString();
 /*
     offline mode is special case of error
 */
-export const offlineModeString = 'Offline Mode';
+export const offlineModeString = 'Offline';

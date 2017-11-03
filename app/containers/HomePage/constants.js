@@ -37,3 +37,5 @@ export const UNLOCK_WALLET_ERROR = 'eth-hot-wallet/HomePage/UNLOCK_WALLET_ERROR'
 
 export const SET_EXCHANGE_RATES = 'eth-hot-wallet/HomePage/SET_EXCHANGE_RATES';
 export const SELECT_CURRENCY = 'eth-hot-wallet/HomePage/SELECT_CURRENCY';
+
+export const CLOSE_WALLET = 'eth-hot-wallet/HomePage/CLOSE_WALLET';

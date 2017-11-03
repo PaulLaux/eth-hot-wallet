@@ -27,6 +27,7 @@ import SendTokenView from 'components/SendTokenView';
 import RestoreWallet from 'components/RestoreWallet';
 import GenerateWalletModal from 'components/GenerateWalletModal';
 import RestoreWalletModal from 'components/RestoreWalletModal';
+import SubHeader from 'components/SubHeader';
 
 /* Header: */
 import Header from 'containers/Header';
@@ -64,6 +65,7 @@ import {
   lockWallet,
   unlockWallet,
   selectCurrency,
+  closeWallet,
 } from './actions';
 
 import {
@@ -110,6 +112,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       isComfirmed,
       addressList,
       onChangeFrom,
+      onShowRestoreWallet,
       isShowRestoreWallet,
       userSeed,
       userPassword,
@@ -136,16 +139,11 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       onSelectCurrency,
       convertTo,
       onGetExchangeRates,
+
+      onCloseWallet,
     } = this.props;
 
-    /*
-    const seedViewProps = {
-      loading,
-      error,
-      seed,
-      password,
-      onGenerateKeystore,
-    }; */
+    const subHeaderProps = { onGenerateWallet, onShowRestoreWallet, isComfirmed, onCloseWallet };
 
     const generateWalletProps = {
       isShowGenerateWallet,
@@ -159,9 +157,6 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       onGenerateWalletCancel,
       onGenerateKeystore,
     };
-
-    const restoreWalletProps = { isShowRestoreWallet, userSeed, onChangeUserSeed, onRestoreWalletFromSeed };
-
     const restoreWalletModalProps = { isShowRestoreWallet, userSeed, userPassword, restoreWalletError, onChangeUserSeed, onChangeUserPassword, onRestoreWalletCancel, onRestoreWalletFromSeed };
 
     const addressViewProps = {
@@ -189,20 +184,13 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     return (
       <div>
         <Header />
-
-        <Button type="primary" size="large" onClick={onGenerateWallet}>
-          New wallet
-        </Button>
-        {' '}
-        <Button type="default" size="large" onClick={this.props.onShowRestoreWallet}>
-          Restore wallet
-        </Button>
+        <SubHeader {...subHeaderProps} />
 
         <GenerateWalletModal {...generateWalletProps} />
         <RestoreWalletModal {...restoreWalletModalProps} />
 
-        <RestoreWallet {...restoreWalletProps} />
-        {/* <SeedView {...seedViewProps} /> */}
+        {/* <RestoreWallet {...restoreWalletProps} />
+         <SeedView {...seedViewProps} /> */}
 
         <AddressView {...addressViewProps} />
         <br /> <hr />
@@ -251,6 +239,7 @@ HomePage.propTypes = {
   userSeed: PropTypes.string,
   userPassword: PropTypes.string,
   onChangeUserSeed: PropTypes.func,
+  onChangeUserPassword: PropTypes.func,
   restoreWalletError: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.string,
@@ -287,6 +276,7 @@ HomePage.propTypes = {
   onSelectCurrency: PropTypes.func,
   convertTo: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   onGetExchangeRates: PropTypes.func,
+  onCloseWallet: PropTypes.func,
 };
 
 export function mapDispatchToProps(dispatch) {
@@ -357,6 +347,9 @@ export function mapDispatchToProps(dispatch) {
     onGetExchangeRates: () => {
       // if (evt !== undefined && evt.preventDefault) evt.preventDefault();
       dispatch(getExchangeRates());
+    },
+    onCloseWallet: () => {
+      dispatch(closeWallet());
     },
   };
 }

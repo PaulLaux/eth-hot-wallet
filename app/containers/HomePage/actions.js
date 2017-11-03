@@ -22,9 +22,6 @@ import {
   GENERATE_WALLET_ERROR,
   GENERATE_WALLET_CANCEL,
 
-  INIT_SEED,
-  INIT_SEED_SUCCESS,
-  INIT_SEED_ERROR,
   GENERATE_KEYSTORE,
   GENERATE_KEYSTORE_SUCCESS,
   GENERATE_KEYSTORE_ERROR,
@@ -53,6 +50,8 @@ import {
 
   SET_EXCHANGE_RATES,
   SELECT_CURRENCY,
+
+  CLOSE_WALLET,
 } from './constants';
 
 
@@ -91,6 +90,7 @@ export function generateWalletSucces(seed, password) {
  * @return {object} An action object with a type of GENERATE_WALLET_ERROR passing the error
  */
 export function generateWalletError(error) {
+  message.error(error);
   return {
     type: GENERATE_WALLET_ERROR,
     error,
@@ -402,7 +402,7 @@ export function unlockWalletError(error) {
   };
 }
 
-/* ************************************************************* */
+/* ************************* Exchange Rates ************************************ */
 
 
 /**
@@ -437,3 +437,19 @@ export function selectCurrency(convertTo) {
     convertTo,
   };
 }
+
+/* ********************* CLOSE WALLET **************************************** */
+
+
+/**
+ * Removes keystore from memory and closes wallet
+ *
+ * @return {object} An action object with a type of CLOSE_WALLET
+ */
+export function closeWallet() {
+  message.success('Wallet removed from memory');
+  return {
+    type: CLOSE_WALLET,
+  };
+}
+

@@ -44,8 +44,16 @@ import {
 
   SET_EXCHANGE_RATES,
   SELECT_CURRENCY,
+
+  CLOSE_WALLET,
 } from './constants';
 
+/*
+.set('keystore', false)
+.set('addressList', false)
+.set('isConfirmed', false)
+.set('addressList', false)
+*/
 // The initial state of the App
 const initialState = fromJS({
   isShowGenerateWallet: false,
@@ -214,6 +222,9 @@ function homeReducer(state = initialState, action) {
     case SELECT_CURRENCY:
       return state
         .set('convertTo', fromJS(action.convertTo));
+
+    case CLOSE_WALLET:
+      return initialState;
 
     default:
       return state;

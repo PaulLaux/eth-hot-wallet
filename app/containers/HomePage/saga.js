@@ -5,20 +5,20 @@ import lightwallet from 'eth-lightwallet';
 
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 
-import { GENERATE_WALLET, INIT_SEED, GENERATE_KEYSTORE, RESTORE_WALLET_FROM_SEED, GENERATE_ADDRESS, UNLOCK_WALLET } from 'containers/HomePage/constants';
+import { GENERATE_WALLET, GENERATE_KEYSTORE, RESTORE_WALLET_FROM_SEED, GENERATE_ADDRESS, UNLOCK_WALLET, CLOSE_WALLET } from 'containers/HomePage/constants';
 
 import { makeSelectPassword, makeSelectSeed, makeSelectUserSeed, makeSelectUserPassword, makeSelectKeystore } from 'containers/HomePage/selectors';
 
 import { loadNetwork } from 'containers/Header/actions';
 
 import generateString from 'utils/crypto';
-import { generatedPasswordLength, hdPathString } from 'utils/constants';
+import { generatedPasswordLength, hdPathString, offlineModeString } from 'utils/constants';
 
 import {
   generateWalletSucces,
   generateWalletError,
-  seedInitilized,
-  initSeedError,
+  // seedInitilized,
+  // initSeedError,
   generateKeystoreSuccess,
   generateKeystoreError,
   changeUserSeed,
@@ -222,7 +222,7 @@ export function* generateAddress() {
 }; */
 
 /**
- * Create new keystore and generate some addreses
+ * unlock wallet using user given password
  */
 export function* unlockWallet() {
   try {
@@ -277,6 +277,13 @@ export function* unlockWallet() {
   }
 }
 
+/**
+ * Disconnect from network during closeWallet
+ */
+export function* closeWallet() {
+  yield put(loadNetwork(offlineModeString));
+}
+
 
 /**
  * Root saga manages watcher lifecycle
@@ -293,7 +300,7 @@ export default function* walletData() {
   yield takeLatest(GENERATE_ADDRESS, generateAddress);
   yield takeLatest(RESTORE_WALLET_FROM_SEED, restoreFromSeed);
   yield takeLatest(UNLOCK_WALLET, unlockWallet);
-
+  yield takeLatest(CLOSE_WALLET, closeWallet);
   /*
   while (yield takeLatest(INIT_WALLET, initSeed)) {
     // yield takeLatest(GENERATE_KEYSTORE, genKeystore);
