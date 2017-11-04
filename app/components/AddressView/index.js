@@ -10,6 +10,7 @@ import { Spin, Alert } from 'antd';
 import styled from 'styled-components';
 
 import AddressList from 'components/AddressList';
+import AddressTable from 'components/AddressTable';
 import AddressListStatus from 'components/AddressListStatus';
 import CheckBalancesStatus from 'components/CheckBalancesStatus';
 import CurrencySelector from 'components/CurrencySelector';
@@ -41,6 +42,7 @@ function AddressView(props) {
    } = props;
 
   const addressListProps = { addressList, onChangeFrom, onCheckBalances, exchangeRates, convertTo };
+  const addressTableProps = { addressList, onChangeFrom, onCheckBalances, exchangeRates, convertTo };
   const checkBalancesStatusProps = { checkingBalanceDoneTime, checkingBalances, checkingBalancesError };
   const addressListStatusProps = { addressListLoading, addressListError, addressListMsg };
   const currencySelectorProps = { exchangeRates, onSelectCurrency, convertTo };
@@ -62,8 +64,10 @@ function AddressView(props) {
   if (isComfirmed) {
     addressViewContent = (
       <Div>
-        <CurrencySelector {...currencySelectorProps} />
+        <AddressTable {...addressTableProps} />
+        <br /> <br /> <br /> <br />
         <AddressList {...addressListProps} />
+
         <button type="button" onClick={onCheckBalances} disabled={!networkReady}>
           Check balances
         </button>
@@ -80,6 +84,7 @@ function AddressView(props) {
           Unlock Wallet
           </button>
         <AddressListStatus {...addressListStatusProps} />
+        <CurrencySelector {...currencySelectorProps} /> 
       </Div>
     );
   }

@@ -8,9 +8,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 
-import { FormattedMessage } from 'react-intl';
+// import { FormattedMessage } from 'react-intl';
 import { Ether } from 'utils/constants';
-import messages from './messages';
+// import messages from './messages';
 
 
 function AddressItem(props) {

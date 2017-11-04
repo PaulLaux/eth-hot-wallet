@@ -323,14 +323,16 @@ export function generateAddress() {
 /**
  * After successfull address generation create new addressList for our store.
  *
- * @param  {keystore} keystore the updated keystore
+ * @param  {newAddress} string the updated keystore
+ * @param  {index} number address serial number of generation
  *
  * @return {object}      An action object with a type of GENERATE_ADDRESS_SUCCESS and newAddress passing the newly generated address
  */
-export function generateAddressSuccess(newAddress) {
+export function generateAddressSuccess(newAddress, index) {
   return {
     type: GENERATE_ADDRESS_SUCCESS,
     newAddress,
+    index,
   };
 }
 

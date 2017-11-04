@@ -21,10 +21,10 @@ import { createStructuredSelector } from 'reselect';
 import { Button } from 'antd';
 
 /* Components:  */
-//import SeedView from 'components/SeedView';
+// import SeedView from 'components/SeedView';
 import AddressView from 'components/AddressView';
 import SendTokenView from 'components/SendTokenView';
-import RestoreWallet from 'components/RestoreWallet';
+// import RestoreWallet from 'components/RestoreWallet';
 import GenerateWalletModal from 'components/GenerateWalletModal';
 import RestoreWalletModal from 'components/RestoreWalletModal';
 import SubHeader from 'components/SubHeader';
