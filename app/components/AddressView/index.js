@@ -65,8 +65,8 @@ function AddressView(props) {
     addressViewContent = (
       <Div>
         <AddressTable {...addressTableProps} />
-        <br /> <br /> <br /> <br />
-        <AddressList {...addressListProps} />
+        <br /> <br />
+        {/* <AddressList {...addressListProps} /> */}
 
         <button type="button" onClick={onCheckBalances} disabled={!networkReady}>
           Check balances
@@ -84,7 +84,7 @@ function AddressView(props) {
           Unlock Wallet
           </button>
         <AddressListStatus {...addressListStatusProps} />
-        <CurrencySelector {...currencySelectorProps} /> 
+        <CurrencySelector {...currencySelectorProps} />
       </Div>
     );
   }

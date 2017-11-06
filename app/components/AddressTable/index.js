@@ -7,8 +7,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Table, Icon } from 'antd';
-const { Column, ColumnGroup } = Table;
 import { Ether } from 'utils/constants';
+const { Column } = Table;
+// import { LocaleProvider } from 'antd';
 // import { FormattedMessage } from 'react-intl';
 // import messages from './messages';
 
@@ -61,16 +62,29 @@ const transformList = (listObject, exchangeRates, convertTo) =>
 
 function AddressTable(props) {
   const { addressList, onChangeFrom, onCheckBalances, exchangeRates, convertTo } = props;
-  // console.log();
   const addressArray = transformList(addressList.toJS(), exchangeRates, convertTo);
   // const addressArrayData = addConvertString(addressArray, exchangeRates, convertTo);
   return (
     <AddrTable
       dataSource={addressArray}
       bordered
-      scroll={{ x: 315 }}
+      scroll={{ x: 350 }}
       pagination={false}
+      locale={{
+        filterTitle: null,
+        filterConfirm: 'Ok',
+        filterReset: 'Reset',
+        emptyText: 'No Data',
+      }}
     >
+      <Column
+        title="#"
+        dataIndex="key"
+        key="key"
+        width="40px"
+        sorter={(a, b) => parseInt(a.key, 10) - parseInt(b.key, 10)}
+        sortOrder="ascend"
+      />
       <Column
         title="Address"
         dataIndex="address"
@@ -82,6 +96,11 @@ function AddressTable(props) {
         dataIndex="balance"
         key="balance"
         width="120px"
+        filters={[{
+          text: 'Remove empty',
+          value: '0 ETH',
+        }]}
+        onFilter={(value, record) => record.balance !== value}
       />
       <Column
         title="Convert"
@@ -101,7 +120,7 @@ function AddressTable(props) {
           </span>
         )}
       />
-    </AddrTable>
+    </AddrTable >
   );
 }
 

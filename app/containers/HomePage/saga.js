@@ -207,7 +207,7 @@ export function* generateAddress() {
 
     // get last address
     const newAddress = ks.getAddresses().slice(-1)[0];
-    const index = ks.getAddresses().length - 1; // serial index for sorting by generation order;
+    const index = ks.getAddresses().length; // serial index for sorting by generation order;
     yield put(generateAddressSuccess(newAddress, index));
   } catch (err) {
     const errorString = `generateAddress error - ${err}`;

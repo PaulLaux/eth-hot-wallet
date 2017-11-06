@@ -234,7 +234,7 @@ export function generateKeystoreSuccess(keystore) {
   const addressList = {};
   for (let i = 0; i < addresses.length; i += 1) {
     addressList[addresses[i]] = {
-      index: i,
+      index: i + 1, // strat from 1 for user display
       eth: {
         balance: false,
         // convertBalance: false,
