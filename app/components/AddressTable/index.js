@@ -6,7 +6,7 @@
 
 import React from 'react';
 import styled from 'styled-components';
-import { Table, Icon } from 'antd';
+import { Table, Menu, Dropdown, Icon } from 'antd';
 import { Ether } from 'utils/constants';
 const { Column } = Table;
 // import { LocaleProvider } from 'antd';
@@ -22,22 +22,24 @@ const AddrTable = styled(Table) `
   }
 `;
 
-const data = [{
-  key: '1',
-  address: '13cf09054974412ad649b1789301170dad17e9d06',
-  balance: '3 ETH',
-  convert: '200 USD',
-}, {
-  key: '0',
-  address: '03cf09054974412ad649b1789301170dad17e9d06',
-  balance: '4552.4 ETH',
-  convert: '300.44 USD',
-}, {
-  key: '2',
-  address: '23cf09054974412ad649b1789301170dad17e9d06',
-  balance: '4.0 ETH',
-  convert: '0.44 USD',
-}];
+const data = [
+  {
+    key: '1',
+    address: '13cf09054974412ad649b1789301170dad17e9d06',
+    balance: '3 ETH',
+    convert: '200 USD',
+  }, {
+    key: '0',
+    address: '03cf09054974412ad649b1789301170dad17e9d06',
+    balance: '4552.4 ETH',
+    convert: '300.44 USD',
+  }, {
+    key: '2',
+    address: '23cf09054974412ad649b1789301170dad17e9d06',
+    balance: '4.0 ETH',
+    convert: '0.44 USD',
+  },
+];
 
 const transformList = (listObject, exchangeRates, convertTo) =>
   Object.keys(listObject).map((key) => {
@@ -59,11 +61,34 @@ const transformList = (listObject, exchangeRates, convertTo) =>
     return transform;
   });
 
+/*const convertToMenu = (
+  <Menu onClick={(e) => console.log(e)}>
+    <Menu.Item key="1">1st item</Menu.Item>
+    <Menu.Item key="2">2nd item</Menu.Item>
+    <Menu.Item key="3">3rd item</Menu.Item>
+  </Menu>
+);*/
 
 function AddressTable(props) {
   const { addressList, onChangeFrom, onCheckBalances, exchangeRates, convertTo } = props;
+  
   const addressArray = transformList(addressList.toJS(), exchangeRates, convertTo);
   // const addressArrayData = addConvertString(addressArray, exchangeRates, convertTo);
+
+  const convertMenuOptions = [];
+  if (exchangeRates.size > 0) {
+    exchangeRates.entrySeq().forEach((entry) => {
+      // console.log(`key: ${entry[0]}, value: ${entry[1]}`);
+      convertMenuOptions.push(<Menu.Item key={entry[0]}>{entry[1].get('name')}</Menu.Item>);
+    });
+  }
+  const convertToMenu = (
+    <Menu onClick={(e) => console.log(e)}>
+      <Menu.Item key={"none"}>None</Menu.Item>
+      {convertMenuOptions}
+    </Menu>
+  );
+
   return (
     <AddrTable
       dataSource={addressArray}
@@ -103,7 +128,13 @@ function AddressTable(props) {
         onFilter={(value, record) => record.balance !== value}
       />
       <Column
-        title="Convert"
+        title={
+          <Dropdown overlay={convertToMenu}>
+            <span>
+              Convert to <Icon type="down" />
+            </span>
+          </Dropdown>
+        }
         dataIndex="convert"
         key="convert"
         width="130px"

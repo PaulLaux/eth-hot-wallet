@@ -23,7 +23,7 @@ function CurrencySelector({ convertTo, exchangeRates, onSelectCurrency }) {
     options = availableNetworks.map((network) =>
       <option value={network} key={network}>{network} </option>
     );
-  }*/
+  } */
 
   return (
     <div>
