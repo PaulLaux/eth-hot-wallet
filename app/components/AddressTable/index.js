@@ -5,9 +5,13 @@
 */
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Table, Menu, Dropdown, Icon } from 'antd';
 import { Ether } from 'utils/constants';
+
+import CurrencyDropdown from 'components/CurrencyDropdown';
+
 const { Column } = Table;
 // import { LocaleProvider } from 'antd';
 // import { FormattedMessage } from 'react-intl';
@@ -22,28 +26,30 @@ const AddrTable = styled(Table) `
   }
 `;
 
-const data = [
-  {
+/**
+ * Transforms the immutable struct into Array of data in the form:
+ * example for return:
+  [{
     key: '1',
-    address: '13cf09054974412ad649b1789301170dad17e9d06',
+    address: '13c...9d06',
     balance: '3 ETH',
     convert: '200 USD',
-  }, {
-    key: '0',
-    address: '03cf09054974412ad649b1789301170dad17e9d06',
-    balance: '4552.4 ETH',
-    convert: '300.44 USD',
-  }, {
-    key: '2',
-    address: '23cf09054974412ad649b1789301170dad17e9d06',
-    balance: '4.0 ETH',
-    convert: '0.44 USD',
-  },
-];
+  }]
 
-const transformList = (listObject, exchangeRates, convertTo) =>
-  Object.keys(listObject).map((key) => {
-    const origAddressData = listObject[key];
+ * order is determined by key
+ *
+ * @param  {addressList} object The address list struct
+ *
+ * @param  {exchangeRates} object available exchange rates, required for finding selected currency name
+ *
+ * @param  {convertTo} string the convertion pair to use: ie "eth_usd"
+ *
+ * @return {Array} array as data for table, see example above
+ */
+const transformList = (addressList, exchangeRates, convertTo) => {
+  const addressListJS = addressList.toJS();
+  return Object.keys(addressListJS).map((key) => {
+    const origAddressData = addressListJS[key];
     const transform = {};
 
     const ethBalance = origAddressData.eth.balance;
@@ -60,34 +66,14 @@ const transformList = (listObject, exchangeRates, convertTo) =>
 
     return transform;
   });
-
-/*const convertToMenu = (
-  <Menu onClick={(e) => console.log(e)}>
-    <Menu.Item key="1">1st item</Menu.Item>
-    <Menu.Item key="2">2nd item</Menu.Item>
-    <Menu.Item key="3">3rd item</Menu.Item>
-  </Menu>
-);*/
+};
 
 function AddressTable(props) {
-  const { addressList, onChangeFrom, onCheckBalances, exchangeRates, convertTo } = props;
-  
-  const addressArray = transformList(addressList.toJS(), exchangeRates, convertTo);
-  // const addressArrayData = addConvertString(addressArray, exchangeRates, convertTo);
+  const { addressList, onChangeFrom, exchangeRates, onSelectCurrency, convertTo } = props;
 
-  const convertMenuOptions = [];
-  if (exchangeRates.size > 0) {
-    exchangeRates.entrySeq().forEach((entry) => {
-      // console.log(`key: ${entry[0]}, value: ${entry[1]}`);
-      convertMenuOptions.push(<Menu.Item key={entry[0]}>{entry[1].get('name')}</Menu.Item>);
-    });
-  }
-  const convertToMenu = (
-    <Menu onClick={(e) => console.log(e)}>
-      <Menu.Item key={"none"}>None</Menu.Item>
-      {convertMenuOptions}
-    </Menu>
-  );
+  const currencyDropdownProps = { exchangeRates, onSelectCurrency };
+
+  const addressArray = transformList(addressList, exchangeRates, convertTo);
 
   return (
     <AddrTable
@@ -128,13 +114,7 @@ function AddressTable(props) {
         onFilter={(value, record) => record.balance !== value}
       />
       <Column
-        title={
-          <Dropdown overlay={convertToMenu}>
-            <span>
-              Convert to <Icon type="down" />
-            </span>
-          </Dropdown>
-        }
+        title={<CurrencyDropdown {...currencyDropdownProps} />}
         dataIndex="convert"
         key="convert"
         width="130px"
@@ -156,7 +136,11 @@ function AddressTable(props) {
 }
 
 AddressTable.propTypes = {
-
+  addressList: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+  onChangeFrom: PropTypes.func,
+  exchangeRates: PropTypes.object,
+  onSelectCurrency: PropTypes.func,
+  convertTo: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
 };
 
 export default AddressTable;
