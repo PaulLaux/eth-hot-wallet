@@ -204,18 +204,15 @@ function homeReducer(state = initialState, action) {
 
     case LOCK_WALLET:
       return state
-        .set('password', false)
-        .set('addressListError', false)
-        .set('addressListMsg', 'Wallet Locked');
+        .set('password', false);
     case UNLOCK_WALLET:
       return state;
     case UNLOCK_WALLET_SUCCESS:
       return state
-        .set('password', action.password)
-        .set('addressListError', 'Wallet Unlocked Succesfully');
+        .set('password', action.password);
     case UNLOCK_WALLET_ERROR:
-      return state
-        .set('addressListError', action.error);
+      return state;
+
 
     case SET_EXCHANGE_RATES:
       return state

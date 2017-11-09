@@ -18,8 +18,6 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 
-import { Button } from 'antd';
-
 /* Components:  */
 // import SeedView from 'components/SeedView';
 import AddressView from 'components/AddressView';
@@ -143,7 +141,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       onCloseWallet,
     } = this.props;
 
-    const subHeaderProps = { onGenerateWallet, onShowRestoreWallet, isComfirmed, onCloseWallet };
+    const subHeaderProps = { onGenerateWallet, onShowRestoreWallet, isComfirmed, onCloseWallet, onLockWallet, password, onUnlockWallet };
 
     const generateWalletProps = {
       isShowGenerateWallet,

@@ -223,7 +223,7 @@ export function generateKeystoreSuccess(keystore) {
   addressList: {
     lastIndex: 8
     address0: {
-        index: 0
+        index: 1
         eth: {
             balance: bigNumber
             convertBalance: bigNumber
@@ -360,6 +360,7 @@ export function generateAddressError(error) {
  * @return {object} An action object with a type of LOCK_WALLET
  */
 export function lockWallet() {
+  message.success('Wallet locked succesfuly');
   return {
     type: LOCK_WALLET,
   };
@@ -384,6 +385,7 @@ export function unlockWallet() {
  * @return {object}      An action object with a type of UNLOCK_WALLET_SUCCESS and the password
  */
 export function unlockWalletSuccess(password) {
+  message.success('Wallet unlocked succesfuly');
   return {
     type: UNLOCK_WALLET_SUCCESS,
     password,
@@ -398,6 +400,7 @@ export function unlockWalletSuccess(password) {
  * @return {object} An action object with a type of GENERATE_ADDRESS_ERROR passing the error
  */
 export function unlockWalletError(error) {
+  message.error(error, 5);
   return {
     type: UNLOCK_WALLET_ERROR,
     error,
