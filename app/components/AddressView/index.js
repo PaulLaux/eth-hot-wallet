@@ -9,16 +9,10 @@ import PropTypes from 'prop-types';
 import { Spin, Alert } from 'antd';
 import styled from 'styled-components';
 
-import AddressList from 'components/AddressList';
 import AddressTable from 'components/AddressTable';
 import AddressListStatus from 'components/AddressListStatus';
 import CheckBalancesStatus from 'components/CheckBalancesStatus';
-import CurrencySelector from 'components/CurrencySelector';
-
-/*
-import { FormattedMessage } from 'react-intl';
-import messages from './messages';
-*/
+import AddressTableFooter from 'components/AddressTableFooter';
 
 const Div = styled.div`
   padding: 30px;
@@ -37,15 +31,20 @@ function AddressView(props) {
     onGenerateAddress,
     networkReady, checkingBalanceDoneTime, checkingBalances, checkingBalancesError,
     addressListLoading, addressListError, addressListMsg,
-    onLockWallet, onUnlockWallet,
     exchangeRates, onSelectCurrency, convertTo,
    } = props;
 
-  // const addressListProps = { addressList, onChangeFrom, onCheckBalances, exchangeRates, convertTo };
   const addressTableProps = { addressList, onChangeFrom, exchangeRates, onSelectCurrency, convertTo };
   const checkBalancesStatusProps = { checkingBalanceDoneTime, checkingBalances, checkingBalancesError };
   const addressListStatusProps = { addressListLoading, addressListError, addressListMsg };
-  const currencySelectorProps = { exchangeRates, onSelectCurrency, convertTo };
+
+  const addressTableFooterProps = {
+    checkingBalanceDoneTime,
+    checkingBalances,
+    checkingBalancesError,
+    onCheckBalances,
+    networkReady,
+  };
 
   let addressViewContent = (
     <Div>
@@ -66,8 +65,10 @@ function AddressView(props) {
       <Div>
         <AddressTable {...addressTableProps} />
         <br /> <br />
-        {/* <AddressList {...addressListProps} /> */}
 
+        <AddressTableFooter {...addressTableFooterProps} />
+        <br />
+        
         <button type="button" onClick={onCheckBalances} disabled={!networkReady}>
           Check balances
         </button>
@@ -76,15 +77,8 @@ function AddressView(props) {
 
         <button type="button" onClick={onGenerateAddress}>
           Generate new address
-          </button>{' '}
-        <button type="button" onClick={onLockWallet}>
-          Lock Wallet
-          </button>{' '}
-        <button type="button" onClick={onUnlockWallet}>
-          Unlock Wallet
-          </button>
+        </button>{' '}
         <AddressListStatus {...addressListStatusProps} />
-        <CurrencySelector {...currencySelectorProps} />
       </Div>
     );
   }
@@ -115,16 +109,13 @@ AddressView.propTypes = {
     PropTypes.array,
   ]),
   onChangeFrom: PropTypes.func,
-  onCheckBalances: PropTypes.func,
   onGenerateAddress: PropTypes.func,
-
-  onLockWallet: PropTypes.func,
-  onUnlockWallet: PropTypes.func,
 
   addressListLoading: PropTypes.bool,
   addressListError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
   addressListMsg: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
 
+  onCheckBalances: PropTypes.func,
   networkReady: PropTypes.bool,
   checkingBalanceDoneTime: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   checkingBalances: PropTypes.bool,

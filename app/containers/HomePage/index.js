@@ -172,8 +172,6 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       checkingBalanceDoneTime,
       checkingBalances,
       checkingBalancesError,
-      onLockWallet,
-      onUnlockWallet,
       onSelectCurrency,
       exchangeRates,
       convertTo,
@@ -186,9 +184,6 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
 
         <GenerateWalletModal {...generateWalletProps} />
         <RestoreWalletModal {...restoreWalletModalProps} />
-
-        {/* <RestoreWallet {...restoreWalletProps} />
-         <SeedView {...seedViewProps} /> */}
 
         <AddressView {...addressViewProps} />
         <br /> <hr />
