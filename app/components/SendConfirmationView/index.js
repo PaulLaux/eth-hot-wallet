@@ -6,32 +6,62 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-// import styled from 'styled-components';
+import { Alert, Button, Spin } from 'antd';
+import styled from 'styled-components';
 
-import { FormattedMessage } from 'react-intl';
-import messages from './messages';
+const Div = styled.div`
+  margin-top: 22px;
+`;
 
-function SendConfirmationView({ comfirmationLoading, confirmationError, confirmationMsg, onSendTransaction, onAbortTransaction }) {
+// import { FormattedMessage } from 'react-intl';
+// import messages from './messages';
+
+function SendConfirmationView({ comfirmationLoading, confirmationError, confirmationMsg, onSendTransaction, onAbortTransaction, isSendComfirmationLocked, sendInProgress }) {
   if (comfirmationLoading) {
-    return <div> checking transaction....</div>;
+    return (
+      <Div>
+        <Spin
+          spinning
+          style={{ position: 'static' }}
+          size="large"
+          tip="checking transaction...."
+        >
+          <br />
+        </Spin>
+      </Div>
+    );
   }
 
   if (confirmationError !== false) {
-    return <div> {confirmationError} </div>;
+    return (
+      <Div>
+        <Alert
+          message="Transaction not created"
+          description={confirmationError}
+          type="error"
+          showIcon
+        />
+      </Div>
+    );
   }
 
   if (confirmationMsg !== false) {
     return (
-      <div>
-        transaction is valid: {confirmationMsg} <br />
-        <button onClick={onSendTransaction} >
+      <Div>
+        <Alert
+          message="Transaction is valid"
+          description={confirmationMsg}
+          type="info"
+        />
+        <br />
+        <Button onClick={onSendTransaction} loading={sendInProgress} disabled={isSendComfirmationLocked} >
           Send ETH
-        </button>
+        </Button>
         {' '}
-        <button onClick={onAbortTransaction} >
-          Abort
-        </button>
-      </div>
+        <Button onClick={onAbortTransaction} disabled={isSendComfirmationLocked} >
+          Back
+        </Button>
+      </Div>
     );
   }
 
@@ -44,6 +74,7 @@ SendConfirmationView.propTypes = {
   comfirmationLoading: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
   confirmationError: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
   confirmationMsg: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
+  isSendComfirmationLocked: PropTypes.bool,
 
   onSendTransaction: PropTypes.func.isRequired,
   onAbortTransaction: PropTypes.func.isRequired,

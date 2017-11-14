@@ -8,20 +8,22 @@ import React from 'react';
 import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 
-import { FormattedMessage } from 'react-intl';
+// import { FormattedMessage } from 'react-intl';
 
 import SendToken from 'containers/SendToken/Loadable';
 
-import messages from './messages';
+// import messages from './messages';
 
+// required to async load the SendToken container once and not removing from dom anymore.
+let loadedSendToken = false;
 
-function SendTokenView({ sendToken }) {
-  if (sendToken) {
+function SendTokenView(props) {
+  const { isShowSendToken, onHideSendToken } = props;
+  loadedSendToken = isShowSendToken || loadedSendToken;
+
+  if (loadedSendToken) {
     return (
-      <div>
-        <FormattedMessage {...messages.header} />
-        <SendToken />
-      </div>
+      <SendToken {...props} />
     );
   }
   return (
@@ -30,7 +32,8 @@ function SendTokenView({ sendToken }) {
 }
 
 SendTokenView.propTypes = {
-  sendToken: PropTypes.bool,
+  isShowSendToken: PropTypes.bool,
+  onHideSendToken: PropTypes.func,
 };
 
 export default SendTokenView;

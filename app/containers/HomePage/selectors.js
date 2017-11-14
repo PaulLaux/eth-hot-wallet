@@ -77,9 +77,9 @@ const makeSelectUserPassword = () => createSelector(
   (homeState) => homeState.get('userPassword')
 );
 
-const makeSelectSendToken = () => createSelector(
+const makeSelectIsShowSendToken = () => createSelector(
   selectHome,
-  (homeState) => homeState.get('sendToken')
+  (homeState) => homeState.get('isShowSendToken')
 );
 
 const makeSelectAddressListLoading = () => createSelector(
@@ -120,7 +120,7 @@ export {
   makeSelectShowRestoreWallet,
   makeSelectUserSeed,
   makeSelectUserPassword,
-  makeSelectSendToken,
+  makeSelectIsShowSendToken,
   makeSelectAddressListLoading,
   makeSelectAddressListError,
   makeSelectAddressListMsg,

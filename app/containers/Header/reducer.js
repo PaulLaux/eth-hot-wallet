@@ -31,7 +31,7 @@ const initialState = fromJS({
   availableNetworks: Object.keys(Network),
 
   checkingBalanceDoneTime: false, // should update after every succesfull balance check
-  checkingBalances: false,
+  checkingBalances: false, // Loading
   checkingBalancesError: false,
 
   getEchangeRatesDoneTime: false, // should update after every succesfull echange rate check

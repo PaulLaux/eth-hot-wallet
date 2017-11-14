@@ -6,28 +6,20 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Input, Icon } from 'antd';
 // import styled from 'styled-components';
 
-
 function SendTo({ to, onChangeTo, locked }) {
-  const inputStyle = {
-    minWidth: 270,
-  };
-
   return (
     <div>
-      Send to address: <br />
-      <label htmlFor="sendToBox">
-        <input
-          style={inputStyle}
-          id="sendToBox"
-          type="text"
-          placeholder="Enter destenation address"
-          value={to}
-          onInput={onChangeTo}
-          disabled={locked}
-        />
-      </label>
+      <Input
+        style={{ width: '300px' }}
+        placeholder="Send to address"
+        prefix={<Icon type="contacts" />}
+        value={to}
+        onChange={onChangeTo}
+        disabled={locked}
+      />
     </div>
   );
 }

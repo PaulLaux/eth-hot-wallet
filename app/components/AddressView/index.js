@@ -27,14 +27,14 @@ function AddressView(props) {
   const {
     generateKeystoreLoading, generateKeystoreError,
     isComfirmed,
-    addressList, onChangeFrom, onCheckBalances,
+    addressList, onShowSendToken, onCheckBalances,
     onGenerateAddress,
     networkReady, checkingBalanceDoneTime, checkingBalances, checkingBalancesError,
     addressListLoading, addressListError, addressListMsg,
     exchangeRates, onSelectCurrency, convertTo,
    } = props;
 
-  const addressTableProps = { addressList, onChangeFrom, exchangeRates, onSelectCurrency, convertTo };
+  const addressTableProps = { addressList, onShowSendToken, exchangeRates, onSelectCurrency, convertTo };
   const checkBalancesStatusProps = { checkingBalanceDoneTime, checkingBalances, checkingBalancesError };
   const addressListStatusProps = { addressListLoading, addressListError, addressListMsg };
 
@@ -108,7 +108,7 @@ AddressView.propTypes = {
     PropTypes.bool,
     PropTypes.array,
   ]),
-  onChangeFrom: PropTypes.func,
+  onShowSendToken: PropTypes.func,
   onGenerateAddress: PropTypes.func,
 
   addressListLoading: PropTypes.bool,

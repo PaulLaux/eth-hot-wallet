@@ -19,6 +19,8 @@ function AddressTableFooter(props) {
     checkingBalances,
     onCheckBalances,
     networkReady,
+
+    
   } = props;
   return (
     <div>

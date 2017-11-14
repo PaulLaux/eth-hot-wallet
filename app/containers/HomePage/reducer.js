@@ -92,7 +92,7 @@ const initialState = fromJS({
   addressListError: false,
   addressListMsg: false,
 
-  sendToken: true,
+  isShowSendToken: false,
 });
 
 function homeReducer(state = initialState, action) {
@@ -178,10 +178,10 @@ function homeReducer(state = initialState, action) {
 
     case SHOW_SEND_TOKEN:
       return state
-        .set('sendToken', true);
+        .set('isShowSendToken', true);
     case HIDE_SEND_TOKEN:
       return state
-        .set('sendToken', false);
+        .set('isShowSendToken', false);
 
     case GENERATE_ADDRESS:
       return state

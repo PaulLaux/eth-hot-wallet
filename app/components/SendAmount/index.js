@@ -7,21 +7,19 @@
 import React from 'react';
 // import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
-import messages from './messages';
+import { InputNumber } from 'antd';
+//import { FormattedMessage } from 'react-intl';
+//import messages from './messages';
 
 function SendAmount({ amount, onChangeAmount, locked }) {
   return (
     <div>
-      <FormattedMessage {...messages.header} />
-      <input
-        type="number"
-        pattern="[0-9]*"
-        inputMode="numeric"
-        min="0"
-        step="0.01"
+      {'Amount: '}
+      <InputNumber
         value={amount}
-        onChange={(evt) => onChangeAmount(parseFloat(evt.target.value))}
+        min={0}
+        step={0.1}
+        onChange={(value) => onChangeAmount((value))}
         disabled={locked}
       />
     </div>

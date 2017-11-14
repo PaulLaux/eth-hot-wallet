@@ -58,7 +58,8 @@ import {
   changeUserSeed,
   changeUserPassword,
   restoreWalletFromSeed,
-  showSendToken, // TODO: FIX
+  showSendToken,
+  hideSendToken,
   generateAddress,
   lockWallet,
   unlockWallet,
@@ -81,7 +82,7 @@ import {
   makeSelectAddressList,
   // makeSelectKeystore,
   makeSelectShowRestoreWallet,
-  makeSelectSendToken,
+  makeSelectIsShowSendToken,
   makeSelectAddressListLoading,
   makeSelectAddressListError,
   makeSelectAddressListMsg,
@@ -109,7 +110,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       onCheckBalances,
       isComfirmed,
       addressList,
-      onChangeFrom,
+
       onShowRestoreWallet,
       isShowRestoreWallet,
       userSeed,
@@ -119,7 +120,10 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       onRestoreWalletFromSeed,
       onRestoreWalletCancel,
 
-      sendToken,
+      isShowSendToken,
+      onChangeFrom,
+      onShowSendToken,
+      onHideSendToken,
 
       addressListLoading,
       addressListError,
@@ -162,7 +166,10 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       generateKeystoreError,
       isComfirmed,
       addressList,
-      onChangeFrom,
+
+      // onChangeFrom,
+      onShowSendToken,
+
       onCheckBalances,
       onGenerateAddress,
       addressListLoading,
@@ -191,7 +198,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
           GetExchangeRates
         </button>
         <hr />
-        <SendTokenView {...{ sendToken }} />
+        <SendTokenView {...{ isShowSendToken, onHideSendToken }} />
       </div>
     );
   }
@@ -254,7 +261,10 @@ HomePage.propTypes = {
     PropTypes.bool,
     PropTypes.object,
   ]),
-  sendToken: PropTypes.bool,
+
+  isShowSendToken: PropTypes.bool,
+  onShowSendToken: PropTypes.func,
+  onHideSendToken: PropTypes.func,
 
   addressListLoading: PropTypes.bool,
   addressListError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
@@ -320,9 +330,16 @@ export function mapDispatchToProps(dispatch) {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
       dispatch(checkBalances());
     },
+    onShowSendToken: (address) => {
+      // if (evt !== undefined && evt.preventDefault) evt.preventDefault();
+      dispatch(showSendToken(address));
+    },
+    onHideSendToken: () => {
+      // if (evt !== undefined && evt.preventDefault) evt.preventDefault();
+      dispatch(hideSendToken());
+    },
     onChangeFrom: (address) => {
       // if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-      // dispatch(showSendToken());//.then(
       dispatch(changeFrom(address));
     },
     onLockWallet: (evt) => {
@@ -364,7 +381,7 @@ const mapStateToProps = createStructuredSelector({
   userSeed: makeSelectUserSeed(),
   userPassword: makeSelectUserPassword(),
 
-  sendToken: makeSelectSendToken(),
+  isShowSendToken: makeSelectIsShowSendToken(),
 
   addressListLoading: makeSelectAddressListLoading(),
   addressListError: makeSelectAddressListError(),

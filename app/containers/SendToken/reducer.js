@@ -5,6 +5,7 @@
  */
 import BigNumber from 'bignumber.js';
 import { fromJS } from 'immutable';
+import { Gwei } from 'utils/constants';
 import {
   CHANGE_FROM,
   CHANGE_AMOUNT,
@@ -20,16 +21,14 @@ import {
   SEND_TRANSACTION_SUCCESS,
   SEND_TRANSACTION_ERROR,
 
-
 } from './constants';
 
-const Gwei = '1000000000';
 
 const initialState = fromJS({
   from: '',
   to: '',
   amount: 0,
-  gasPrice: new BigNumber(15).times(Gwei),
+  gasPrice: new BigNumber(10).times(Gwei),
   locked: false,
 
   comfirmationLoading: false,
@@ -80,7 +79,8 @@ function sendTokenReducer(state = initialState, action) {
         .set('confirmationMsg', false)
         .set('confirmationError', false)
         .set('locked', false)
-        .set('sendError', false);
+        .set('sendError', false)
+        .set('sendTx', false);
 
     case SEND_TRANSACTION:
       return state

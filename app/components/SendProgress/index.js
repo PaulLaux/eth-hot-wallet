@@ -6,6 +6,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Button, Alert } from 'antd';
 // import styled from 'styled-components';
 
 /* import { FormattedMessage } from 'react-intl';
@@ -23,21 +24,25 @@ function SendProgress({ sendInProgress, sendError, sendTx }) {
 
   if (sendError !== false) {
     return (
-      <div>
-        {sendError}
-      </div>
+      <Alert
+        message="Error"
+        description={sendError}
+        type="error"
+      />
     );
   }
 
   if (sendTx) {
     return (
-      <div>
-        Send sucessfull, TX: {sendTx}
-      </div>
+      <Alert
+        message="Send sucessfull"
+        description={<span> TX: <br /> {sendTx.substring(0, 33)}<br />{sendTx.substring(33)}</span>}
+        type="success"
+      />
     );
   }
 
-  return (null);
+  return null;
 }
 
 SendProgress.propTypes = {

@@ -6,32 +6,31 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Select } from 'antd';
+const Option = Select.Option;
+
 // import styled from 'styled-components';
 
 function SendFrom({ addressList, from, onChangeFrom, locked }) {
-  let options;
+  // let options;
+  let selectOptions;
   if (addressList && addressList.keySeq().toArray()) {
     // console.log(addressList.keySeq().toArray());
 
-    options = addressList.keySeq().toArray().map((address) =>
+    /* options = addressList.keySeq().toArray().map((address) =>
       <option value={address} key={address}>0x{address}</option>
+    ); */
+    selectOptions = addressList.keySeq().toArray().map((address) =>
+      <Option value={address} key={address}>0x{address}</Option>
     );
   }
 
   return (
-    <div >
-      <br />
-      Address to send from:<br />
-      <label htmlFor="sendFromDropdown">
-        <select
-          value={from}
-          onChange={(evt) => onChangeFrom(evt.target.value)}
-          disabled={locked}
-        >
-          <option value={''}>Select Address</option>
-          {options}
-        </select>
-      </label>
+    <div>
+      Source:<br />
+      <Select value={from} style={{ width: 300 }} onChange={onChangeFrom} disabled={locked}>
+        {selectOptions}
+      </Select>
     </div >
   );
 }

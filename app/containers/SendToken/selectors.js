@@ -62,6 +62,11 @@ const makeSelectLocked = () => createSelector(
   (substate) => substate.get('locked')
 );
 
+const makeSelectIsSendComfirmationLocked = () => createSelector(
+  selectSendTokenDomain,
+  (substate) => substate.get('sendInProgress') !== false || substate.get('sendTx') !== false
+);
+
 // export default makeSelectSendToken;
 export {
   selectSendTokenDomain,
@@ -75,6 +80,8 @@ export {
   makeSelectComfirmationLoading,
   makeSelectConfirmationError,
   makeSelectConfirmationMsg,
+
+  makeSelectIsSendComfirmationLocked,
 
   makeSelectSendInProgress,
   makeSelectSendError,

@@ -6,29 +6,41 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Slider, InputNumber, Row, Col } from 'antd';
+import { Gwei } from 'utils/constants';
 // import BigNumber from 'bignumber.js';
 // import styled from 'styled-components';
 
-import { FormattedMessage } from 'react-intl';
-import messages from './messages';
+// import { FormattedMessage } from 'react-intl';
+// import messages from './messages';
 
 function SendGasPrice({ gasPrice, onChangeGasPrice, locked }) {
-  const Gwei = '1000000000';
   return (
     <div>
-      <FormattedMessage {...messages.header} />
-      <input
-        type="number"
-        pattern="[0-9]*"
-        inputMode="numeric"
-        min="1"
-        max="100"
-        step="1"
-        disabled={locked}
-        value={gasPrice.dividedToIntegerBy(Gwei).toNumber()} // show price in Gwei
-        onChange={(evt) => onChangeGasPrice(evt.target.value)} // Bignumber created by reducer
-      /> Gwei
-
+      {'Gas price (Gwei):'}
+      <Row type="flex" justify="center">
+        <Col span={12}>
+          <Slider
+            min={0.5}
+            max={100}
+            step={0.1}
+            onChange={onChangeGasPrice} // Bignumber created by reducer
+            value={gasPrice.dividedBy(Gwei).toNumber()}
+            disabled={locked}
+          />
+        </Col>
+        <Col span={4}>
+          <InputNumber
+            min={0.5}
+            max={100}
+            step={0.1}
+            style={{ marginLeft: 16 }}
+            value={gasPrice.dividedBy(Gwei).toNumber()}
+            onChange={onChangeGasPrice} // Bignumber created by reducer
+            disabled={locked}
+          />
+        </Col>
+      </Row>
     </div>
   );
 }

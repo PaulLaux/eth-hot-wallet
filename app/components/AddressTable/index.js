@@ -39,9 +39,7 @@ const AddrTable = styled(Table) `
  * order is determined by key
  *
  * @param  {addressList} object The address list struct
- *
  * @param  {exchangeRates} object available exchange rates, required for finding selected currency name
- *
  * @param  {convertTo} string the convertion pair to use: ie "eth_usd"
  *
  * @return {Array} array as data for table, see example above
@@ -69,7 +67,7 @@ const transformList = (addressList, exchangeRates, convertTo) => {
 };
 
 function AddressTable(props) {
-  const { addressList, onChangeFrom, exchangeRates, onSelectCurrency, convertTo } = props;
+  const { addressList, onShowSendToken, exchangeRates, onSelectCurrency, convertTo } = props;
 
   const currencyDropdownProps = { exchangeRates, onSelectCurrency };
 
@@ -125,9 +123,9 @@ function AddressTable(props) {
         key="action"
         render={(text, record) => (
           <span>
-            <a href="#">Show QR</a>
+            <a href="#" >Show QR</a>
             <span className="ant-divider" />
-            <a href="#">Send</a>
+            <a href="#" onClick={onShowSendToken}>Send</a>
           </span>
         )}
       />
@@ -137,7 +135,7 @@ function AddressTable(props) {
 
 AddressTable.propTypes = {
   addressList: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
-  onChangeFrom: PropTypes.func,
+  onShowSendToken: PropTypes.func,
   exchangeRates: PropTypes.object,
   onSelectCurrency: PropTypes.func,
   convertTo: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
