@@ -29,7 +29,7 @@ const makeSelectBlockNumber = () => createSelector(
   (substate) => substate.get('blockNumber')
 );
 
-/* Will return null if header didn't loaded yet (initial load)*/
+/* Will return null if header didn't loaded yet (initial load) */
 const makeSelectNetworkReady = () => createSelector(
   selectHeaderDomain,
   (substate) => substate ? substate.get('networkReady') : null
@@ -50,19 +50,19 @@ const makeSelectCheckingBalancesError = () => createSelector(
   (substate) => substate ? substate.get('checkingBalancesError') : null
 );
 
-const makeSelectGetEchangeRatesDoneTime = () => createSelector(
+const makeSelectGetExchangeRatesDoneTime = () => createSelector(
   selectHeaderDomain,
-  (substate) => substate.get('getEchangeRatesDoneTime')
+  (substate) => substate ? substate.get('getExchangeRatesDoneTime') : null
 );
 
-const makeSelectGetEchangeRatesLoading = () => createSelector(
+const makeSelectGetExchangeRatesLoading = () => createSelector(
   selectHeaderDomain,
-  (substate) => substate.get('getEchangeRatesLoading')
+  (substate) => substate ? substate.get('getExchangeRatesLoading') : null
 );
 
-const makeSelectGetEchangeRatesError = () => createSelector(
+const makeSelectGetExchangeRatesError = () => createSelector(
   selectHeaderDomain,
-  (substate) => substate.get('getEchangeRatesError')
+  (substate) => substate ? substate.get('getExchangeRatesError') : null
 );
 
 // export default makeSelectHeader;
@@ -77,9 +77,9 @@ export {
   makeSelectCheckingBalanceDoneTime,
   makeSelectCheckingBalances,
   makeSelectCheckingBalancesError,
-  makeSelectGetEchangeRatesDoneTime,
-  makeSelectGetEchangeRatesLoading,
-  makeSelectGetEchangeRatesError,
+  makeSelectGetExchangeRatesDoneTime,
+  makeSelectGetExchangeRatesLoading,
+  makeSelectGetExchangeRatesError,
 };
 
 

@@ -34,9 +34,9 @@ const initialState = fromJS({
   checkingBalances: false, // Loading
   checkingBalancesError: false,
 
-  getEchangeRatesDoneTime: false, // should update after every succesfull echange rate check
-  getEchangeRatesLoading: false,
-  getEchangeRatesError: false,
+  getExchangeRatesDoneTime: false, // should update after every succesfull exchange rate check
+  getExchangeRatesLoading: false,
+  getExchangeRatesError: false,
 
 });
 
@@ -77,19 +77,19 @@ function headerReducer(state = initialState, action) {
 
     case GET_EXCHANGE_RATES:
       return state
-        .set('getEchangeRatesLoading', true)
-        .set('getEchangeRatesError', false)
-        .set('getEchangeRatesDoneTime', false);
+        .set('getExchangeRatesLoading', true)
+        .set('getExchangeRatesError', false)
+        .set('getExchangeRatesDoneTime', false);
     case GET_EXCHANGE_RATES_SUCCESS:
       return state
-        .set('getEchangeRatesLoading', false)
-        .set('getEchangeRatesError', false)
-        .set('getEchangeRatesDoneTime', action.timeString);
+        .set('getExchangeRatesLoading', false)
+        .set('getExchangeRatesError', false)
+        .set('getExchangeRatesDoneTime', action.timeString);
     case GET_EXCHANGE_RATES_ERROR:
       return state
-        .set('getEchangeRatesLoading', false)
-        .set('getEchangeRatesError', action.error)
-        .set('getEchangeRatesDoneTime', false);
+        .set('getExchangeRatesLoading', false)
+        .set('getExchangeRatesError', action.error)
+        .set('getExchangeRatesDoneTime', false);
 
     default:
       return state;

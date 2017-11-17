@@ -88,7 +88,7 @@ const initialState = fromJS({
   exchangeRates: {},
   convertTo: false,
 
-  addressListLoading: false, // for loading and error inside addressList
+  addressListLoading: false, // for addressList loading and error
   addressListError: false,
   addressListMsg: false,
 

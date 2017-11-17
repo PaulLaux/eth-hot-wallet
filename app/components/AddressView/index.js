@@ -10,8 +10,8 @@ import { Spin, Alert } from 'antd';
 import styled from 'styled-components';
 
 import AddressTable from 'components/AddressTable';
-import AddressListStatus from 'components/AddressListStatus';
-import CheckBalancesStatus from 'components/CheckBalancesStatus';
+// import AddressListStatus from 'components/AddressListStatus';
+// import CheckBalancesStatus from 'components/CheckBalancesStatus';
 import AddressTableFooter from 'components/AddressTableFooter';
 
 const Div = styled.div`
@@ -32,11 +32,13 @@ function AddressView(props) {
     networkReady, checkingBalanceDoneTime, checkingBalances, checkingBalancesError,
     addressListLoading, addressListError, addressListMsg,
     exchangeRates, onSelectCurrency, convertTo,
+    onGetExchangeRates,
+    getExchangeRatesDoneTime, getExchangeRatesLoading, getExchangeRatesError,
    } = props;
 
   const addressTableProps = { addressList, onShowSendToken, exchangeRates, onSelectCurrency, convertTo };
-  const checkBalancesStatusProps = { checkingBalanceDoneTime, checkingBalances, checkingBalancesError };
-  const addressListStatusProps = { addressListLoading, addressListError, addressListMsg };
+  // const checkBalancesStatusProps = { checkingBalanceDoneTime, checkingBalances, checkingBalancesError };
+  // const addressListStatusProps = { addressListLoading, addressListError, addressListMsg };
 
   const addressTableFooterProps = {
     checkingBalanceDoneTime,
@@ -44,6 +46,17 @@ function AddressView(props) {
     checkingBalancesError,
     onCheckBalances,
     networkReady,
+
+    isComfirmed,
+    onGenerateAddress,
+    addressListLoading,
+    addressListError,
+    addressListMsg,
+
+    onGetExchangeRates,
+    getExchangeRatesDoneTime,
+    getExchangeRatesLoading,
+    getExchangeRatesError,
   };
 
   let addressViewContent = (
@@ -64,11 +77,11 @@ function AddressView(props) {
     addressViewContent = (
       <Div>
         <AddressTable {...addressTableProps} />
-        <br /> <br />
 
         <AddressTableFooter {...addressTableFooterProps} />
         <br />
-        
+
+        {/*
         <button type="button" onClick={onCheckBalances} disabled={!networkReady}>
           Check balances
         </button>
@@ -78,7 +91,7 @@ function AddressView(props) {
         <button type="button" onClick={onGenerateAddress}>
           Generate new address
         </button>{' '}
-        <AddressListStatus {...addressListStatusProps} />
+        <AddressListStatus {...addressListStatusProps} /> */}
       </Div>
     );
   }
@@ -109,8 +122,8 @@ AddressView.propTypes = {
     PropTypes.array,
   ]),
   onShowSendToken: PropTypes.func,
-  onGenerateAddress: PropTypes.func,
 
+  onGenerateAddress: PropTypes.func,
   addressListLoading: PropTypes.bool,
   addressListError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
   addressListMsg: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
@@ -124,6 +137,11 @@ AddressView.propTypes = {
   exchangeRates: PropTypes.object,
   onSelectCurrency: PropTypes.func,
   convertTo: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+
+  onGetExchangeRates: PropTypes.func,
+  getExchangeRatesDoneTime: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  getExchangeRatesLoading: PropTypes.bool,
+  getExchangeRatesError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
 };
 
 export default AddressView;

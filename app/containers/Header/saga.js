@@ -24,6 +24,8 @@ import {
   SEND_TRANSACTION,
 } from 'containers/SendToken/constants';
 
+import { timeBetweenCheckbalances, Ether, Gwei, maxGasForSendEth, offlineModeString } from 'utils/constants';
+
 import {
   loadNetworkSuccess,
   loadNetworkError,
@@ -32,6 +34,7 @@ import {
   checkBalancesSuccess,
   CheckBalancesError,
 
+  getExchangeRates,
   getExchangeRatesSuccess,
   getExchangeRatesError,
 } from './actions';
@@ -47,7 +50,6 @@ import {
 
 import Network from './network';
 
-import { timeBetweenCheckbalances, Ether, Gwei, maxGasForSendEth, offlineModeString } from 'utils/constants';
 // time in ms between checks
 // const timeBetweenCheckbalances = 60000;
 
@@ -103,8 +105,11 @@ export function* loadNetwork(action) {
 
       yield call(timer);
 
-      yield put(checkBalances());
       yield put(loadNetworkSuccess(blockNumber));
+
+      // actions after succesfull network load :
+      yield put(checkBalances());
+      yield put(getExchangeRates());
     } else {
       throw new Error('keystore not initiated');
     }
@@ -112,6 +117,7 @@ export function* loadNetwork(action) {
     const errorString = `loadNetwork error - ${err.message}`;
     yield put(loadNetworkError(errorString));
   }
+  /* This will happen after successful network load */
 }
 
 
@@ -204,8 +210,7 @@ export function* checkAllBalances() {
 
     yield put(checkBalancesSuccess());
   } catch (err) {
-    const errorString = `checkBalances error - ${err.message}`;
-    yield put(CheckBalancesError(errorString));
+    yield put(CheckBalancesError(err.message));
   }
 }
 
@@ -242,14 +247,13 @@ function* watchPollData() {
     ]);
   }
 }
-/* *********************************************************************************/
+/* ******************************************************************************** */
 
 /**
- * Github repos request/response handler
+ * Get exchange rates from api
  */
-export function* getExchangeRates() {
+export function* getRates() {
   const requestURL = 'https://api.coinmarketcap.com/v1/ticker/ethereum/?convert=EUR';
-
   try {
     // Call our request helper (see 'utils/request')
     // const apiRates = (yield call(request, requestURL))[0];
@@ -289,7 +293,7 @@ export default function* defaultSaga() {
   yield takeLatest(LOAD_NETWORK, loadNetwork);
   yield takeLatest(COMFIRM_SEND_TRANSACTION, confirmSendTransaction);
   yield takeLatest(SEND_TRANSACTION, SendTransaction);
-  yield takeLatest(GET_EXCHANGE_RATES, getExchangeRates);
+  yield takeLatest(GET_EXCHANGE_RATES, getRates);
 
   /* poll check balances */
   yield [

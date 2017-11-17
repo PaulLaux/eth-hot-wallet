@@ -26,6 +26,7 @@ import SendTokenView from 'components/SendTokenView';
 import GenerateWalletModal from 'components/GenerateWalletModal';
 import RestoreWalletModal from 'components/RestoreWalletModal';
 import SubHeader from 'components/SubHeader';
+import PageFooter from 'components/PageFooter';
 
 /* Header: */
 import Header from 'containers/Header';
@@ -35,6 +36,9 @@ import {
   makeSelectCheckingBalanceDoneTime,
   makeSelectCheckingBalances,
   makeSelectCheckingBalancesError,
+  makeSelectGetExchangeRatesDoneTime,
+  makeSelectGetExchangeRatesLoading,
+  makeSelectGetExchangeRatesError,
 } from 'containers/Header/selectors';
 
 /* SendToken */
@@ -140,8 +144,11 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       exchangeRates,
       onSelectCurrency,
       convertTo,
-      onGetExchangeRates,
 
+      onGetExchangeRates,
+      getExchangeRatesDoneTime,
+      getExchangeRatesLoading,
+      getExchangeRatesError,
       onCloseWallet,
     } = this.props;
 
@@ -182,23 +189,28 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       onSelectCurrency,
       exchangeRates,
       convertTo,
+      onGetExchangeRates,
+      getExchangeRatesDoneTime,
+      getExchangeRatesLoading,
+      getExchangeRatesError,
     };
 
     return (
       <div>
-        <Header />
-        <SubHeader {...subHeaderProps} />
+        <div style={{ minHeight: 'calc(100vh - 41px)' }}>
+          <Header />
 
-        <GenerateWalletModal {...generateWalletProps} />
-        <RestoreWalletModal {...restoreWalletModalProps} />
+          <SubHeader {...subHeaderProps} />
 
-        <AddressView {...addressViewProps} />
-        <br /> <hr />
-        <button onClick={onGetExchangeRates}>
-          GetExchangeRates
-        </button>
-        <hr />
-        <SendTokenView {...{ isShowSendToken, onHideSendToken }} />
+          <GenerateWalletModal {...generateWalletProps} />
+
+          <RestoreWalletModal {...restoreWalletModalProps} />
+
+          <AddressView {...addressViewProps} />
+
+          <SendTokenView {...{ isShowSendToken, onHideSendToken }} />
+        </div>
+        <PageFooter />
       </div>
     );
   }
@@ -279,6 +291,9 @@ HomePage.propTypes = {
   onSelectCurrency: PropTypes.func,
   convertTo: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   onGetExchangeRates: PropTypes.func,
+  getExchangeRatesDoneTime: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  getExchangeRatesLoading: PropTypes.bool,
+  getExchangeRatesError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
   onCloseWallet: PropTypes.func,
 };
 
@@ -394,6 +409,10 @@ const mapStateToProps = createStructuredSelector({
 
   exchangeRates: makeSelectExchangeRates(),
   convertTo: makeSelectConvertTo(),
+
+  getExchangeRatesDoneTime: makeSelectGetExchangeRatesDoneTime(),
+  getExchangeRatesLoading: makeSelectGetExchangeRatesLoading(),
+  getExchangeRatesError: makeSelectGetExchangeRatesError(),
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

@@ -54,11 +54,11 @@ function SendConfirmationView({ comfirmationLoading, confirmationError, confirma
           type="info"
         />
         <br />
-        <Button onClick={onSendTransaction} loading={sendInProgress} disabled={isSendComfirmationLocked} >
+        <Button icon="check" onClick={onSendTransaction} loading={sendInProgress} disabled={isSendComfirmationLocked} >
           Send ETH
         </Button>
         {' '}
-        <Button onClick={onAbortTransaction} disabled={isSendComfirmationLocked} >
+        <Button icon="close" onClick={onAbortTransaction} disabled={isSendComfirmationLocked} >
           Back
         </Button>
       </Div>

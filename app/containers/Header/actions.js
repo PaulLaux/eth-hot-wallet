@@ -85,7 +85,7 @@ export function checkBalances() {
  */
 export function checkBalancesSuccess() {
   const timeString = new Date().toLocaleTimeString();
-
+  message.success('Balances updated succesfully');
   return {
     type: CHECK_BALANCES_SUCCESS,
     timeString,
@@ -107,7 +107,7 @@ export function CheckBalancesError(error) {
 }
 
 
-/* *********************************** Get Exchange Rate Actions ********************/
+/* *********************************** Get Exchange Rate Actions ******************* */
 /**
  * Get exchange rates from api
  *
@@ -126,6 +126,7 @@ export function getExchangeRates() {
  */
 export function getExchangeRatesSuccess() {
   const timeString = new Date().toLocaleTimeString();
+  message.success('Exchange rates updated succesfully');
   return {
     type: GET_EXCHANGE_RATES_SUCCESS,
     timeString,

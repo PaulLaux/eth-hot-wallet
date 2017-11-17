@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import LockButton from 'components/LockButton';
 const Div = styled.div`
+  margin-top: 45px;
   .ant-btn {
   margin-right: 8px;
   margin-bottom: 12px;
