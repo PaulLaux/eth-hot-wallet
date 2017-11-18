@@ -48,12 +48,6 @@ import {
   CLOSE_WALLET,
 } from './constants';
 
-/*
-.set('keystore', false)
-.set('addressList', false)
-.set('isConfirmed', false)
-.set('addressList', false)
-*/
 // The initial state of the App
 const initialState = fromJS({
   isShowGenerateWallet: false,
@@ -86,7 +80,7 @@ const initialState = fromJS({
   } */
 
   exchangeRates: {},
-  convertTo: false,
+  convertTo: 'eth_btc',
 
   addressListLoading: false, // for addressList loading and error
   addressListError: false,

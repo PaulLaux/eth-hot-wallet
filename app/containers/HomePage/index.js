@@ -11,7 +11,6 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-
 // import { FormattedMessage } from 'react-intl';
 
 import { connect } from 'react-redux';
@@ -19,14 +18,13 @@ import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 
 /* Components:  */
-// import SeedView from 'components/SeedView';
 import AddressView from 'components/AddressView';
 import SendTokenView from 'components/SendTokenView';
-// import RestoreWallet from 'components/RestoreWallet';
 import GenerateWalletModal from 'components/GenerateWalletModal';
 import RestoreWalletModal from 'components/RestoreWalletModal';
 import SubHeader from 'components/SubHeader';
 import PageFooter from 'components/PageFooter';
+import { Content } from 'components/PageFooter/sticky';
 
 /* Header: */
 import Header from 'containers/Header';
@@ -84,7 +82,6 @@ import {
   makeSelectUserSeed,
   makeSelectUserPassword,
   makeSelectAddressList,
-  // makeSelectKeystore,
   makeSelectShowRestoreWallet,
   makeSelectIsShowSendToken,
   makeSelectAddressListLoading,
@@ -197,7 +194,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
 
     return (
       <div>
-        <div style={{ minHeight: 'calc(100vh - 41px)' }}>
+        <Content>
           <Header />
 
           <SubHeader {...subHeaderProps} />
@@ -209,7 +206,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
           <AddressView {...addressViewProps} />
 
           <SendTokenView {...{ isShowSendToken, onHideSendToken }} />
-        </div>
+        </Content>
         <PageFooter />
       </div>
     );

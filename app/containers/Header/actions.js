@@ -85,7 +85,7 @@ export function checkBalances() {
  */
 export function checkBalancesSuccess() {
   const timeString = new Date().toLocaleTimeString();
-  message.success('Balances updated succesfully');
+  // message.success('Balances updated succesfully');
   return {
     type: CHECK_BALANCES_SUCCESS,
     timeString,

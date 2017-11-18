@@ -5,25 +5,24 @@
 */
 
 import React from 'react';
-import styled from 'styled-components';
-
+// import styled from 'styled-components';
+import { StickyFooter } from './sticky';
 // import { FormattedMessage } from 'react-intl';
 // import messages from './messages';
 
-const StickyFooter = styled.div`
+export const Footer = StickyFooter.extend`
   textAlign: center;
-  background: #f3f3f3;
+  background: #efeeee;
   color: #5a5a5a;
   padding: 10px;
   font-size: 14px;
-
 `;
 
 function PageFooter() {
   return (
-    <StickyFooter>
-      ETH Hot Wallet - Ethereum open source wallet
-    </StickyFooter>
+    <Footer>
+      ETH Hot Wallet - <a href="/#">Ethereum open source wallet </a>
+    </Footer>
   );
 }
 

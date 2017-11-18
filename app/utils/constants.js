@@ -9,9 +9,9 @@ export const generatedPasswordLength = 12;
 export const hdPathString = `m/44'/60'/0'/0`;
 
 // time in ms for check balancess polling
-export const timeBetweenCheckbalances = 60000;
+export const timeBetweenCheckbalances = 60 * 1000;
 
-/* Max gas for send transaction */
+/* Max gas for send transaction (not gas price) */
 export const maxGasForSendEth = 25000;
 
 /* Eth unit constants will be saved as strings to prevent accidental manimulation
@@ -25,3 +25,8 @@ export const Gwei = (1.0e9).toString();
     offline mode is special case of error
 */
 export const offlineModeString = 'Offline';
+
+// addresses:
+export const website = 'https://github.com/PaulLaux/eth-hot-wallet';
+export const github = 'https://github.com/PaulLaux/eth-hot-wallet';
+

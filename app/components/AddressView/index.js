@@ -69,7 +69,7 @@ function AddressView(props) {
           showIcon
         />
         :
-        <Span>Wellcome to ETH Hot Wallet <br />To begin create or restore wallet</Span>}
+        <Span>Wellcome to ETH Hot Wallet <br />To begin, create or restore wallet</Span>}
     </Div>
   );
 
