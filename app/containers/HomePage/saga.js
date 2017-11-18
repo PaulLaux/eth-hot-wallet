@@ -13,6 +13,7 @@ import { loadNetwork } from 'containers/Header/actions';
 
 import generateString from 'utils/crypto';
 import { generatedPasswordLength, hdPathString, offlineModeString, defaultNetwork } from 'utils/constants';
+import { timer } from 'utils/common';
 
 import {
   generateWalletSucces,
@@ -39,7 +40,6 @@ function promisify(func, param) {
   });
 } */
 
-
 /**
  * Create new seed and password
  */
@@ -49,7 +49,7 @@ export function* generateWallet() {
     const extraEntropy = generateString(generatedPasswordLength);
     const seed = lightwallet.keystore.generateRandomSeed(extraEntropy);
 
-    yield call(() => new Promise((resolve) => setTimeout(() => resolve('timer end'), 500)));
+    yield call(timer, 500);
 
     yield put(generateWalletSucces(seed, password));
   } catch (err) {
@@ -57,21 +57,6 @@ export function* generateWallet() {
   }
 }
 
-/**
- * Create new seed and password
- */
-/*
-export function* initSeed() {
-  try {
-    const password = generateString(generatedPasswordLength);
-    const extraEntropy = generateString(generatedPasswordLength);
-    const seed = lightwallet.keystore.generateRandomSeed(extraEntropy);
-
-    yield put(seedInitilized(seed, password));
-  } catch (err) {
-    yield put(initSeedError(err));
-  }
-} */
 
 /**
  * check seed given by user
@@ -97,16 +82,6 @@ export function* restoreFromSeed() {
 
     yield put(restoreWalletFromSeedSuccess(userSeed, userPassword));
     yield put(generateKeystore());
-
-    /* if (userSeed) {
-      if (lightwallet.keystore.isSeedValid(userSeed)) {
-        yield put(seedInitilized(userSeed, userPassword));
-      } else {
-        yield put(restoreWalletFromSeedError('restoreFromSeed Error - Seed supplied by user is invalid'));
-      }
-    } else {
-      yield put(restoreWalletFromSeedError('restoreFromSeed Error - Please provide seed'));
-    } */
   } catch (err) {
     yield put(restoreWalletFromSeedError(err));
   }
@@ -135,9 +110,8 @@ export function* genKeystore() {
       hdPathString,  // The light-wallet default is `m/0'/0'/0'`.
     };
 
-    // throw Error('Wallet Locked');
     // allow time to render components before cpu intensive tasks:
-    yield call(() => { return new Promise((resolve) => setTimeout(() => resolve('timer end'), 150)); });
+    yield call(timer, 300);
 
     const ks = yield call(createVaultPromise, opt);
     function keyFromPasswordPromise(param) { // eslint-disable-line no-inner-declarations
@@ -175,7 +149,7 @@ export function* generateAddress() {
   try {
     const ks = yield select(makeSelectKeystore());
     if (!ks) {
-      throw new Error('no keystore found');
+      throw new Error('No keystore found');
     }
 
     const password = yield select(makeSelectPassword());
@@ -184,12 +158,6 @@ export function* generateAddress() {
       throw Error('Wallet Locked');
     }
 
-    /* ks.passwordProvider = (callback) => {
-      const pw = prompt('Please enter password1112', 'Password');
-      callback(null, pw);
-    }; */
-
-    // TODO: remove duplicate
     function keyFromPasswordPromise(param) { // eslint-disable-line no-inner-declarations
       return new Promise((resolve, reject) => {
         ks.keyFromPassword(param, (err, data) => {
@@ -198,7 +166,6 @@ export function* generateAddress() {
         });
       });
     }
-    // this.ksData[hdPathString].addresses.push(address);
 
     const pwDerivedKey = yield call(keyFromPasswordPromise, password);
     ks.generateNewAddress(pwDerivedKey, 1);
@@ -208,17 +175,9 @@ export function* generateAddress() {
     const index = ks.getAddresses().length; // serial index for sorting by generation order;
     yield put(generateAddressSuccess(newAddress, index));
   } catch (err) {
-    const errorString = `generateAddress error - ${err}`;
-    console.log(errorString);
-    yield put(generateAddressError(errorString));
+    yield put(generateAddressError(err.message));
   }
 }
-
-// `keystore.isDerivedKeyCorrect(pwDerivedKey)`
-/* ks.passwordProvider = function (callback) {
-  const pw = prompt('Please enter password1111', 'Password');
-  callback(null, pw);
-}; */
 
 /**
  * unlock wallet using user given password

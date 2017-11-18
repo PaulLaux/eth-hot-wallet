@@ -25,6 +25,7 @@ import {
 } from 'containers/SendToken/constants';
 
 import { timeBetweenCheckbalances, Ether, Gwei, maxGasForSendEth, offlineModeString } from 'utils/constants';
+import { timer } from 'utils/common';
 
 import {
   loadNetworkSuccess,
@@ -50,12 +51,6 @@ import {
 
 import Network from './network';
 
-// time in ms between checks
-// const timeBetweenCheckbalances = 60000;
-
-function timer(ms) {
-  return new Promise((resolve) => setTimeout(() => resolve('timer end'), ms));
-}
 
 console.log('const web3 = new Web3();');
 let web3 = {};
