@@ -15,7 +15,7 @@ import AddressTable from 'components/AddressTable';
 import AddressTableFooter from 'components/AddressTableFooter';
 
 const Div = styled.div`
-  padding: 30px;
+  padding: 30px 5px 20px 10px;
   min-height: 100px;
 `;
 
@@ -77,21 +77,7 @@ function AddressView(props) {
     addressViewContent = (
       <Div>
         <AddressTable {...addressTableProps} />
-
         <AddressTableFooter {...addressTableFooterProps} />
-        <br />
-
-        {/*
-        <button type="button" onClick={onCheckBalances} disabled={!networkReady}>
-          Check balances
-        </button>
-        <br />
-        <CheckBalancesStatus {...checkBalancesStatusProps} />
-
-        <button type="button" onClick={onGenerateAddress}>
-          Generate new address
-        </button>{' '}
-        <AddressListStatus {...addressListStatusProps} /> */}
       </Div>
     );
   }

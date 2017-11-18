@@ -8,7 +8,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { Button } from 'antd';
+import { Button, Popconfirm } from 'antd';
 import AddressTableFooterErrors from 'components/AddressTableFooterErrors';
 // import { FormattedMessage } from 'react-intl';
 // import messages from './messages';
@@ -24,7 +24,7 @@ const Div = styled.div`
 
 function AddressTableFooter(props) {
   const {
-    checkingBalanceDoneTime,
+    // checkingBalanceDoneTime,
     checkingBalancesError,
     checkingBalances,
     onCheckBalances,
@@ -34,10 +34,10 @@ function AddressTableFooter(props) {
     onGenerateAddress,
     addressListLoading,
     addressListError,
-    addressListMsg,
+    // addressListMsg,
 
     onGetExchangeRates,
-    getExchangeRatesDoneTime,
+    // getExchangeRatesDoneTime,
     getExchangeRatesLoading,
     getExchangeRatesError,
   } = props;
@@ -56,26 +56,28 @@ function AddressTableFooter(props) {
       >
         Add address
       </Button>
-      <Button
-        size="large"
-        type="default"
-        icon="reload"
-        loading={checkingBalances}
-        onClick={onCheckBalances}
-        disabled={!networkReady}
-      >
-        Check balances
-      </Button>
-      <Button
-        size="large"
-        type="default"
-        icon="global"
-        loading={getExchangeRatesLoading}
-        onClick={onGetExchangeRates}
-        disabled={!networkReady}
-      >
-        Update exchange rates
-      </Button>
+      <Popconfirm title="Refresh balance?" onConfirm={onCheckBalances} okText="Confirm" cancelText="No">
+        <Button
+          size="large"
+          type="default"
+          icon="reload"
+          loading={checkingBalances}
+          disabled={!networkReady}
+        >
+          Check balances
+        </Button>
+      </Popconfirm>
+      <Popconfirm title="Refresh exchange rates?" onConfirm={onGetExchangeRates} okText="Confirm" cancelText="No">
+        <Button
+          size="large"
+          type="default"
+          icon="global"
+          loading={getExchangeRatesLoading}
+          disabled={!networkReady}
+        >
+          Update exchange rates
+        </Button>
+      </Popconfirm>
       <AddressTableFooterErrors {...addressTableFooterErrorsProps} />
     </Div>
   );

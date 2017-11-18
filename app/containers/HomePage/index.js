@@ -196,15 +196,10 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       <div>
         <Content>
           <Header />
-
           <SubHeader {...subHeaderProps} />
-
           <GenerateWalletModal {...generateWalletProps} />
-
           <RestoreWalletModal {...restoreWalletModalProps} />
-
           <AddressView {...addressViewProps} />
-
           <SendTokenView {...{ isShowSendToken, onHideSendToken }} />
         </Content>
         <PageFooter />

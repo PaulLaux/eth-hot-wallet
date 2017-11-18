@@ -5,14 +5,32 @@ import lightwallet from 'eth-lightwallet';
 
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 
-import { GENERATE_WALLET, GENERATE_KEYSTORE, RESTORE_WALLET_FROM_SEED, GENERATE_ADDRESS, UNLOCK_WALLET, CLOSE_WALLET } from 'containers/HomePage/constants';
+import {
+  GENERATE_WALLET,
+  GENERATE_KEYSTORE,
+  RESTORE_WALLET_FROM_SEED,
+  GENERATE_ADDRESS,
+  UNLOCK_WALLET,
+  CLOSE_WALLET,
+  SHOW_SEND_TOKEN,
+} from 'containers/HomePage/constants';
 
-import { makeSelectPassword, makeSelectSeed, makeSelectUserSeed, makeSelectUserPassword, makeSelectKeystore } from 'containers/HomePage/selectors';
+import {
+  makeSelectPassword,
+  makeSelectSeed,
+  makeSelectUserSeed,
+  makeSelectUserPassword,
+  makeSelectKeystore,
+} from 'containers/HomePage/selectors';
 
 import { loadNetwork } from 'containers/Header/actions';
 
+import { changeFrom } from 'containers/SendToken/actions';
+
 import generateString from 'utils/crypto';
+
 import { generatedPasswordLength, hdPathString, offlineModeString, defaultNetwork } from 'utils/constants';
+
 import { timer } from 'utils/common';
 
 import {
@@ -191,7 +209,7 @@ export function* unlockWallet() {
 
     const ks = yield select(makeSelectKeystore());
     if (!ks) {
-      throw new Error('No keystore found');
+      throw new Error('No keystore to unlock');
     }
 
     const passwordProvider = ks.passwordProvider;
@@ -230,8 +248,17 @@ export function* unlockWallet() {
 
     yield put(unlockWalletSuccess(userPassword));
   } catch (err) {
-    const errorString = `unlockWallet ${err}`;
+    const errorString = `Unlock wallet error - ${err.message}`;
     yield put(unlockWalletError(errorString));
+  }
+}
+
+/**
+ * change source address when opening send modal
+ */
+export function* changeSourceAddress(action) {
+  if (action.address) {
+    yield put(changeFrom(action.address));
   }
 }
 
@@ -258,6 +285,7 @@ export default function* walletData() {
   yield takeLatest(GENERATE_ADDRESS, generateAddress);
   yield takeLatest(RESTORE_WALLET_FROM_SEED, restoreFromSeed);
   yield takeLatest(UNLOCK_WALLET, unlockWallet);
+  yield takeLatest(SHOW_SEND_TOKEN, changeSourceAddress);
   yield takeLatest(CLOSE_WALLET, closeWallet);
   /*
   while (yield takeLatest(INIT_WALLET, initSeed)) {

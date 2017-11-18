@@ -125,7 +125,7 @@ function AddressTable(props) {
           <span>
             <a href="#" >Show QR</a>
             <span className="ant-divider" />
-            <a href="#" onClick={onShowSendToken}>Send</a>
+            <a onClick={() => onShowSendToken(record.address)}>Send</a>
           </span>
         )}
       />
