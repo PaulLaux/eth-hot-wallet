@@ -16,7 +16,16 @@ const Div = styled.div`
 // import { FormattedMessage } from 'react-intl';
 // import messages from './messages';
 
-function SendConfirmationView({ comfirmationLoading, confirmationError, confirmationMsg, onSendTransaction, onAbortTransaction, isSendComfirmationLocked, sendInProgress }) {
+function SendConfirmationView(props) {
+  const {
+    comfirmationLoading,
+    confirmationError,
+    confirmationMsg,
+    onSendTransaction,
+    onAbortTransaction,
+    isSendComfirmationLocked,
+    sendError,
+       } = props;
   if (comfirmationLoading) {
     return (
       <Div>
@@ -54,8 +63,8 @@ function SendConfirmationView({ comfirmationLoading, confirmationError, confirma
           type="info"
         />
         <br />
-        <Button icon="check" onClick={onSendTransaction} loading={sendInProgress} disabled={isSendComfirmationLocked} >
-          Send ETH
+        <Button icon="to-top" onClick={onSendTransaction} disabled={isSendComfirmationLocked} >
+          {sendError ? 'Try again' : 'Send ETH'}
         </Button>
         {' '}
         <Button icon="close" onClick={onAbortTransaction} disabled={isSendComfirmationLocked} >
@@ -78,6 +87,8 @@ SendConfirmationView.propTypes = {
 
   onSendTransaction: PropTypes.func.isRequired,
   onAbortTransaction: PropTypes.func.isRequired,
+
+  sendError: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
 };
 
 export default SendConfirmationView;

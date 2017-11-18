@@ -74,14 +74,6 @@ function Header(props) {
           </Row>
         </Col>
       </Row >
-      {/* <Content style={{ padding: '0 50px' }}>
-        <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>Content</div>
-      </Content>
-      <Footer style={{ textAlign: 'center' }}>
-        Ant Design ©2016 Created by Ant UED
-      </Footer> */}
-      {/* <NetworkLabel {...networkLabelProps} />
-      <NetworkSelector {...networkSelectorProps} />*/}
     </HeaderWrapped >
   );
 }

@@ -12,13 +12,11 @@ import { makeSelectPassword, makeSelectSeed, makeSelectUserSeed, makeSelectUserP
 import { loadNetwork } from 'containers/Header/actions';
 
 import generateString from 'utils/crypto';
-import { generatedPasswordLength, hdPathString, offlineModeString } from 'utils/constants';
+import { generatedPasswordLength, hdPathString, offlineModeString, defaultNetwork } from 'utils/constants';
 
 import {
   generateWalletSucces,
   generateWalletError,
-  // seedInitilized,
-  // initSeedError,
   generateKeystoreSuccess,
   generateKeystoreError,
   changeUserSeed,
@@ -51,7 +49,7 @@ export function* generateWallet() {
     const extraEntropy = generateString(generatedPasswordLength);
     const seed = lightwallet.keystore.generateRandomSeed(extraEntropy);
 
-    yield call(() => { return new Promise((resolve) => setTimeout(() => resolve('timer end'), 300)); });
+    yield call(() => new Promise((resolve) => setTimeout(() => resolve('timer end'), 500)));
 
     yield put(generateWalletSucces(seed, password));
   } catch (err) {
@@ -161,7 +159,7 @@ export function* genKeystore() {
     ks.generateNewAddress(pwDerivedKey, 2);
 
     yield put(generateKeystoreSuccess(ks));
-    yield put(loadNetwork('Local RPC'));
+    yield put(loadNetwork(defaultNetwork));
   } catch (err) {
     const errorString = `genKeystore error - ${err}`;
     yield put(generateKeystoreError(errorString));

@@ -77,12 +77,21 @@ function SendToken(props) {
   const SendToProps = { to, onChangeTo, locked };
   const SendGasPriceProps = { gasPrice, onChangeGasPrice, locked };
 
-  const SendConfirmationViewProps = { comfirmationLoading, confirmationError, confirmationMsg, onSendTransaction, onAbortTransaction, sendInProgress, isSendComfirmationLocked };
+  const SendConfirmationViewProps = {
+    comfirmationLoading,
+    confirmationError,
+    confirmationMsg,
+    onSendTransaction,
+    onAbortTransaction,
+    sendInProgress,
+    isSendComfirmationLocked,
+    sendError,
+  };
   const SendProgressProps = { sendInProgress, sendError, sendTx };
 
   const modalFooter = [
     <Button key="reset" type="default" size="large" onClick={onAbortTransaction}>
-    Reset
+      Reset
     </Button>,
     <Button key="close" type="default" size="large" onClick={onHideSendToken}>
       Close

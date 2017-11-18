@@ -5,10 +5,9 @@
 */
 
 import React from 'react';
-// import styled from 'styled-components';
+import { github } from 'utils/constants';
 import { StickyFooter } from './sticky';
-// import { FormattedMessage } from 'react-intl';
-// import messages from './messages';
+
 
 export const Footer = StickyFooter.extend`
   textAlign: center;
@@ -21,7 +20,10 @@ export const Footer = StickyFooter.extend`
 function PageFooter() {
   return (
     <Footer>
-      ETH Hot Wallet - <a href="/#">Ethereum open source wallet </a>
+      {'ETH Hot Wallet - '}
+      <a href={github} target="_blank">
+        Ethereum open source wallet
+      </a>
     </Footer>
   );
 }

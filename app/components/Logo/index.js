@@ -6,9 +6,7 @@
 
 import React from 'react';
 import styled from 'styled-components';
-
-import { FormattedMessage } from 'react-intl';
-import messages from './messages';
+import { website } from 'utils/constants';
 import walletLogo from './hot-wallet.svg';
 
 const Div = styled.div`
@@ -28,7 +26,9 @@ function Logo() {
   return (
     <Div>
       <Img alt="logo" src={walletLogo} />
-      <FormattedMessage {...messages.header} />
+      <a href={website}>
+        ETH Hot Wallet
+      </a>
     </Div>
   );
 }

@@ -53,8 +53,8 @@ import Network from './network';
 // time in ms between checks
 // const timeBetweenCheckbalances = 60000;
 
-function timer() {
-  return new Promise((resolve) => setTimeout(() => resolve('timer end'), 600));
+function timer(ms) {
+  return new Promise((resolve) => setTimeout(() => resolve('timer end'), ms));
 }
 
 console.log('const web3 = new Web3();');
@@ -77,7 +77,7 @@ export function* loadNetwork(action) {
       throw new Error(`${action.networkName} network not found`);
     }
 
-    if (action.networkName === 'Offline') {
+    if (action.networkName === offlineModeString) {
       web3.setProvider(null);
       yield put(loadNetworkError(offlineModeString));
       return;
@@ -103,7 +103,7 @@ export function* loadNetwork(action) {
       }
       const blockNumber = yield call(getBlockNumberPromise);
 
-      yield call(timer);
+      yield call(timer, 600);
 
       yield put(loadNetworkSuccess(blockNumber));
 
@@ -111,11 +111,11 @@ export function* loadNetwork(action) {
       yield put(checkBalances());
       yield put(getExchangeRates());
     } else {
-      throw new Error('keystore not initiated');
+      throw new Error('keystore not initiated - Create wallet before connecting');
     }
   } catch (err) {
-    const errorString = `loadNetwork error - ${err.message}`;
-    yield put(loadNetworkError(errorString));
+    // const errorString = `loadNetwork error - ${err.message}`;
+    yield put(loadNetworkError(err.message));
   }
   /* This will happen after successful network load */
 }
@@ -129,7 +129,7 @@ export function* confirmSendTransaction() {
     const gasPrice = yield select(makeSelectGasPrice());
 
     if (!web3.isAddress(fromAddress)) {
-      throw new Error('Origin address invalid');
+      throw new Error('Source address invalid');
     }
 
     if (amount <= 0) {
@@ -148,8 +148,8 @@ export function* confirmSendTransaction() {
     Sending ${amount} from ...${fromAddress.slice(-5)} to ...${toAddress.slice(-5)}`;
     yield put(confirmSendTransactionSuccess(msg));
   } catch (err) {
-    const errorString = `confirmSendTransaction error - ${err.message}`;
-    yield put(confirmSendTransactionError(errorString));
+    // const errorString = `confirmSendTransaction error - ${err.message}`;
+    yield put(confirmSendTransactionError(err.message));
   }
 }
 
@@ -162,8 +162,7 @@ export function* SendTransaction() {
 
     const sendAmount = new BigNumber(amount).times(Ether);
 
-    const sendParams = { from: fromAddress, to: toAddress, value: sendAmount, gasPrice: gasPrice, gas: maxGasForSendEth };
-
+    const sendParams = { from: fromAddress, to: toAddress, value: sendAmount, gasPrice, gas: maxGasForSendEth };
 
     function sendTransactionPromise(params) { // eslint-disable-line no-inner-declarations
       return new Promise((resolve, reject) => {
@@ -178,9 +177,7 @@ export function* SendTransaction() {
 
     yield put(sendTransactionSuccess(tx));
   } catch (err) {
-    // const errorString = `SendTransaction ${err.message.slice(0, 75)}`;
-    const errorString = `SendTransaction ${err.message}`;
-    yield put(sendTransactionError(errorString));
+    yield put(sendTransactionError(err.message));
   }
 }
 
