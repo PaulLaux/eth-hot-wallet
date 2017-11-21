@@ -1,17 +1,22 @@
-// dec2hex :: Integer -> String
-function dec2hex(dec) {
-  return ('0' + dec.toString(16)).substr(-2);
-}
-
-/* generateString :: Integer -> String
-*  simple "secure" string generator
+/*
+ * "Secure" password generator
+ * adapted from: https://gist.github.com/mozfreddyb/98843b728f61958f5c31e70d57d93fb8
 */
 export default function generateString(len) {
-  const arr = new Uint8Array((len || 40) / 2);
-  window.crypto.getRandomValues(arr);
-  // TODO: add fallback for unsuported browsers
-  return Array.from(arr, dec2hex).join('');
+  const MAXLEN = len; /* tweak this */
+  const MINLEN = len;
+  function genString() {
+    let array = new Uint8Array(MAXLEN);
+    window.crypto.getRandomValues(array);
+    array = Array.apply([], array); /* turn into non-typed array */
+    array = array.filter((x) => (x > 32 && x < 127));
+      /* strip non-printables: if we transform into desirable range we have a propability bias, so I suppose we better skip this character */
+    return String.fromCharCode.apply(String, array); // eslint-disable-line
+  }
+  let tmp = genString();
+  while (tmp.length < MINLEN) {
+    /* unlikely too loop more than once.. */
+    tmp += genString();
+  }
+  return tmp.substr(0, len);
 }
-
-// console.log(generateId(20))
-// "c1a050a4cd1556948d41"
