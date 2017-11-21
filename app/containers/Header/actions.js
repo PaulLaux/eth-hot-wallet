@@ -14,6 +14,7 @@ import {
   CHECK_BALANCES,
   CHECK_BALANCES_SUCCESS,
   CHECK_BALANCES_ERROR,
+  STOP_POLL_BALANCES,
 
   GET_EXCHANGE_RATES,
   GET_EXCHANGE_RATES_SUCCESS,
@@ -106,6 +107,17 @@ export function CheckBalancesError(error) {
   };
 }
 
+
+/**
+ * Stop polling balances when going to offline mode
+ *
+ * @return {object} An action object with a type of STOP_POLL_BALANCES
+ */
+export function stopPollingBalances() {
+  return {
+    type: STOP_POLL_BALANCES,
+  };
+}
 
 /* *********************************** Get Exchange Rate Actions ******************* */
 /**

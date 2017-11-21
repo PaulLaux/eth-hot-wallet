@@ -34,6 +34,7 @@ import {
   checkBalances,
   checkBalancesSuccess,
   CheckBalancesError,
+  stopPollingBalances,
 
   getExchangeRates,
   getExchangeRatesSuccess,
@@ -74,6 +75,7 @@ export function* loadNetwork(action) {
 
     if (action.networkName === offlineModeString) {
       web3.setProvider(null);
+      yield put(stopPollingBalances());
       yield put(loadNetworkError(offlineModeString));
       return;
     }
