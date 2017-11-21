@@ -115,6 +115,7 @@ function createVaultPromise(param) {
     });
   });
 }
+
 /**
  * Create new keystore and generate some addreses
  */
@@ -125,13 +126,12 @@ export function* genKeystore() {
     const opt = {
       password,
       seedPhrase,
-      hdPathString,  // The light-wallet default is `m/0'/0'/0'`.
+      hdPathString,
     };
-
     // allow time to render components before cpu intensive tasks:
     yield call(timer, 300);
 
-    const ks = yield call(createVaultPromise, opt);
+
     function keyFromPasswordPromise(param) { // eslint-disable-line no-inner-declarations
       return new Promise((resolve, reject) => {
         ks.keyFromPassword(param, (err, data) => {
@@ -140,6 +140,8 @@ export function* genKeystore() {
         });
       });
     }
+
+    const ks = yield call(createVaultPromise, opt);
 
     ks.passwordProvider = (callback) => {
       // const password = yield select(makeSelectPassword());
@@ -257,6 +259,9 @@ export function* unlockWallet() {
  * change source address when opening send modal
  */
 export function* changeSourceAddress(action) {
+  // during the initial load SendToken container isn't attached yet,
+  // wait for container to load and then change from address
+  yield call(timer, 200);
   if (action.address) {
     yield put(changeFrom(action.address));
   }

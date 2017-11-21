@@ -7,7 +7,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Table, Menu, Dropdown, Icon } from 'antd';
+import { Table } from 'antd';
 import { Ether } from 'utils/constants';
 
 import CurrencyDropdown from 'components/CurrencyDropdown';
@@ -123,8 +123,8 @@ function AddressTable(props) {
         key="action"
         render={(text, record) => (
           <span>
-            <a href="#" >Show QR</a>
-            <span className="ant-divider" />
+            {/* <a href="#" >Show QR</a>
+            <span className="ant-divider" /> */}
             <a onClick={() => onShowSendToken(record.address)}>Send</a>
           </span>
         )}
