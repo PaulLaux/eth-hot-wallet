@@ -6,7 +6,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Button, Alert } from 'antd';
+import { Modal, Button } from 'antd';
 import { connect } from 'react-redux';
 // import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
@@ -148,6 +148,13 @@ SendToken.propTypes = {
   sendError: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
   sendTx: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
 
+  isShowSendToken: PropTypes.bool,
+  onHideSendToken: PropTypes.func,
+  addressList: PropTypes.oneOfType([
+    // PropTypes.array,
+    PropTypes.bool,
+    PropTypes.object,
+  ]),
 };
 
 const mapStateToProps = createStructuredSelector({

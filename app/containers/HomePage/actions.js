@@ -290,7 +290,7 @@ export function changeBalance(address, balance) {
  * @return {object}    An action object with a type of SHOW_SEND_TOKEN
  */
 export function showSendToken(address) {
-  console.log(address);
+  // console.log(address);
   return {
     type: SHOW_SEND_TOKEN,
     address,

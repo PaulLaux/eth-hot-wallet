@@ -39,9 +39,6 @@ import {
   makeSelectGetExchangeRatesError,
 } from 'containers/Header/selectors';
 
-/* SendToken */
-import { changeFrom } from 'containers/SendToken/actions';
-
 /* General */
 import injectReducer from 'utils/injectReducer';
 import injectSaga from 'utils/injectSaga';
@@ -122,7 +119,6 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       onRestoreWalletCancel,
 
       isShowSendToken,
-      onChangeFrom,
       onShowSendToken,
       onHideSendToken,
 
@@ -254,8 +250,6 @@ HomePage.propTypes = {
 
   onCheckBalances: PropTypes.func,
 
-  onChangeFrom: PropTypes.func,
-
   onLockWallet: PropTypes.func,
   onUnlockWallet: PropTypes.func,
 
@@ -344,10 +338,6 @@ export function mapDispatchToProps(dispatch) {
     onHideSendToken: () => {
       // if (evt !== undefined && evt.preventDefault) evt.preventDefault();
       dispatch(hideSendToken());
-    },
-    onChangeFrom: (address) => {
-      // if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-      dispatch(changeFrom(address));
     },
     onLockWallet: (evt) => {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();

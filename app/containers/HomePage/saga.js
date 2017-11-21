@@ -145,7 +145,7 @@ export function* genKeystore() {
 
     ks.passwordProvider = (callback) => {
       // const password = yield select(makeSelectPassword());
-      const pw = prompt('Please enter keystore password', 'Password');
+      const pw = prompt('Please enter keystore password', 'Password'); // eslint-disable-line
       callback(null, pw);
     };
 

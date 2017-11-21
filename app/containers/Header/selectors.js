@@ -81,10 +81,3 @@ export {
   makeSelectGetExchangeRatesLoading,
   makeSelectGetExchangeRatesError,
 };
-
-
-/*
-const makeSelectHeader = () => createSelector(
-  selectHeaderDomain(),
-  (substate) => substate.toJS()
-);*/
