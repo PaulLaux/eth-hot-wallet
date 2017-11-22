@@ -3,8 +3,6 @@
  * SendToken actions
  *
  */
-import BigNumber from 'bignumber.js';
-import { Gwei } from 'utils/constants';
 import {
   CHANGE_AMOUNT,
   CHANGE_FROM,

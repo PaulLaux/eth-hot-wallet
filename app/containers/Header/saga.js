@@ -1,5 +1,5 @@
 import Web3 from 'web3';
-import SignerProvider from 'vendor/ethjs-provider-signer/ethjs-provider-signer.js';
+import SignerProvider from 'vendor/ethjs-provider-signer/ethjs-provider-signer';
 import BigNumber from 'bignumber.js';
 import { take, call, put, select, takeLatest, race, fork } from 'redux-saga/effects';
 
@@ -51,17 +51,7 @@ import {
 } from './constants';
 
 import Network from './network';
-
-
-console.log('const web3 = new Web3();');
-let web3 = {};
-if (window.web3) {
-  web3 = window.web3;
-} else {
-  web3 = new Web3();
-  window.web3 = web3;
-}
-
+const web3 = new Web3();
 
 /**
  * connect to rpc and attach keystore as siger provider
@@ -219,12 +209,12 @@ function delay(millisec) {
 // Fetch data every X seconds
 function* pollData() {
   try {
-    console.log('pollData');
+    // console.log('pollData');
     yield call(delay, timeBetweenCheckbalances);
 
     yield put(checkBalances());
   } catch (error) {
-    console.log('pollData Error');
+    // console.log('pollData Error');
     // cancellation error -- can handle this if you wish
   }
 }
@@ -233,9 +223,9 @@ function* pollData() {
 // Wait for successful response or fail, then fire another request
 // Cancel polling on STOP_POLL_BALANCES
 function* watchPollData() {
-  while (true) {
+  while (true) { // eslint-disable-line
     yield take([CHECK_BALANCES_SUCCESS, CHECK_BALANCES_ERROR]);
-    yield race([
+    yield race([ // eslint-disable-line
       call(pollData),
       take(STOP_POLL_BALANCES),
     ]);
@@ -253,30 +243,29 @@ export function* getRates() {
     // const apiRates = (yield call(request, requestURL))[0];
     const apiRates =
       {
-        'id': 'ethereum',
-        'name': 'Ethereum',
-        'symbol': 'ETH',
-        'rank': '2',
-        'price_usd': '295.412',
-        'price_btc': '0.0684231',
+        id: 'ethereum',
+        name: 'Ethereum',
+        symbol: 'ETH',
+        rank: '2',
+        price_usd: '295.412',
+        price_btc: '0.0684231',
         '24h_volume_usd': '308964000.0',
-        'market_cap_usd': '28043053731.0',
-        'available_supply': '94928621.0',
-        'total_supply': '94928621.0',
-        'percent_change_1h': '-1.46',
-        'percent_change_24h': '-1.84',
-        'percent_change_7d': '1.35',
-        'last_updated': '1507010353',
-        'price_eur': '252.342998284',
+        market_cap_usd: '28043053731.0',
+        available_supply: '94928621.0',
+        total_supply: '94928621.0',
+        percent_change_1h: '-1.46',
+        percent_change_24h: '-1.84',
+        percent_change_7d: '1.35',
+        last_updated: '1507010353',
+        price_eur: '252.342998284',
         '24h_volume_eur': '263919211.548',
-        'market_cap_eur': '23954572799.0',
+        market_cap_eur: '23954572799.0',
       };
     // console.log(apiPrices);
     // extract(apiRates, requestURL);
     yield put(setExchangeRates(apiRates, requestURL));
     yield put(getExchangeRatesSuccess());
   } catch (err) {
-    console.log(err);
     yield put(getExchangeRatesError(err));
   }
 }

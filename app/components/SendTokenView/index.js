@@ -18,7 +18,10 @@ import SendToken from 'containers/SendToken/Loadable';
 let loadedSendToken = false;
 
 function SendTokenView(props) {
-  const { isShowSendToken, onHideSendToken } = props;
+  const {
+    isShowSendToken,
+    // onHideSendToken
+  } = props;
   loadedSendToken = isShowSendToken || loadedSendToken;
 
   if (loadedSendToken) {
@@ -33,7 +36,7 @@ function SendTokenView(props) {
 
 SendTokenView.propTypes = {
   isShowSendToken: PropTypes.bool,
-  onHideSendToken: PropTypes.func,
+  // onHideSendToken: PropTypes.func,
 };
 
 export default SendTokenView;

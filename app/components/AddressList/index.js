@@ -10,7 +10,6 @@ import PropTypes from 'prop-types';
 import AddressItem from 'components/AddressItem';
 // import { FormattedMessage } from 'react-intl';
 // import messages from './messages';
-// 
 
 function AddressList({ addressList, onChangeFrom, exchangeRates, convertTo }) {
   let mainList = null;

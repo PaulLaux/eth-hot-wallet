@@ -86,7 +86,7 @@ function AddressTableFooter(props) {
 AddressTableFooter.propTypes = {
   onCheckBalances: PropTypes.func,
   networkReady: PropTypes.bool,
-  checkingBalanceDoneTime: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  // checkingBalanceDoneTime: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   checkingBalances: PropTypes.bool,
   checkingBalancesError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
 
@@ -94,10 +94,10 @@ AddressTableFooter.propTypes = {
   onGenerateAddress: PropTypes.func,
   addressListLoading: PropTypes.bool,
   addressListError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
-  addressListMsg: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  // addressListMsg: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
 
   onGetExchangeRates: PropTypes.func,
-  getExchangeRatesDoneTime: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  // getExchangeRatesDoneTime: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   getExchangeRatesLoading: PropTypes.bool,
   getExchangeRatesError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
 };

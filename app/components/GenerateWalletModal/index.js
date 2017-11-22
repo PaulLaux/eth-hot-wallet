@@ -13,7 +13,7 @@ function GenerateWalletModal(props) {
   const {
     isShowGenerateWallet,
     generateWalletLoading,
-    generateWalletError,
+    // generateWalletError,
     seed,
     password,
 
@@ -36,7 +36,8 @@ function GenerateWalletModal(props) {
     >
       <Alert
         message={<b>The seed is imposible to recover if lost</b>}
-        description={<b>Copy the generated seed to safe location.<br /> HDPathString: m/44'/60'/0'/0.<br /> Recover lost password using the seed.</b>}
+        description={<b>Copy the generated seed to safe location.<br />
+                        HDPathString: m/44'/60'/0'/0.<br /> Recover lost password using the seed.</b>} // eslint-disable-line
         type="warning"
         showIcon
         closable
@@ -62,11 +63,11 @@ function GenerateWalletModal(props) {
 GenerateWalletModal.propTypes = {
   isShowGenerateWallet: PropTypes.bool,
   generateWalletLoading: PropTypes.bool,
-  generateWalletError: PropTypes.oneOfType([
+  /* generateWalletError: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.string,
     PropTypes.bool,
-  ]),
+  ]), */
   seed: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.bool,

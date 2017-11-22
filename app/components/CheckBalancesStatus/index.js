@@ -8,9 +8,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 
-import { FormattedMessage } from 'react-intl';
-import messages from './messages';
-
 function CheckBalancesStatus({ checkingBalanceDoneTime, checkingBalances, checkingBalancesError }) {
   // console.log(checkingBalancesError);
   if (checkingBalances) {
