@@ -20,7 +20,7 @@ import 'sanitize.css/sanitize.css';
 import App from 'containers/App';
 
 // Import Language Provider
-import LanguageProvider from 'containers/LanguageProvider';
+// import LanguageProvider from 'containers/LanguageProvider';
 
 // Load the favicon, the manifest.json file and the .htaccess file
 /* eslint-disable import/no-unresolved, import/extensions */
@@ -51,14 +51,14 @@ const history = createHistory();
 const store = configureStore(initialState, history);
 const MOUNT_NODE = document.getElementById('app');
 
-const render = (messages) => {
+const render = (messages) => { // eslint-disable-line
   ReactDOM.render(
     <Provider store={store}>
-      <LanguageProvider messages={messages}>
-        <ConnectedRouter history={history}>
-          <App />
-        </ConnectedRouter>
-      </LanguageProvider>
+      {/* <LanguageProvider messages={messages}> */}
+      <ConnectedRouter history={history}>
+        <App />
+      </ConnectedRouter>
+      {/* </LanguageProvider> */}
     </Provider>,
     MOUNT_NODE
   );
@@ -68,13 +68,18 @@ if (module.hot) {
   // Hot reloadable React components and translation json files
   // modules.hot.accept does not accept dynamic dependencies,
   // have to be constants at compile-time
-  module.hot.accept(['./i18n', 'containers/App'], () => {
+  /* module.hot.accept(['./i18n', 'containers/App'], () => {
+    ReactDOM.unmountComponentAtNode(MOUNT_NODE);
+    render(translationMessages);
+  }); */
+  module.hot.accept(['containers/App'], () => {
     ReactDOM.unmountComponentAtNode(MOUNT_NODE);
     render(translationMessages);
   });
 }
 
 // Chunked polyfill for browsers without Intl support
+/*
 if (!window.Intl) {
   (new Promise((resolve) => {
     resolve(import('intl'));
@@ -88,7 +93,8 @@ if (!window.Intl) {
     });
 } else {
   render(translationMessages);
-}
+} */
+render();
 
 // Install ServiceWorker and AppCache in the end since
 // it's not most important operation and if main code fails,
