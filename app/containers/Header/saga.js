@@ -3,7 +3,7 @@ import SignerProvider from 'vendor/ethjs-provider-signer/ethjs-provider-signer';
 import BigNumber from 'bignumber.js';
 import { take, call, put, select, takeLatest, race, fork } from 'redux-saga/effects';
 
-import { makeSelectKeystore, makeSelectAddressList } from 'containers/HomePage/selectors';
+import { makeSelectKeystore, makeSelectAddressList, makeSelectPassword } from 'containers/HomePage/selectors';
 import { changeBalance, setExchangeRates } from 'containers/HomePage/actions';
 import request from 'utils/request';
 
@@ -141,11 +141,28 @@ export function* confirmSendTransaction() {
 }
 
 export function* SendTransaction() {
+  const keystore = yield select(makeSelectKeystore());
+  const origProvider = keystore.passwordProvider;
   try {
     const fromAddress = yield select(makeSelectFrom());
     const amount = yield select(makeSelectAmount());
     const toAddress = yield select(makeSelectTo());
     const gasPrice = yield select(makeSelectGasPrice());
+    const password = yield select(makeSelectPassword());
+
+    if (!password) {
+      throw new Error('No password found - please unlock wallet before sending');
+    }
+
+    if (!keystore) {
+      throw new Error('No keystore found - please create wallet');
+    }
+
+    keystore.passwordProvider = (callback) => {
+      // we cannot use selector inside this callback so we just use a const value
+      const ksPassword = password;
+      callback(null, ksPassword);
+    };
 
     const sendAmount = new BigNumber(amount).times(Ether);
 
@@ -165,6 +182,8 @@ export function* SendTransaction() {
     yield put(sendTransactionSuccess(tx));
   } catch (err) {
     yield put(sendTransactionError(err.message));
+  } finally {
+    keystore.passwordProvider = origProvider;
   }
 }
 

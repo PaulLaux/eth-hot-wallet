@@ -15,6 +15,13 @@ const Div = styled.div`
   margin-right: 8px;
   margin-bottom: 12px;
   }
+
+  .anticon-lock {
+    color: red;
+  }
+  .anticon-unlock {
+    color: blue;
+  }
 `;
 
 function SubHeader(props) {

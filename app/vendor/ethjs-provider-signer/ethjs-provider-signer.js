@@ -165,7 +165,9 @@ SignerProvider.prototype.sendAsync = function (payload, callback) {
             // send payload
             self.provider.sendAsync(outputPayload, callback);
           } else {
-            callback(new Error('[ethjs-provider-signer] while signing your transaction payload: ' + JSON.stringify(keyError)), null);
+            //callback(new Error('[ethjs-provider-signer] while signing your transaction payload: ' + JSON.stringify(keyError)), null);
+            console.error('[ethjs-provider-signer] while signing your transaction payload:', keyError);
+            callback(keyError, null);
           }
         });
       });

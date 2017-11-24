@@ -40,7 +40,7 @@ import 'file-loader?name=[name].[ext]!./.htaccess';
 import configureStore from './store';
 
 // Import i18n messages
-import { translationMessages } from './i18n';
+// import { translationMessages } from './i18n';
 
 // Import CSS reset and Global Styles
 import './global-styles';
@@ -74,7 +74,7 @@ if (module.hot) {
   }); */
   module.hot.accept(['containers/App'], () => {
     ReactDOM.unmountComponentAtNode(MOUNT_NODE);
-    render(translationMessages);
+    render();
   });
 }
 

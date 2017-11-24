@@ -175,7 +175,7 @@ export function* generateAddress() {
     const password = yield select(makeSelectPassword());
     if (!password) {
       // TODO: Handle password
-      throw Error('Wallet Locked');
+      throw new Error('Wallet Locked');
     }
 
     function keyFromPasswordPromise(param) { // eslint-disable-line no-inner-declarations
