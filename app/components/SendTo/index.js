@@ -19,6 +19,10 @@ function SendTo({ to, onChangeTo, locked }) {
         value={to}
         onChange={onChangeTo}
         disabled={locked}
+        autoComplete="off"
+        autoCorrect="off"
+        autoCapitalize="off"
+        spellCheck={false}
       />
     </div>
   );

@@ -50,6 +50,10 @@ function RestoreWalletModal(props) {
         prefix={<Icon type="wallet" />}
         value={userSeed}
         onChange={onChangeUserSeed}
+        autoComplete="off"
+        autoCorrect="off"
+        autoCapitalize="off"
+        spellCheck={false}
       />
       <Div>
         <Input
@@ -57,6 +61,10 @@ function RestoreWalletModal(props) {
           prefix={<Icon type="key" />}
           value={userPassword}
           onChange={onChangeUserPassword}
+          autoComplete="off"
+          autoCorrect="off"
+          autoCapitalize="off"
+          spellCheck={false}
         />
       </Div>
     </Modal>
