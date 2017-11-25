@@ -13,14 +13,11 @@ import AddressTable from 'components/AddressTable';
 // import AddressListStatus from 'components/AddressListStatus';
 // import CheckBalancesStatus from 'components/CheckBalancesStatus';
 import AddressTableFooter from 'components/AddressTableFooter';
+import WelcomeText from 'components/WelcomeText';
 
 const Div = styled.div`
   padding: 30px 5px 20px 10px;
   min-height: 100px;
-`;
-
-const Span = styled.span`
-  font-size: 22px;
 `;
 
 function AddressView(props) {
@@ -37,8 +34,6 @@ function AddressView(props) {
    } = props;
 
   const addressTableProps = { addressList, onShowSendToken, exchangeRates, onSelectCurrency, convertTo };
-  // const checkBalancesStatusProps = { checkingBalanceDoneTime, checkingBalances, checkingBalancesError };
-  // const addressListStatusProps = { addressListLoading, addressListError, addressListMsg };
 
   const addressTableFooterProps = {
     checkingBalanceDoneTime,
@@ -69,7 +64,7 @@ function AddressView(props) {
           showIcon
         />
         :
-        <Span>Wellcome to ETH Hot Wallet <br />To begin, create or restore wallet</Span>}
+        <WelcomeText />}
     </Div>
   );
 
