@@ -19,8 +19,10 @@ const Span = styled.span`
   padding-right: 12px;
   vertical-align: sub;
 `;
-// import { FormattedMessage } from 'react-intl';
-// import messages from './messages';
+
+const Description = styled.div`
+  margin-bottom: 10px;
+`;
 
 function RestoreWalletModal(props) {
   const { isShowRestoreWallet, userSeed, userPassword, restoreWalletError, onChangeUserSeed, onChangeUserPassword, onRestoreWalletCancel, onRestoreWalletFromSeed } = props;
@@ -45,6 +47,7 @@ function RestoreWalletModal(props) {
         </Button >,
       ]}
     >
+      <Description> {"HDPathString m/44'/60'/0'/0 is used for address generation"}</Description>
       <Input
         placeholder="Enter seed"
         prefix={<Icon type="wallet" />}
@@ -57,7 +60,7 @@ function RestoreWalletModal(props) {
       />
       <Div>
         <Input
-          placeholder="Enter keystore password"
+          placeholder="Enter password for keystore encryption"
           prefix={<Icon type="key" />}
           value={userPassword}
           onChange={onChangeUserPassword}

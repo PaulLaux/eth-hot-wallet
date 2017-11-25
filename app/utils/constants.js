@@ -24,7 +24,7 @@ export const Gwei = (1.0e9).toString();
 /* offline mode is special case of error */
 export const offlineModeString = 'Offline';
 /* Default network to connect after wallet creation (see network.js) */
-export const defaultNetwork = 'Local RPC';
+export const defaultNetwork = 'Ropsten Testnet';
 
 // addresses:
 export const website = 'https://github.com/PaulLaux/eth-hot-wallet';

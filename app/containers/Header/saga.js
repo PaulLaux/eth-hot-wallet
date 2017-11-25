@@ -259,8 +259,8 @@ export function* getRates() {
   const requestURL = 'https://api.coinmarketcap.com/v1/ticker/ethereum/?convert=EUR';
   try {
     // Call our request helper (see 'utils/request')
-    // const apiRates = (yield call(request, requestURL))[0];
-    const apiRates =
+    const apiRates = (yield call(request, requestURL))[0];
+    /* const apiRates =
       {
         id: 'ethereum',
         name: 'Ethereum',
@@ -279,9 +279,9 @@ export function* getRates() {
         price_eur: '252.342998284',
         '24h_volume_eur': '263919211.548',
         market_cap_eur: '23954572799.0',
-      };
+      }; */
     // console.log(apiPrices);
-    // extract(apiRates, requestURL);
+
     yield put(setExchangeRates(apiRates, requestURL));
     yield put(getExchangeRatesSuccess());
   } catch (err) {
