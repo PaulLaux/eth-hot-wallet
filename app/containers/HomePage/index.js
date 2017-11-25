@@ -167,7 +167,6 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       isComfirmed,
       addressList,
 
-      // onChangeFrom,
       onShowSendToken,
 
       onCheckBalances,
@@ -188,6 +187,8 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       getExchangeRatesError,
     };
 
+    const sendTokenViewProps = { isShowSendToken, onHideSendToken };
+
     return (
       <div>
         <Content>
@@ -196,7 +197,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
           <GenerateWalletModal {...generateWalletProps} />
           <RestoreWalletModal {...restoreWalletModalProps} />
           <AddressView {...addressViewProps} />
-          <SendTokenView {...{ isShowSendToken, onHideSendToken }} />
+          <SendTokenView {...sendTokenViewProps} />
         </Content>
         <PageFooter />
       </div>
