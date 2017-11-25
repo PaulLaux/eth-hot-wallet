@@ -189,7 +189,7 @@ export function* SendTransaction() {
 
 
 /* *************  Polling saga and polling flow for check balances ***************** */
-function getBalancePromise(address) {
+export function getBalancePromise(address) {
   return new Promise((resolve, reject) => {
     web3.eth.getBalance(address, (err, data) => {
       if (err !== null) return reject(err);

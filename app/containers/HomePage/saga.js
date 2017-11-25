@@ -33,6 +33,8 @@ import { generatedPasswordLength, hdPathString, offlineModeString, defaultNetwor
 
 import { timer } from 'utils/common';
 
+import { getBalancePromise } from 'containers/Header/saga';
+
 import {
   generateWalletSucces,
   generateWalletError,
@@ -44,6 +46,7 @@ import {
   restoreWalletFromSeedSuccess,
   generateAddressSuccess,
   generateAddressError,
+  changeBalance,
   unlockWalletSuccess,
   unlockWalletError,
 } from './actions';
@@ -163,7 +166,7 @@ export function* genKeystore() {
 
 /**
  * Generate new address from same key
- * will run on GENERATE_ADDRESS action
+ * will run after GENERATE_ADDRESS action
  */
 export function* generateAddress() {
   try {
@@ -194,6 +197,12 @@ export function* generateAddress() {
     const newAddress = ks.getAddresses().slice(-1)[0];
     const index = ks.getAddresses().length; // serial index for sorting by generation order;
     yield put(generateAddressSuccess(newAddress, index));
+
+    // balance checking for new address (will be aborted in offline mode)
+    try {
+      const balance = yield call(getBalancePromise, newAddress);
+      yield put(changeBalance(newAddress, balance));
+    } catch (err) {}  // eslint-disable-line 
   } catch (err) {
     yield put(generateAddressError(err.message));
   }
