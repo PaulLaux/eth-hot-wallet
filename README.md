@@ -2,7 +2,7 @@
 
 ### Ethereum open source wallet / zero client
 
-![eth-hot-wallet ethereum wallet preview](https://github.com/PaulLaux/eth-hot-wallet/tree/master/docs/images/eth-hot-wallet-ethereum.PNG)
+![eth-hot-wallet ethereum wallet preview](https://paullaux.github.io/eth-hot-wallet/docs/images/eth-hot-wallet-ethereum.PNG)
 
 
 #### Version 0.1 - work in progress
@@ -54,7 +54,7 @@
 - Sendto container - contains state and actions related to sendto modal, actual checks and sending is happning in header container.
 
 After build, webpack monitor will generates stats about bundle size:
-![eth-hot-wallet webpack-monitor](https://github.com/PaulLaux/eth-hot-wallet/tree/master/docs/images/webpack-monitor.JPG)
+![eth-hot-wallet webpack-monitor](https://paullaux.github.io/eth-hot-wallet/docs/images/webpack-monitor.JPG)
 
 ## License
 
