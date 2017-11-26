@@ -11,6 +11,7 @@ import styled from 'styled-components';
 import { Menu } from 'antd';
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
+const MenuItem = Menu.Item;
 
 const NetMenu = styled(Menu)`
   line-height: 77px !important;
@@ -25,7 +26,7 @@ function NetworkMenu(props) {
   let options;
   if (availableNetworks) {
     options = availableNetworks.map((network) =>
-      <Menu.Item key={network}>{network}</Menu.Item>
+      <MenuItem key={network}>{network}</MenuItem>
     );
   }
 
