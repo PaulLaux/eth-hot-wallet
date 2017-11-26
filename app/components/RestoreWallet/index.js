@@ -8,9 +8,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 
-import { FormattedMessage } from 'react-intl';
-import messages from './messages';
-
 function RestoreWallet({ isShowRestoreWallet, userSeed, onChangeUserSeed, onRestoreWalletFromSeed }) {
   // console.log(isShowRestoreWallet);
   // onSubmit={props.onSubmitForm}
@@ -24,7 +21,6 @@ function RestoreWallet({ isShowRestoreWallet, userSeed, onChangeUserSeed, onRest
     return (
       <div>
         <br />
-        <FormattedMessage {...messages.header} />
         <form > { /* todo: cancel default action */}
           <label htmlFor="restoreWalletBox">
             <input
