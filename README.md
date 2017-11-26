@@ -2,6 +2,9 @@
 
 ### Ethereum open source wallet / zero client
 
+![eth-hot-wallet ethereum wallet preview](https://github.com/PaulLaux/eth-hot-wallet/tree/master/docs/images/eth-hot-wallet-ethereum.PNG "Ethereum wallet")
+
+
 #### Version 0.1 - work in progress
 
 ##### Created by Paul Laux, [@drjackall](https://twitter.com/drjackall) for announcements
@@ -50,6 +53,10 @@
 
 - Sendto container - contains state and actions related to sendto modal, actual checks and sending is happning in header container.
 
+After build, webpack monitor will generates stats about bundle size:
+![eth-hot-wallet webpack-monitor](https://github.com/PaulLaux/eth-hot-wallet/tree/master/docs/images/webpack-monitor.JPG "webpack-monitor")
+
+s
 ## License
 
 This project is licensed under the MIT license, Copyright (c) 2017 Paul Laux For more information see `LICENSE.md`.
