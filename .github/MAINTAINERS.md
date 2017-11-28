@@ -1,2 +1,0 @@
-# Maintainers
- - PaulLaux
