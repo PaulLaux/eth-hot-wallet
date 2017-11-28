@@ -1,15 +1,15 @@
 [
   {
-    "timeStamp": 1511684612561,
-    "time": 49983,
-    "hash": "684126a3a710b5193fe8",
+    "timeStamp": 1511844798909,
+    "time": 48675,
+    "hash": "3ed4ef29ff3362b1d83e",
     "errors": [],
-    "size": 2717546,
+    "size": 2674781,
     "assets": [
       {
-        "name": "icon-72x72.png",
+        "name": "icon-512x512.png",
         "chunks": [],
-        "size": 2792
+        "size": 22382
       },
       {
         "name": "6fafcfe22c16f334a15dfbbd17a1d2be.svg",
@@ -47,14 +47,14 @@
         "size": 19969
       },
       {
-        "name": "icon-512x512.png",
-        "chunks": [],
-        "size": 22382
-      },
-      {
         "name": ".htaccess.bin",
         "chunks": [],
         "size": 1839
+      },
+      {
+        "name": "icon-72x72.png",
+        "chunks": [],
+        "size": 2792
       },
       {
         "name": "icon-96x96.png",
@@ -67,54 +67,46 @@
         "size": 1023
       },
       {
-        "name": "0.d47b16f01de50a028c6d.chunk.js",
+        "name": "0.0df24e6f6edb50f323b0.chunk.js",
         "chunks": [
           0
         ],
-        "size": 1894032,
-        "miniSize": 1902778,
+        "size": 1894037,
+        "miniSize": 1902783,
         "minified": false
       },
       {
-        "name": "1.9a352000886e48f0cd6c.chunk.js",
+        "name": "1.67249144bd14bf802f74.chunk.js",
         "chunks": [
           1
-        ],
-        "size": 42528,
-        "minified": true
-      },
-      {
-        "name": "2.da1f5476b6997cd14dd3.chunk.js",
-        "chunks": [
-          2
         ],
         "size": 76328,
         "minified": true
       },
       {
-        "name": "main.3d365b6df28ccdbc0822.js",
+        "name": "main.588f0794f783b5e8ee12.js",
         "chunks": [
-          3
+          2
         ],
-        "size": 597721,
+        "size": 597559,
         "minified": true
       },
       {
         "name": "index.html",
         "chunks": [],
-        "size": 591
+        "size": 592
       },
       {
         "name": "sw.js",
         "chunks": [],
-        "size": 17622
+        "size": 17541
       }
     ],
     "chunks": [
       {
-        "size": 3937553,
+        "size": 3937603,
         "files": [
-          "0.d47b16f01de50a028c6d.chunk.js"
+          "0.0df24e6f6edb50f323b0.chunk.js"
         ],
         "modules": [
           {
@@ -129,7 +121,7 @@
           },
           {
             "name": "./app/containers/HomePage/index.js + 32 modules",
-            "size": 130134,
+            "size": 130184,
             "id": "./app/containers/HomePage/index.js"
           },
           {
@@ -3968,6 +3960,11 @@
             "id": "./node_modules/web3/lib/web3/requestmanager.js"
           },
           {
+            "name": "util (ignored)",
+            "size": 15,
+            "id": 1
+          },
+          {
             "name": "./node_modules/web3/lib/web3/settings.js",
             "size": 134,
             "id": "./node_modules/web3/lib/web3/settings.js"
@@ -3998,11 +3995,6 @@
             "id": "./node_modules/xhr2/lib/browser.js"
           },
           {
-            "name": "util (ignored)",
-            "size": 15,
-            "id": 1
-          },
-          {
             "name": "buffer (ignored)",
             "size": 15,
             "id": 2
@@ -4020,42 +4012,9 @@
         ]
       },
       {
-        "size": 133882,
-        "files": [
-          "1.9a352000886e48f0cd6c.chunk.js"
-        ],
-        "modules": [
-          {
-            "name": "../locale-data/index.js (ignored)",
-            "size": 15,
-            "id": 5
-          },
-          {
-            "name": "./app/containers/NotFoundPage/index.js + 16 modules",
-            "size": 130759,
-            "id": "./app/containers/NotFoundPage/index.js"
-          },
-          {
-            "name": "./node_modules/prop-types/factoryWithThrowingShims.js",
-            "size": 1594,
-            "id": "./node_modules/prop-types/factoryWithThrowingShims.js"
-          },
-          {
-            "name": "./node_modules/prop-types/index.js",
-            "size": 1078,
-            "id": "./node_modules/prop-types/index.js"
-          },
-          {
-            "name": "./node_modules/prop-types/lib/ReactPropTypesSecret.js",
-            "size": 436,
-            "id": "./node_modules/prop-types/lib/ReactPropTypesSecret.js"
-          }
-        ]
-      },
-      {
         "size": 147488,
         "files": [
-          "2.da1f5476b6997cd14dd3.chunk.js"
+          "1.67249144bd14bf802f74.chunk.js"
         ],
         "modules": [
           {
@@ -4241,14 +4200,14 @@
         ]
       },
       {
-        "size": 1542752,
+        "size": 1542499,
         "files": [
-          "main.3d365b6df28ccdbc0822.js"
+          "main.588f0794f783b5e8ee12.js"
         ],
         "modules": [
           {
-            "name": "./app/app.js + 10 modules",
-            "size": 42393,
+            "name": "./app/app.js + 9 modules",
+            "size": 42142,
             "id": "./app/app.js"
           },
           {
@@ -6113,7 +6072,7 @@
           },
           {
             "name": "./node_modules/offline-plugin/runtime.js",
-            "size": 1017,
+            "size": 1015,
             "id": "./node_modules/offline-plugin/runtime.js"
           },
           {
