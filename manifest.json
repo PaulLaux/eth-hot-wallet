@@ -1,6 +1,6 @@
 {
   "name": "ETH Hot Wallet",
-  "theme_color": "#b1624d",
+  "theme_color": "#ff3333",
   "background_color": "#fafafa",
   "display": "standalone",
   "Scope": "/",
