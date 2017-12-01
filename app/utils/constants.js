@@ -27,6 +27,6 @@ export const offlineModeString = 'Offline';
 export const defaultNetwork = 'Ropsten Testnet';
 
 // addresses:
-export const website = 'https://github.com/PaulLaux/eth-hot-wallet';
+export const website = 'https://eth-hot-wallet.com';
 export const github = 'https://github.com/PaulLaux/eth-hot-wallet';
 

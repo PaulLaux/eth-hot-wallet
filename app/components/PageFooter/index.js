@@ -31,7 +31,7 @@ function PageFooter() {
       <Row>
         <Col sm={12} xs={24}>
           {'ETH Hot Wallet - '}
-          <a href={github} target="_blank">
+          <a href={github} target="_blank" rel="noopener">
             Ethereum open source wallet (Github)
           </a><br />
           Created using: eth-lightwallet, React.js, Ant design...
