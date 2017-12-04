@@ -12,6 +12,7 @@
  */
 
 import React from 'react';
+// import { Helmet } from 'react-helmet';
 import { Switch, Route } from 'react-router-dom';
 
 import HomePage from 'containers/HomePage/Loadable';
