@@ -15,6 +15,7 @@
 - [ ] [Web3.js](https://github.com/ethereum/web3.js/) Ethereum JavaScript API
 - [ ] [React-boilerplate](https://github.com/react-boilerplate/react-boilerplate) as a wrapper of React JS, Redux, Saga, Reselect, ImmutableJS and more
 - [ ] [Ant Design](https://github.com/ant-design/ant-design) React js components
+- [ ] [Webpack 3] (https://github.com/webpack/webpack) - A bundler for javascript and friends.
 - [ ] Many others, See [package.json](https://github.com/PaulLaux/eth-hot-wallet/blob/master/package.json)
 
 

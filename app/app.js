@@ -50,6 +50,8 @@ import '!file-loader?name=[name].[ext]!./images/favicon-32x32.png';
 import '!file-loader?name=[name].[ext]!./images/favicon-16x16.png';
 import '!file-loader?name=[name].[ext]!./images/safari-pinned-tab.svg';
 import '!file-loader?name=[name].[ext]!./images/mstile-144x144.png';
+
+import '!file-loader?name=[name]!./vendor/github/CNAME'; // for github - domain connection
 /* eslint-enable import/no-unresolved, import/extensions */
 
 import configureStore from './store';
