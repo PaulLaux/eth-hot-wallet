@@ -4,7 +4,8 @@
 
 ![eth-hot-wallet ethereum wallet preview](https://paullaux.github.io/eth-hot-wallet/docs/images/eth-hot-wallet-ethereum.PNG)
 
-HTTPS://eth-hot-wallet.com
+https://eth-hot-wallet.com
+
 #### Version 0.1 - work in progress
 
 ##### Created by Paul Laux, [@drjackall](https://twitter.com/drjackall) for announcements
