@@ -4,14 +4,13 @@
   "description": "Ethereum Hot Wallet",
   "repository": {
     "type": "git",
-    "url": "git://github.com/react-boilerplate/react-boilerplate.git"
+    "url": "git://github.com/PaulLaux/eth-hot-wallet.git"
   },
   "engines": {
     "npm": ">=3",
-    "node": ">=5"
+    "node": ">=7"
   },
   "author": "Paul Laux",
-  "private": true,
   "license": "MIT",
   "scripts": {
     "analyze:clean": "rimraf stats.json",
