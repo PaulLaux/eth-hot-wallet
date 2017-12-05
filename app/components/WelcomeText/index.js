@@ -10,7 +10,7 @@ import styled from 'styled-components';
 const H1 = styled.h1`
   font-size: 22px;
   color: rgba(0, 0, 0, 0.55);
-  font-weight: 500;
+  font-weight: 400;
 `;
 
 const H2 = styled.h2`
