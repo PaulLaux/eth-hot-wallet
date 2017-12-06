@@ -73,9 +73,10 @@ export function* loadNetwork(action) {
     const keystore = yield select(makeSelectKeystore());
 
     if (keystore) {
+      // console.log(keystore.getAddresses().map((a) => `${a}`));
       const provider = new SignerProvider(rpcAddress, {
         signTransaction: keystore.signTransaction.bind(keystore),
-        accounts: (cb) => cb(null, keystore.getAddresses().map((a) => `0x${a}`)),
+        accounts: (cb) => cb(null, keystore.getAddresses()),
       });
 
       web3.setProvider(provider);
