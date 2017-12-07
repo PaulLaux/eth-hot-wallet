@@ -14,7 +14,7 @@ export const timeBetweenCheckbalances = 60 * 1000;
 /* Max gas for send transaction (not gas price) */
 export const maxGasForSendEth = 25000;
 
-/* Eth unit constants will be saved as strings to prevent accidental manimulation
+/* Eth unit constants will be saved as strings to prevent accidental manipulation
     usage: convert amount to wei
     const sendAmount = new BigNumber(amount).times(Ether);
 */
