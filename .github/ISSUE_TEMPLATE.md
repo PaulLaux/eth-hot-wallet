@@ -2,6 +2,7 @@
 
 Please direct redux-saga related questions to stack overflow:
 http://stackoverflow.com/questions/tagged/redux-saga
+=======
 
 ## Issue Type
 
@@ -15,9 +16,6 @@ http://stackoverflow.com/questions/tagged/redux-saga
 ## Steps to reproduce
 
 (Add link to a demo on https://jsfiddle.net or similar if possible)
-
-
-
 
 
 # Versions
