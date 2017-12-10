@@ -1,6 +1,6 @@
 # ETH-Hot-Wallet 
 
-### Ethereum open source wallet / zero client
+### Ethereum open source wallet / web wallet / zero client
 
 ![eth-hot-wallet ethereum wallet preview](https://paullaux.github.io/eth-hot-wallet/docs/images/eth-hot-wallet-ethereum.PNG)
 
@@ -16,7 +16,7 @@ https://eth-hot-wallet.com
 - [ ] [Web3.js](https://github.com/ethereum/web3.js/) Ethereum JavaScript API
 - [ ] [React-boilerplate](https://github.com/react-boilerplate/react-boilerplate) as a wrapper of React JS, Redux, Saga, Reselect, ImmutableJS and more
 - [ ] [Ant Design](https://github.com/ant-design/ant-design) React js components
-- [ ] [Webpack 3] (https://github.com/webpack/webpack) - A bundler for javascript and friends.
+- [ ] [Webpack 3](https://github.com/webpack/webpack) - A bundler for javascript and friends.
 - [ ] Many others, See [package.json](https://github.com/PaulLaux/eth-hot-wallet/blob/master/package.json)
 
 
@@ -42,18 +42,19 @@ https://eth-hot-wallet.com
 - [ ] Event log
 - [ ] CI for development and production
 - [ ] External security audit
-- [ ] Upgrade to react 16.1
+- [ ] Upgrade to react 16
+- [ ] Upgrade Enzyme 3
 
 
 ### Development
 
 3 Major containers were created:
 
-- Homepage container - contains all the actions related to keystore, including manipulation and usage.
+- Homepage container - all the actions related to keystore, including manipulation and usage.
 
-- Header container - contains all the action related to network comunication / web3 api.
+- Header container - all the action related to network comunication / web3 api.
 
-- Sendto container - contains state and actions related to sendto modal, actual checks and sending is happning in header container.
+- Sendto container - state and actions related to sendto modal, actual checks and sending is happning in header container.
 
 After build, webpack monitor will generates stats about bundle size:
 
