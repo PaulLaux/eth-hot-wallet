@@ -17,6 +17,14 @@ import {
   GET_EXCHANGE_RATES,
   GET_EXCHANGE_RATES_SUCCESS,
   GET_EXCHANGE_RATES_ERROR,
+
+  CHECK_FAUCET,
+  CHECK_FAUCET_SUCCESS,
+  CHECK_FAUCET_ERROR,
+  ASK_FAUCET,
+  ASK_FAUCET_SUCCESS,
+  ASK_FAUCET_ERROR,
+  CLOSE_FAUCET,
 } from './constants';
 
 import Network from './network';
@@ -38,6 +46,13 @@ const initialState = fromJS({
   getExchangeRatesLoading: false,
   getExchangeRatesError: false,
 
+  offeredFaucet: false, // to prevent offer more then once
+  checkFaucetLoading: false,
+  checkFaucetSuccess: false, // open / close faucet notification
+  checkFaucetError: false,
+  askFaucetLoading: false,
+  askFaucetSuccess: false,
+  askFaucetError: false,
 });
 
 function headerReducer(state = initialState, action) {
@@ -90,6 +105,31 @@ function headerReducer(state = initialState, action) {
         .set('getExchangeRatesLoading', false)
         .set('getExchangeRatesError', action.error)
         .set('getExchangeRatesDoneTime', false);
+
+      /*
+      offeredFaucet: false, // to prevent offer more then once
+      checkFaucetLoading: false,
+      checkFaucetSuccess: false, // open / close faucet notification
+      checkFaucetError: false,
+      askFaucetLoading: false,
+      askFaucetSuccess: false,
+      askFaucetError: false,
+      */
+    case CHECK_FAUCET:
+      return state
+        .set('checkFaucetLoading', true)
+        .set('checkFaucetSuccess', false)
+        .set('checkFaucetError', false);
+    case CHECK_FAUCET_SUCCESS:
+      return state
+        .set('checkFaucetLoading', false)
+        .set('checkFaucetSuccess', true)
+        .set('checkFaucetError', false);
+    case CHECK_FAUCET_ERROR:
+      return state
+        .set('checkFaucetLoading', false)
+        .set('checkFaucetSuccess', false)
+        .set('checkFaucetError', true);
 
     default:
       return state;

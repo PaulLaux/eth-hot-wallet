@@ -30,3 +30,6 @@ export const defaultNetwork = 'Ropsten Testnet';
 export const website = 'https://eth-hot-wallet.com';
 export const github = 'https://github.com/PaulLaux/eth-hot-wallet';
 
+// APIs:
+export const checkFaucetAddress = 'http://localhost:3000/status';
+export const askFaucetAddress = 'http://localhost:3000/ask';
