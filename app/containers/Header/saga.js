@@ -24,7 +24,7 @@ import {
   SEND_TRANSACTION,
 } from 'containers/SendToken/constants';
 
-import { timeBetweenCheckbalances, Ether, Gwei, maxGasForSendEth, offlineModeString } from 'utils/constants';
+import { timeBetweenCheckbalances, Ether, Gwei, maxGasForSendEth, offlineModeString, checkFaucetAddress, askFaucetAddress } from 'utils/constants';
 import { timer } from 'utils/common';
 
 import {
@@ -39,6 +39,10 @@ import {
   getExchangeRates,
   getExchangeRatesSuccess,
   getExchangeRatesError,
+
+  checkFaucet,
+  checkFaucetSuccess,
+  checkFaucetError,
 } from './actions';
 
 import {
@@ -48,6 +52,7 @@ import {
   CHECK_BALANCES_ERROR,
   STOP_POLL_BALANCES,
   GET_EXCHANGE_RATES,
+  CHECK_FAUCET,
 } from './constants';
 
 import Network from './network';
@@ -98,6 +103,7 @@ export function* loadNetwork(action) {
       // actions after succesfull network load :
       yield put(checkBalances());
       yield put(getExchangeRates());
+      yield put(checkFaucet());
     } else {
       throw new Error('keystore not initiated - Create wallet before connecting');
     }
@@ -290,14 +296,41 @@ export function* getRates() {
   }
 }
 
+/**
+ * Check if faucet ready via api
+ */
+export function* checkFaucetApi() {
+  const requestURL = checkFaucetAddress;
+  console.log(`requestURL: ${requestURL}`);
+  try {
+    // Call our request helper (see 'utils/request')
+    // const result = yield call(request, requestURL);
+    const result =
+      { message: { serviceReady: true } };
+
+    // console.log(result.serviceReady);
+    // yield put(checkFaucetSuccess());
+
+    if (result.message.serviceReady) {
+      yield put(checkFaucetSuccess());
+    } else {
+      yield put(checkFaucetError('faucet not ready'));
+    }
+  } catch (err) {
+    yield put(checkFaucetError(err));
+  }
+}
+
 
 // Individual exports for testing
 export default function* defaultSaga() {
   yield takeLatest(LOAD_NETWORK, loadNetwork);
+  // yield takeLatest(LOAD_NETWORK, checkFaucetApi);
   yield takeLatest(COMFIRM_SEND_TRANSACTION, confirmSendTransaction);
   yield takeLatest(SEND_TRANSACTION, SendTransaction);
   yield takeLatest(GET_EXCHANGE_RATES, getRates);
 
+  yield takeLatest(CHECK_FAUCET, checkFaucetApi);
   /* poll check balances */
   yield [
     fork(watchPollData),

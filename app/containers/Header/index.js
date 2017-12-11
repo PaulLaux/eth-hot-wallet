@@ -18,6 +18,7 @@ import { Row, Col } from 'antd';
 import NetworkIndicator from 'components/NetworkIndicator';
 import Logo from 'components/Logo';
 import NetworkMenu from 'components/NetworkMenu';
+import FaucetNotification from 'components/FaucetNotification';
 
 // import { changeBalance } from 'containers/HomePage/actions';
 import { makeSelectAddressList } from 'containers/HomePage/selectors';
@@ -32,6 +33,11 @@ import {
   /* makeSelectCheckingBalanceDoneTime,
   makeSelectCheckingBalances,
   makeSelectCheckingBalancesError, */
+  makeSelectCheckFaucetLoading,
+  makeSelectCheckFaucetSuccess,
+  makeSelectAskFaucetLoading,
+  makeSelectAskFaucetSuccess,
+  makeSelectAskFaucetError,
 } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
@@ -47,7 +53,19 @@ const HeaderWrapped = styled.header`
 `;
 
 function Header(props) {
-  const { loading, error, networkName, blockNumber, availableNetworks, onLoadNetwork } = props;
+  const {
+    loading,
+    error,
+    networkName,
+    blockNumber,
+    availableNetworks,
+    onLoadNetwork,
+    checkFaucetLoading,
+    checkFaucetSuccess,
+    askFaucetLoading,
+    askFaucetSuccess,
+    askFaucetError,
+   } = props;
 
   const networkIndicatorProps = {
     loading,
@@ -59,6 +77,14 @@ function Header(props) {
     availableNetworks,
     networkName,
     onLoadNetwork,
+  };
+
+  const faucetNotificationProps = {
+    checkFaucetLoading,
+    checkFaucetSuccess,
+    askFaucetLoading,
+    askFaucetSuccess,
+    askFaucetError,
   };
 
   return (
@@ -74,6 +100,7 @@ function Header(props) {
           </Row>
         </Col>
       </Row >
+      <FaucetNotification {...faucetNotificationProps} />
     </HeaderWrapped >
   );
 }
@@ -93,10 +120,14 @@ Header.propTypes = {
   blockNumber: PropTypes.number,
 
   // addressList: PropTypes.oneOfType([ PropTypes.bool,PropTypes.object]),
-
   /* checkingBalanceDoneTime: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   checkingBalances: PropTypes.bool,
   checkingBalancesError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]), */
+  checkFaucetLoading: PropTypes.bool,
+  checkFaucetSuccess: PropTypes.bool,
+  askFaucetLoading: PropTypes.bool,
+  askFaucetSuccess: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
+  askFaucetError: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -110,6 +141,11 @@ const mapStateToProps = createStructuredSelector({
   /* checkingBalanceDoneTime: makeSelectCheckingBalanceDoneTime(),
   checkingBalances: makeSelectCheckingBalances(),
   checkingBalancesError: makeSelectCheckingBalancesError(), */
+  checkFaucetLoading: makeSelectCheckFaucetLoading(),
+  checkFaucetSuccess: makeSelectCheckFaucetSuccess(),
+  askFaucetLoading: makeSelectAskFaucetLoading(),
+  askFaucetSuccess: makeSelectAskFaucetSuccess(),
+  askFaucetError: makeSelectAskFaucetError(),
 });
 
 function mapDispatchToProps(dispatch) {

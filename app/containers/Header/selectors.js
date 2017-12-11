@@ -65,6 +65,33 @@ const makeSelectGetExchangeRatesError = () => createSelector(
   (substate) => substate ? substate.get('getExchangeRatesError') : null
 );
 
+// faucet
+const makeSelectOfferedFaucet = () => createSelector(
+  selectHeaderDomain,
+  (substate) => substate ? substate.get('offeredFaucet') : null
+);
+
+const makeSelectCheckFaucetLoading = () => createSelector(
+  selectHeaderDomain,
+  (substate) => substate ? substate.get('checkFaucetLoading') : null
+);
+const makeSelectCheckFaucetSuccess = () => createSelector(
+  selectHeaderDomain,
+  (substate) => substate ? substate.get('checkFaucetSuccess') : null
+);
+const makeSelectAskFaucetLoading = () => createSelector(
+  selectHeaderDomain,
+  (substate) => substate ? substate.get('askFaucetLoading') : null
+);
+const makeSelectAskFaucetSuccess = () => createSelector(
+  selectHeaderDomain,
+  (substate) => substate ? substate.get('askFaucetSuccess') : null
+);
+const makeSelectAskFaucetError = () => createSelector(
+  selectHeaderDomain,
+  (substate) => substate ? substate.get('askFaucetError') : null
+);
+
 // export default makeSelectHeader;
 export {
   selectHeaderDomain,
@@ -80,4 +107,10 @@ export {
   makeSelectGetExchangeRatesDoneTime,
   makeSelectGetExchangeRatesLoading,
   makeSelectGetExchangeRatesError,
+  makeSelectOfferedFaucet,
+  makeSelectCheckFaucetLoading,
+  makeSelectCheckFaucetSuccess,
+  makeSelectAskFaucetLoading,
+  makeSelectAskFaucetSuccess,
+  makeSelectAskFaucetError,
 };
