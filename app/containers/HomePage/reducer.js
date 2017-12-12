@@ -80,7 +80,7 @@ const initialState = fromJS({
   } */
 
   exchangeRates: {},
-  convertTo: 'eth_btc',
+  convertTo: 'eth_usd',
 
   addressListLoading: false, // for addressList loading and error
   addressListError: false,
