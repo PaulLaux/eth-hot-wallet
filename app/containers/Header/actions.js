@@ -5,6 +5,7 @@
  */
 import React from 'react';
 import { message, Button, notification, Icon } from 'antd';
+import FaucetDescription from 'components/FaucetDescription';
 import { offlineModeString } from 'utils/constants';
 
 import {
@@ -30,6 +31,7 @@ import {
   CLOSE_FAUCET,
 } from './constants';
 
+import { store } from '../../app';
 
 /**
  * Connect to eth network using address from network.js file
@@ -174,7 +176,7 @@ export function getExchangeRatesError(error) {
 /**
  * Check if faucet availible
  *
- * @return {object}    An action object with a type of CHECK_BALANCES
+ * @return {object}    An action object with a type of CHECK_FAUCET
  */
 export function checkFaucet() {
   return {
@@ -183,27 +185,32 @@ export function checkFaucet() {
 }
 
 /**
- * checkFaucet successful
+ * checkFaucet successful will pop notification which can used to ask faucet
  *
  * @return {object}      An action object with a type of CHECK_FAUCET_SUCCESS
  */
 export function checkFaucetSuccess() {
   //  message.success('Exchange rates updated succesfully');
   const key = `open${Date.now()}`;
-  const btnClick = () => {
+  const closeNotification = () => {
     // to hide notification box
     notification.close(key);
+  };
+  const ask = () => {
+    // to hide notification box
+    notification.close(key);
+    store.dispatch(askFaucet());
   };
   const btn = [
     React.createElement(
       Button,
-      { type: 'default', size: 'small', onClick: btnClick },
+      { key: 'b1', type: 'default', size: 'small', onClick: closeNotification },
       'No man'
     ),
-    '    ',
+    '  ',
     React.createElement(
       Button,
-      { type: 'primary', size: 'small', onClick: btnClick },
+      { key: 'b2', type: 'primary', size: 'small', onClick: ask },
       'Sure'
     )];
   notification.config({
@@ -211,11 +218,11 @@ export function checkFaucetSuccess() {
   });
   const icon = React.createElement(
     Icon,
-    { type: 'pay-circle-o', style: { color: '#108ee9' } }
+    { type: 'bulb', style: { color: '#108ee9' } }
   );
   notification.open({
     message: 'Ropsten Testnet faucet',
-    description: 'Need some test coins for start?',
+    description: 'Need some coins for testing?',
     duration: 10,
     key,
     btn,
@@ -227,15 +234,78 @@ export function checkFaucetSuccess() {
 }
 
 /**
- * getExchangeRates failed
+ * checkFaucetError failed
  *
  * @param  {object} error The error
  *
- * @return {object} An action object with a type of CHECK_BALANCES_ERROR passing the error
+ * @return {object} An action object with a type of CHECK_FAUCET_ERROR passing the error
  */
 export function checkFaucetError(error) {
   return {
     type: CHECK_FAUCET_ERROR,
+    error,
+  };
+}
+
+/**
+ * Check if faucet availible
+ *
+ * @return {object}    An action object with a type of ASK_FAUCET
+ */
+export function askFaucet() {
+  return {
+    type: ASK_FAUCET,
+  };
+}
+
+/**
+ * checkFaucet successful will pop notification which can used to ask faucet
+ *
+ * @return {object}      An action object with a type of ASK_FAUCET_SUCCESS
+ */
+export function askFaucetSuccess(tx) {
+  const key = `open${Date.now()}`;
+  const closeNotification = () => {
+    notification.close(key);
+  };
+  const btn = React.createElement(Button, { type: 'default', size: 'small', onClick: closeNotification }, 'Got it');
+  const description = React.createElement(FaucetDescription, { tx, text: 'Check balance in ~30 seconds. TX:' });
+  notification.success({
+    message: 'Faucet request sucessfull',
+    description,
+    duration: 10,
+    key,
+    btn,
+  });
+
+  return {
+    type: ASK_FAUCET_SUCCESS,
+    tx,
+  };
+}
+
+/**
+ * askFaucetError
+ *
+ * @param  {object} error The error
+ *
+ * @return {object} An action object with a type of ASK_FAUCET_ERROR passing the error
+ */
+export function askFaucetError(error) {
+  const key = `open${Date.now()}`;
+  const closeNotification = () => {
+    notification.close(key);
+  };
+  const btn = React.createElement(Button, { type: 'default', size: 'small', onClick: closeNotification }, 'Got it');
+  notification.error({
+    message: 'Faucet request failed',
+    description: `${error}. Please try again later`,
+    duration: 10,
+    key,
+    btn,
+  });
+  return {
+    type: ASK_FAUCET_ERROR,
     error,
   };
 }

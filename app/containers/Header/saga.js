@@ -43,6 +43,8 @@ import {
   checkFaucet,
   checkFaucetSuccess,
   checkFaucetError,
+  askFaucetSuccess,
+  askFaucetError,
 } from './actions';
 
 import {
@@ -53,11 +55,12 @@ import {
   STOP_POLL_BALANCES,
   GET_EXCHANGE_RATES,
   CHECK_FAUCET,
+  ASK_FAUCET,
 } from './constants';
 
 import Network from './network';
 const web3 = new Web3();
-
+const online = true; // for development, if false almost no external api calls will be made
 /**
  * connect to rpc and attach keystore as siger provider
  */
@@ -103,7 +106,9 @@ export function* loadNetwork(action) {
       // actions after succesfull network load :
       yield put(checkBalances());
       yield put(getExchangeRates());
-      yield put(checkFaucet());
+      if (action.networkName === 'Ropsten Testnet') {
+        yield put(checkFaucet());
+      }
     } else {
       throw new Error('keystore not initiated - Create wallet before connecting');
     }
@@ -266,27 +271,26 @@ export function* getRates() {
   const requestURL = 'https://api.coinmarketcap.com/v1/ticker/ethereum/?convert=EUR';
   try {
     // Call our request helper (see 'utils/request')
-    const apiRates = (yield call(request, requestURL))[0];
-    /* const apiRates =
-      {
-        id: 'ethereum',
-        name: 'Ethereum',
-        symbol: 'ETH',
-        rank: '2',
-        price_usd: '295.412',
-        price_btc: '0.0684231',
-        '24h_volume_usd': '308964000.0',
-        market_cap_usd: '28043053731.0',
-        available_supply: '94928621.0',
-        total_supply: '94928621.0',
-        percent_change_1h: '-1.46',
-        percent_change_24h: '-1.84',
-        percent_change_7d: '1.35',
-        last_updated: '1507010353',
-        price_eur: '252.342998284',
-        '24h_volume_eur': '263919211.548',
-        market_cap_eur: '23954572799.0',
-      }; */
+    const apiRates = online ? (yield call(request, requestURL))[0] :
+    { // for testin in online = false mode
+      id: 'ethereum',
+      name: 'Ethereum',
+      symbol: 'ETH',
+      rank: '2',
+      price_usd: '295.412',
+      price_btc: '0.0684231',
+      '24h_volume_usd': '308964000.0',
+      market_cap_usd: '28043053731.0',
+      available_supply: '94928621.0',
+      total_supply: '94928621.0',
+      percent_change_1h: '-1.46',
+      percent_change_24h: '-1.84',
+      percent_change_7d: '1.35',
+      last_updated: '1507010353',
+      price_eur: '252.342998284',
+      '24h_volume_eur': '263919211.548',
+      market_cap_eur: '23954572799.0',
+    };
     // console.log(apiPrices);
 
     yield put(setExchangeRates(apiRates, requestURL));
@@ -301,15 +305,10 @@ export function* getRates() {
  */
 export function* checkFaucetApi() {
   const requestURL = checkFaucetAddress;
-  console.log(`requestURL: ${requestURL}`);
+  // console.log(`requestURL: ${requestURL}`);
   try {
-    // Call our request helper (see 'utils/request')
-    // const result = yield call(request, requestURL);
-    const result =
+    const result = online ? yield call(request, requestURL) :
       { message: { serviceReady: true } };
-
-    // console.log(result.serviceReady);
-    // yield put(checkFaucetSuccess());
 
     if (result.message.serviceReady) {
       yield put(checkFaucetSuccess());
@@ -318,6 +317,28 @@ export function* checkFaucetApi() {
     }
   } catch (err) {
     yield put(checkFaucetError(err));
+  }
+}
+
+
+/**
+ * Check if faucet ready via api
+ */
+export function* askFaucetApi() {
+  const addressList = yield select(makeSelectAddressList());
+  const askAddress = addressList.keySeq().toArray()[0];
+  const requestURL = `${askFaucetAddress}?address=${askAddress}`;
+  // console.log(`requestURL: ${requestURL}`);
+  try {
+    const result = online ? yield call(request, requestURL) :
+      { message: { tx: '0x0f71ca4a8af03e67f06910bf301308ecd701064bd2183b51e1e3ca18af9bc9f8' } };
+    if (result.message.tx) {
+      yield put(askFaucetSuccess(result.message.tx));
+    } else {
+      yield put(askFaucetError(result.message));
+    }
+  } catch (err) {
+    yield put(askFaucetError(err));
   }
 }
 
@@ -331,6 +352,9 @@ export default function* defaultSaga() {
   yield takeLatest(GET_EXCHANGE_RATES, getRates);
 
   yield takeLatest(CHECK_FAUCET, checkFaucetApi);
+  yield takeLatest(ASK_FAUCET, askFaucetApi);
+
+
   /* poll check balances */
   yield [
     fork(watchPollData),
