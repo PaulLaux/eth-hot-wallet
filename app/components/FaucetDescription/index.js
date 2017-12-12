@@ -21,7 +21,6 @@ function FaucetDescription(props) {
 
   return (
     <Span>
-      <br />
       {text}
       <br />
       <TxLink {...TxLinkProps} />

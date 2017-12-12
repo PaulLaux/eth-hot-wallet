@@ -24,9 +24,18 @@ import {
   SEND_TRANSACTION,
 } from 'containers/SendToken/constants';
 
-import { timeBetweenCheckbalances, Ether, Gwei, maxGasForSendEth, offlineModeString, checkFaucetAddress, askFaucetAddress } from 'utils/constants';
+import {
+  timeBetweenCheckbalances,
+  Ether,
+  Gwei,
+  maxGasForSendEth,
+  offlineModeString,
+  checkFaucetAddress,
+  askFaucetAddress,
+} from 'utils/constants';
 import { timer } from 'utils/common';
 
+import { makeSelectUsedFaucet } from './selectors';
 import {
   loadNetworkSuccess,
   loadNetworkError,
@@ -60,7 +69,9 @@ import {
 
 import Network from './network';
 const web3 = new Web3();
+
 const online = true; // for development, if false almost no external api calls will be made
+
 /**
  * connect to rpc and attach keystore as siger provider
  */
@@ -106,7 +117,9 @@ export function* loadNetwork(action) {
       // actions after succesfull network load :
       yield put(checkBalances());
       yield put(getExchangeRates());
-      if (action.networkName === 'Ropsten Testnet') {
+
+      const usedFaucet = yield select(makeSelectUsedFaucet());
+      if (action.networkName === 'Ropsten Testnet' && !usedFaucet) {
         yield put(checkFaucet());
       }
     } else {
