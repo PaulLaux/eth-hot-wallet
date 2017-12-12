@@ -253,6 +253,14 @@ export function checkFaucetError(error) {
  * @return {object}    An action object with a type of ASK_FAUCET
  */
 export function askFaucet() {
+  const icon = React.createElement(Icon, { type: 'loading' });
+  notification.info({
+    message: 'Sending request',
+    description: 'Please wait',
+    duration: 30,
+    key: 'ask',
+    icon,
+  });
   return {
     type: ASK_FAUCET,
   };
@@ -264,6 +272,7 @@ export function askFaucet() {
  * @return {object}      An action object with a type of ASK_FAUCET_SUCCESS
  */
 export function askFaucetSuccess(tx) {
+  notification.close('ask');
   const key = `open${Date.now()}`;
   const closeNotification = () => {
     notification.close(key);

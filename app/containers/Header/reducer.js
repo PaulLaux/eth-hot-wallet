@@ -5,6 +5,7 @@
  */
 
 import { fromJS } from 'immutable';
+import { CLOSE_WALLET } from 'containers/HomePage/constants';
 import {
   LOAD_NETWORK,
   LOAD_NETWORK_SUCCESS,
@@ -18,14 +19,12 @@ import {
   GET_EXCHANGE_RATES_SUCCESS,
   GET_EXCHANGE_RATES_ERROR,
 
-  CHECK_FAUCET,
-  CHECK_FAUCET_SUCCESS,
-  CHECK_FAUCET_ERROR,
-  ASK_FAUCET,
-  ASK_FAUCET_SUCCESS,
   ASK_FAUCET_ERROR,
-  CLOSE_FAUCET,
+  ASK_FAUCET_SUCCESS,
+
 } from './constants';
+
+
 
 import Network from './network';
 
@@ -103,8 +102,12 @@ function headerReducer(state = initialState, action) {
     case ASK_FAUCET_SUCCESS:
       return state
         .set('usedFaucet', true);
-    case CHECK_FAUCET_ERROR:
+    case ASK_FAUCET_ERROR:
       return state;
+
+    case CLOSE_WALLET:
+      return state
+      .set('usedFaucet', false);
 
     default:
       return state;
