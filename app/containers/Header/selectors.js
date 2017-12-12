@@ -66,9 +66,9 @@ const makeSelectGetExchangeRatesError = () => createSelector(
 );
 
 // faucet
-const makeSelectOfferedFaucet = () => createSelector(
+const makeSelectUsedFaucet = () => createSelector(
   selectHeaderDomain,
-  (substate) => substate ? substate.get('offeredFaucet') : null
+  (substate) => substate ? substate.get('usedFaucet') : null
 );
 
 const makeSelectCheckFaucetLoading = () => createSelector(
@@ -107,7 +107,7 @@ export {
   makeSelectGetExchangeRatesDoneTime,
   makeSelectGetExchangeRatesLoading,
   makeSelectGetExchangeRatesError,
-  makeSelectOfferedFaucet,
+  makeSelectUsedFaucet,
   makeSelectCheckFaucetLoading,
   makeSelectCheckFaucetSuccess,
   makeSelectAskFaucetLoading,
