@@ -18,10 +18,10 @@ function SendFrom({ addressList, from, onChangeFrom, locked }) {
     // console.log(addressList.keySeq().toArray());
 
     /* options = addressList.keySeq().toArray().map((address) =>
-      <option value={address} key={address}>0x{address}</option>
+      <option value={address} key={address}>{address}</option>
     ); */
     selectOptions = addressList.keySeq().toArray().map((address) =>
-      <Option value={address} key={address}>0x{address}</Option>
+      <Option value={address} key={address}>{address}</Option>
     );
   }
 
