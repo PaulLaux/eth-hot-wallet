@@ -66,7 +66,7 @@ import './global-styles';
 // Create redux store with history
 const initialState = {};
 const history = createHistory();
-const store = configureStore(initialState, history);
+export const store = configureStore(initialState, history);
 const MOUNT_NODE = document.getElementById('app');
 
 const render = (messages) => { // eslint-disable-line

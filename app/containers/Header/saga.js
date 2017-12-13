@@ -24,9 +24,18 @@ import {
   SEND_TRANSACTION,
 } from 'containers/SendToken/constants';
 
-import { timeBetweenCheckbalances, Ether, Gwei, maxGasForSendEth, offlineModeString } from 'utils/constants';
+import {
+  timeBetweenCheckbalances,
+  Ether,
+  Gwei,
+  maxGasForSendEth,
+  offlineModeString,
+  checkFaucetAddress,
+  askFaucetAddress,
+} from 'utils/constants';
 import { timer } from 'utils/common';
 
+import { makeSelectUsedFaucet } from './selectors';
 import {
   loadNetworkSuccess,
   loadNetworkError,
@@ -39,6 +48,12 @@ import {
   getExchangeRates,
   getExchangeRatesSuccess,
   getExchangeRatesError,
+
+  checkFaucet,
+  checkFaucetSuccess,
+  checkFaucetError,
+  askFaucetSuccess,
+  askFaucetError,
 } from './actions';
 
 import {
@@ -48,17 +63,21 @@ import {
   CHECK_BALANCES_ERROR,
   STOP_POLL_BALANCES,
   GET_EXCHANGE_RATES,
+  CHECK_FAUCET,
+  ASK_FAUCET,
 } from './constants';
 
 import Network from './network';
 const web3 = new Web3();
+
+const online = true; // for development, if false almost no external api calls will be made
 
 /**
  * connect to rpc and attach keystore as siger provider
  */
 export function* loadNetwork(action) {
   try {
-    const rpcAddress = Network[action.networkName];
+    const rpcAddress = Network[action.networkName].rpc;
     if (!rpcAddress) {
       throw new Error(`${action.networkName} network not found`);
     }
@@ -73,9 +92,10 @@ export function* loadNetwork(action) {
     const keystore = yield select(makeSelectKeystore());
 
     if (keystore) {
+      // console.log(keystore.getAddresses().map((a) => `${a}`));
       const provider = new SignerProvider(rpcAddress, {
         signTransaction: keystore.signTransaction.bind(keystore),
-        accounts: (cb) => cb(null, keystore.getAddresses().map((a) => `0x${a}`)),
+        accounts: (cb) => cb(null, keystore.getAddresses()),
       });
 
       web3.setProvider(provider);
@@ -97,6 +117,11 @@ export function* loadNetwork(action) {
       // actions after succesfull network load :
       yield put(checkBalances());
       yield put(getExchangeRates());
+
+      const usedFaucet = yield select(makeSelectUsedFaucet());
+      if (action.networkName === 'Ropsten Testnet' && !usedFaucet) {
+        yield put(checkFaucet());
+      }
     } else {
       throw new Error('keystore not initiated - Create wallet before connecting');
     }
@@ -259,27 +284,26 @@ export function* getRates() {
   const requestURL = 'https://api.coinmarketcap.com/v1/ticker/ethereum/?convert=EUR';
   try {
     // Call our request helper (see 'utils/request')
-    const apiRates = (yield call(request, requestURL))[0];
-    /* const apiRates =
-      {
-        id: 'ethereum',
-        name: 'Ethereum',
-        symbol: 'ETH',
-        rank: '2',
-        price_usd: '295.412',
-        price_btc: '0.0684231',
-        '24h_volume_usd': '308964000.0',
-        market_cap_usd: '28043053731.0',
-        available_supply: '94928621.0',
-        total_supply: '94928621.0',
-        percent_change_1h: '-1.46',
-        percent_change_24h: '-1.84',
-        percent_change_7d: '1.35',
-        last_updated: '1507010353',
-        price_eur: '252.342998284',
-        '24h_volume_eur': '263919211.548',
-        market_cap_eur: '23954572799.0',
-      }; */
+    const apiRates = online ? (yield call(request, requestURL))[0] :
+    { // for testin in online = false mode
+      id: 'ethereum',
+      name: 'Ethereum',
+      symbol: 'ETH',
+      rank: '2',
+      price_usd: '295.412',
+      price_btc: '0.0684231',
+      '24h_volume_usd': '308964000.0',
+      market_cap_usd: '28043053731.0',
+      available_supply: '94928621.0',
+      total_supply: '94928621.0',
+      percent_change_1h: '-1.46',
+      percent_change_24h: '-1.84',
+      percent_change_7d: '1.35',
+      last_updated: '1507010353',
+      price_eur: '252.342998284',
+      '24h_volume_eur': '263919211.548',
+      market_cap_eur: '23954572799.0',
+    };
     // console.log(apiPrices);
 
     yield put(setExchangeRates(apiRates, requestURL));
@@ -289,13 +313,60 @@ export function* getRates() {
   }
 }
 
+/**
+ * Check if faucet ready via api
+ */
+export function* checkFaucetApi() {
+  const requestURL = checkFaucetAddress;
+  // console.log(`requestURL: ${requestURL}`);
+  try {
+    const result = online ? yield call(request, requestURL) :
+      { message: { serviceReady: true } };
+
+    if (result.message.serviceReady) {
+      yield put(checkFaucetSuccess());
+    } else {
+      yield put(checkFaucetError('faucet not ready'));
+    }
+  } catch (err) {
+    yield put(checkFaucetError(err));
+  }
+}
+
+
+/**
+ * Check if faucet ready via api
+ */
+export function* askFaucetApi() {
+  const addressList = yield select(makeSelectAddressList());
+  const askAddress = addressList.keySeq().toArray()[0];
+  const requestURL = `${askFaucetAddress}?address=${askAddress}`;
+  // console.log(`requestURL: ${requestURL}`);
+  try {
+    const result = online ? yield call(request, requestURL) :
+      { message: { tx: '0x0f71ca4a8af03e67f06910bf301308ecd701064bd2183b51e1e3ca18af9bc9f8' } };
+    if (result.message.tx) {
+      yield put(askFaucetSuccess(result.message.tx));
+    } else {
+      yield put(askFaucetError(result.message));
+    }
+  } catch (err) {
+    yield put(askFaucetError(err));
+  }
+}
+
 
 // Individual exports for testing
 export default function* defaultSaga() {
   yield takeLatest(LOAD_NETWORK, loadNetwork);
+  // yield takeLatest(LOAD_NETWORK, checkFaucetApi);
   yield takeLatest(COMFIRM_SEND_TRANSACTION, confirmSendTransaction);
   yield takeLatest(SEND_TRANSACTION, SendTransaction);
   yield takeLatest(GET_EXCHANGE_RATES, getRates);
+
+  yield takeLatest(CHECK_FAUCET, checkFaucetApi);
+  yield takeLatest(ASK_FAUCET, askFaucetApi);
+
 
   /* poll check balances */
   yield [

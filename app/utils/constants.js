@@ -14,7 +14,7 @@ export const timeBetweenCheckbalances = 60 * 1000;
 /* Max gas for send transaction (not gas price) */
 export const maxGasForSendEth = 25000;
 
-/* Eth unit constants will be saved as strings to prevent accidental manimulation
+/* Eth unit constants will be saved as strings to prevent accidental manipulation
     usage: convert amount to wei
     const sendAmount = new BigNumber(amount).times(Ether);
 */
@@ -30,3 +30,8 @@ export const defaultNetwork = 'Ropsten Testnet';
 export const website = 'https://eth-hot-wallet.com';
 export const github = 'https://github.com/PaulLaux/eth-hot-wallet';
 
+// APIs:
+// export const checkFaucetAddress = 'http://localhost:3000/status';
+// export const askFaucetAddress = 'http://localhost:3000/ask';
+export const checkFaucetAddress = 'https://m6b19m0fxh.execute-api.eu-west-1.amazonaws.com/dev/status';
+export const askFaucetAddress = 'https://m6b19m0fxh.execute-api.eu-west-1.amazonaws.com/dev/ask';

@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-
+import Network from './network';
 /**
  * Direct selector to the header state domain
  */
@@ -18,6 +18,10 @@ const makeSelectError = () => createSelector(
 const makeSelectNetworkName = () => createSelector(
   selectHeaderDomain,
   (substate) => substate.get('networkName')
+);
+const makeSelectTxExplorer = () => createSelector(
+  selectHeaderDomain,
+  (substate) => substate ? Network[substate.get('networkName')].tx_explorer : null
 );
 const makeSelectAvailableNetworks = () => createSelector(
   selectHeaderDomain,
@@ -65,6 +69,33 @@ const makeSelectGetExchangeRatesError = () => createSelector(
   (substate) => substate ? substate.get('getExchangeRatesError') : null
 );
 
+// faucet
+const makeSelectUsedFaucet = () => createSelector(
+  selectHeaderDomain,
+  (substate) => substate ? substate.get('usedFaucet') : null
+);
+
+const makeSelectCheckFaucetLoading = () => createSelector(
+  selectHeaderDomain,
+  (substate) => substate ? substate.get('checkFaucetLoading') : null
+);
+const makeSelectCheckFaucetSuccess = () => createSelector(
+  selectHeaderDomain,
+  (substate) => substate ? substate.get('checkFaucetSuccess') : null
+);
+const makeSelectAskFaucetLoading = () => createSelector(
+  selectHeaderDomain,
+  (substate) => substate ? substate.get('askFaucetLoading') : null
+);
+const makeSelectAskFaucetSuccess = () => createSelector(
+  selectHeaderDomain,
+  (substate) => substate ? substate.get('askFaucetSuccess') : null
+);
+const makeSelectAskFaucetError = () => createSelector(
+  selectHeaderDomain,
+  (substate) => substate ? substate.get('askFaucetError') : null
+);
+
 // export default makeSelectHeader;
 export {
   selectHeaderDomain,
@@ -72,6 +103,7 @@ export {
   makeSelectLoading,
   makeSelectError,
   makeSelectNetworkName,
+  makeSelectTxExplorer,
   makeSelectAvailableNetworks,
   makeSelectBlockNumber,
   makeSelectCheckingBalanceDoneTime,
@@ -80,4 +112,10 @@ export {
   makeSelectGetExchangeRatesDoneTime,
   makeSelectGetExchangeRatesLoading,
   makeSelectGetExchangeRatesError,
+  makeSelectUsedFaucet,
+  makeSelectCheckFaucetLoading,
+  makeSelectCheckFaucetSuccess,
+  makeSelectAskFaucetLoading,
+  makeSelectAskFaucetSuccess,
+  makeSelectAskFaucetError,
 };

@@ -7,10 +7,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Alert, Spin } from 'antd';
-// import styled from 'styled-components';
+import styled from 'styled-components';
+import TxLink from 'components/TxLink';
 
+const Span = styled.span`
+  overflow-wrap: break-word;
+`;
 
-function SendProgress({ sendInProgress, sendError, sendTx }) {
+function SendProgress({ sendInProgress, sendError, sendTx, txExplorer }) {
   if (sendInProgress) {
     return (
       <Spin
@@ -39,7 +43,7 @@ function SendProgress({ sendInProgress, sendError, sendTx }) {
     return (
       <Alert
         message="Send sucessfull"
-        description={<span> TX: <br /> {sendTx.substring(0, 33)}<br />{sendTx.substring(33)}</span>}
+        description={<Span> TX: <br /> <TxLink tx={sendTx} explorer={txExplorer} /> </Span>}
         type="success"
       />
     );
@@ -52,6 +56,7 @@ SendProgress.propTypes = {
   sendInProgress: PropTypes.oneOfType([PropTypes.bool]),
   sendError: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
   sendTx: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
+  txExplorer: PropTypes.string,
 };
 
 export default SendProgress;

@@ -32,6 +32,11 @@ import {
   /* makeSelectCheckingBalanceDoneTime,
   makeSelectCheckingBalances,
   makeSelectCheckingBalancesError, */
+  makeSelectCheckFaucetLoading,
+  makeSelectCheckFaucetSuccess,
+  makeSelectAskFaucetLoading,
+  makeSelectAskFaucetSuccess,
+  makeSelectAskFaucetError,
 } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
@@ -47,7 +52,14 @@ const HeaderWrapped = styled.header`
 `;
 
 function Header(props) {
-  const { loading, error, networkName, blockNumber, availableNetworks, onLoadNetwork } = props;
+  const {
+    loading,
+    error,
+    networkName,
+    blockNumber,
+    availableNetworks,
+    onLoadNetwork,
+   } = props;
 
   const networkIndicatorProps = {
     loading,
@@ -93,7 +105,6 @@ Header.propTypes = {
   blockNumber: PropTypes.number,
 
   // addressList: PropTypes.oneOfType([ PropTypes.bool,PropTypes.object]),
-
   /* checkingBalanceDoneTime: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   checkingBalances: PropTypes.bool,
   checkingBalancesError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]), */
@@ -110,6 +121,11 @@ const mapStateToProps = createStructuredSelector({
   /* checkingBalanceDoneTime: makeSelectCheckingBalanceDoneTime(),
   checkingBalances: makeSelectCheckingBalances(),
   checkingBalancesError: makeSelectCheckingBalancesError(), */
+  checkFaucetLoading: makeSelectCheckFaucetLoading(),
+  checkFaucetSuccess: makeSelectCheckFaucetSuccess(),
+  askFaucetLoading: makeSelectAskFaucetLoading(),
+  askFaucetSuccess: makeSelectAskFaucetSuccess(),
+  askFaucetError: makeSelectAskFaucetError(),
 });
 
 function mapDispatchToProps(dispatch) {
