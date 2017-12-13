@@ -204,13 +204,13 @@ export function checkFaucetSuccess() {
   const btn = [
     React.createElement(
       Button,
-      { key: 'b1', type: 'default', size: 'small', onClick: closeNotification },
+      { key: 'b1', type: 'default', size: 'default', onClick: closeNotification },
       'No man'
     ),
     '  ',
     React.createElement(
       Button,
-      { key: 'b2', type: 'primary', size: 'small', onClick: ask },
+      { key: 'b2', type: 'primary', size: 'default', onClick: ask },
       'Sure'
     )];
   notification.config({
