@@ -14,11 +14,14 @@ overflow-wrap: break-word;
 
 function TxLink(props) {
   const { tx, explorer } = props;
-  return (
-    <a href={`${explorer}/${tx}`} target="_blank" rel="noopener">
-      <Span>{tx}</Span>
-    </a>
-  );
+  if (explorer) {
+    return (
+      <a href={`${explorer}${tx}`} target="_blank" rel="noopener">
+        <Span>{tx}</Span>
+      </a>
+    );
+  }
+  return (<Span>{tx}</Span>);
 }
 
 TxLink.propTypes = {

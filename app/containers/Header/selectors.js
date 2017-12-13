@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-
+import Network from './network';
 /**
  * Direct selector to the header state domain
  */
@@ -18,6 +18,10 @@ const makeSelectError = () => createSelector(
 const makeSelectNetworkName = () => createSelector(
   selectHeaderDomain,
   (substate) => substate.get('networkName')
+);
+const makeSelectTxExplorer = () => createSelector(
+  selectHeaderDomain,
+  (substate) => substate ? Network[substate.get('networkName')].tx_explorer : null
 );
 const makeSelectAvailableNetworks = () => createSelector(
   selectHeaderDomain,
@@ -99,6 +103,7 @@ export {
   makeSelectLoading,
   makeSelectError,
   makeSelectNetworkName,
+  makeSelectTxExplorer,
   makeSelectAvailableNetworks,
   makeSelectBlockNumber,
   makeSelectCheckingBalanceDoneTime,
