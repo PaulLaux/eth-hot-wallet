@@ -1,4 +1,4 @@
-## ETH-HOT-Wallet
+## ETH-Hot-Wallet
 
 Thank you for contributing! 
 
