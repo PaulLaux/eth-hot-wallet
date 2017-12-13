@@ -1,4 +1,4 @@
-# Contributing to react-boilerplate
+# Contributing to eth-hot-wallet
 
 Love react-boilerplate and want to help? Thanks so much, there's something to do for everybody!
 
@@ -81,7 +81,7 @@ included in the project:
 
    ```bash
    # Clone your fork of the repo into the current directory
-   git clone https://github.com/<your-username>/react-boilerplate.git
+   git clone https://github.com/<your-username>/eth-hot-wallet.git
    # Navigate to the newly cloned directory
    cd react-boilerplate
    # Assign the original repo to a remote called "upstream"
