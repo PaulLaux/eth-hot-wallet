@@ -24,8 +24,6 @@ import {
 
 } from './constants';
 
-
-
 import Network from './network';
 
 // The initial state of the App

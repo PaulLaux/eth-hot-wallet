@@ -77,7 +77,7 @@ const online = true; // for development, if false almost no external api calls w
  */
 export function* loadNetwork(action) {
   try {
-    const rpcAddress = Network[action.networkName];
+    const rpcAddress = Network[action.networkName].rpc;
     if (!rpcAddress) {
       throw new Error(`${action.networkName} network not found`);
     }

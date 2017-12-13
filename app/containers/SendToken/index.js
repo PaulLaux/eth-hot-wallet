@@ -23,6 +23,7 @@ import SendConfirmationView from 'components/SendConfirmationView';
 import SendProgress from 'components/SendProgress';
 
 import { makeSelectAddressList } from 'containers/HomePage/selectors';
+import { makeSelectTxExplorer } from 'containers/Header/selectors';
 
 import { changeFrom, changeAmount, changeTo, changeGasPrice, confirmSendTransaction, sendTransaction, abortTransaction } from './actions';
 import {
@@ -69,6 +70,8 @@ function SendToken(props) {
     sendInProgress,
     sendError,
     sendTx,
+
+    txExplorer,
     } = props;
 
 
@@ -87,7 +90,7 @@ function SendToken(props) {
     isSendComfirmationLocked,
     sendError,
   };
-  const SendProgressProps = { sendInProgress, sendError, sendTx };
+  const SendProgressProps = { sendInProgress, sendError, sendTx, txExplorer };
 
   const modalFooter = [
     <Button key="reset" type="default" size="large" onClick={onAbortTransaction}>
@@ -155,6 +158,7 @@ SendToken.propTypes = {
     PropTypes.bool,
     PropTypes.object,
   ]),
+  txExplorer: PropTypes.string,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -174,6 +178,8 @@ const mapStateToProps = createStructuredSelector({
   sendInProgress: makeSelectSendInProgress(),
   sendError: makeSelectSendError(),
   sendTx: makeSelectSendTx(),
+
+  txExplorer: makeSelectTxExplorer(),
 
 });
 
