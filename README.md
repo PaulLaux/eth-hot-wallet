@@ -6,7 +6,7 @@
 
 https://eth-hot-wallet.com
 
-#### Version 0.1 - work in progress
+#### Work in progress
 
 ##### Created by Paul Laux, [@drjackall](https://twitter.com/drjackall) for announcements
 
@@ -50,9 +50,9 @@ https://eth-hot-wallet.com
 
 3 Major containers were created:
 
-- Homepage container - all the actions related to keystore, including manipulation and usage.
+- Homepage container - all things related to keystore, including manipulation and usage.
 
-- Header container - all the action related to network comunication / web3 api.
+- Header container - all things related to network communication / web3 api.
 
 - Sendto container - state and actions related to sendto modal, actual checks and sending is happning in header container.
 
