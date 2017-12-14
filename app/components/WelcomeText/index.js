@@ -25,8 +25,8 @@ function WelcomeText() {
     <div>
       <H1>Welcome to ETH Hot Wallet <br />To begin, create or restore Ethereum wallet<br /></H1>
       <H2>
-        ETH Hot wallet is a zero client. Conection to Ethereum network is done via infura / local node. <br />
-        Keystore is encrypted using the password, When the wallet is locked you can only view balances.<br />
+        ETH Hot wallet is a zero client. Connection to Ethereum network is made via infura / local node. <br />
+        Keystore is encrypted using the password. When the wallet is locked, you can only view balances. <br />
         All keys are saved inside the browser and never sent.
       </H2>
     </div>
