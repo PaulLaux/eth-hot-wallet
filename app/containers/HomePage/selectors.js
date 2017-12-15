@@ -103,6 +103,30 @@ const makeSelectConvertTo = () => createSelector(
   (homeState) => homeState.get('convertTo')
 );
 
+const makeSelectIsLocalStorageWallet = () => createSelector(
+  selectHome,
+  (homeState) => homeState.get('isLocalStorageWallet')
+);
+const makeSelectCheckLocalStorageLoading = () => createSelector(
+  selectHome,
+  (homeState) => homeState.get('checkLocalStorageLoading')
+);
+const makeSelectSaveWalletLoading = () => createSelector(
+  selectHome,
+  (homeState) => homeState.get('saveWalletLoading')
+);
+const makeSelectSaveWalletError = () => createSelector(
+  selectHome,
+  (homeState) => homeState.get('saveWalletError')
+);
+const makeSelectLoadWalletLoading = () => createSelector(
+  selectHome,
+  (homeState) => homeState.get('loadWalletLoading')
+);
+const makeSelectLoadwalletError = () => createSelector(
+  selectHome,
+  (homeState) => homeState.get('loadWalletError')
+);
 
 export {
   selectHome,
@@ -126,4 +150,11 @@ export {
   makeSelectAddressListMsg,
   makeSelectExchangeRates,
   makeSelectConvertTo,
+
+  makeSelectIsLocalStorageWallet,
+  makeSelectCheckLocalStorageLoading,
+  makeSelectSaveWalletLoading,
+  makeSelectSaveWalletError,
+  makeSelectLoadWalletLoading,
+  makeSelectLoadwalletError,
 };

@@ -39,3 +39,15 @@ export const SET_EXCHANGE_RATES = 'eth-hot-wallet/HomePage/SET_EXCHANGE_RATES';
 export const SELECT_CURRENCY = 'eth-hot-wallet/HomePage/SELECT_CURRENCY';
 
 export const CLOSE_WALLET = 'eth-hot-wallet/HomePage/CLOSE_WALLET';
+
+export const CHECK_LOCAL_STORAGE = 'eth-hot-wallet/HomePage/CHECK_LOCAL_STORAGE';
+export const LOCAL_STORAGE_EXIST = 'eth-hot-wallet/HomePage/LOCAL_STORAGE_EXIST';
+export const LOCAL_STORAGE_NOT_EXIST = 'eth-hot-wallet/HomePage/LOCAL_STORAGE_NOT_EXIST';
+
+export const SAVE_WALLET = 'eth-hot-wallet/HomePage/SAVE_WALLET';
+export const SAVE_WALLET_SUCCESS = 'eth-hot-wallet/HomePage/SAVE_WALLET';
+export const SAVE_WALLET_ERROR = 'eth-hot-wallet/HomePage/SAVE_WALLET_ERROR';
+
+export const LOAD_WALLET = 'eth-hot-wallet/HomePage/LOAD_WALLET';
+export const LOAD_WALLET_SUCCESS = 'eth-hot-wallet/HomePage/LOAD_WALLET_SUCCESS';
+export const LOAD_WALLET_ERROR = 'eth-hot-wallet/HomePage/LOAD_WALLET_ERROR';

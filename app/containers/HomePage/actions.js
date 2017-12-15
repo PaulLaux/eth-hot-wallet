@@ -52,6 +52,18 @@ import {
   SELECT_CURRENCY,
 
   CLOSE_WALLET,
+
+  CHECK_LOCAL_STORAGE,
+  LOCAL_STORAGE_EXIST,
+  LOCAL_STORAGE_NOT_EXIST,
+
+  SAVE_WALLET,
+  SAVE_WALLET_SUCCESS,
+  SAVE_WALLET_ERROR,
+
+  LOAD_WALLET,
+  LOAD_WALLET_SUCCESS,
+  LOAD_WALLET_ERROR,
 } from './constants';
 
 
@@ -457,6 +469,107 @@ export function closeWallet() {
   message.success('Wallet removed from memory');
   return {
     type: CLOSE_WALLET,
+  };
+}
+
+/* ********************* SAVE / LOAD WALLET To localstorage ******************* */
+/**
+ * check whether there is a stored wallet and update the state.
+ *
+ * @return {object} An action object with a type of CHECK_LOCAL_STORAGE
+ */
+export function checkLocalStorage() {
+  return {
+    type: CHECK_LOCAL_STORAGE,
+  };
+}
+
+/**
+ * Wallet found in local storage check.
+ *
+ * @return {object} An action object with a type of LOCAL_STORAGE_EXIST
+ */
+export function localStorageExist() {
+  return {
+    type: LOCAL_STORAGE_EXIST,
+  };
+}
+
+/**
+ * Wallet NOT found in storage check.
+ *
+ * @return {object} An action object with a type of LOCAL_STORAGE_NOT_EXIST
+ */
+export function localStorageNotExist() {
+  return {
+    type: LOCAL_STORAGE_NOT_EXIST,
+  };
+}
+
+
+/**
+ * Saves Wallet to local storage
+ *
+ * @return {object} An action object with a type of SAVE_WALLET
+ */
+export function saveWallet() {
+  return {
+    type: SAVE_WALLET,
+  };
+}
+/**
+ * Saves Wallet success
+ *
+ * @return {object} An action object with a type of SAVE_WALLET_SUCCESS
+ */
+export function saveWalletSuccess() {
+  return {
+    type: SAVE_WALLET_SUCCESS,
+  };
+}
+/**
+ * Saves Wallet error
+ *
+ * @return {object} An action object with a type of SAVE_WALLET_ERROR
+ */
+export function saveWalletError(error) {
+  return {
+    type: SAVE_WALLET_ERROR,
+    error,
+  };
+}
+
+/**
+ * Load Wallet from local storage
+ *
+ * @return {object} An action object with a type of LOAD_WALLET
+ */
+export function loadWallet() {
+  return {
+    type: LOAD_WALLET,
+  };
+}
+
+/**
+ * Load Wallet success
+ *
+ * @return {object} An action object with a type of LOAD_WALLET_SUCCESS
+ */
+export function loadWalletSuccess() {
+  return {
+    type: LOAD_WALLET_SUCCESS,
+  };
+}
+
+/**
+ * Load Wallet from local storage
+ *
+ * @return {object} An action object with a type of LOAD_WALLET_ERROR
+ */
+export function loadWalletError(error) {
+  return {
+    type: LOAD_WALLET_ERROR,
+    error,
   };
 }
 

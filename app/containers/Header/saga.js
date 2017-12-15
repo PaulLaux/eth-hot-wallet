@@ -34,6 +34,7 @@ import {
   askFaucetAddress,
 } from 'utils/constants';
 import { timer } from 'utils/common';
+import { message } from 'antd';
 
 import { makeSelectUsedFaucet } from './selectors';
 import {
@@ -78,11 +79,17 @@ const web3 = new Web3();
 * askFaucetApi() will get costant Tx as success
 */
 const online = false;
+if (!online) {
+  message.warn('debug mode - online = false in saga.js');
+}
 
 /**
  * connect to rpc and attach keystore as siger provider
  */
 export function* loadNetwork(action) {
+  if (!online) {
+    message.warn('debug mode: online = false in Header/saga.js');
+  }
   try {
     const rpcAddress = online ? Network[action.networkName].rpc : Network['Local RPC'].rpc;
     if (!rpcAddress) {
@@ -292,25 +299,25 @@ export function* getRates() {
   try {
     // Call our request helper (see 'utils/request')
     const apiRates = online ? (yield call(request, requestURL))[0] :
-    { // for testin in online = false mode
-      id: 'ethereum',
-      name: 'Ethereum',
-      symbol: 'ETH',
-      rank: '2',
-      price_usd: '295.412',
-      price_btc: '0.0684231',
-      '24h_volume_usd': '308964000.0',
-      market_cap_usd: '28043053731.0',
-      available_supply: '94928621.0',
-      total_supply: '94928621.0',
-      percent_change_1h: '-1.46',
-      percent_change_24h: '-1.84',
-      percent_change_7d: '1.35',
-      last_updated: '1507010353',
-      price_eur: '252.342998284',
-      '24h_volume_eur': '263919211.548',
-      market_cap_eur: '23954572799.0',
-    };
+      { // for testin in online = false mode
+        id: 'ethereum',
+        name: 'Ethereum',
+        symbol: 'ETH',
+        rank: '2',
+        price_usd: '295.412',
+        price_btc: '0.0684231',
+        '24h_volume_usd': '308964000.0',
+        market_cap_usd: '28043053731.0',
+        available_supply: '94928621.0',
+        total_supply: '94928621.0',
+        percent_change_1h: '-1.46',
+        percent_change_24h: '-1.84',
+        percent_change_7d: '1.35',
+        last_updated: '1507010353',
+        price_eur: '252.342998284',
+        '24h_volume_eur': '263919211.548',
+        market_cap_eur: '23954572799.0',
+      };
     // console.log(apiPrices);
 
     yield put(setExchangeRates(apiRates, requestURL));
