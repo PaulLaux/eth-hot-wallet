@@ -28,7 +28,6 @@ import {
   ASK_FAUCET,
   ASK_FAUCET_SUCCESS,
   ASK_FAUCET_ERROR,
-  CLOSE_FAUCET,
 } from './constants';
 
 import { store } from '../../app';

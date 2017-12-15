@@ -70,14 +70,21 @@ import {
 import Network from './network';
 const web3 = new Web3();
 
-const online = true; // for development, if false almost no external api calls will be made
+/* for development, if online = false then most api calls will be replaced by constant values
+* affected functions:
+* loadNetwork() will connect to 'Local RPC' but default network name will be showen in gui
+* getRates() will not call rate api
+* checkFaucetApi() will not request
+* askFaucetApi() will get costant Tx as success
+*/
+const online = false;
 
 /**
  * connect to rpc and attach keystore as siger provider
  */
 export function* loadNetwork(action) {
   try {
-    const rpcAddress = Network[action.networkName].rpc;
+    const rpcAddress = online ? Network[action.networkName].rpc : Network['Local RPC'].rpc;
     if (!rpcAddress) {
       throw new Error(`${action.networkName} network not found`);
     }
