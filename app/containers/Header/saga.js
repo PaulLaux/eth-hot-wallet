@@ -79,10 +79,7 @@ const web3 = new Web3();
 * askFaucetApi() will get costant Tx as success
 */
 const online = false;
-if (!online) {
-  message.warn('debug mode - online = false in saga.js');
-}
-
+if (!online) message.warn('Debug mode: online = false in Header/saga.js');
 /**
  * connect to rpc and attach keystore as siger provider
  */

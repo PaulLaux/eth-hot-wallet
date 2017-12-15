@@ -513,6 +513,7 @@ export function localStorageNotExist() {
  * @return {object} An action object with a type of SAVE_WALLET
  */
 export function saveWallet() {
+  console.log('saveWallet action');
   return {
     type: SAVE_WALLET,
   };
@@ -523,6 +524,7 @@ export function saveWallet() {
  * @return {object} An action object with a type of SAVE_WALLET_SUCCESS
  */
 export function saveWalletSuccess() {
+  console.log('saveWalletSuccess');
   return {
     type: SAVE_WALLET_SUCCESS,
   };
@@ -533,6 +535,7 @@ export function saveWalletSuccess() {
  * @return {object} An action object with a type of SAVE_WALLET_ERROR
  */
 export function saveWalletError(error) {
+  console.log('saveWalletError' + error);
   return {
     type: SAVE_WALLET_ERROR,
     error,
@@ -545,6 +548,7 @@ export function saveWalletError(error) {
  * @return {object} An action object with a type of LOAD_WALLET
  */
 export function loadWallet() {
+  console.log('saveWallet action');
   return {
     type: LOAD_WALLET,
   };

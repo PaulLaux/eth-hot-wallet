@@ -13,6 +13,7 @@ import {
   UNLOCK_WALLET,
   CLOSE_WALLET,
   SHOW_SEND_TOKEN,
+  SAVE_WALLET,
 } from 'containers/HomePage/constants';
 
 import {
@@ -49,17 +50,9 @@ import {
   changeBalance,
   unlockWalletSuccess,
   unlockWalletError,
+  saveWalletSuccess,
+  saveWalletError,
 } from './actions';
-
-/* Turn callback into promise to use inside saga
-function promisify(func, param) {
-  return new Promise((resolve, reject) => {
-    func(param, (err, data) => {
-      if (err !== null) return reject(err);
-      resolve(data);
-    });
-  });
-} */
 
 /**
  * Create new seed and password
@@ -202,7 +195,7 @@ export function* generateAddress() {
     try {
       const balance = yield call(getBalancePromise, newAddress);
       yield put(changeBalance(newAddress, balance));
-    } catch (err) {}  // eslint-disable-line 
+    } catch (err) { }  // eslint-disable-line 
   } catch (err) {
     yield put(generateAddressError(err.message));
   }
@@ -283,6 +276,21 @@ export function* closeWallet() {
   yield put(loadNetwork(offlineModeString));
 }
 
+/**
+ * Save wallet to localStorage
+ */
+export function* saveWallet() {
+  try {
+    yield call(timer, 1000);
+    throw new Error('bad error');
+    // yield put(saveWalletSuccess());
+  } catch (err) {
+    const errorString = `Save wallet error - ${err.message}`;
+    console.log(errorString);
+    yield put(saveWalletError(errorString));
+  }
+}
+
 
 /**
  * Root saga manages watcher lifecycle
@@ -301,6 +309,8 @@ export default function* walletData() {
   yield takeLatest(UNLOCK_WALLET, unlockWallet);
   yield takeLatest(SHOW_SEND_TOKEN, changeSourceAddress);
   yield takeLatest(CLOSE_WALLET, closeWallet);
+
+  yield takeLatest(SAVE_WALLET, saveWallet);
   /*
   while (yield takeLatest(INIT_WALLET, initSeed)) {
     // yield takeLatest(GENERATE_KEYSTORE, genKeystore);

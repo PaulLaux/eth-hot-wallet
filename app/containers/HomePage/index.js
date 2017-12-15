@@ -64,6 +64,7 @@ import {
   unlockWallet,
   selectCurrency,
   closeWallet,
+  saveWallet,
 } from './actions';
 
 import {
@@ -86,6 +87,8 @@ import {
   makeSelectAddressListMsg,
   makeSelectExchangeRates,
   makeSelectConvertTo,
+  makeSelectSaveWalletLoading,
+  makeSelectSaveWalletError,
 } from './selectors';
 
 
@@ -143,9 +146,25 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       getExchangeRatesLoading,
       getExchangeRatesError,
       onCloseWallet,
+
+      onSaveWallet,
+      saveWalletLoading,
+      saveWalletError,
     } = this.props;
 
-    const subHeaderProps = { onGenerateWallet, onShowRestoreWallet, isComfirmed, onCloseWallet, onLockWallet, password, onUnlockWallet };
+    const subHeaderProps = {
+      onGenerateWallet,
+      onShowRestoreWallet,
+      isComfirmed,
+      onCloseWallet,
+      onLockWallet,
+      password,
+      onUnlockWallet,
+
+      onSaveWallet,
+      saveWalletLoading,
+      saveWalletError,
+    };
 
     const generateWalletProps = {
       isShowGenerateWallet,
@@ -282,6 +301,10 @@ HomePage.propTypes = {
   getExchangeRatesLoading: PropTypes.bool,
   getExchangeRatesError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
   onCloseWallet: PropTypes.func,
+
+  onSaveWallet: PropTypes.func,
+  saveWalletLoading: PropTypes.bool,
+  saveWalletError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
 };
 
 export function mapDispatchToProps(dispatch) {
@@ -359,6 +382,10 @@ export function mapDispatchToProps(dispatch) {
     onCloseWallet: () => {
       dispatch(closeWallet());
     },
+    onSaveWallet: () => {
+      console.log('dispatch');
+      dispatch(saveWallet());
+    },
   };
 }
 
@@ -396,6 +423,9 @@ const mapStateToProps = createStructuredSelector({
   getExchangeRatesDoneTime: makeSelectGetExchangeRatesDoneTime(),
   getExchangeRatesLoading: makeSelectGetExchangeRatesLoading(),
   getExchangeRatesError: makeSelectGetExchangeRatesError(),
+
+  saveWalletLoading: makeSelectSaveWalletLoading(),
+  saveWalletError: makeSelectSaveWalletError(),
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

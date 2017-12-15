@@ -9,6 +9,7 @@ import { Button, Popconfirm } from 'antd';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import LockButton from 'components/LockButton';
+import IconButton from 'components/IconButton';
 const Div = styled.div`
   margin-top: 45px;
   .ant-btn {
@@ -28,6 +29,7 @@ function SubHeader(props) {
   const {
     onGenerateWallet, onShowRestoreWallet, isComfirmed, onCloseWallet,
     onLockWallet, password, onUnlockWallet,
+    onSaveWallet, saveWalletLoading, saveWalletError,
   } = props;
 
   const lockButtonProps = { onLockWallet, password, onUnlockWallet };
@@ -48,6 +50,14 @@ function SubHeader(props) {
         Close wallet
       </Button>
     </Popconfirm>,
+    <IconButton
+      key="save"
+      text="Save to disk"
+      icon="download"
+      onClick={onSaveWallet}
+      loading={saveWalletLoading}
+      error={saveWalletError}
+    />,
   ];
 
 
@@ -68,6 +78,9 @@ SubHeader.propTypes = {
   onLockWallet: PropTypes.func,
   password: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   onUnlockWallet: PropTypes.func,
+  onSaveWallet: PropTypes.func,
+  saveWalletLoading: PropTypes.bool,
+  saveWalletError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
 };
 
 export default SubHeader;
