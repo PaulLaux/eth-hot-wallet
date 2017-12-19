@@ -282,11 +282,10 @@ export function* closeWallet() {
 export function* saveWallet() {
   try {
     yield call(timer, 1000);
-    throw new Error('bad error');
-    // yield put(saveWalletSuccess());
+
+    yield put(saveWalletSuccess());
   } catch (err) {
-    const errorString = `Save wallet error - ${err.message}`;
-    console.log(errorString);
+    const errorString = `${err.message}`;
     yield put(saveWalletError(errorString));
   }
 }

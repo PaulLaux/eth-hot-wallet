@@ -57,6 +57,7 @@ function SubHeader(props) {
       onClick={onSaveWallet}
       loading={saveWalletLoading}
       error={saveWalletError}
+      popconfirmMsg="Encrypted wallet will be saved to browser localStorage"
     />,
   ];
 
