@@ -2,6 +2,7 @@
  * Wallet operations
  */
 import lightwallet from 'eth-lightwallet';
+import localStore from 'store/dist/store.modern';
 
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 
@@ -14,6 +15,7 @@ import {
   CLOSE_WALLET,
   SHOW_SEND_TOKEN,
   SAVE_WALLET,
+  LOAD_WALLET,
 } from 'containers/HomePage/constants';
 
 import {
@@ -30,7 +32,7 @@ import { changeFrom } from 'containers/SendToken/actions';
 
 import generateString from 'utils/crypto';
 
-import { generatedPasswordLength, hdPathString, offlineModeString, defaultNetwork } from 'utils/constants';
+import { generatedPasswordLength, hdPathString, offlineModeString, defaultNetwork, localStorageKey } from 'utils/constants';
 
 import { timer } from 'utils/common';
 
@@ -52,6 +54,8 @@ import {
   unlockWalletError,
   saveWalletSuccess,
   saveWalletError,
+  loadWalletSuccess,
+  loadWalletError,
 } from './actions';
 
 /**
@@ -281,12 +285,49 @@ export function* closeWallet() {
  */
 export function* saveWallet() {
   try {
-    yield call(timer, 1000);
+    const ks = yield select(makeSelectKeystore());
+    if (!ks) {
+      throw new Error('No keystore defined');
+    }
+
+    const dump = {
+      ver: '1',
+      saved: new Date().toISOString(),
+      ks: ks.serialize(),
+    };
+    console.log(`Saving len: ${JSON.stringify(dump).length}`);
+
+    localStore.set(localStorageKey, dump);
 
     yield put(saveWalletSuccess());
   } catch (err) {
     const errorString = `${err.message}`;
     yield put(saveWalletError(errorString));
+  }
+}
+
+/**
+ * Load wallet from localStorage
+ */
+export function* loadWallet() {
+  try {
+    yield call(timer, 1000);
+
+    const dump = localStore.get(localStorageKey);
+    if (!dump) {
+      throw new Error('No keystore found in localStorage');
+    }
+    console.log(`Load len: ${JSON.stringify(dump).length}`);
+
+    const ksDump = dump.ks;
+    const ks = lightwallet.keystore.deserialize(ksDump);
+
+    yield put(generateKeystoreSuccess(ks));
+    yield put(loadNetwork(defaultNetwork));
+    yield put(loadWalletSuccess());
+  } catch (err) {
+    const errorString = `${err.message}`;
+    yield put(loadWalletError(errorString));
   }
 }
 
@@ -310,6 +351,8 @@ export default function* walletData() {
   yield takeLatest(CLOSE_WALLET, closeWallet);
 
   yield takeLatest(SAVE_WALLET, saveWallet);
+  yield takeLatest(LOAD_WALLET, loadWallet);
+
   /*
   while (yield takeLatest(INIT_WALLET, initSeed)) {
     // yield takeLatest(GENERATE_KEYSTORE, genKeystore);

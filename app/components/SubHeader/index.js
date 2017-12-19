@@ -30,6 +30,7 @@ function SubHeader(props) {
     onGenerateWallet, onShowRestoreWallet, isComfirmed, onCloseWallet,
     onLockWallet, password, onUnlockWallet,
     onSaveWallet, saveWalletLoading, saveWalletError,
+    onLoadWallet, loadWalletLoading, loadWalletError,
   } = props;
 
   const lockButtonProps = { onLockWallet, password, onUnlockWallet };
@@ -41,6 +42,14 @@ function SubHeader(props) {
     <Button key="restore_wallet" type="default" size="large" onClick={onShowRestoreWallet}>
       Restore wallet
     </Button>,
+    <IconButton
+      key="load"
+      text="Load from storage"
+      icon="upload"
+      onClick={onLoadWallet}
+      loading={loadWalletLoading}
+      error={loadWalletError}
+    />,
   ];
 
   const existingWalletSubHeader = [
@@ -82,6 +91,9 @@ SubHeader.propTypes = {
   onSaveWallet: PropTypes.func,
   saveWalletLoading: PropTypes.bool,
   saveWalletError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
+  onLoadWallet: PropTypes.func,
+  loadWalletLoading: PropTypes.bool,
+  loadWalletError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
 };
 
 export default SubHeader;

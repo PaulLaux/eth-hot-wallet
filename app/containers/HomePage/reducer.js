@@ -252,12 +252,11 @@ function homeReducer(state = initialState, action) {
 
     case SAVE_WALLET:
       return state
-        .set('saveWalletLoading', true);
+        .set('saveWalletLoading', true)
+        .set('saveWalletError', false);
     case SAVE_WALLET_SUCCESS:
       return state
-        .set('saveWalletLoading', false)
-        .set('saveWalletError', false);
-
+        .set('saveWalletLoading', false);
     case SAVE_WALLET_ERROR:
       return state
         .set('saveWalletLoading', false)
@@ -265,15 +264,15 @@ function homeReducer(state = initialState, action) {
 
     case LOAD_WALLET:
       return state
-        .set('loadWalletLoading', true);
+        .set('loadWalletLoading', true)
+        .set('loadWalletError', false);
     case LOAD_WALLET_SUCCESS:
       return state
-        .set('loadWalletLoading', false)
-        ;
+        .set('loadWalletLoading', false);
     case LOAD_WALLET_ERROR:
       return state
         .set('loadWalletLoading', false)
-        .set('loadwalletError', action.error);
+        .set('loadWalletError', action.error);
 
     default:
       return state;

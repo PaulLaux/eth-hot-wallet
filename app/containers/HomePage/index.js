@@ -65,6 +65,7 @@ import {
   selectCurrency,
   closeWallet,
   saveWallet,
+  loadWallet,
 } from './actions';
 
 import {
@@ -89,6 +90,8 @@ import {
   makeSelectConvertTo,
   makeSelectSaveWalletLoading,
   makeSelectSaveWalletError,
+  makeSelectLoadWalletLoading,
+  makeSelectLoadwalletError,
 } from './selectors';
 
 
@@ -150,6 +153,9 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       onSaveWallet,
       saveWalletLoading,
       saveWalletError,
+      onLoadWallet,
+      loadWalletLoading,
+      loadWalletError,
     } = this.props;
 
     const subHeaderProps = {
@@ -164,6 +170,9 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       onSaveWallet,
       saveWalletLoading,
       saveWalletError,
+      onLoadWallet,
+      loadWalletLoading,
+      loadWalletError,
     };
 
     const generateWalletProps = {
@@ -305,6 +314,9 @@ HomePage.propTypes = {
   onSaveWallet: PropTypes.func,
   saveWalletLoading: PropTypes.bool,
   saveWalletError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
+  onLoadWallet: PropTypes.func,
+  loadWalletLoading: PropTypes.bool,
+  loadWalletError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
 };
 
 export function mapDispatchToProps(dispatch) {
@@ -383,8 +395,10 @@ export function mapDispatchToProps(dispatch) {
       dispatch(closeWallet());
     },
     onSaveWallet: () => {
-      console.log('dispatch');
       dispatch(saveWallet());
+    },
+    onLoadWallet: () => {
+      dispatch(loadWallet());
     },
   };
 }
@@ -426,6 +440,8 @@ const mapStateToProps = createStructuredSelector({
 
   saveWalletLoading: makeSelectSaveWalletLoading(),
   saveWalletError: makeSelectSaveWalletError(),
+  loadWalletLoading: makeSelectLoadWalletLoading(),
+  loadWalletError: makeSelectLoadwalletError(),
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

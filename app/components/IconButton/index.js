@@ -6,7 +6,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Popconfirm, Tooltip, message } from 'antd';
+import { Button, Popconfirm, Tooltip } from 'antd';
 import styled from 'styled-components';
 
 const ErrorSpan = styled.span`
@@ -17,6 +17,16 @@ const ErrorSpan = styled.span`
     color: red;
   }
   `;
+
+const Span = styled.span`
+  .anticon {
+    color: black;
+  }
+  .ant-btn{
+    color: black;
+  }
+  `;
+
 
 function IconButton(props) {
   const { text, icon, onClick, loading, error, disabled, popconfirmMsg } = props;
