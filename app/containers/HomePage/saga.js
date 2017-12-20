@@ -52,6 +52,7 @@ import {
   changeBalance,
   unlockWalletSuccess,
   unlockWalletError,
+  saveWallet,
   saveWalletSuccess,
   saveWalletError,
   loadWalletSuccess,
@@ -154,6 +155,7 @@ export function* genKeystore() {
 
     yield put(generateKeystoreSuccess(ks));
     yield put(loadNetwork(defaultNetwork));
+    yield put(saveWallet());
   } catch (err) {
     const errorString = `genKeystore error - ${err}`;
     yield put(generateKeystoreError(errorString));
@@ -194,7 +196,7 @@ export function* generateAddress() {
     const newAddress = ks.getAddresses().slice(-1)[0];
     const index = ks.getAddresses().length; // serial index for sorting by generation order;
     yield put(generateAddressSuccess(newAddress, index));
-
+    yield put(saveWallet());
     // balance checking for new address (will be aborted in offline mode)
     try {
       const balance = yield call(getBalancePromise, newAddress);
@@ -277,13 +279,14 @@ export function* changeSourceAddress(action) {
  * Disconnect from network during closeWallet
  */
 export function* closeWallet() {
+  yield deleteWallet();
   yield put(loadNetwork(offlineModeString));
 }
 
 /**
  * Save wallet to localStorage
  */
-export function* saveWallet() {
+export function* saveWalletS() {
   try {
     const ks = yield select(makeSelectKeystore());
     if (!ks) {
@@ -295,7 +298,7 @@ export function* saveWallet() {
       saved: new Date().toISOString(),
       ks: ks.serialize(),
     };
-    console.log(`Saving len: ${JSON.stringify(dump).length}`);
+    // console.log(`Saving len: ${JSON.stringify(dump).length}`);
 
     localStore.set(localStorageKey, dump);
 
@@ -309,15 +312,19 @@ export function* saveWallet() {
 /**
  * Load wallet from localStorage
  */
-export function* loadWallet() {
+export function* loadWalletS() {
   try {
     yield call(timer, 1000);
+    const existingKs = yield select(makeSelectKeystore());
+    if (existingKs) {
+      throw new Error('Existing keystore present  - aborting load form localStorage');
+    }
 
     const dump = localStore.get(localStorageKey);
     if (!dump) {
       throw new Error('No keystore found in localStorage');
     }
-    console.log(`Load len: ${JSON.stringify(dump).length}`);
+    // console.log(`Load len: ${JSON.stringify(dump).length}`);
 
     const ksDump = dump.ks;
     const ks = lightwallet.keystore.deserialize(ksDump);
@@ -331,6 +338,12 @@ export function* loadWallet() {
   }
 }
 
+/**
+ * delete all values from localStorage
+ */
+export function* deleteWallet() {
+  localStore.clearAll();
+}
 
 /**
  * Root saga manages watcher lifecycle
@@ -350,8 +363,8 @@ export default function* walletData() {
   yield takeLatest(SHOW_SEND_TOKEN, changeSourceAddress);
   yield takeLatest(CLOSE_WALLET, closeWallet);
 
-  yield takeLatest(SAVE_WALLET, saveWallet);
-  yield takeLatest(LOAD_WALLET, loadWallet);
+  yield takeLatest(SAVE_WALLET, saveWalletS);
+  yield takeLatest(LOAD_WALLET, loadWalletS);
 
   /*
   while (yield takeLatest(INIT_WALLET, initSeed)) {

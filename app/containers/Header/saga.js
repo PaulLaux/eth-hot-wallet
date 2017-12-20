@@ -69,6 +69,7 @@ import {
 } from './constants';
 
 import Network from './network';
+import { lang } from 'moment';
 const web3 = new Web3();
 
 /* for development, if online = false then most api calls will be replaced by constant values
@@ -294,27 +295,29 @@ function* watchPollData() {
 export function* getRates() {
   const requestURL = 'https://api.coinmarketcap.com/v1/ticker/ethereum/?convert=EUR';
   try {
+    const dummyRates = { // for testin in online = false mode
+      id: 'ethereum',
+      name: 'Ethereum',
+      symbol: 'ETH',
+      rank: '2',
+      price_usd: '295.412',
+      price_btc: '0.0684231',
+      '24h_volume_usd': '308964000.0',
+      market_cap_usd: '28043053731.0',
+      available_supply: '94928621.0',
+      total_supply: '94928621.0',
+      percent_change_1h: '-1.46',
+      percent_change_24h: '-1.84',
+      percent_change_7d: '1.35',
+      last_updated: '1507010353',
+      price_eur: '252.342998284',
+      '24h_volume_eur': '263919211.548',
+      market_cap_eur: '23954572799.0',
+    };
+
     // Call our request helper (see 'utils/request')
-    const apiRates = online ? (yield call(request, requestURL))[0] :
-      { // for testin in online = false mode
-        id: 'ethereum',
-        name: 'Ethereum',
-        symbol: 'ETH',
-        rank: '2',
-        price_usd: '295.412',
-        price_btc: '0.0684231',
-        '24h_volume_usd': '308964000.0',
-        market_cap_usd: '28043053731.0',
-        available_supply: '94928621.0',
-        total_supply: '94928621.0',
-        percent_change_1h: '-1.46',
-        percent_change_24h: '-1.84',
-        percent_change_7d: '1.35',
-        last_updated: '1507010353',
-        price_eur: '252.342998284',
-        '24h_volume_eur': '263919211.548',
-        market_cap_eur: '23954572799.0',
-      };
+    const apiRates = online ? (yield call(request, requestURL))[0] : dummyRates;
+
     // console.log(apiPrices);
 
     yield put(setExchangeRates(apiRates, requestURL));

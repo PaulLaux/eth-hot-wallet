@@ -96,6 +96,10 @@ import {
 
 
 export class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+  componentDidMount() {
+    this.props.onLoadWallet();
+  }
+
   render() {
     const {
       onGenerateWallet,
@@ -187,7 +191,16 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       onGenerateWalletCancel,
       onGenerateKeystore,
     };
-    const restoreWalletModalProps = { isShowRestoreWallet, userSeed, userPassword, restoreWalletError, onChangeUserSeed, onChangeUserPassword, onRestoreWalletCancel, onRestoreWalletFromSeed };
+    const restoreWalletModalProps = {
+      isShowRestoreWallet,
+      userSeed,
+      userPassword,
+      restoreWalletError,
+      onChangeUserSeed,
+      onChangeUserPassword,
+      onRestoreWalletCancel,
+      onRestoreWalletFromSeed,
+    };
 
     const addressViewProps = {
       generateKeystoreLoading,
