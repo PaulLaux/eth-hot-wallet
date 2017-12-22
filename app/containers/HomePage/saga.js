@@ -24,6 +24,7 @@ import {
   makeSelectUserSeed,
   makeSelectUserPassword,
   makeSelectKeystore,
+  makeSelectTokenListArr,
 } from 'containers/HomePage/selectors';
 
 import { loadNetwork } from 'containers/Header/actions';
@@ -153,7 +154,9 @@ export function* genKeystore() {
     const pwDerivedKey = yield call(keyFromPasswordPromise, password);
     ks.generateNewAddress(pwDerivedKey, 2);
 
-    yield put(generateKeystoreSuccess(ks));
+    const tokenList = yield select(makeSelectTokenListArr());
+
+    yield put(generateKeystoreSuccess(ks, tokenList));
     yield put(loadNetwork(defaultNetwork));
     yield put(saveWallet());
   } catch (err) {

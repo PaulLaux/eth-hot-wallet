@@ -26,15 +26,56 @@ const AddrTable = styled(Table) `
   }
 `;
 
+/*
+tokenList:{
+  eos: {
+    icon: 'https://etherscan.io/token/images/eos_28.png',
+    name: 'EOS',
+    contractAddress: '0x86fa049857e0209aa7d9e616f7eb3b3b78ecfdb0',
+    decimals: 18
+  },
+  ppt: {
+    icon: 'https://etherscan.io/token/images/populous_28.png',
+    name: Populous,
+    contractAddress: '0xd4fa1460f537bb9085d22c7bccb5dd450ef28e3a',
+    decimals: 8
+  }
+}
+
+
+/*
+addressList: {
+  address1: {
+      order: 1
+      eth: {balance: bigNumber},
+      eos: {balance: bigNumber},
+      ppt: {balance: bigNumber},
+    }
+} */
+
 /**
  * Transforms the immutable struct into Array of data in the form:
  * example for return:
   [{
     key: '1',
+    order: '1',
     address: '13c...9d06',
     balance: '3 ETH',
     convert: '200 USD',
-  }]
+  },{
+    key: '2',
+    order: '1',
+    address: '13c...9d06',
+    balance: '3 eos',
+    convert: '15 USD',
+  }, {
+    key: '3',
+    order: '1',
+    address: '13c...9d06',
+    balance: '3 ppt',
+    convert: '13 USD',
+  },
+]
 
  * order is determined by key
  *

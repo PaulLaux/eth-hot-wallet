@@ -229,32 +229,37 @@ export function generateKeystore() {
  *
  * @return {object}      An action object with a type of GENERATE_KEYSTORE_SUCCESS passing the repos
  */
-export function generateKeystoreSuccess(keystore) {
-  const addresses = keystore.getAddresses();
-  /*
-  addressList: {
-    lastIndex: 8
-    address0: {
-        index: 1
-        eth: {
-            balance: bigNumber
-            convertBalance: bigNumber
-          }
-      }
+export function generateKeystoreSuccess(keystore, tokenList) {
+  /* input:
+  tokenList: ['eth','eos','ppt']
+ */
+  const reducer = (acc, token) => ({
+    ...acc,
+    ...{ [token]: { balance: false } },
+  });
+  const tokens = tokenList.reduce(reducer, {});
+  /* tokens = {
+  eos:{balance: false}
+  eth:{balance: false}
+  ppt:{balance: false}
   } */
-
+  const addresses = keystore.getAddresses();
   const addressList = {};
   for (let i = 0; i < addresses.length; i += 1) {
     addressList[addresses[i]] = {
       index: i + 1, // strat from 1 for user display
-      eth: {
-        balance: false,
-        // convertBalance: false,
-      },
+      ...tokens,
     };
   }
-  // addressList.lastIndex = addresses.length - 1; TodO
-
+  /* output:
+  addressList: {
+    address1: {
+        order: 1
+        eth: {balance: false},
+        eos: {balance: false},
+        ppt: {balance: false},
+      }
+  } */
   return {
     type: GENERATE_KEYSTORE_SUCCESS,
     keystore,

@@ -84,10 +84,9 @@ const initialState = fromJS({
   addressList: {
     address1: {
         order: 1
-        eth: {
-            balance: bigNumber
-            convertBalance: bigNumber
-          }
+        eth: {balance: bigNumber},
+        eos: {balance: bigNumber},
+        ppt: {balance: bigNumber},
       }
   } */
 
@@ -98,15 +97,28 @@ const initialState = fromJS({
   addressListError: false,
   addressListMsg: false,
 
-  isShowSendToken: false, // sent modal is being shown
+  isShowSendToken: false,
 
-  isLocalStorageWallet: false, // Does we have wallet in localStorage?
-  checkLocalStorageLoading: false,
-
-  saveWalletLoading: false,
-  saveWalletError: false,
-  loadWalletLoading: false,
-  loadWalletError: false,
+  tokenList: {
+    eth: {
+      icon: '',
+      name: 'Ethereum',
+      contractAddress: null,
+      decimals: 18,
+    },
+    eos: {
+      icon: 'https://etherscan.io/token/images/eos_28.png',
+      name: 'EOS',
+      contractAddress: '0x86fa049857e0209aa7d9e616f7eb3b3b78ecfdb0',
+      decimals: 18,
+    },
+    ppt: {
+      icon: 'https://etherscan.io/token/images/populous_28.png',
+      name: 'Populous',
+      contractAddress: '0xd4fa1460f537bb9085d22c7bccb5dd450ef28e3a',
+      decimals: 8,
+    },
+  },
 });
 
 function homeReducer(state = initialState, action) {

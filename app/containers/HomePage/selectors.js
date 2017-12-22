@@ -102,6 +102,15 @@ const makeSelectConvertTo = () => createSelector(
   selectHome,
   (homeState) => homeState.get('convertTo')
 );
+const makeSelectTokenList = () => createSelector(
+  selectHome,
+  (homeState) => homeState.get('tokenList')
+);
+/* return array of tokens from tokenList : ['eth','eos','ppt'] */
+const makeSelectTokenListArr = () => createSelector(
+  selectHome,
+  (homeState) => homeState.get('tokenList').keySeq().toArray()
+);
 
 const makeSelectIsLocalStorageWallet = () => createSelector(
   selectHome,
@@ -150,11 +159,6 @@ export {
   makeSelectAddressListMsg,
   makeSelectExchangeRates,
   makeSelectConvertTo,
-
-  makeSelectIsLocalStorageWallet,
-  makeSelectCheckLocalStorageLoading,
-  makeSelectSaveWalletLoading,
-  makeSelectSaveWalletError,
-  makeSelectLoadWalletLoading,
-  makeSelectLoadwalletError,
+  makeSelectTokenList,
+  makeSelectTokenListArr,
 };
