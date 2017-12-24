@@ -27,15 +27,21 @@ const AddrTable = styled(Table) `
 `;
 
 /*
+ *
+ * @param  {addressList} object The address list struct
+ * @param  {exchangeRates} object available exchange rates, required for finding selected currency name
+ * @param  {convertTo} string the convertion pair to use: ie "eth_usd"
+ *
+ * @return {Array} array as data for table, see example above
 tokenList:{
   eos: {
-    icon: 'https://etherscan.io/token/images/eos_28.png',
+    icon: '',
     name: 'EOS',
     contractAddress: '0x86fa049857e0209aa7d9e616f7eb3b3b78ecfdb0',
     decimals: 18
   },
   ppt: {
-    icon: 'https://etherscan.io/token/images/populous_28.png',
+    icon: '',
     name: Populous,
     contractAddress: '0xd4fa1460f537bb9085d22c7bccb5dd450ef28e3a',
     decimals: 8
@@ -43,19 +49,9 @@ tokenList:{
 }
 
 
-/*
-addressList: {
-  address1: {
-      order: 1
-      eth: {balance: bigNumber},
-      eos: {balance: bigNumber},
-      ppt: {balance: bigNumber},
-    }
-} */
-
 /**
  * Transforms the immutable struct into Array of data in the form:
- * example for return:
+ * example for return: addressArray =
   [{
     key: '1',
     order: '1',
@@ -66,26 +62,29 @@ addressList: {
     key: '2',
     order: '1',
     address: '13c...9d06',
-    balance: '3 eos',
+    balance: '3 EOS',
     convert: '15 USD',
   }, {
     key: '3',
     order: '1',
     address: '13c...9d06',
-    balance: '3 ppt',
+    balance: '3 PPT',
     convert: '13 USD',
   },
 ]
 
- * order is determined by key
- *
- * @param  {addressList} object The address list struct
- * @param  {exchangeRates} object available exchange rates, required for finding selected currency name
- * @param  {convertTo} string the convertion pair to use: ie "eth_usd"
- *
- * @return {Array} array as data for table, see example above
- */
+/*
+addressList: {
+  address1: {
+      order: 1
+      eth: {balance: bigNumber / false},
+      eos: {balance: bigNumber / false},
+      ppt: {balance: bigNumber / false},
+    }
+}  */
 const transformList = (addressList, exchangeRates, convertTo) => {
+  const showTokens = true;
+  let i = 1;
   const addressListJS = addressList.toJS();
   return Object.keys(addressListJS).map((key) => {
     const origAddressData = addressListJS[key];
@@ -94,15 +93,16 @@ const transformList = (addressList, exchangeRates, convertTo) => {
     const ethBalance = origAddressData.eth.balance;
 
     transform.address = key;
-    transform.key = origAddressData.index;
+    transform.key = i;
+    transform.order = origAddressData.index;
     transform.balance = ethBalance ? `${ethBalance.div(Ether).toString(10)} ETH` : 'n/a';
 
     const rate = exchangeRates.getIn([convertTo, 'rate']);
-    const convertBalance = (ethBalance && rate) ? ethBalance.div(Ether).times(rate).toFixed(2).toString(10) : '';
     const convertName = exchangeRates.getIn([convertTo, 'name']);
-
+    const convertBalance = (ethBalance && rate) ? ethBalance.div(Ether).times(rate).toFixed(2).toString(10) : '';
     transform.convert = (ethBalance && rate) ? `${convertBalance} ${convertName}` : '';
 
+    i += 1;
     return transform;
   });
 };
