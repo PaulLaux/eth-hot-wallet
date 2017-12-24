@@ -6,7 +6,7 @@
 
 https://eth-hot-wallet.com
 
-#### Version 0.1 - work in progress
+#### Work in progress
 
 ##### Created by Paul Laux, [@drjackall](https://twitter.com/drjackall) for announcements
 
@@ -28,7 +28,7 @@ https://eth-hot-wallet.com
 
 ### Features
 
-- [x] Encryption keys generated from seed and stored in browser.
+- [x] Encryption keys generated from seed and stored in the browser.
 - [x] Network selector including local and remote rpc 
 - [x] Eth balance auto converted to btc/usd/euro.
 - [x] Responsive design for mobile support.
@@ -37,7 +37,7 @@ https://eth-hot-wallet.com
 ### Todo
 
 - [ ] ERC20 native token support
-- [ ] Local storage
+- [x] Local storage
 - [ ] Tests
 - [ ] Event log
 - [ ] CI for development and production
@@ -52,9 +52,9 @@ https://eth-hot-wallet.com
 
 - Homepage container - all the actions related to keystore, including manipulation and usage.
 
-- Header container - all the action related to network comunication / web3 api.
+- Header container - all the activities related to network communication / web3 API.
 
-- Sendto container - state and actions related to sendto modal, actual checks and sending is happning in header container.
+- SendTo container - state and actions related to sendTo modal, actual checks and sending is happening in header container.
 
 After build, webpack monitor will generates stats about bundle size:
 

@@ -64,6 +64,8 @@ import {
   unlockWallet,
   selectCurrency,
   closeWallet,
+  saveWallet,
+  loadWallet,
 } from './actions';
 
 import {
@@ -86,10 +88,18 @@ import {
   makeSelectAddressListMsg,
   makeSelectExchangeRates,
   makeSelectConvertTo,
+  makeSelectSaveWalletLoading,
+  makeSelectSaveWalletError,
+  makeSelectLoadWalletLoading,
+  makeSelectLoadwalletError,
 } from './selectors';
 
 
 export class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+  componentDidMount() {
+    this.props.onLoadWallet();
+  }
+
   render() {
     const {
       onGenerateWallet,
@@ -143,9 +153,31 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       getExchangeRatesLoading,
       getExchangeRatesError,
       onCloseWallet,
+
+      onSaveWallet,
+      saveWalletLoading,
+      saveWalletError,
+      onLoadWallet,
+      loadWalletLoading,
+      loadWalletError,
     } = this.props;
 
-    const subHeaderProps = { onGenerateWallet, onShowRestoreWallet, isComfirmed, onCloseWallet, onLockWallet, password, onUnlockWallet };
+    const subHeaderProps = {
+      onGenerateWallet,
+      onShowRestoreWallet,
+      isComfirmed,
+      onCloseWallet,
+      onLockWallet,
+      password,
+      onUnlockWallet,
+
+      onSaveWallet,
+      saveWalletLoading,
+      saveWalletError,
+      onLoadWallet,
+      loadWalletLoading,
+      loadWalletError,
+    };
 
     const generateWalletProps = {
       isShowGenerateWallet,
@@ -159,7 +191,16 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       onGenerateWalletCancel,
       onGenerateKeystore,
     };
-    const restoreWalletModalProps = { isShowRestoreWallet, userSeed, userPassword, restoreWalletError, onChangeUserSeed, onChangeUserPassword, onRestoreWalletCancel, onRestoreWalletFromSeed };
+    const restoreWalletModalProps = {
+      isShowRestoreWallet,
+      userSeed,
+      userPassword,
+      restoreWalletError,
+      onChangeUserSeed,
+      onChangeUserPassword,
+      onRestoreWalletCancel,
+      onRestoreWalletFromSeed,
+    };
 
     const addressViewProps = {
       generateKeystoreLoading,
@@ -282,6 +323,13 @@ HomePage.propTypes = {
   getExchangeRatesLoading: PropTypes.bool,
   getExchangeRatesError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
   onCloseWallet: PropTypes.func,
+
+  onSaveWallet: PropTypes.func,
+  saveWalletLoading: PropTypes.bool,
+  saveWalletError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
+  onLoadWallet: PropTypes.func,
+  loadWalletLoading: PropTypes.bool,
+  loadWalletError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
 };
 
 export function mapDispatchToProps(dispatch) {
@@ -359,6 +407,12 @@ export function mapDispatchToProps(dispatch) {
     onCloseWallet: () => {
       dispatch(closeWallet());
     },
+    onSaveWallet: () => {
+      dispatch(saveWallet());
+    },
+    onLoadWallet: () => {
+      dispatch(loadWallet());
+    },
   };
 }
 
@@ -396,6 +450,11 @@ const mapStateToProps = createStructuredSelector({
   getExchangeRatesDoneTime: makeSelectGetExchangeRatesDoneTime(),
   getExchangeRatesLoading: makeSelectGetExchangeRatesLoading(),
   getExchangeRatesError: makeSelectGetExchangeRatesError(),
+
+  saveWalletLoading: makeSelectSaveWalletLoading(),
+  saveWalletError: makeSelectSaveWalletError(),
+  loadWalletLoading: makeSelectLoadWalletLoading(),
+  loadWalletError: makeSelectLoadwalletError(),
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

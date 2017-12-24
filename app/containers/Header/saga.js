@@ -34,6 +34,7 @@ import {
   askFaucetAddress,
 } from 'utils/constants';
 import { timer } from 'utils/common';
+import { message } from 'antd';
 
 import { makeSelectUsedFaucet } from './selectors';
 import {
@@ -70,14 +71,24 @@ import {
 import Network from './network';
 const web3 = new Web3();
 
-const online = true; // for development, if false almost no external api calls will be made
-
+/* for development, if online = false then most api calls will be replaced by constant values
+* affected functions:
+* loadNetwork() will connect to 'Local RPC' but default network name will be showen in gui
+* getRates() will not call rate api
+* checkFaucetApi() will not request
+* askFaucetApi() will get costant Tx as success
+*/
+const online = true;
+if (!online) message.warn('Debug mode: online = false in Header/saga.js');
 /**
  * connect to rpc and attach keystore as siger provider
  */
 export function* loadNetwork(action) {
+  if (!online) {
+    message.warn('debug mode: online = false in Header/saga.js');
+  }
   try {
-    const rpcAddress = Network[action.networkName].rpc;
+    const rpcAddress = online ? Network[action.networkName].rpc : Network['Local RPC'].rpc;
     if (!rpcAddress) {
       throw new Error(`${action.networkName} network not found`);
     }
@@ -283,9 +294,7 @@ function* watchPollData() {
 export function* getRates() {
   const requestURL = 'https://api.coinmarketcap.com/v1/ticker/ethereum/?convert=EUR';
   try {
-    // Call our request helper (see 'utils/request')
-    const apiRates = online ? (yield call(request, requestURL))[0] :
-    { // for testin in online = false mode
+    const dummyRates = { // for testin in online = false mode
       id: 'ethereum',
       name: 'Ethereum',
       symbol: 'ETH',
@@ -304,6 +313,10 @@ export function* getRates() {
       '24h_volume_eur': '263919211.548',
       market_cap_eur: '23954572799.0',
     };
+
+    // Call our request helper (see 'utils/request')
+    const apiRates = online ? (yield call(request, requestURL))[0] : dummyRates;
+
     // console.log(apiPrices);
 
     yield put(setExchangeRates(apiRates, requestURL));
