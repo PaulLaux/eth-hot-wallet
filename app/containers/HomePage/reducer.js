@@ -46,6 +46,18 @@ import {
   SELECT_CURRENCY,
 
   CLOSE_WALLET,
+
+  CHECK_LOCAL_STORAGE,
+  LOCAL_STORAGE_EXIST,
+  LOCAL_STORAGE_NOT_EXIST,
+
+  SAVE_WALLET,
+  SAVE_WALLET_SUCCESS,
+  SAVE_WALLET_ERROR,
+
+  LOAD_WALLET,
+  LOAD_WALLET_SUCCESS,
+  LOAD_WALLET_ERROR,
 } from './constants';
 
 // The initial state of the App
@@ -86,7 +98,15 @@ const initialState = fromJS({
   addressListError: false,
   addressListMsg: false,
 
-  isShowSendToken: false,
+  isShowSendToken: false, // sent modal is being shown
+
+  isLocalStorageWallet: false, // Does we have wallet in localStorage?
+  checkLocalStorageLoading: false,
+
+  saveWalletLoading: false,
+  saveWalletError: false,
+  loadWalletLoading: false,
+  loadWalletError: false,
 });
 
 function homeReducer(state = initialState, action) {
@@ -217,6 +237,42 @@ function homeReducer(state = initialState, action) {
 
     case CLOSE_WALLET:
       return initialState;
+
+    case CHECK_LOCAL_STORAGE:
+      return state
+        .set('checkLocalStorageLoading', true);
+    case LOCAL_STORAGE_EXIST:
+      return state
+        .set('checkLocalStorageLoading', false)
+        .set('isLocalStorageWallet', true);
+    case LOCAL_STORAGE_NOT_EXIST:
+      return state
+        .set('checkLocalStorageLoading', false)
+        .set('isLocalStorageWallet', false);
+
+    case SAVE_WALLET:
+      return state
+        .set('saveWalletLoading', true)
+        .set('saveWalletError', false);
+    case SAVE_WALLET_SUCCESS:
+      return state
+        .set('saveWalletLoading', false);
+    case SAVE_WALLET_ERROR:
+      return state
+        .set('saveWalletLoading', false)
+        .set('saveWalletError', action.error);
+
+    case LOAD_WALLET:
+      return state
+        .set('loadWalletLoading', true)
+        .set('loadWalletError', false);
+    case LOAD_WALLET_SUCCESS:
+      return state
+        .set('loadWalletLoading', false);
+    case LOAD_WALLET_ERROR:
+      return state
+        .set('loadWalletLoading', false)
+        .set('loadWalletError', action.error);
 
     default:
       return state;

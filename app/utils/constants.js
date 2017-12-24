@@ -26,6 +26,9 @@ export const offlineModeString = 'Offline';
 /* Default network to connect after wallet creation (see network.js) */
 export const defaultNetwork = 'Ropsten Testnet';
 
+/* keystore will be saved to local storage under this key */
+export const localStorageKey = 'ks';
+
 // addresses:
 export const website = 'https://eth-hot-wallet.com';
 export const github = 'https://github.com/PaulLaux/eth-hot-wallet';
