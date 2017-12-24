@@ -69,7 +69,6 @@ import {
 } from './constants';
 
 import Network from './network';
-import { lang } from 'moment';
 const web3 = new Web3();
 
 /* for development, if online = false then most api calls will be replaced by constant values
@@ -79,7 +78,7 @@ const web3 = new Web3();
 * checkFaucetApi() will not request
 * askFaucetApi() will get costant Tx as success
 */
-const online = false;
+const online = true;
 if (!online) message.warn('Debug mode: online = false in Header/saga.js');
 /**
  * connect to rpc and attach keystore as siger provider
