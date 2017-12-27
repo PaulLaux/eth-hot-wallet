@@ -247,14 +247,14 @@ export function generateKeystoreSuccess(keystore, tokenList) {
   const addressList = {};
   for (let i = 0; i < addresses.length; i += 1) {
     addressList[addresses[i]] = {
-      index: i + 1, // strat from 1 for user display
+      index: i + 1, // start from 1 for user display
       ...tokens,
     };
   }
   /* output:
   addressList: {
     address1: {
-        order: 1
+        index: 1
         eth: {balance: false},
         eos: {balance: false},
         ppt: {balance: false},

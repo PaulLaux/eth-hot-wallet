@@ -80,6 +80,7 @@ const initialState = fromJS({
 
   keystore: false,
   addressList: false,
+  
   /*
   addressList: {
     address1: {
@@ -98,6 +99,11 @@ const initialState = fromJS({
   addressListMsg: false,
 
   isShowSendToken: false,
+
+  saveWalletLoading: false,
+  saveWalletError: false,
+  loadWalletLoading: false,
+  loadWalletError: false,
 
   tokenList: {
     eth: {

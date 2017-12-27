@@ -111,7 +111,7 @@ const makeSelectTokenListArr = () => createSelector(
   selectHome,
   (homeState) => homeState.get('tokenList').keySeq().toArray()
 );
-
+/*
 const makeSelectIsLocalStorageWallet = () => createSelector(
   selectHome,
   (homeState) => homeState.get('isLocalStorageWallet')
@@ -119,7 +119,8 @@ const makeSelectIsLocalStorageWallet = () => createSelector(
 const makeSelectCheckLocalStorageLoading = () => createSelector(
   selectHome,
   (homeState) => homeState.get('checkLocalStorageLoading')
-);
+); */
+
 const makeSelectSaveWalletLoading = () => createSelector(
   selectHome,
   (homeState) => homeState.get('saveWalletLoading')
@@ -135,7 +136,7 @@ const makeSelectLoadWalletLoading = () => createSelector(
 const makeSelectLoadwalletError = () => createSelector(
   selectHome,
   (homeState) => homeState.get('loadWalletError')
-);
+); 
 
 export {
   selectHome,
@@ -161,4 +162,9 @@ export {
   makeSelectConvertTo,
   makeSelectTokenList,
   makeSelectTokenListArr,
+
+  makeSelectSaveWalletLoading,
+  makeSelectSaveWalletError,
+  makeSelectLoadWalletLoading,
+  makeSelectLoadwalletError,
 };

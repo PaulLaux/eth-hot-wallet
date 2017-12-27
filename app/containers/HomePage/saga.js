@@ -332,7 +332,8 @@ export function* loadWalletS() {
     const ksDump = dump.ks;
     const ks = lightwallet.keystore.deserialize(ksDump);
 
-    yield put(generateKeystoreSuccess(ks));
+    const tokenList = yield select(makeSelectTokenListArr());
+    yield put(generateKeystoreSuccess(ks, tokenList));
     yield put(loadNetwork(defaultNetwork));
     yield put(loadWalletSuccess());
   } catch (err) {

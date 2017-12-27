@@ -34,6 +34,8 @@ const AddrTable = styled(Table) `
  *
  * @return {Array} array as data for table, see example above
 tokenList:{
+  eth: {
+  },
   eos: {
     icon: '',
     name: 'EOS',
@@ -48,64 +50,104 @@ tokenList:{
   }
 }
 
-
-/**
- * Transforms the immutable struct into Array of data in the form:
- * example for return: addressArray =
-  [{
-    key: '1',
-    order: '1',
-    address: '13c...9d06',
-    balance: '3 ETH',
-    convert: '200 USD',
-  },{
-    key: '2',
-    order: '1',
-    address: '13c...9d06',
-    balance: '3 EOS',
-    convert: '15 USD',
-  }, {
-    key: '3',
-    order: '1',
-    address: '13c...9d06',
-    balance: '3 PPT',
-    convert: '13 USD',
-  },
-]
-
 /*
 addressList: {
-  address1: {
-      order: 1
+  0x2534635Abc...: {
+      index: 1
       eth: {balance: bigNumber / false},
       eos: {balance: bigNumber / false},
       ppt: {balance: bigNumber / false},
     }
 }  */
+
+const splitAddrToRows = (tokenMapIN, address, startKey) => {
+  let key = startKey;
+  const tokenMap = tokenMapIN;
+  // const address = Object.keys(addressMap)[0];
+  // const tokenMap = addressMap[address];
+  const index = tokenMap.index;
+  delete tokenMap.index;
+
+  console.log('splitAddrToRows: ');
+  return Object.keys(tokenMap).map((token) => {
+    const sameAddressRow = {};
+    sameAddressRow.index = index;
+    sameAddressRow.key = key;
+    key += 1;
+    sameAddressRow.token = token;
+    sameAddressRow.address = address;
+    const balance = tokenMap[token].balance;
+    sameAddressRow.balance = balance ? balance.div(Ether).toString(10) : '';
+    sameAddressRow.convert = '';
+
+    return sameAddressRow;
+  });
+};
+
+/*
+{
+  key: '1',
+  index: '1',
+  token: 'eth',
+  address: '13c...9d06',
+  balance: '3 ETH',
+  convert: '200 USD',
+}, */
+
 const transformList = (addressList, exchangeRates, convertTo) => {
   const showTokens = true;
-  let i = 1;
-  const addressListJS = addressList.toJS();
-  return Object.keys(addressListJS).map((key) => {
-    const origAddressData = addressListJS[key];
-    const transform = {};
+  let iKey = 1;
+  const addressMapJS = addressList.toJS();
+  const list = Object.keys(addressMapJS).map((address) => {
+    const tokenMap = addressMapJS[address];
+    const sameAddressList = splitAddrToRows(tokenMap, address, iKey);
+    console.log(sameAddressList);
+    /* const transform = {};
 
     const ethBalance = origAddressData.eth.balance;
 
-    transform.address = key;
-    transform.key = i;
-    transform.order = origAddressData.index;
+    transform.address = address;
+    transform.key = iKey;
+    transform.index = origAddressData.index;
     transform.balance = ethBalance ? `${ethBalance.div(Ether).toString(10)} ETH` : 'n/a';
 
     const rate = exchangeRates.getIn([convertTo, 'rate']);
     const convertName = exchangeRates.getIn([convertTo, 'name']);
     const convertBalance = (ethBalance && rate) ? ethBalance.div(Ether).times(rate).toFixed(2).toString(10) : '';
-    transform.convert = (ethBalance && rate) ? `${convertBalance} ${convertName}` : '';
+    transform.convert = (ethBalance && rate) ? `${convertBalance} ${convertName}` : ''; */
 
-    i += 1;
-    return transform;
+    iKey += sameAddressList.length;
+    return sameAddressList;
   });
+  return [].concat(...list); // flaten array
 };
+
+/**
+ * Transforms the immutable struct into Array of data in the form:
+ * example for return: addressArray =
+  [{{
+    key: '1',
+    index: '1',
+    token: 'eth',
+    address: '13c...9d06',
+    balance: '3 ETH',
+    convert: '200 USD',
+  },
+    key: '2',
+    index: '1',
+    token: 'eos',
+    address: '13c...9d06',
+    balance: '3 EOS',
+    convert: '15 USD',
+  }, {
+    key: '3',
+    index: '1',
+    token: 'ppt',
+    address: '13c...9d06',
+    balance: '3 PPT',
+    convert: '13 USD',
+  },
+] */
 
 function AddressTable(props) {
   const { addressList, onShowSendToken, exchangeRates, onSelectCurrency, convertTo } = props;
@@ -113,12 +155,13 @@ function AddressTable(props) {
   const currencyDropdownProps = { exchangeRates, onSelectCurrency };
 
   const addressArray = transformList(addressList, exchangeRates, convertTo);
+  console.log(addressArray);
 
   return (
     <AddrTable
       dataSource={addressArray}
       bordered
-      scroll={{ x: 350 }}
+      scroll={{ x: 400 }}
       pagination={false}
       locale={{
         filterTitle: null,
@@ -139,7 +182,13 @@ function AddressTable(props) {
         title="Address"
         dataIndex="address"
         key="address"
-        width="250px"
+        width="270px"
+      />
+      <Column
+        title="Token"
+        dataIndex="token"
+        key="token"
+        width="50px"
       />
       <Column
         title="Balance"
