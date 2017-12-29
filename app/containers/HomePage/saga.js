@@ -195,10 +195,12 @@ export function* generateAddress() {
     const pwDerivedKey = yield call(keyFromPasswordPromise, password);
     ks.generateNewAddress(pwDerivedKey, 1);
 
+
+    const tokenList = yield select(makeSelectTokenListArr());
     // get last address
     const newAddress = ks.getAddresses().slice(-1)[0];
     const index = ks.getAddresses().length; // serial index for sorting by generation order;
-    yield put(generateAddressSuccess(newAddress, index));
+    yield put(generateAddressSuccess(newAddress, index, tokenList));
     yield put(saveWallet());
     // balance checking for new address (will be aborted in offline mode)
     try {

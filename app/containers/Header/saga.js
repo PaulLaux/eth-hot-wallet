@@ -71,14 +71,14 @@ import {
 import Network from './network';
 const web3 = new Web3();
 
-/* for development, if online = false then most api calls will be replaced by constant values
+/* For development only, if online = false then most api calls will be replaced by constant values
 * affected functions:
 * loadNetwork() will connect to 'Local RPC' but default network name will be showen in gui
 * getRates() will not call rate api
 * checkFaucetApi() will not request
 * askFaucetApi() will get costant Tx as success
 */
-const online = true;
+const online = false;
 if (!online) message.warn('Debug mode: online = false in Header/saga.js');
 /**
  * connect to rpc and attach keystore as siger provider

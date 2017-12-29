@@ -222,8 +222,31 @@ export function generateKeystore() {
     type: GENERATE_KEYSTORE,
   };
 }
+
 /**
- * create addressList object which contains the info needed for each address such as ballance
+ * Transforms tokenList to tokenMap.
+ * Example:
+ * ['eth','eos','ppt'] ->
+ * {
+ * eos:{balance: false}
+ * eth:{balance: false}
+ * ppt:{balance: false}
+ * }
+ * @param {array} tokenList example: ['eth','eos','ppt']
+ *
+ * @return {object}    a tokenMap
+ */
+function createTokenMap(tokenList) {
+  const reducer = (acc, token) => ({
+    ...acc,
+    ...{ [token]: { balance: false } },
+  });
+  return tokenList.reduce(reducer, {});
+}
+
+/**
+ * create addressList object which contains the info for each address: ballance per token and index
+ * @param {array} tokenList example: ['eth','eos','ppt']
  *
  * @param  {keystore} keystore The new keystore
  *
@@ -233,11 +256,7 @@ export function generateKeystoreSuccess(keystore, tokenList) {
   /* input:
   tokenList: ['eth','eos','ppt']
  */
-  const reducer = (acc, token) => ({
-    ...acc,
-    ...{ [token]: { balance: false } },
-  });
-  const tokens = tokenList.reduce(reducer, {});
+  const tokens = createTokenMap(tokenList);
   /* tokens = {
   eos:{balance: false}
   eth:{balance: false}
@@ -342,16 +361,19 @@ export function generateAddress() {
 /**
  * After successfull address generation create new addressList for our store.
  *
- * @param  {newAddress} string the updated keystore
- * @param  {index} number address serial number of generation
+ * @param {string} newAddress the updated keystore
+ * @param {number} index address serial number of generation
+ * @param {array}  tokenList example: ['eth','eos','ppt']
  *
  * @return {object}      An action object with a type of GENERATE_ADDRESS_SUCCESS and newAddress passing the newly generated address
  */
-export function generateAddressSuccess(newAddress, index) {
+export function generateAddressSuccess(newAddress, index, tokenList) {
+  const tokenMap = createTokenMap(tokenList);
+  tokenMap.index = index;
   return {
     type: GENERATE_ADDRESS_SUCCESS,
     newAddress,
-    index,
+    tokenMap,
   };
 }
 
