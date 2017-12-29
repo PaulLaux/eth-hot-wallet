@@ -80,7 +80,7 @@ const initialState = fromJS({
 
   keystore: false,
   addressList: false,
-  
+
   /*
   addressList: {
     address1: {
@@ -118,11 +118,11 @@ const initialState = fromJS({
       contractAddress: '0x86fa049857e0209aa7d9e616f7eb3b3b78ecfdb0',
       decimals: 18,
     },
-    ppt: {
+    symb: {
       icon: 'https://etherscan.io/token/images/populous_28.png',
-      name: 'Populous',
-      contractAddress: '0xd4fa1460f537bb9085d22c7bccb5dd450ef28e3a',
-      decimals: 8,
+      name: 'Sample',
+      contractAddress: '0xd5b3812e67847af90aa5835abd5c253ff5252ec2',
+      decimals: 1,
     },
   },
 });

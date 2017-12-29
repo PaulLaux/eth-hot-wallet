@@ -63,12 +63,9 @@ addressList: {
 const splitAddrToRows = (tokenMapIN, address, startKey) => {
   let key = startKey;
   const tokenMap = tokenMapIN;
-  // const address = Object.keys(addressMap)[0];
-  // const tokenMap = addressMap[address];
   const index = tokenMap.index;
   delete tokenMap.index;
 
-  console.log('splitAddrToRows: ');
   return Object.keys(tokenMap).map((token) => {
     const sameAddressRow = {};
     sameAddressRow.index = index;
@@ -77,13 +74,11 @@ const splitAddrToRows = (tokenMapIN, address, startKey) => {
     sameAddressRow.token = token;
     sameAddressRow.address = address;
     const balance = tokenMap[token].balance;
-    sameAddressRow.balance = balance ? balance.div(Ether).toString(10) : '';
+    sameAddressRow.balance = balance ? balance.div(Ether).toString(10) : 'n/a';
     sameAddressRow.convert = '';
-
     return sameAddressRow;
   });
 };
-
 /*
 {
   key: '1',
@@ -94,27 +89,21 @@ const splitAddrToRows = (tokenMapIN, address, startKey) => {
   convert: '200 USD',
 }, */
 
-const transformList = (addressList, exchangeRates, convertTo) => {
-  const showTokens = true;
+const transformList = (addressList, showTokens) => {
+  // const showTokens = true;
   let iKey = 1;
   const addressMapJS = addressList.toJS();
   const list = Object.keys(addressMapJS).map((address) => {
     const tokenMap = addressMapJS[address];
     const sameAddressList = splitAddrToRows(tokenMap, address, iKey);
     console.log(sameAddressList);
-    /* const transform = {};
-
-    const ethBalance = origAddressData.eth.balance;
-
-    transform.address = address;
-    transform.key = iKey;
-    transform.index = origAddressData.index;
-    transform.balance = ethBalance ? `${ethBalance.div(Ether).toString(10)} ETH` : 'n/a';
-
-    const rate = exchangeRates.getIn([convertTo, 'rate']);
-    const convertName = exchangeRates.getIn([convertTo, 'name']);
-    const convertBalance = (ethBalance && rate) ? ethBalance.div(Ether).times(rate).toFixed(2).toString(10) : '';
-    transform.convert = (ethBalance && rate) ? `${convertBalance} ${convertName}` : ''; */
+    /*
+      const transform = {};
+      const ethBalance = origAddressData.eth.balance;
+      const rate = exchangeRates.getIn([convertTo, 'rate']);
+      const convertName = exchangeRates.getIn([convertTo, 'name']);
+      const convertBalance = (ethBalance && rate) ? ethBalance.div(Ether).times(rate).toFixed(2).toString(10) : '';
+      transform.convert = (ethBalance && rate) ? `${convertBalance} ${convertName}` : ''; */
 
     iKey += sameAddressList.length;
     return sameAddressList;
@@ -130,36 +119,37 @@ const transformList = (addressList, exchangeRates, convertTo) => {
     index: '1',
     token: 'eth',
     address: '13c...9d06',
-    balance: '3 ETH',
+    balance: '3',
     convert: '200 USD',
   },
     key: '2',
     index: '1',
     token: 'eos',
     address: '13c...9d06',
-    balance: '3 EOS',
+    balance: '3',
     convert: '15 USD',
   }, {
     key: '3',
     index: '1',
     token: 'ppt',
     address: '13c...9d06',
-    balance: '3 PPT',
+    balance: '3',
     convert: '13 USD',
   },
 ] */
 
+const addCurrencyConvert = (addressArray, exchangeRates, convertTo) => addressArray;
+
 function AddressTable(props) {
   const { addressList, onShowSendToken, exchangeRates, onSelectCurrency, convertTo } = props;
-
   const currencyDropdownProps = { exchangeRates, onSelectCurrency };
 
-  const addressArray = transformList(addressList, exchangeRates, convertTo);
-  console.log(addressArray);
+  const addressArray = transformList(addressList, true);
+  const addressArrayConvert = addCurrencyConvert(addressArray, exchangeRates, convertTo);
 
   return (
     <AddrTable
-      dataSource={addressArray}
+      dataSource={addressArrayConvert}
       bordered
       scroll={{ x: 400 }}
       pagination={false}
