@@ -105,7 +105,7 @@ const initialState = fromJS({
   loadWalletLoading: false,
   loadWalletError: false,
 
-  tokenList: {
+  tokenInfo: {
     eth: {
       icon: '',
       name: 'Ethereum',
@@ -206,7 +206,7 @@ function homeReducer(state = initialState, action) {
 
     case CHANGE_BALANCE:
       return state
-        .setIn(['addressList', action.address, 'eth', 'balance'], action.balance);
+        .setIn(['addressList', action.address, action.symbol, 'balance'], action.balance);
 
     case SHOW_SEND_TOKEN:
       return state

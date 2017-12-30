@@ -96,7 +96,6 @@ const transformList = (addressList, showTokens) => {
   const list = Object.keys(addressMapJS).map((address) => {
     const tokenMap = addressMapJS[address];
     const sameAddressList = splitAddrToRows(tokenMap, address, iKey);
-    console.log(sameAddressList);
     /*
       const transform = {};
       const ethBalance = origAddressData.eth.balance;

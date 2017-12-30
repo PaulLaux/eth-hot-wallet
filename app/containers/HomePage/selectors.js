@@ -53,10 +53,6 @@ const makeSelectIsComfirmed = () => createSelector(
   (homeState) => homeState.get('isComfirmed')
 );
 
-const makeSelectAddressList = () => createSelector(
-  selectHome,
-  (homeState) => homeState.get('addressList')
-);
 
 const makeSelectKeystore = () => createSelector(
   selectHome,
@@ -82,6 +78,37 @@ const makeSelectIsShowSendToken = () => createSelector(
   (homeState) => homeState.get('isShowSendToken')
 );
 
+const makeSelectAddressList = () => createSelector(
+  selectHome,
+  (homeState) => homeState.get('addressList')
+);
+
+
+/**
+ * returns token map for a given address with / without index key
+ * {
+ *   index: 1 // optional
+ *   eth: {balance: bigNumber / false},
+ *   eos: {balance: bigNumber / false},
+ *   ppt: {balance: bigNumber / false},
+ * }
+ *
+ * @param  {string} address as string
+ * @param  {bool} hasIndex should returned map include the index key?
+ *
+ * @return {object} An object which holds the tokens and balances
+ */
+const makeSelectTokenMap = (address, hasIndex = false) => createSelector(
+  selectHome,
+  (homeState) => {
+    const tokenMap = homeState.get('addressList').getIn([address]);
+    const cleanTokenMap = hasIndex ? tokenMap.toJS() : tokenMap.delete('index').toJS();
+    // console.log(cleanTokenMap);
+    return cleanTokenMap;
+  }
+);
+
+
 const makeSelectAddressListLoading = () => createSelector(
   selectHome,
   (homeState) => homeState.get('addressListLoading')
@@ -102,14 +129,14 @@ const makeSelectConvertTo = () => createSelector(
   selectHome,
   (homeState) => homeState.get('convertTo')
 );
-const makeSelectTokenList = () => createSelector(
+const makeSelectTokenInfo = () => createSelector(
   selectHome,
-  (homeState) => homeState.get('tokenList')
+  (homeState) => homeState.get('tokenInfo')
 );
-/* return array of tokens from tokenList : ['eth','eos','ppt'] */
-const makeSelectTokenListArr = () => createSelector(
+/* return array of tokens from tokenInfo : ['eth','eos','ppt'] */
+const makeSelectTokenInfoList = () => createSelector(
   selectHome,
-  (homeState) => homeState.get('tokenList').keySeq().toArray()
+  (homeState) => homeState.get('tokenInfo').keySeq().toArray()
 );
 /*
 const makeSelectIsLocalStorageWallet = () => createSelector(
@@ -136,7 +163,7 @@ const makeSelectLoadWalletLoading = () => createSelector(
 const makeSelectLoadwalletError = () => createSelector(
   selectHome,
   (homeState) => homeState.get('loadWalletError')
-); 
+);
 
 export {
   selectHome,
@@ -149,19 +176,22 @@ export {
   makeSelectSeed,
   makeSelectPassword,
   makeSelectIsComfirmed,
-  makeSelectAddressList,
   makeSelectKeystore,
   makeSelectShowRestoreWallet,
   makeSelectUserSeed,
   makeSelectUserPassword,
   makeSelectIsShowSendToken,
+
+  makeSelectAddressList,
   makeSelectAddressListLoading,
   makeSelectAddressListError,
   makeSelectAddressListMsg,
+  makeSelectTokenMap,
+
   makeSelectExchangeRates,
   makeSelectConvertTo,
-  makeSelectTokenList,
-  makeSelectTokenListArr,
+  makeSelectTokenInfoList,
+  makeSelectTokenInfo,
 
   makeSelectSaveWalletLoading,
   makeSelectSaveWalletError,

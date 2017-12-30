@@ -3,7 +3,7 @@ import SignerProvider from 'vendor/ethjs-provider-signer/ethjs-provider-signer';
 import BigNumber from 'bignumber.js';
 import { take, call, put, select, takeLatest, race, fork } from 'redux-saga/effects';
 
-import { makeSelectKeystore, makeSelectAddressList, makeSelectPassword } from 'containers/HomePage/selectors';
+import { makeSelectKeystore, makeSelectAddressList, makeSelectPassword, makeSelectTokenMap } from 'containers/HomePage/selectors';
 import { changeBalance, setExchangeRates } from 'containers/HomePage/actions';
 import request from 'utils/request';
 
@@ -234,6 +234,13 @@ export function getBalancePromise(address) {
   });
 }
 
+function* checkTokenBalances(address) {
+  const tokenMap = yield select(makeSelectTokenMap(address));
+  delete tokenMap.eth; // only for tokens
+  const tokenList = Object.keys(tokenMap);
+  console.log(tokenList);
+}
+
 export function* checkAllBalances() {
   try {
     let j = 0;
@@ -241,9 +248,14 @@ export function* checkAllBalances() {
     const addressListArr = addressList.keySeq().toArray();
 
     do { // Iterate over all addresses and check for balance
-      const addr = addressListArr[j];
-      const balance = yield call(getBalancePromise, addr);
-      yield put(changeBalance(addr, balance));
+      const address = addressListArr[j];
+      // handle eth
+      const balance = yield call(getBalancePromise, address);
+      yield put(changeBalance(address, 'eth', balance));
+
+      // handle tokens
+      yield checkTokenBalances(address);
+
       j += 1;
     } while (j < addressListArr.length);
 
@@ -253,7 +265,7 @@ export function* checkAllBalances() {
   }
 }
 
-// Utility function to delay effects
+// Utility function for delay effects
 function delay(millisec) {
   const promise = new Promise((resolve) => {
     setTimeout(() => resolve(true), millisec);

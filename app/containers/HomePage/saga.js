@@ -24,7 +24,7 @@ import {
   makeSelectUserSeed,
   makeSelectUserPassword,
   makeSelectKeystore,
-  makeSelectTokenListArr,
+  makeSelectTokenInfoList,
 } from 'containers/HomePage/selectors';
 
 import { loadNetwork } from 'containers/Header/actions';
@@ -154,7 +154,7 @@ export function* genKeystore() {
     const pwDerivedKey = yield call(keyFromPasswordPromise, password);
     ks.generateNewAddress(pwDerivedKey, 2);
 
-    const tokenList = yield select(makeSelectTokenListArr());
+    const tokenList = yield select(makeSelectTokenInfoList());
 
     yield put(generateKeystoreSuccess(ks, tokenList));
     yield put(loadNetwork(defaultNetwork));
@@ -196,7 +196,7 @@ export function* generateAddress() {
     ks.generateNewAddress(pwDerivedKey, 1);
 
 
-    const tokenList = yield select(makeSelectTokenListArr());
+    const tokenList = yield select(makeSelectTokenInfoList());
     // get last address
     const newAddress = ks.getAddresses().slice(-1)[0];
     const index = ks.getAddresses().length; // serial index for sorting by generation order;
@@ -205,7 +205,7 @@ export function* generateAddress() {
     // balance checking for new address (will be aborted in offline mode)
     try {
       const balance = yield call(getBalancePromise, newAddress);
-      yield put(changeBalance(newAddress, balance));
+      yield put(changeBalance(newAddress, 'eth', balance));
     } catch (err) { }  // eslint-disable-line 
   } catch (err) {
     yield put(generateAddressError(err.message));
@@ -334,7 +334,7 @@ export function* loadWalletS() {
     const ksDump = dump.ks;
     const ks = lightwallet.keystore.deserialize(ksDump);
 
-    const tokenList = yield select(makeSelectTokenListArr());
+    const tokenList = yield select(makeSelectTokenInfoList());
     yield put(generateKeystoreSuccess(ks, tokenList));
     yield put(loadNetwork(defaultNetwork));
     yield put(loadWalletSuccess());

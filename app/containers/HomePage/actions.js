@@ -303,18 +303,20 @@ export function generateKeystoreError(error) {
 
 /* **********************************Change balance ********************** */
 /**
- * Changes ballance for a given address
- * If address dont exist - new address will be created
+ * Changes ballance for a given address and symbol
+ * If address dont exist - new address will be created same for symbol
  *
- * @param  {object} address as string
- * @param  {object} balance BigNumber object
+ * @param  {string} address as string
+ * @param  {string} symbol 'eth' or other
+ * @param  {string} balance BigNumber object
  *
  * @return {object} An action object with a type of CHANGE_BALANCE with address and balance
  */
-export function changeBalance(address, balance) {
+export function changeBalance(address, symbol, balance) {
   return {
     type: CHANGE_BALANCE,
     address,
+    symbol,
     balance,
   };
 }
