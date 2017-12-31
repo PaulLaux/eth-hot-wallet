@@ -3,7 +3,7 @@ import SignerProvider from 'vendor/ethjs-provider-signer/ethjs-provider-signer';
 import BigNumber from 'bignumber.js';
 import { take, call, put, select, takeLatest, race, fork } from 'redux-saga/effects';
 
-import { makeSelectKeystore, makeSelectAddressList, makeSelectPassword, makeSelectTokenMap } from 'containers/HomePage/selectors';
+import { makeSelectKeystore, makeSelectAddressList, makeSelectPassword, makeSelectAddress } from 'containers/HomePage/selectors';
 import { changeBalance, setExchangeRates } from 'containers/HomePage/actions';
 import request from 'utils/request';
 
@@ -235,17 +235,23 @@ export function getBalancePromise(address) {
 }
 
 function* checkTokenBalances(address) {
-  const tokenMap = yield select(makeSelectTokenMap(address));
-  delete tokenMap.eth; // only for tokens
-  const tokenList = Object.keys(tokenMap);
-  console.log(tokenList);
+  const opt = {
+    returnList: true,
+    removeIndex: true,
+    removeEth: true,
+  };
+  const tokenList = yield select(makeSelectAddress(address, opt));
+
+  for (let i = 0; i < tokenList.length; i += 1) {
+    console.log('address: ' + address + ' token: ' + tokenList[i]);
+  }
+  // console.log(tokenMap);
 }
 
 export function* checkAllBalances() {
   try {
     let j = 0;
-    const addressList = yield select(makeSelectAddressList());
-    const addressListArr = addressList.keySeq().toArray();
+    const addressListArr = yield select(makeSelectAddress(false, { returnList: true }));
 
     do { // Iterate over all addresses and check for balance
       const address = addressListArr[j];

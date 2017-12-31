@@ -113,13 +113,13 @@ const initialState = fromJS({
       decimals: 18,
     },
     eos: {
-      icon: 'https://etherscan.io/token/images/eos_28.png',
+      icon: 'eos_28.png',
       name: 'EOS',
       contractAddress: '0x86fa049857e0209aa7d9e616f7eb3b3b78ecfdb0',
       decimals: 18,
     },
     symb: {
-      icon: 'https://etherscan.io/token/images/populous_28.png',
+      icon: 'populous_28.png',
       name: 'Sample',
       contractAddress: '0xd5b3812e67847af90aa5835abd5c253ff5252ec2',
       decimals: 1,

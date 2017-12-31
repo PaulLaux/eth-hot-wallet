@@ -83,28 +83,36 @@ const makeSelectAddressList = () => createSelector(
   (homeState) => homeState.get('addressList')
 );
 
-
 /**
- * returns token map for a given address with / without index key
+ * returns map for specific given address or map of addresses if nothing given
  * {
  *   index: 1 // optional
  *   eth: {balance: bigNumber / false},
  *   eos: {balance: bigNumber / false},
  *   ppt: {balance: bigNumber / false},
  * }
+ * to return array of adresses use: makeSelectAddress(false, { returnList: true })
  *
- * @param  {string} address as string
- * @param  {bool} hasIndex should returned map include the index key?
+ * @param  {string} address as string (optional) returns all addresses if not provided
+ * @param  {object} options may include the following:
+ * @param  {boolean} options.returnList should returned array from keys instead of map? (optional)
+ * @param  {boolean} options.removeIndex should remove the key index? (optional)
+ * @param  {boolean} options.removeEth should remove the key eth? (optional)
  *
- * @return {object} An object which holds the tokens and balances
+ * @return {object} An object which holds the tokens and balances or array
  */
-const makeSelectTokenMap = (address, hasIndex = false) => createSelector(
+const makeSelectAddress = (address, options = {}) => createSelector(
   selectHome,
   (homeState) => {
-    const tokenMap = homeState.get('addressList').getIn([address]);
-    const cleanTokenMap = hasIndex ? tokenMap.toJS() : tokenMap.delete('index').toJS();
-    // console.log(cleanTokenMap);
-    return cleanTokenMap;
+    const { returnList, removeIndex, removeEth } = options;
+    let addressMap = address ? homeState.getIn(['addressList', address]) : homeState.get('addressList');
+    if (address && removeIndex) {
+      addressMap = addressMap.delete('index');
+    }
+    if (address && removeEth) {
+      addressMap = addressMap.delete('eth');
+    }
+    return (returnList ? addressMap.keySeq().toArray() : addressMap.toJS());
   }
 );
 
@@ -129,24 +137,19 @@ const makeSelectConvertTo = () => createSelector(
   selectHome,
   (homeState) => homeState.get('convertTo')
 );
-const makeSelectTokenInfo = () => createSelector(
+
+const makeSelectTokenInfo = (symbol) => createSelector(
   selectHome,
-  (homeState) => homeState.get('tokenInfo')
+  (homeState) => {
+    const tokenInfo = symbol ? homeState.get('tokenInfo') : homeState.getIn(['tokenInfo', symbol]);
+    return tokenInfo.toJS();
+  }
 );
 /* return array of tokens from tokenInfo : ['eth','eos','ppt'] */
 const makeSelectTokenInfoList = () => createSelector(
   selectHome,
   (homeState) => homeState.get('tokenInfo').keySeq().toArray()
 );
-/*
-const makeSelectIsLocalStorageWallet = () => createSelector(
-  selectHome,
-  (homeState) => homeState.get('isLocalStorageWallet')
-);
-const makeSelectCheckLocalStorageLoading = () => createSelector(
-  selectHome,
-  (homeState) => homeState.get('checkLocalStorageLoading')
-); */
 
 const makeSelectSaveWalletLoading = () => createSelector(
   selectHome,
@@ -186,7 +189,8 @@ export {
   makeSelectAddressListLoading,
   makeSelectAddressListError,
   makeSelectAddressListMsg,
-  makeSelectTokenMap,
+  makeSelectAddress,
+  // makeSelectTokenMap,
 
   makeSelectExchangeRates,
   makeSelectConvertTo,
