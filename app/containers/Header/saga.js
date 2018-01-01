@@ -3,7 +3,7 @@ import SignerProvider from 'vendor/ethjs-provider-signer/ethjs-provider-signer';
 import BigNumber from 'bignumber.js';
 import { take, call, put, select, takeLatest, race, fork } from 'redux-saga/effects';
 
-import { makeSelectKeystore, makeSelectAddressList, makeSelectPassword, makeSelectAddress } from 'containers/HomePage/selectors';
+import { makeSelectKeystore, makeSelectAddressList, makeSelectPassword, makeSelectAddressMap } from 'containers/HomePage/selectors';
 import { changeBalance, setExchangeRates } from 'containers/HomePage/actions';
 import request from 'utils/request';
 
@@ -240,7 +240,7 @@ function* checkTokenBalances(address) {
     removeIndex: true,
     removeEth: true,
   };
-  const tokenList = yield select(makeSelectAddress(address, opt));
+  const tokenList = yield select(makeSelectAddressMap(address, opt));
 
   for (let i = 0; i < tokenList.length; i += 1) {
     console.log('address: ' + address + ' token: ' + tokenList[i]);
@@ -251,7 +251,7 @@ function* checkTokenBalances(address) {
 export function* checkAllBalances() {
   try {
     let j = 0;
-    const addressListArr = yield select(makeSelectAddress(false, { returnList: true }));
+    const addressListArr = yield select(makeSelectAddressMap(false, { returnList: true }));
 
     do { // Iterate over all addresses and check for balance
       const address = addressListArr[j];

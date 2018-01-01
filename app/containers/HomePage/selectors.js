@@ -101,7 +101,7 @@ const makeSelectAddressList = () => createSelector(
  *
  * @return {object} An object which holds the tokens and balances or array
  */
-const makeSelectAddress = (address, options = {}) => createSelector(
+const makeSelectAddressMap = (address, options = {}) => createSelector(
   selectHome,
   (homeState) => {
     const { returnList, removeIndex, removeEth } = options;
@@ -189,7 +189,7 @@ export {
   makeSelectAddressListLoading,
   makeSelectAddressListError,
   makeSelectAddressListMsg,
-  makeSelectAddress,
+  makeSelectAddressMap,
   // makeSelectTokenMap,
 
   makeSelectExchangeRates,
