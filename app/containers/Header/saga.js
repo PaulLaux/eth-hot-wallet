@@ -3,7 +3,7 @@ import SignerProvider from 'vendor/ethjs-provider-signer/ethjs-provider-signer';
 import BigNumber from 'bignumber.js';
 import { take, call, put, select, takeLatest, race, fork } from 'redux-saga/effects';
 
-import { makeSelectKeystore, makeSelectAddressList, makeSelectPassword, makeSelectAddressMap } from 'containers/HomePage/selectors';
+import { makeSelectKeystore, makeSelectAddressList, makeSelectPassword, makeSelectAddressMap, makeSelectTokenInfo } from 'containers/HomePage/selectors';
 import { changeBalance, setExchangeRates } from 'containers/HomePage/actions';
 import request from 'utils/request';
 
@@ -34,6 +34,7 @@ import {
   askFaucetAddress,
 } from 'utils/constants';
 import { timer } from 'utils/common';
+import { erc20Abi } from 'utils/contracts/abi';
 import { message } from 'antd';
 
 import { makeSelectUsedFaucet } from './selectors';
@@ -225,7 +226,7 @@ export function* SendTransaction() {
 
 
 /* *************  Polling saga and polling flow for check balances ***************** */
-export function getBalancePromise(address) {
+export function getEthBalancePromise(address) {
   return new Promise((resolve, reject) => {
     web3.eth.getBalance(address, (err, data) => {
       if (err !== null) return reject(err);
@@ -234,7 +235,31 @@ export function getBalancePromise(address) {
   });
 }
 
-function* checkTokenBalances(address) {
+export function getTokenBalancePromise(address, tokenContractAddress) {
+  return new Promise((resolve, reject) => {
+    const token = web3.eth.contract(erc20Abi).at(tokenContractAddress);
+    token.balanceOf.call(address, (err, balance) => {
+      if (err) return reject(err);
+      return resolve(balance);
+    });
+  });
+}
+
+
+function* checkTokenBalance(address, symbol) {
+  if (!address || !symbol) {
+    return null;
+  }
+  const tokenInfo = yield select(makeSelectTokenInfo(symbol));
+  const contractAddress = tokenInfo.contractAddress;
+
+  const balance = yield call(getTokenBalancePromise, address, contractAddress);
+  yield put(changeBalance(address, symbol, balance));
+
+  return true;
+}
+
+function* checkTokensBalances(address) {
   const opt = {
     returnList: true,
     removeIndex: true,
@@ -243,7 +268,9 @@ function* checkTokenBalances(address) {
   const tokenList = yield select(makeSelectAddressMap(address, opt));
 
   for (let i = 0; i < tokenList.length; i += 1) {
-    console.log('address: ' + address + ' token: ' + tokenList[i]);
+    const symbol = tokenList[i];
+    // console.log('address: ' + address + ' token: ' + tokenList[i]);
+    yield checkTokenBalance(address, symbol);
   }
   // console.log(tokenMap);
 }
@@ -251,19 +278,19 @@ function* checkTokenBalances(address) {
 export function* checkAllBalances() {
   try {
     let j = 0;
-    const addressListArr = yield select(makeSelectAddressMap(false, { returnList: true }));
+    const addressList = yield select(makeSelectAddressMap(false, { returnList: true }));
 
     do { // Iterate over all addresses and check for balance
-      const address = addressListArr[j];
+      const address = addressList[j];
       // handle eth
-      const balance = yield call(getBalancePromise, address);
+      const balance = yield call(getEthBalancePromise, address);
       yield put(changeBalance(address, 'eth', balance));
 
       // handle tokens
-      yield checkTokenBalances(address);
+      yield checkTokensBalances(address);
 
       j += 1;
-    } while (j < addressListArr.length);
+    } while (j < addressList.length);
 
     yield put(checkBalancesSuccess());
   } catch (err) {

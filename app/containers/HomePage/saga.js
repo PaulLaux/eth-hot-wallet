@@ -37,7 +37,7 @@ import { generatedPasswordLength, hdPathString, offlineModeString, defaultNetwor
 
 import { timer } from 'utils/common';
 
-import { getBalancePromise } from 'containers/Header/saga';
+import { getEthBalancePromise } from 'containers/Header/saga';
 
 import {
   generateWalletSucces,
@@ -202,9 +202,10 @@ export function* generateAddress() {
     const index = ks.getAddresses().length; // serial index for sorting by generation order;
     yield put(generateAddressSuccess(newAddress, index, tokenList));
     yield put(saveWallet());
+    
     // balance checking for new address (will be aborted in offline mode)
     try {
-      const balance = yield call(getBalancePromise, newAddress);
+      const balance = yield call(getEthBalancePromise, newAddress);
       yield put(changeBalance(newAddress, 'eth', balance));
     } catch (err) { }  // eslint-disable-line 
   } catch (err) {

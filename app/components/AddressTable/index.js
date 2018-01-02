@@ -51,16 +51,15 @@ tokenList:{
 }
 
 /*
-addressList: {
-  0x2534635Abc...: {
-      index: 1
-      eth: {balance: bigNumber / false},
-      eos: {balance: bigNumber / false},
-      ppt: {balance: bigNumber / false},
-    }
-}  */
-
-const splitAddrToRows = (tokenMapIN, address, startKey) => {
+tokenMap:
+{
+  index: 1
+  eth: {balance: bigNumber / false},
+  eos: {balance: bigNumber / false},
+  ppt: {balance: bigNumber / false},
+}
+*/
+const splitAddrToRows = (tokenDecimalsMap, tokenMapIN, address, startKey) => {
   let key = startKey;
   const tokenMap = tokenMapIN;
   const index = tokenMap.index;
@@ -74,7 +73,8 @@ const splitAddrToRows = (tokenMapIN, address, startKey) => {
     sameAddressRow.token = token;
     sameAddressRow.address = address;
     const balance = tokenMap[token].balance;
-    sameAddressRow.balance = balance ? balance.div(Ether).toString(10) : 'n/a';
+    const decimals = tokenDecimalsMap[token];
+    sameAddressRow.balance = balance ? balance.div((10 ** decimals).toString()).toString(10) : 'n/a';
     sameAddressRow.convert = '';
     return sameAddressRow;
   });
@@ -87,15 +87,14 @@ const splitAddrToRows = (tokenMapIN, address, startKey) => {
   address: '13c...9d06',
   balance: '3 ETH',
   convert: '200 USD',
-}, */
+} */
 
-const transformList = (addressList, showTokens) => {
+const transformList = (addressMap, tokenDecimalsMap, showTokens) => {
   // const showTokens = true;
   let iKey = 1;
-  const addressMapJS = addressList.toJS();
-  const list = Object.keys(addressMapJS).map((address) => {
-    const tokenMap = addressMapJS[address];
-    const sameAddressList = splitAddrToRows(tokenMap, address, iKey);
+  const list = Object.keys(addressMap).map((address) => {
+    const tokenMap = addressMap[address];
+    const sameAddressList = splitAddrToRows(tokenDecimalsMap, tokenMap, address, iKey);
     /*
       const transform = {};
       const ethBalance = origAddressData.eth.balance;
@@ -137,14 +136,14 @@ const transformList = (addressList, showTokens) => {
   },
 ] */
 
-const addCurrencyConvert = (addressArray, exchangeRates, convertTo) => addressArray;
+const addConvertRates = (addressArray, exchangeRates, convertTo) => addressArray;
 
 function AddressTable(props) {
-  const { addressList, onShowSendToken, exchangeRates, onSelectCurrency, convertTo } = props;
+  const { addressMap, tokenDecimalsMap, onShowSendToken, exchangeRates, onSelectCurrency, convertTo } = props;
   const currencyDropdownProps = { exchangeRates, onSelectCurrency };
 
-  const addressArray = transformList(addressList, true);
-  const addressArrayConvert = addCurrencyConvert(addressArray, exchangeRates, convertTo);
+  const addressArray = transformList(addressMap, tokenDecimalsMap, true);
+  const addressArrayConvert = addConvertRates(addressArray, exchangeRates, convertTo);
 
   return (
     <AddrTable
@@ -215,7 +214,8 @@ function AddressTable(props) {
 }
 
 AddressTable.propTypes = {
-  addressList: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+  addressMap: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+  tokenDecimalsMap: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
   onShowSendToken: PropTypes.func,
   exchangeRates: PropTypes.object,
   onSelectCurrency: PropTypes.func,

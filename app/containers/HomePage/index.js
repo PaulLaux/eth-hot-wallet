@@ -80,7 +80,8 @@ import {
   makeSelectIsComfirmed,
   makeSelectUserSeed,
   makeSelectUserPassword,
-  makeSelectAddressList,
+  // makeSelectAddressList,
+  makeSelectAddressMap,
   makeSelectShowRestoreWallet,
   makeSelectIsShowSendToken,
   makeSelectAddressListLoading,
@@ -92,6 +93,7 @@ import {
   makeSelectSaveWalletError,
   makeSelectLoadWalletLoading,
   makeSelectLoadwalletError,
+  makeSelectTokenDecimalsMap,
 } from './selectors';
 
 
@@ -117,7 +119,9 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       onGenerateAddress,
       onCheckBalances,
       isComfirmed,
-      addressList,
+      // addressList,
+      addressMap,
+      tokenDecimalsMap,
 
       onShowRestoreWallet,
       isShowRestoreWallet,
@@ -206,7 +210,9 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       generateKeystoreLoading,
       generateKeystoreError,
       isComfirmed,
-      addressList,
+      // addressList,
+      addressMap,
+      tokenDecimalsMap,
 
       onShowSendToken,
 
@@ -296,8 +302,12 @@ HomePage.propTypes = {
   onUnlockWallet: PropTypes.func,
 
   isComfirmed: PropTypes.bool,
-  addressList: PropTypes.oneOfType([
+  addressMap: PropTypes.oneOfType([
     // PropTypes.array,
+    PropTypes.bool,
+    PropTypes.object,
+  ]),
+  tokenDecimalsMap: PropTypes.oneOfType([
     PropTypes.bool,
     PropTypes.object,
   ]),
@@ -427,7 +437,9 @@ const mapStateToProps = createStructuredSelector({
   generateKeystoreError: makeSelectGenerateKeystoreError(),
   restoreWalletError: makeSelectRestoreWalletError(),
   isComfirmed: makeSelectIsComfirmed(),
-  addressList: makeSelectAddressList(),
+  // addressList: makeSelectAddressList(),
+  addressMap: makeSelectAddressMap(),
+  tokenDecimalsMap: makeSelectTokenDecimalsMap(),
   // keystore: makeSelectKeystore(),
   isShowRestoreWallet: makeSelectShowRestoreWallet(),
   userSeed: makeSelectUserSeed(),

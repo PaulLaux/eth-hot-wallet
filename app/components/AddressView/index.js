@@ -24,7 +24,8 @@ function AddressView(props) {
   const {
     generateKeystoreLoading, generateKeystoreError,
     isComfirmed,
-    addressList, onShowSendToken, onCheckBalances,
+    addressMap, tokenDecimalsMap,
+    onShowSendToken, onCheckBalances,
     onGenerateAddress,
     networkReady, checkingBalanceDoneTime, checkingBalances, checkingBalancesError,
     addressListLoading, addressListError, addressListMsg,
@@ -33,7 +34,7 @@ function AddressView(props) {
     getExchangeRatesDoneTime, getExchangeRatesLoading, getExchangeRatesError,
    } = props;
 
-  const addressTableProps = { addressList, onShowSendToken, exchangeRates, onSelectCurrency, convertTo };
+  const addressTableProps = { addressMap, tokenDecimalsMap, onShowSendToken, exchangeRates, onSelectCurrency, convertTo };
 
   const addressTableFooterProps = {
     checkingBalanceDoneTime,
@@ -97,11 +98,12 @@ AddressView.propTypes = {
     PropTypes.bool,
   ]),
   isComfirmed: PropTypes.bool,
-  addressList: PropTypes.oneOfType([
+  addressMap: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.bool,
     PropTypes.array,
   ]),
+  tokenDecimalsMap: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
   onShowSendToken: PropTypes.func,
 
   onGenerateAddress: PropTypes.func,
