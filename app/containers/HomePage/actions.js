@@ -459,13 +459,14 @@ export function unlockWalletError(error) {
  * requestUrl is used as identifier of the apiPrices
  *
  * @param  {string} requestURL the url used to get apiPrices
- * @param  {object} apiRates The response from external api
- *
+ * @param  {array} apiRates The response from external api
+ * @param  {string} tokenList list of relevant tokens: ['eth','eos','ppt']
  * @return {object} An action object with a type of SET_EXCHANGE_RATES and rates converted to proper format:
  */
-export function setExchangeRates(apiRates, requestURL) {
-  const rates = extractRates(apiRates, requestURL);
-
+export function setExchangeRates(apiRates, requestURL, tokenList) {
+  const rates = extractRates(apiRates, requestURL, tokenList);
+  console.log(rates);
+  
   return {
     type: SET_EXCHANGE_RATES,
     rates,

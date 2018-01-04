@@ -3,7 +3,14 @@ import SignerProvider from 'vendor/ethjs-provider-signer/ethjs-provider-signer';
 import BigNumber from 'bignumber.js';
 import { take, call, put, select, takeLatest, race, fork } from 'redux-saga/effects';
 
-import { makeSelectKeystore, makeSelectAddressList, makeSelectPassword, makeSelectAddressMap, makeSelectTokenInfo } from 'containers/HomePage/selectors';
+import {
+  makeSelectKeystore,
+  makeSelectAddressList,
+  makeSelectPassword,
+  makeSelectAddressMap,
+  makeSelectTokenInfoList,
+  makeSelectTokenInfo,
+} from 'containers/HomePage/selectors';
 import { changeBalance, setExchangeRates } from 'containers/HomePage/actions';
 import request from 'utils/request';
 
@@ -70,7 +77,7 @@ import {
 } from './constants';
 
 import Network from './network';
-const web3 = new Web3();
+const web3 = new Web3(); // eslint-disable-line
 
 /* For development only, if online = false then most api calls will be replaced by constant values
 * affected functions:
@@ -254,7 +261,11 @@ function* checkTokenBalance(address, symbol) {
   const contractAddress = tokenInfo.contractAddress;
 
   const balance = yield call(getTokenBalancePromise, address, contractAddress);
-  yield put(changeBalance(address, symbol, balance));
+  if (online) {
+    yield put(changeBalance(address, symbol, balance));
+  } else {
+    yield put(changeBalance(address, symbol, new BigNumber(1).times(Gwei)));
+  }
 
   return true;
 }
@@ -284,7 +295,11 @@ export function* checkAllBalances() {
       const address = addressList[j];
       // handle eth
       const balance = yield call(getEthBalancePromise, address);
-      yield put(changeBalance(address, 'eth', balance));
+      if (online) {
+        yield put(changeBalance(address, 'eth', balance));
+      } else {
+        yield put(changeBalance(address, 'eth', new BigNumber(1).times(Ether)));
+      }
 
       // handle tokens
       yield checkTokensBalances(address);
@@ -337,9 +352,10 @@ function* watchPollData() {
  * Get exchange rates from api
  */
 export function* getRates() {
-  const requestURL = 'https://api.coinmarketcap.com/v1/ticker/ethereum/?convert=EUR';
+  // const requestURL = 'https://api.coinmarketcap.com/v1/ticker/ethereum/?convert=EUR';
+  const requestURL = 'https://api.coinmarketcap.com/v1/ticker/?convert=EUR';
   try {
-    const dummyRates = { // for testin in online = false mode
+    let dummyRates = [{ // for testin in online = false mode
       id: 'ethereum',
       name: 'Ethereum',
       symbol: 'ETH',
@@ -357,14 +373,20 @@ export function* getRates() {
       price_eur: '252.342998284',
       '24h_volume_eur': '263919211.548',
       market_cap_eur: '23954572799.0',
-    };
+    }];
+
+    if (!online) {
+      dummyRates = require('./tests/dummyRates').dummyRates; // eslint-disable-line
+    }
 
     // Call our request helper (see 'utils/request')
-    const apiRates = online ? (yield call(request, requestURL))[0] : dummyRates;
+    const apiRates = online ? (yield call(request, requestURL)) : dummyRates;
 
     // console.log(apiPrices);
 
-    yield put(setExchangeRates(apiRates, requestURL));
+    const tokenList = yield select(makeSelectTokenInfoList());
+
+    yield put(setExchangeRates(apiRates, requestURL, tokenList));
     yield put(getExchangeRatesSuccess());
   } catch (err) {
     yield put(getExchangeRatesError(err));

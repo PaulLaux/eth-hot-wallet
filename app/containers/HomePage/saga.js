@@ -202,7 +202,7 @@ export function* generateAddress() {
     const index = ks.getAddresses().length; // serial index for sorting by generation order;
     yield put(generateAddressSuccess(newAddress, index, tokenList));
     yield put(saveWallet());
-    
+
     // balance checking for new address (will be aborted in offline mode)
     try {
       const balance = yield call(getEthBalancePromise, newAddress);

@@ -8,7 +8,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Table } from 'antd';
-import { Ether } from 'utils/constants';
+// import { Ether } from 'utils/constants';
 
 import CurrencyDropdown from 'components/CurrencyDropdown';
 
@@ -26,7 +26,7 @@ const AddrTable = styled(Table) `
   }
 `;
 
-/*
+/**
  *
  * @param  {addressList} object The address list struct
  * @param  {exchangeRates} object available exchange rates, required for finding selected currency name
@@ -101,7 +101,8 @@ const transformList = (addressMap, tokenDecimalsMap, showTokens) => {
       const rate = exchangeRates.getIn([convertTo, 'rate']);
       const convertName = exchangeRates.getIn([convertTo, 'name']);
       const convertBalance = (ethBalance && rate) ? ethBalance.div(Ether).times(rate).toFixed(2).toString(10) : '';
-      transform.convert = (ethBalance && rate) ? `${convertBalance} ${convertName}` : ''; */
+      transform.convert = (ethBalance && rate) ? `${convertBalance} ${convertName}` : ''; 
+      */
 
     iKey += sameAddressList.length;
     return sameAddressList;
