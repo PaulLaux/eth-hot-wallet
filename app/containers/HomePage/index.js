@@ -87,6 +87,7 @@ import {
   makeSelectAddressListLoading,
   makeSelectAddressListError,
   makeSelectAddressListMsg,
+  // makeSelectExchangeRates,
   makeSelectExchangeRates,
   makeSelectConvertTo,
   makeSelectSaveWalletLoading,
@@ -456,6 +457,7 @@ const mapStateToProps = createStructuredSelector({
   checkingBalances: makeSelectCheckingBalances(),
   checkingBalancesError: makeSelectCheckingBalancesError(),
 
+  // exchangeRates: makeSelectExchangeRates(),
   exchangeRates: makeSelectExchangeRates(),
   convertTo: makeSelectConvertTo(),
 

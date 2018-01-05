@@ -34,7 +34,14 @@ function AddressView(props) {
     getExchangeRatesDoneTime, getExchangeRatesLoading, getExchangeRatesError,
    } = props;
 
-  const addressTableProps = { addressMap, tokenDecimalsMap, onShowSendToken, exchangeRates, onSelectCurrency, convertTo };
+  const addressTableProps = {
+    addressMap,
+    tokenDecimalsMap,
+    onShowSendToken,
+    exchangeRates,
+    onSelectCurrency,
+    convertTo,
+  };
 
   const addressTableFooterProps = {
     checkingBalanceDoneTime,

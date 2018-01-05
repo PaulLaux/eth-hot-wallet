@@ -101,7 +101,7 @@ const transformList = (addressMap, tokenDecimalsMap, showTokens) => {
       const rate = exchangeRates.getIn([convertTo, 'rate']);
       const convertName = exchangeRates.getIn([convertTo, 'name']);
       const convertBalance = (ethBalance && rate) ? ethBalance.div(Ether).times(rate).toFixed(2).toString(10) : '';
-      transform.convert = (ethBalance && rate) ? `${convertBalance} ${convertName}` : ''; 
+      transform.convert = (ethBalance && rate) ? `${convertBalance} ${convertName}` : '';
       */
 
     iKey += sameAddressList.length;
@@ -140,7 +140,15 @@ const transformList = (addressMap, tokenDecimalsMap, showTokens) => {
 const addConvertRates = (addressArray, exchangeRates, convertTo) => addressArray;
 
 function AddressTable(props) {
-  const { addressMap, tokenDecimalsMap, onShowSendToken, exchangeRates, onSelectCurrency, convertTo } = props;
+  const {
+    addressMap,
+    tokenDecimalsMap,
+    onShowSendToken,
+    exchangeRates,
+    onSelectCurrency,
+    convertTo,
+  } = props;
+
   const currencyDropdownProps = { exchangeRates, onSelectCurrency };
 
   const addressArray = transformList(addressMap, tokenDecimalsMap, true);

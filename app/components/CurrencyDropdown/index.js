@@ -14,10 +14,9 @@ function CurrencyDropdown(props) {
   const { exchangeRates, onSelectCurrency } = props;
 
   const convertMenuOptions = [];
-  if (exchangeRates.size > 0) {
-    exchangeRates.entrySeq().forEach((entry) => {
-      // `key: ${entry[0]}, value: ${entry[1]}`
-      convertMenuOptions.push(<MenuItem key={entry[0]}>{entry[1].get('name')}</MenuItem>);
+  if (exchangeRates) {
+    Object.keys(exchangeRates).forEach((currency) => {
+      convertMenuOptions.push(<MenuItem key={currency}>{exchangeRates[currency].name}</MenuItem>);
     });
   }
   const convertToMenu = (

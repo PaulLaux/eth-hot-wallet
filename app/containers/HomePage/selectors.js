@@ -139,8 +139,31 @@ const makeSelectAddressListMsg = () => createSelector(
 );
 const makeSelectExchangeRates = () => createSelector(
   selectHome,
-  (homeState) => homeState.get('exchangeRates')
+  (homeState) => homeState.get('exchangeRates').toJS()
 );
+
+/**
+ * Returns the exchange rate from currency to currecy
+ *
+ * @param  {string} from currency symbol
+ * @param  {string} to currency symbol
+ *
+ * @return {BigNumber} currency rate
+ *
+const makeSelectExchangeRate = (from, to) => createSelector(
+  selectHome,
+  (homeState) => {
+    if (!from) {
+      return homeState.get('exchangeRates');
+    }
+    console.log(from);
+    console.log(to);
+
+    const rate = homeState.getIn(['exchangeRates', 'eth_eth']);
+    return rate;
+  }
+); */
+
 const makeSelectConvertTo = () => createSelector(
   selectHome,
   (homeState) => homeState.get('convertTo')
@@ -158,7 +181,7 @@ const makeSelectConvertTo = () => createSelector(
  * returns null if no info for given token symbol
  * to return array of all symbols use: makeSelectAddress(false, { returnList: true })
  *
- * @param  {string} symbol as string (optional) returns map of all symbols if not provided
+ * @param  {string} [symbol] as string (optional) returns map of all symbols if not provided
  *
  * @return {object} An object which holds the tokensInfo for given symbol
  */
@@ -237,6 +260,7 @@ export {
   // makeSelectTokenMap,
 
   makeSelectExchangeRates,
+  // makeSelectExchangeRate,
   makeSelectConvertTo,
   makeSelectTokenInfoList,
   makeSelectTokenInfo,
