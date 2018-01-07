@@ -8,7 +8,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Table } from 'antd';
-// import { Ether } from 'utils/constants';
 
 import CurrencyDropdown from 'components/CurrencyDropdown';
 
@@ -26,39 +25,24 @@ const AddrTable = styled(Table) `
   }
 `;
 
-/**
- *
- * @param  {addressList} object The address list struct
- * @param  {exchangeRates} object available exchange rates, required for finding selected currency name
- * @param  {convertTo} string the convertion pair to use: ie "eth_usd"
- *
- * @return {Array} array as data for table, see example above
-tokenList:{
-  eth: {
-  },
-  eos: {
-    icon: '',
-    name: 'EOS',
-    contractAddress: '0x86fa049857e0209aa7d9e616f7eb3b3b78ecfdb0',
-    decimals: 18
-  },
-  ppt: {
-    icon: '',
-    name: Populous,
-    contractAddress: '0xd4fa1460f537bb9085d22c7bccb5dd450ef28e3a',
-    decimals: 8
-  }
-}
 
-/*
-tokenMap:
+/**
+ * Create list of rows, one row per token for given address
+ * @param  {object} tokenDecimalsMap
+ * @param  {object} tokenMapIN
+ * @param  {string} address current address
+ * @param  {number} startKey the first key of the given address
+ *
+ * @return {object[]} array as rows, one row per token/address
+ * row:
 {
-  index: 1
-  eth: {balance: bigNumber / false},
-  eos: {balance: bigNumber / false},
-  ppt: {balance: bigNumber / false},
-}
-*/
+  key: '1',
+  index: '1',
+  token: 'eth',
+  address: '13c...9d06',
+  balance: '3',
+  convert: '',
+} */
 const splitAddrToRows = (tokenDecimalsMap, tokenMapIN, address, startKey) => {
   let key = startKey;
   const tokenMap = tokenMapIN;
@@ -75,44 +59,17 @@ const splitAddrToRows = (tokenDecimalsMap, tokenMapIN, address, startKey) => {
     const balance = tokenMap[token].balance;
     const decimals = tokenDecimalsMap[token];
     sameAddressRow.balance = balance ? balance.div((10 ** decimals).toString()).toString(10) : 'n/a';
-    sameAddressRow.convert = '';
+    // sameAddressRow.convert = '';
     return sameAddressRow;
   });
 };
-/*
-{
-  key: '1',
-  index: '1',
-  token: 'eth',
-  address: '13c...9d06',
-  balance: '3 ETH',
-  convert: '200 USD',
-} */
-
-const transformList = (addressMap, tokenDecimalsMap, showTokens) => {
-  // const showTokens = true;
-  let iKey = 1;
-  const list = Object.keys(addressMap).map((address) => {
-    const tokenMap = addressMap[address];
-    const sameAddressList = splitAddrToRows(tokenDecimalsMap, tokenMap, address, iKey);
-    /*
-      const transform = {};
-      const ethBalance = origAddressData.eth.balance;
-      const rate = exchangeRates.getIn([convertTo, 'rate']);
-      const convertName = exchangeRates.getIn([convertTo, 'name']);
-      const convertBalance = (ethBalance && rate) ? ethBalance.div(Ether).times(rate).toFixed(2).toString(10) : '';
-      transform.convert = (ethBalance && rate) ? `${convertBalance} ${convertName}` : '';
-      */
-
-    iKey += sameAddressList.length;
-    return sameAddressList;
-  });
-  return [].concat(...list); // flaten array
-};
 
 /**
- * Transforms the immutable struct into Array of data in the form:
- * example for return: addressArray =
+ * Transforms addressMap into Array of rows
+ * @param  {object} addressMap
+ * @param  {object} tokenDecimalsMap number of decimal for each currency
+ * @param  {boolean} showTokens should show token in the table
+ * return example: addressArray =
   [{{
     key: '1',
     index: '1',
@@ -136,8 +93,60 @@ const transformList = (addressMap, tokenDecimalsMap, showTokens) => {
     convert: '13 USD',
   },
 ] */
+const transformList = (addressMap, tokenDecimalsMap, showTokens) => {
+  // const showTokens = true;
+  let iKey = 1;
+  const list = Object.keys(addressMap).map((address) => {
+    const tokenMap = addressMap[address];
+    const sameAddressList = splitAddrToRows(tokenDecimalsMap, tokenMap, address, iKey);
 
-const addConvertRates = (addressArray, exchangeRates, convertTo) => addressArray;
+    iKey += sameAddressList.length;
+    return sameAddressList;
+  });
+  return [].concat(...list); // flaten array
+};
+
+/**
+ * return conversion rate from given token
+ * @param  {object} exchangeRates available exchange rates
+ * @param  {string} from symbol to convert from: 'eth' / 'usd' / ..
+ * @param  {string} to the convertion pair to use: ie "eth_usd"
+ *
+ * @return {Array} array as data for table, see example above
+ */
+const getConvertRate = (exchangeRates, from, to) => {
+  const fromKey = `eth_${from}`;
+  // convert token to eth by invert(eth_token)
+  const toEthRate = exchangeRates[fromKey].rate.toPower(-1);
+  const toTokenRate = exchangeRates[to].rate;
+  return toEthRate && toTokenRate && toEthRate.times(toTokenRate);
+};
+
+/**
+ * Add converted rates to all rows
+ * adds nothing if exchange rate not found
+ * @param  {object[]} rowList table rows contains balance
+ * @param  {object} exchangeRates all available exchange rates
+ * @param  {string} convertTo the convertion pair to use: ie "eth_usd"
+ *
+ * @return {Array} array as data for table, see example above
+ */
+const addConvertRates = (rowList, exchangeRates, convertTo) =>
+  rowList.map((row) => {
+    try {
+      // const convertToSymbol = convertTo.slice(4).toUpperCase();
+      if (`eth_${row.token}` === convertTo) {
+        row.convert = row.balance; // eslint-disable-line
+      } else {
+        const convertRate = getConvertRate(exchangeRates, row.token, convertTo);
+        row.convert = convertRate.times(row.balance).round(5).toString(10); // eslint-disable-line
+      }
+      return row;
+    } catch (err) {
+      // no rates found
+      return row;
+    }
+  });
 
 function AddressTable(props) {
   const {
@@ -148,15 +157,15 @@ function AddressTable(props) {
     onSelectCurrency,
     convertTo,
   } = props;
+  const currencyDropdownProps = { exchangeRates, onSelectCurrency, convertTo };
 
-  const currencyDropdownProps = { exchangeRates, onSelectCurrency };
 
-  const addressArray = transformList(addressMap, tokenDecimalsMap, true);
-  const addressArrayConvert = addConvertRates(addressArray, exchangeRates, convertTo);
+  const rowList = transformList(addressMap, tokenDecimalsMap, true);
+  const completeRowList = addConvertRates(rowList, exchangeRates, convertTo);
 
   return (
     <AddrTable
-      dataSource={addressArrayConvert}
+      dataSource={completeRowList}
       bordered
       scroll={{ x: 400 }}
       pagination={false}

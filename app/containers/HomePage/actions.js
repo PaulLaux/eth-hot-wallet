@@ -438,7 +438,7 @@ export function unlockWalletSuccess(password) {
 /**
  * Dispatched when password given by user is incorrect
  *
- * @param  {object} error The error
+ * @param  {object} error
  *
  * @return {object} An action object with a type of GENERATE_ADDRESS_ERROR passing the error
  */
@@ -459,14 +459,12 @@ export function unlockWalletError(error) {
  * requestUrl is used as identifier of the apiPrices
  *
  * @param  {string} requestURL the url used to get apiPrices
- * @param  {array} apiRates The response from external api
+ * @param  {object[]} apiRates The response from external api
  * @param  {string} tokenList list of relevant tokens: ['eth','eos','ppt']
  * @return {object} An action object with a type of SET_EXCHANGE_RATES and rates converted to proper format:
  */
 export function setExchangeRates(apiRates, requestURL, tokenList) {
   const rates = extractRates(apiRates, requestURL, tokenList);
-  console.log(rates);
-  
   return {
     type: SET_EXCHANGE_RATES,
     rates,

@@ -11,7 +11,9 @@ import { Menu, Dropdown, Icon } from 'antd';
 const MenuItem = Menu.Item;
 
 function CurrencyDropdown(props) {
-  const { exchangeRates, onSelectCurrency } = props;
+  const { exchangeRates, onSelectCurrency, convertTo } = props;
+
+  const converToSymbol = convertTo ? convertTo.slice(4).toUpperCase() : 'none';
 
   const convertMenuOptions = [];
   if (exchangeRates) {
@@ -29,13 +31,14 @@ function CurrencyDropdown(props) {
   return (
     <Dropdown overlay={convertToMenu}>
       <span>
-        Convert <Icon type="down" />
+        {`Convert to (${converToSymbol})`}<Icon type="down" />
       </span>
     </Dropdown>
   );
 }
 
 CurrencyDropdown.propTypes = {
+  convertTo: PropTypes.string,
   exchangeRates: PropTypes.object,
   onSelectCurrency: PropTypes.func,
 };
