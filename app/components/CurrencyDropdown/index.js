@@ -13,7 +13,7 @@ const MenuItem = Menu.Item;
 function CurrencyDropdown(props) {
   const { exchangeRates, onSelectCurrency, convertTo } = props;
 
-  const converToSymbol = convertTo ? convertTo.slice(4).toUpperCase() : 'none';
+  const convertToSymbol = convertTo.length > 4 ? convertTo.slice(4).toUpperCase() : 'none';
 
   const convertMenuOptions = [];
   if (exchangeRates) {
@@ -31,7 +31,7 @@ function CurrencyDropdown(props) {
   return (
     <Dropdown overlay={convertToMenu}>
       <span>
-        {`Convert to (${converToSymbol})`}<Icon type="down" />
+        {`Convert to (${convertToSymbol})`}<Icon type="down" />
       </span>
     </Dropdown>
   );

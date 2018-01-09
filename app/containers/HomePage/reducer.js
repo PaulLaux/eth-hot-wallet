@@ -115,14 +115,14 @@ const initialState = fromJS({
     eos: {
       icon: 'eos_28.png',
       name: 'EOS',
-      contractAddress: '0x86fa049857e0209aa7d9e616f7eb3b3b78ecfdb0',
+      contractAddress: '0x86fa049857e0209aa7d5e616f7eb3b3b78ecfdb0',
       decimals: 18,
     },
     symb: {
       icon: 'populous_28.png',
       name: 'Sample',
-      contractAddress: '0xd5b3812e67847af90aa5835abd5c253ff5252ec2',
-      decimals: 1,
+      contractAddress: '0x267db8e5b9de2d8f953fb050f7b1eb4ffdc3f9b3',
+      decimals: 18,
     },
   },
 });

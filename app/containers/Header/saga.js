@@ -111,7 +111,6 @@ export function* loadNetwork(action) {
     const keystore = yield select(makeSelectKeystore());
 
     if (keystore) {
-      // console.log(keystore.getAddresses().map((a) => `${a}`));
       const provider = new SignerProvider(rpcAddress, {
         signTransaction: keystore.signTransaction.bind(keystore),
         accounts: (cb) => cb(null, keystore.getAddresses()),
@@ -203,7 +202,7 @@ export function* SendTransaction() {
     }
 
     keystore.passwordProvider = (callback) => {
-      // we cannot use selector inside this callback so we just use a const value
+      // we cannot use selector inside this callback so we use a const value
       const ksPassword = password;
       callback(null, ksPassword);
     };
@@ -261,11 +260,8 @@ function* checkTokenBalance(address, symbol) {
   const contractAddress = tokenInfo.contractAddress;
 
   const balance = yield call(getTokenBalancePromise, address, contractAddress);
-  if (online) {
-    yield put(changeBalance(address, symbol, balance));
-  } else {
-    yield put(changeBalance(address, symbol, new BigNumber(1).times(Gwei)));
-  }
+
+  yield put(changeBalance(address, symbol, balance));
 
   return true;
 }
@@ -280,7 +276,7 @@ function* checkTokensBalances(address) {
 
   for (let i = 0; i < tokenList.length; i += 1) {
     const symbol = tokenList[i];
-    // console.log('address: ' + address + ' token: ' + tokenList[i]);
+    console.log('address: ' + address + ' token: ' + tokenList[i]);
     yield checkTokenBalance(address, symbol);
   }
   // console.log(tokenMap);
@@ -295,11 +291,7 @@ export function* checkAllBalances() {
       const address = addressList[j];
       // handle eth
       const balance = yield call(getEthBalancePromise, address);
-      if (online) {
-        yield put(changeBalance(address, 'eth', balance));
-      } else {
-        yield put(changeBalance(address, 'eth', new BigNumber(1).times(Ether)));
-      }
+      yield put(changeBalance(address, 'eth', balance));
 
       // handle tokens
       yield checkTokensBalances(address);
