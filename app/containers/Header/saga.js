@@ -35,7 +35,8 @@ import {
   timeBetweenCheckbalances,
   Ether,
   Gwei,
-  maxGasForSendEth,
+  maxGasForETHSend,
+  maxGasForTokenSend,
   offlineModeString,
   checkFaucetAddress,
   askFaucetAddress,
@@ -78,6 +79,7 @@ import {
 
 import Network from './network';
 const web3 = new Web3(); // eslint-disable-line
+const erc20Contract = web3.eth.contract(erc20Abi);
 
 /* For development only, if online = false then most api calls will be replaced by constant values
 * affected functions:
@@ -193,38 +195,60 @@ export function* SendTransaction() {
     const gasPrice = yield select(makeSelectGasPrice());
     const password = yield select(makeSelectPassword());
 
-    if (!password) {
-      throw new Error('No password found - please unlock wallet before sending');
-    }
+    const tokenToSend = 'symb';
 
+    if (!password) {
+      throw new Error('No password found - please unlock wallet before send');
+    }
     if (!keystore) {
       throw new Error('No keystore found - please create wallet');
     }
-
     keystore.passwordProvider = (callback) => {
       // we cannot use selector inside this callback so we use a const value
       const ksPassword = password;
       callback(null, ksPassword);
     };
 
-    const sendAmount = new BigNumber(amount).times(Ether);
-
-    const sendParams = { from: fromAddress, to: toAddress, value: sendAmount, gasPrice, gas: maxGasForSendEth };
-
-    function sendTransactionPromise(params) { // eslint-disable-line no-inner-declarations
-      return new Promise((resolve, reject) => {
-        web3.eth.sendTransaction(params, (err, data) => {
-          if (err !== null) return reject(err);
-          return resolve(data);
+    let tx;
+    if (tokenToSend === 'eth') {
+      const sendAmount = new BigNumber(amount).times(Ether);
+      const sendParams = { from: fromAddress, to: toAddress, value: sendAmount, gasPrice, gas: maxGasForETHSend };
+      function sendTransactionPromise(params) { // eslint-disable-line no-inner-declarations
+        return new Promise((resolve, reject) => {
+          web3.eth.sendTransaction(params, (err, data) => {
+            if (err !== null) return reject(err);
+            return resolve(data);
+          });
         });
-      });
-    }
+      }
+      tx = yield call(sendTransactionPromise, sendParams);
+    } else { // any other token
+      const tokenInfo = yield select(makeSelectTokenInfo(tokenToSend));
+      if (!tokenInfo) {
+        throw new Error(`Contract address for token '${tokenToSend}' not found`);
+      }
+      const contractAddress = tokenInfo.contractAddress;
 
-    const tx = yield call(sendTransactionPromise, sendParams);
+      const sendParams = { from: fromAddress, value: '0x0', gasPrice, gas: maxGasForTokenSend };
+      const tokenAmount = amount * (10 ** tokenInfo.decimals);
+
+      function sendTokenPromise(tokenContractAddress, sendToAddress, sendAmount, params) { // eslint-disable-line no-inner-declarations
+        return new Promise((resolve, reject) => {
+          const tokenContract = erc20Contract.at(tokenContractAddress);
+          tokenContract.transfer.sendTransaction(sendToAddress, sendAmount, params, (err, sendTx) => {
+            if (err) return reject(err);
+            return resolve(sendTx);
+          });
+        });
+      }
+      tx = yield call(sendTokenPromise, contractAddress, toAddress, tokenAmount, sendParams);
+    }
 
     yield put(sendTransactionSuccess(tx));
   } catch (err) {
-    yield put(sendTransactionError(err.message));
+    const loc = err.message.indexOf('at runCall');
+    const errMsg = (loc > -1) ? err.message.slice(0, loc) : err.message;
+    yield put(sendTransactionError(errMsg));
   } finally {
     keystore.passwordProvider = origProvider;
   }
@@ -243,8 +267,8 @@ export function getEthBalancePromise(address) {
 
 export function getTokenBalancePromise(address, tokenContractAddress) {
   return new Promise((resolve, reject) => {
-    const token = web3.eth.contract(erc20Abi).at(tokenContractAddress);
-    token.balanceOf.call(address, (err, balance) => {
+    const tokenContract = erc20Contract.at(tokenContractAddress);
+    tokenContract.balanceOf.call(address, (err, balance) => {
       if (err) return reject(err);
       return resolve(balance);
     });

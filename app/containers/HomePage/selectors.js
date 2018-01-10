@@ -142,28 +142,6 @@ const makeSelectExchangeRates = () => createSelector(
   (homeState) => homeState.get('exchangeRates').toJS()
 );
 
-/**
- * Returns the exchange rate from currency to currecy
- *
- * @param  {string} from currency symbol
- * @param  {string} to currency symbol
- *
- * @return {BigNumber} currency rate
- *
-const makeSelectExchangeRate = (from, to) => createSelector(
-  selectHome,
-  (homeState) => {
-    if (!from) {
-      return homeState.get('exchangeRates');
-    }
-    console.log(from);
-    console.log(to);
-
-    const rate = homeState.getIn(['exchangeRates', 'eth_eth']);
-    return rate;
-  }
-); */
-
 const makeSelectConvertTo = () => createSelector(
   selectHome,
   (homeState) => homeState.get('convertTo')
@@ -171,7 +149,7 @@ const makeSelectConvertTo = () => createSelector(
 
 /**
  * returns details object for specific given symbol or map of all symbols if no symbol is given
- * for makeSelectTokenInfo(symbol='symb') we get:
+ * for makeSelectTokenInfo('symb') we get:
  * {
  *  icon: 'populous_28.png',
  *  name: 'Sample',
