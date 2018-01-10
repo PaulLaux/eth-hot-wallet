@@ -35,7 +35,7 @@ import {
   timeBetweenCheckbalances,
   Ether,
   Gwei,
-  maxGasForETHSend,
+  maxGasForEthSend,
   maxGasForTokenSend,
   offlineModeString,
   checkFaucetAddress,
@@ -192,7 +192,7 @@ export function* SendTransaction() {
     const fromAddress = yield select(makeSelectFrom());
     const amount = yield select(makeSelectAmount());
     const toAddress = yield select(makeSelectTo());
-    const gasPrice = yield select(makeSelectGasPrice());
+    const gasPrice = new BigNumber(yield select(makeSelectGasPrice())).times(Gwei);
     const password = yield select(makeSelectPassword());
 
     const tokenToSend = 'symb';
@@ -212,7 +212,7 @@ export function* SendTransaction() {
     let tx;
     if (tokenToSend === 'eth') {
       const sendAmount = new BigNumber(amount).times(Ether);
-      const sendParams = { from: fromAddress, to: toAddress, value: sendAmount, gasPrice, gas: maxGasForETHSend };
+      const sendParams = { from: fromAddress, to: toAddress, value: sendAmount, gasPrice, gas: maxGasForEthSend };
       function sendTransactionPromise(params) { // eslint-disable-line no-inner-declarations
         return new Promise((resolve, reject) => {
           web3.eth.sendTransaction(params, (err, data) => {
@@ -228,7 +228,6 @@ export function* SendTransaction() {
         throw new Error(`Contract address for token '${tokenToSend}' not found`);
       }
       const contractAddress = tokenInfo.contractAddress;
-
       const sendParams = { from: fromAddress, value: '0x0', gasPrice, gas: maxGasForTokenSend };
       const tokenAmount = amount * (10 ** tokenInfo.decimals);
 
@@ -300,7 +299,7 @@ function* checkTokensBalances(address) {
 
   for (let i = 0; i < tokenList.length; i += 1) {
     const symbol = tokenList[i];
-    console.log('address: ' + address + ' token: ' + tokenList[i]);
+    // console.log('address: ' + address + ' token: ' + tokenList[i]);
     yield checkTokenBalance(address, symbol);
   }
   // console.log(tokenMap);
