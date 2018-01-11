@@ -10,6 +10,7 @@ import styled from 'styled-components';
 import { Table } from 'antd';
 
 import CurrencyDropdown from 'components/CurrencyDropdown';
+import TokenIcon from 'components/TokenIcon';
 
 const { Column } = Table;
 // import { LocaleProvider } from 'antd';
@@ -186,6 +187,11 @@ function AddressTable(props) {
         width="15px"
         sorter={(a, b) => parseInt(a.key, 10) - parseInt(b.key, 10)}
         sortOrder="ascend"
+        render={(text, record) => (
+          <span>
+            {text} <TokenIcon tokenSymbol={record.token} />
+          </span>
+        )}
       />
       <Column
         title="Address"

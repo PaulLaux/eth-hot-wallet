@@ -54,6 +54,11 @@ import '!file-loader?name=[name].[ext]!./images/mstile-144x144.png';
 import '!file-loader?name=[name]!./vendor/github/CNAME'; // for github - domain connection
 /* eslint-enable import/no-unresolved, import/extensions */
 
+// token icons
+import '!file-loader?name=token-icons/[name].[ext]!./images/token-icons/eth.png';
+import '!file-loader?name=token-icons/[name].[ext]!./images/token-icons/eos.png';
+import '!file-loader?name=token-icons/[name].[ext]!./images/token-icons/symb.png';
+
 import configureStore from './store';
 
 // Will be added in the future
