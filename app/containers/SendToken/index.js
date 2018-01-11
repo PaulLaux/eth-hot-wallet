@@ -140,7 +140,7 @@ SendToken.propTypes = {
 
   amount: PropTypes.number,
   gasPrice: PropTypes.number,
-  sendTokenSymbol: PropTypes.string,
+  sendTokenSymbol: PropTypes.string, //eslint-disable-line
 
   locked: PropTypes.bool,
 

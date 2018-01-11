@@ -23,6 +23,9 @@ const AddrTable = styled(Table) `
   tbody{
     background: white;
   }
+  .ant-table{
+    font-size: 12px !important;
+  }
 `;
 
 
@@ -93,7 +96,7 @@ const splitAddrToRows = (tokenDecimalsMap, tokenMapIN, address, startKey) => {
     convert: '13 USD',
   },
 ] */
-const transformList = (addressMap, tokenDecimalsMap, showTokens) => {
+const transformList = (addressMap, tokenDecimalsMap, showTokens) => { //eslint-disable-line
   // const showTokens = true;
   let iKey = 1;
   const list = Object.keys(addressMap).map((address) => {
@@ -167,7 +170,7 @@ function AddressTable(props) {
     <AddrTable
       dataSource={completeRowList}
       bordered
-      scroll={{ x: 400 }}
+      scroll={{ x: 550 }}
       pagination={false}
       locale={{
         filterTitle: null,
@@ -180,7 +183,7 @@ function AddressTable(props) {
         title="#"
         dataIndex="key"
         key="key"
-        width="40px"
+        width="15px"
         sorter={(a, b) => parseInt(a.key, 10) - parseInt(b.key, 10)}
         sortOrder="ascend"
       />
@@ -188,7 +191,7 @@ function AddressTable(props) {
         title="Address"
         dataIndex="address"
         key="address"
-        width="270px"
+        width="210px"
       />
       <Column
         title="Token"
@@ -200,7 +203,7 @@ function AddressTable(props) {
         title="Balance"
         dataIndex="balance"
         key="balance"
-        width="120px"
+        width="70px"
         filters={[{
           text: 'Remove empty',
           value: '0 ETH',
@@ -211,10 +214,10 @@ function AddressTable(props) {
         title={<CurrencyDropdown {...currencyDropdownProps} />}
         dataIndex="convert"
         key="convert"
-        width="130px"
+        width="70px"
       />
       <Column
-        width="115px"
+        width="70px"
         title="Action"
         key="action"
         render={(text, record) => (

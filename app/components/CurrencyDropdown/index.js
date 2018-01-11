@@ -31,7 +31,7 @@ function CurrencyDropdown(props) {
   return (
     <Dropdown overlay={convertToMenu}>
       <span>
-        {`Convert to (${convertToSymbol})`}<Icon type="down" />
+        {convertToSymbol === 'none' ? 'Convert' : `${convertToSymbol}`}<Icon type="down" />
       </span>
     </Dropdown>
   );
