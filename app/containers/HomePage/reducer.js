@@ -121,7 +121,7 @@ const initialState = fromJS({
     symb: {
       icon: 'populous_28.png',
       name: 'Sample',
-      contractAddress: '0xdacdb8d2b886f03a0552c639d68e2550d196eb19',
+      contractAddress: '0x0a460180ec4fd3d5eb9dca8f84e8ca45b2ad9160',
       decimals: 18,
     },
   },
