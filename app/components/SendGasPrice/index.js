@@ -48,7 +48,7 @@ function SendGasPrice({ gasPrice, onChangeGasPrice, locked }) {
 SendGasPrice.propTypes = {
   onChangeGasPrice: PropTypes.func.isRequired,
   locked: PropTypes.bool,
-  gasPrice: PropTypes.object,
+  gasPrice: PropTypes.number,
 };
 
 export default SendGasPrice;

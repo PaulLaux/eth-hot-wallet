@@ -39,6 +39,7 @@ import {
   makeSelectSendInProgress,
   makeSelectSendError,
   makeSelectSendTx,
+  makeSelectSendTokenSymbol,
 } from './selectors';
 import reducer from './reducer';
 // import saga from './saga';
@@ -138,7 +139,9 @@ SendToken.propTypes = {
   to: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
 
   amount: PropTypes.number,
-  gasPrice: PropTypes.object,
+  gasPrice: PropTypes.number,
+  sendTokenSymbol: PropTypes.string,
+
   locked: PropTypes.bool,
 
   comfirmationLoading: PropTypes.oneOfType([PropTypes.bool]),
@@ -167,6 +170,8 @@ const mapStateToProps = createStructuredSelector({
   amount: makeSelectAmount(),
   addressList: makeSelectAddressList(),
   gasPrice: makeSelectGasPrice(),
+  sendTokenSymbol: makeSelectSendTokenSymbol(),
+
   locked: makeSelectLocked(),
 
   comfirmationLoading: makeSelectComfirmationLoading(),

@@ -229,7 +229,7 @@ export function* SendTransaction() {
       }
       const contractAddress = tokenInfo.contractAddress;
       const sendParams = { from: fromAddress, value: '0x0', gasPrice, gas: maxGasForTokenSend };
-      const tokenAmount = amount * (10 ** tokenInfo.decimals);
+      const tokenAmount = amount * (10 ** tokenInfo.decimals); // Big Number??
 
       function sendTokenPromise(tokenContractAddress, sendToAddress, sendAmount, params) { // eslint-disable-line no-inner-declarations
         return new Promise((resolve, reject) => {
