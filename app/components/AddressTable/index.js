@@ -27,6 +27,10 @@ const AddrTable = styled(Table) `
   .ant-table{
     font-size: 12px !important;
   }
+  th.columnCenter,
+  td.columnCenter{
+    text-align: center;
+  }
 `;
 
 
@@ -179,31 +183,55 @@ function AddressTable(props) {
         filterReset: 'Reset',
         emptyText: 'No Data',
       }}
+      
     >
       <Column
         title="#"
         dataIndex="key"
         key="key"
-        width="15px"
+        width="10px"
         sorter={(a, b) => parseInt(a.key, 10) - parseInt(b.key, 10)}
         sortOrder="ascend"
+        className="columnCenter"
+      />
+      <Column
+        title="Icon"
+        key="Icon"
+        width="12px"
         render={(text, record) => (
-          <span>
-            {text} <TokenIcon tokenSymbol={record.token} />
-          </span>
+          <TokenIcon tokenSymbol={record.token} />
         )}
+        className="columnCenter"
       />
       <Column
         title="Address"
         dataIndex="address"
         key="address"
-        width="210px"
+        width="220px"
+        className="columnCenter"
+        colSpan="1"
+        rowSpan="3"
+        render={(text, record) => {
+          const obj = {
+            children: text,
+            props: {},
+          };
+          if (record.token !== 'eth') {
+            // obj.props.rowSpan = 0;
+            obj.children = '~';
+          } else {
+            
+            // obj.props.rowSpan = 3;
+          }
+          return obj;
+        }}
       />
       <Column
         title="Token"
         dataIndex="token"
         key="token"
         width="50px"
+        className="columnCenter"
       />
       <Column
         title="Balance"

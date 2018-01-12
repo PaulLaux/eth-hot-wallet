@@ -59,8 +59,8 @@ import {
   restoreWalletFromSeed,
   showSendToken,
   hideSendToken,
-  showTokenSelector,
-  hideTokenSelector,
+  showTokenChooser,
+  hideTokenChooser,
   generateAddress,
   lockWallet,
   unlockWallet,
@@ -86,6 +86,7 @@ import {
   makeSelectAddressMap,
   makeSelectShowRestoreWallet,
   makeSelectIsShowSendToken,
+  makeSelectIsShowTokenChooser,
   makeSelectAddressListLoading,
   makeSelectAddressListError,
   makeSelectAddressListMsg,
@@ -138,8 +139,8 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       isShowSendToken,
       onShowSendToken,
       onHideSendToken,
-      onShowTokenSelector,
-      onHideTokenSelector,
+      onShowTokenChooser,
+      onHideTokenChooser,
 
       addressListLoading,
       addressListError,
@@ -220,7 +221,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       tokenDecimalsMap,
 
       onShowSendToken,
-      onShowTokenSelector,
+      onShowTokenChooser,
 
       onCheckBalances,
       onGenerateAddress,
@@ -321,8 +322,8 @@ HomePage.propTypes = {
   isShowSendToken: PropTypes.bool,
   onShowSendToken: PropTypes.func,
   onHideSendToken: PropTypes.func,
-  onShowTokenSelector: PropTypes.func,
-  onHideTokenSelector: PropTypes.func,
+  onShowTokenChooser: PropTypes.func,
+  onHideTokenChooser: PropTypes.func,
 
   addressListLoading: PropTypes.bool,
   addressListError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
@@ -405,10 +406,10 @@ export function mapDispatchToProps(dispatch) {
       dispatch(hideSendToken());
     },
     onShowTokenSelector: () => {
-      dispatch(showTokenSelector());
+      dispatch(showTokenChooser());
     },
     onHideTokenSelector: () => {
-      dispatch(hideTokenSelector());
+      dispatch(hideTokenChooser());
     },
     onLockWallet: (evt) => {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
@@ -458,6 +459,7 @@ const mapStateToProps = createStructuredSelector({
   userPassword: makeSelectUserPassword(),
 
   isShowSendToken: makeSelectIsShowSendToken(),
+  isShowTokenChooser: makeSelectIsShowTokenChooser(),
 
   addressListLoading: makeSelectAddressListLoading(),
   addressListError: makeSelectAddressListError(),

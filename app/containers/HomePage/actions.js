@@ -38,8 +38,8 @@ import {
 
   SHOW_SEND_TOKEN,
   HIDE_SEND_TOKEN,
-  SHOW_TOKEN_SELECTOR,
-  HIDE_TOKEN_SELECTOR,
+  SHOW_TOKEN_CHOOSER,
+  HIDE_TOKEN_CHOOSER,
 
   GENERATE_ADDRESS,
   GENERATE_ADDRESS_SUCCESS,
@@ -348,28 +348,28 @@ export function hideSendToken() {
   };
 }
 
-/** ******************* Show / hide TOKEN_SELECTOR ***************************** */
+/** ******************* Show / hide TOKEN_CHOOSER ***************************** */
 /**
- * Show the TokenSelector container
+ * Show the TokenChooser container
  *
- * @return {object}    An action object with a type of SHOW_TOKEN_SELECTOR
+ * @return {object}    An action object with a type of SHOW_TOKEN_CHOOSER
  */
-export function showTokenSelector() {
+export function showTokenChooser() {
   console.log('SHOW_TOKEN_SELECTOR');
   return {
-    type: SHOW_TOKEN_SELECTOR,
+    type: SHOW_TOKEN_CHOOSER,
   };
 }
 
 /**
- * Hide the TokenSelector container
+ * Hide the TokenChooser container
  *
- * @return {object}    An action object with a type of HIDE_TOKEN_SELECTOR
+ * @return {object}    An action object with a type of HIDE_TOKEN_CHOOSER
  */
-export function hideTokenSelector() {
+export function hideTokenChooser() {
   console.log('SHOW_TOKEN_SELECTOR');
   return {
-    type: HIDE_TOKEN_SELECTOR,
+    type: HIDE_TOKEN_CHOOSER,
   };
 }
 

@@ -139,7 +139,7 @@ AddressTableFooter.propTypes = {
   // getExchangeRatesDoneTime: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   getExchangeRatesLoading: PropTypes.bool,
   getExchangeRatesError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
-  onShowTokenSelector: PropTypes.bool,
+  onShowTokenSelector: PropTypes.func,
 };
 
 export default AddressTableFooter;

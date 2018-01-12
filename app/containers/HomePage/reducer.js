@@ -101,7 +101,7 @@ const initialState = fromJS({
   addressListMsg: false,
 
   isShowSendToken: false,
-  isShowTokenSelector: false,
+  isShowTokenChooser: false,
 
   saveWalletLoading: false,
   saveWalletError: false,

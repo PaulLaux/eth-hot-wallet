@@ -23,7 +23,7 @@ function TokenIcon(props) {
 
   return (
     <span>
-      <Img alt={tokenSymbol} src={iconPath} height="32" />
+      <Img alt={tokenSymbol} src={iconPath} height="24" />
     </span>
   );
 }
