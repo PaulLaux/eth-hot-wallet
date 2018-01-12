@@ -38,6 +38,8 @@ import {
 
   SHOW_SEND_TOKEN,
   HIDE_SEND_TOKEN,
+  SHOW_TOKEN_SELECTOR,
+  HIDE_TOKEN_SELECTOR,
 
   GENERATE_ADDRESS,
   GENERATE_ADDRESS_SUCCESS,
@@ -345,6 +347,32 @@ export function hideSendToken() {
     type: HIDE_SEND_TOKEN,
   };
 }
+
+/** ******************* Show / hide TOKEN_SELECTOR ***************************** */
+/**
+ * Show the TokenSelector container
+ *
+ * @return {object}    An action object with a type of SHOW_TOKEN_SELECTOR
+ */
+export function showTokenSelector() {
+  console.log('SHOW_TOKEN_SELECTOR');
+  return {
+    type: SHOW_TOKEN_SELECTOR,
+  };
+}
+
+/**
+ * Hide the TokenSelector container
+ *
+ * @return {object}    An action object with a type of HIDE_TOKEN_SELECTOR
+ */
+export function hideTokenSelector() {
+  console.log('SHOW_TOKEN_SELECTOR');
+  return {
+    type: HIDE_TOKEN_SELECTOR,
+  };
+}
+
 
 
 /* ******************* Generate new address from existing keystore********** */

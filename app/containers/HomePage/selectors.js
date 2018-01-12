@@ -78,6 +78,11 @@ const makeSelectIsShowSendToken = () => createSelector(
   (homeState) => homeState.get('isShowSendToken')
 );
 
+const makeSelectIsShowTokenSelector = () => createSelector(
+  selectHome,
+  (homeState) => homeState.get('isShowTokenSelector')
+);
+
 /*
 * Deprecated, use makeSelectAddressMap instead.
 *
@@ -229,6 +234,7 @@ export {
   makeSelectUserSeed,
   makeSelectUserPassword,
   makeSelectIsShowSendToken,
+  makeSelectIsShowTokenSelector,
 
   makeSelectAddressList,
   makeSelectAddressListLoading,

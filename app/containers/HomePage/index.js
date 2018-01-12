@@ -59,6 +59,8 @@ import {
   restoreWalletFromSeed,
   showSendToken,
   hideSendToken,
+  showTokenSelector,
+  hideTokenSelector,
   generateAddress,
   lockWallet,
   unlockWallet,
@@ -136,6 +138,8 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       isShowSendToken,
       onShowSendToken,
       onHideSendToken,
+      onShowTokenSelector,
+      onHideTokenSelector,
 
       addressListLoading,
       addressListError,
@@ -216,6 +220,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       tokenDecimalsMap,
 
       onShowSendToken,
+      onShowTokenSelector,
 
       onCheckBalances,
       onGenerateAddress,
@@ -316,6 +321,8 @@ HomePage.propTypes = {
   isShowSendToken: PropTypes.bool,
   onShowSendToken: PropTypes.func,
   onHideSendToken: PropTypes.func,
+  onShowTokenSelector: PropTypes.func,
+  onHideTokenSelector: PropTypes.func,
 
   addressListLoading: PropTypes.bool,
   addressListError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
@@ -392,12 +399,16 @@ export function mapDispatchToProps(dispatch) {
       dispatch(checkBalances());
     },
     onShowSendToken: (address) => {
-      // if (evt !== undefined && evt.preventDefault) evt.preventDefault();
       dispatch(showSendToken(address));
     },
     onHideSendToken: () => {
-      // if (evt !== undefined && evt.preventDefault) evt.preventDefault();
       dispatch(hideSendToken());
+    },
+    onShowTokenSelector: () => {
+      dispatch(showTokenSelector());
+    },
+    onHideTokenSelector: () => {
+      dispatch(hideTokenSelector());
     },
     onLockWallet: (evt) => {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();

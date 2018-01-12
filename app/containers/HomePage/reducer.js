@@ -32,6 +32,8 @@ import {
 
   SHOW_SEND_TOKEN,
   HIDE_SEND_TOKEN,
+  SHOW_TOKEN_SELECTOR,
+  HIDE_TOKEN_SELECTOR,
 
   GENERATE_ADDRESS,
   GENERATE_ADDRESS_SUCCESS,
@@ -99,6 +101,7 @@ const initialState = fromJS({
   addressListMsg: false,
 
   isShowSendToken: false,
+  isShowTokenSelector: false,
 
   saveWalletLoading: false,
   saveWalletError: false,

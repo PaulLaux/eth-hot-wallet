@@ -12,6 +12,7 @@ import { Button, Popconfirm } from 'antd';
 import AddressTableFooterErrors from 'components/AddressTableFooterErrors';
 // import { FormattedMessage } from 'react-intl';
 // import messages from './messages';
+import IconButton from 'components/IconButton';
 
 const Div = styled.div`
   margin-top: 14px;
@@ -40,6 +41,8 @@ function AddressTableFooter(props) {
     // getExchangeRatesDoneTime,
     getExchangeRatesLoading,
     getExchangeRatesError,
+
+    onShowTokenSelector,
   } = props;
 
   const addressTableFooterErrorsProps = { checkingBalancesError, addressListError, getExchangeRatesError };
@@ -78,7 +81,43 @@ function AddressTableFooter(props) {
           Update exchange rates
         </Button>
       </Popconfirm>
+      <br />
+      <IconButton
+        text="Add address"
+        icon="plus"
+        onClick={onGenerateAddress}
+        loading={addressListLoading}
+        error={addressListError}
+        disabled={!isComfirmed}
+        popconfirmMsg={false}
+      />
+      <IconButton
+        text="Check balances"
+        icon="reload"
+        onClick={onCheckBalances}
+        loading={checkingBalances}
+        error={checkingBalancesError}
+        disabled={!networkReady}
+        popconfirmMsg="Refresh balance?"
+      />
+      <IconButton
+        text="Update exchange rates"
+        icon="global"
+        onClick={onGetExchangeRates}
+        loading={getExchangeRatesLoading}
+        error={getExchangeRatesError}
+        disabled={!networkReady}
+        popconfirmMsg="Refresh exchange rates?"
+      />
+      <br />
+      <IconButton
+        text="Select Tokens"
+        icon="select"
+        onClick={onShowTokenSelector}
+      // onClick, loading, error, disabled, popconfirmMsg
+      />
       <AddressTableFooterErrors {...addressTableFooterErrorsProps} />
+
     </Div>
   );
 }
@@ -100,6 +139,7 @@ AddressTableFooter.propTypes = {
   // getExchangeRatesDoneTime: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   getExchangeRatesLoading: PropTypes.bool,
   getExchangeRatesError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
+  onShowTokenSelector: PropTypes.bool,
 };
 
 export default AddressTableFooter;
