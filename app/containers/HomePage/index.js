@@ -20,6 +20,7 @@ import { createStructuredSelector } from 'reselect';
 /* Components:  */
 import AddressView from 'components/AddressView';
 import SendTokenView from 'components/SendTokenView';
+import TokenChooserView from 'components/TokenChooserView';
 import GenerateWalletModal from 'components/GenerateWalletModal';
 import RestoreWalletModal from 'components/RestoreWalletModal';
 import SubHeader from 'components/SubHeader';
@@ -142,6 +143,8 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       onShowTokenChooser,
       onHideTokenChooser,
 
+      isShowTokenChooser,
+
       addressListLoading,
       addressListError,
       addressListMsg,
@@ -242,6 +245,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     };
 
     const sendTokenViewProps = { isShowSendToken, onHideSendToken };
+    const tokenChooserViewProps = { isShowTokenChooser, onHideTokenChooser };
 
     return (
       <div>
@@ -252,6 +256,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
           <RestoreWalletModal {...restoreWalletModalProps} />
           <AddressView {...addressViewProps} />
           <SendTokenView {...sendTokenViewProps} />
+          <TokenChooserView {...tokenChooserViewProps} />
         </Content>
         <PageFooter />
       </div>
@@ -322,6 +327,8 @@ HomePage.propTypes = {
   isShowSendToken: PropTypes.bool,
   onShowSendToken: PropTypes.func,
   onHideSendToken: PropTypes.func,
+
+  isShowTokenChooser: PropTypes.bool,
   onShowTokenChooser: PropTypes.func,
   onHideTokenChooser: PropTypes.func,
 
@@ -405,10 +412,10 @@ export function mapDispatchToProps(dispatch) {
     onHideSendToken: () => {
       dispatch(hideSendToken());
     },
-    onShowTokenSelector: () => {
+    onShowTokenChooser: () => {
       dispatch(showTokenChooser());
     },
-    onHideTokenSelector: () => {
+    onHideTokenChooser: () => {
       dispatch(hideTokenChooser());
     },
     onLockWallet: (evt) => {

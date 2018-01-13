@@ -32,8 +32,8 @@ import {
 
   SHOW_SEND_TOKEN,
   HIDE_SEND_TOKEN,
-  SHOW_TOKEN_SELECTOR,
-  HIDE_TOKEN_SELECTOR,
+  SHOW_TOKEN_CHOOSER,
+  HIDE_TOKEN_CHOOSER,
 
   GENERATE_ADDRESS,
   GENERATE_ADDRESS_SUCCESS,
@@ -217,6 +217,13 @@ function homeReducer(state = initialState, action) {
     case HIDE_SEND_TOKEN:
       return state
         .set('isShowSendToken', false);
+
+    case SHOW_TOKEN_CHOOSER:
+      return state
+        .set('isShowTokenChooser', true);
+    case HIDE_TOKEN_CHOOSER:
+      return state
+        .set('isShowTokenChooser', false);
 
     case GENERATE_ADDRESS:
       return state

@@ -355,7 +355,7 @@ export function hideSendToken() {
  * @return {object}    An action object with a type of SHOW_TOKEN_CHOOSER
  */
 export function showTokenChooser() {
-  console.log('SHOW_TOKEN_SELECTOR');
+  console.log('SHOW_TOKEN_CHOOSER');
   return {
     type: SHOW_TOKEN_CHOOSER,
   };
@@ -367,12 +367,11 @@ export function showTokenChooser() {
  * @return {object}    An action object with a type of HIDE_TOKEN_CHOOSER
  */
 export function hideTokenChooser() {
-  console.log('SHOW_TOKEN_SELECTOR');
+  console.log('Hide');
   return {
     type: HIDE_TOKEN_CHOOSER,
   };
 }
-
 
 
 /* ******************* Generate new address from existing keystore********** */

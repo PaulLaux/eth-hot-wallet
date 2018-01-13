@@ -32,7 +32,7 @@ function AddressView(props) {
     exchangeRates, onSelectCurrency, convertTo,
     onGetExchangeRates,
     getExchangeRatesDoneTime, getExchangeRatesLoading, getExchangeRatesError,
-    onShowTokenSelector,
+    onShowTokenChooser,
    } = props;
 
   const addressTableProps = {
@@ -62,7 +62,7 @@ function AddressView(props) {
     getExchangeRatesLoading,
     getExchangeRatesError,
 
-    onShowTokenSelector,
+    onShowTokenChooser,
   };
 
   let addressViewContent = (
@@ -115,6 +115,7 @@ AddressView.propTypes = {
   ]),
   tokenDecimalsMap: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
   onShowSendToken: PropTypes.func,
+  onShowTokenChooser: PropTypes.func,
 
   onGenerateAddress: PropTypes.func,
   addressListLoading: PropTypes.bool,

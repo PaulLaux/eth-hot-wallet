@@ -183,7 +183,7 @@ function AddressTable(props) {
         filterReset: 'Reset',
         emptyText: 'No Data',
       }}
-      
+
     >
       <Column
         title="#"
@@ -211,6 +211,7 @@ function AddressTable(props) {
         className="columnCenter"
         colSpan="1"
         rowSpan="3"
+        /*
         render={(text, record) => {
           const obj = {
             children: text,
@@ -220,11 +221,10 @@ function AddressTable(props) {
             // obj.props.rowSpan = 0;
             obj.children = '~';
           } else {
-            
             // obj.props.rowSpan = 3;
           }
           return obj;
-        }}
+        }} */
       />
       <Column
         title="Token"
@@ -237,7 +237,7 @@ function AddressTable(props) {
         title="Balance"
         dataIndex="balance"
         key="balance"
-        width="70px"
+        width="80px"
         filters={[{
           text: 'Remove empty',
           value: '0 ETH',

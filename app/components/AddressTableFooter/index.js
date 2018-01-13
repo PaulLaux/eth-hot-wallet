@@ -42,7 +42,7 @@ function AddressTableFooter(props) {
     getExchangeRatesLoading,
     getExchangeRatesError,
 
-    onShowTokenSelector,
+    onShowTokenChooser,
   } = props;
 
   const addressTableFooterErrorsProps = { checkingBalancesError, addressListError, getExchangeRatesError };
@@ -113,7 +113,7 @@ function AddressTableFooter(props) {
       <IconButton
         text="Select Tokens"
         icon="select"
-        onClick={onShowTokenSelector}
+        onClick={onShowTokenChooser}
       // onClick, loading, error, disabled, popconfirmMsg
       />
       <AddressTableFooterErrors {...addressTableFooterErrorsProps} />
@@ -139,7 +139,7 @@ AddressTableFooter.propTypes = {
   // getExchangeRatesDoneTime: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   getExchangeRatesLoading: PropTypes.bool,
   getExchangeRatesError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
-  onShowTokenSelector: PropTypes.func,
+  onShowTokenChooser: PropTypes.func,
 };
 
 export default AddressTableFooter;

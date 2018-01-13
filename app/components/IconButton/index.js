@@ -46,7 +46,7 @@ Btn.propTypes = {
 const handlePopconfirm = (popConfirmText, onClick, component) => {
   if (popConfirmText) {
     return (
-      <Popconfirm placement="bottom" title={popConfirmText} onConfirm={onClick} okText="Confirm" cancelText="Abort">
+      <Popconfirm placement="top" title={popConfirmText} onConfirm={onClick} okText="Confirm" cancelText="Abort">
         {component}
         <span />
       </Popconfirm>
@@ -61,7 +61,7 @@ function IconButton(props) {
   const handleError = (err, component) => {
     if (err) {
       return (
-        <Tooltip placement="top" title={`${err} - Click to retry`}>
+        <Tooltip placement="bottom" title={`${err} - Click to retry`}>
           <ErrorSpan>
             {component}
           </ErrorSpan>
@@ -74,14 +74,14 @@ function IconButton(props) {
   return (
     handleError(error,
       handlePopconfirm(popconfirmMsg, onClick,
-        (<Btn
+        <Btn
           text={text}
           loading={loading}
           disabled={disabled}
           popconfirmMsg={popconfirmMsg}
           onClick={onClick}
           icon={icon}
-        />)
+        />
       )
     )
   );
