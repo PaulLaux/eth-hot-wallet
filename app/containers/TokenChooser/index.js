@@ -13,12 +13,27 @@ import { compose } from 'redux';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import { makeSelectTokenChooser } from './selectors';
+
+import TokenChooserList from 'components/TokenChooserList';
+import { makeSelectNetworkName } from 'containers/Header/selectors';
+// import { makeSelectTokenChooser } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 
+import TokenSelection from './token-lists';
+
 function TokenChooser(props) {
-  const { isShowTokenChooser, onHideTokenChooser } = props;
+  const {
+    isShowTokenChooser,
+    onHideTokenChooser,
+
+    networkName,
+
+   } = props;
+
+  const TokensForNetwork = TokenSelection[networkName];
+  // console.log(networkName);
+
   return (
     <div style={{ maxWidth: '600px', margin: 'auto' }}>
       <Modal
@@ -29,6 +44,13 @@ function TokenChooser(props) {
         footer={null}
       >
 
+        <TokenChooserList
+          tokenList={TokensForNetwork}
+          selectedTokens={[]}
+          onTokenToggle={(x) => console.log(x)}
+        />
+
+        <br />
         <Button onClick={onHideTokenChooser} disabled={false} >
           Create transaction
         </Button>
@@ -42,10 +64,13 @@ TokenChooser.propTypes = {
   // dispatch: PropTypes.func.isRequired,
   isShowTokenChooser: PropTypes.bool,
   onHideTokenChooser: PropTypes.func,
+
+  networkName: PropTypes.string,
 };
 
 const mapStateToProps = createStructuredSelector({
-  tokenchooser: makeSelectTokenChooser(),
+  // tokenchooser: makeSelectTokenChooser(),
+  networkName: makeSelectNetworkName(),
 });
 
 function mapDispatchToProps(dispatch) {

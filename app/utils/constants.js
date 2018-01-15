@@ -9,7 +9,7 @@ export const generatedPasswordLength = 12;
 export const hdPathString = `m/44'/60'/0'/0`; // eslint-disable-line
 
 // time in ms for check balancess polling
-export const timeBetweenCheckbalances = 120 * 1000;
+export const timeBetweenCheckbalances = 180 * 1000;
 
 /* Max gas for send transaction (not gas price) */
 export const maxGasForEthSend = 25000;
