@@ -11,7 +11,11 @@ import {
   makeSelectTokenInfoList,
   makeSelectTokenInfo,
 } from 'containers/HomePage/selectors';
-import { changeBalance, setExchangeRates } from 'containers/HomePage/actions';
+import {
+  changeBalance,
+  setExchangeRates,
+  updateTokenInfo,
+} from 'containers/HomePage/actions';
 import request from 'utils/request';
 
 import {
@@ -45,7 +49,10 @@ import { timer } from 'utils/common';
 import { erc20Abi } from 'utils/contracts/abi';
 import { message } from 'antd';
 
-import { makeSelectUsedFaucet } from './selectors';
+import {
+  makeSelectUsedFaucet,
+  makeSelectPrevNetworkName,
+} from './selectors';
 import {
   loadNetworkSuccess,
   loadNetworkError,
@@ -137,6 +144,13 @@ export function* loadNetwork(action) {
       // actions after succesfull network load :
       yield put(checkBalances());
       yield put(getExchangeRates());
+
+      // clear token list if changed network
+
+      const prevNetwork = yield select(makeSelectPrevNetworkName());
+      if (prevNetwork !== action.networkName) {
+        yield put(updateTokenInfo(keystore.getAddresses, action.tokenInfo));
+      }
 
       const usedFaucet = yield select(makeSelectUsedFaucet());
       if (action.networkName === 'Ropsten Testnet' && !usedFaucet) {

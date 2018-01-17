@@ -6,41 +6,33 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { List, Avatar } from 'antd';
+import { List, Switch } from 'antd';
 import styled from 'styled-components';
+import TokenIcon from 'components/TokenIcon';
 
 /*
 tokenList={TokensForNetwork}
 selectedTokens={[]}
 onTokenToggle={(x) => console.log(x)}
-          */
-const TokenAvatar = styled(Avatar) `
-  span{
-    color: black;
-    font: 14px Impact;
-    text-transform: uppercase;
-  }
+*/
+
+const LeftList = styled(List) `
+.ant-list-item-meta-content{
+  text-align:left;
+}
 `;
 
 function TokenChooserList(props) {
-  const { tokenList, selectedTokens, onTokenToggle } = props;
-  console.log(tokenList);
+  const { tokenList, chosenTokens, onTokenToggle } = props;
   return (
-    <List
+    <LeftList
       itemLayout="horizontal"
       dataSource={tokenList}
       renderItem={(item) => (
-        <List.Item>
+        <List.Item actions={[<Switch checked={chosenTokens[item.symbol]} onChange={(toggle) => onTokenToggle(item.symbol, toggle)} />]}>
           <List.Item.Meta
-            avatar={
-              <TokenAvatar
-                shape="square"
-                src={`token-icons/${item.symbol}.png`}
-                style={{ backgroundColor: '#f1f1f1', verticalAlign: 'middle' }}
-              >
-                {item.symbol}
-              </TokenAvatar>}
-            title={<a href="https://ant.design">{item.name}</a>}
+            avatar={<TokenIcon tokenSymbol={item.symbol} size={32} />}
+            title={<a href={item.url} target="_blank" rel="noopener">{item.name} ({item.symbol.toUpperCase()})</a>}
             description={item.description}
           />
         </List.Item>
@@ -51,7 +43,7 @@ function TokenChooserList(props) {
 
 TokenChooserList.propTypes = {
   tokenList: PropTypes.array,
-  selectedTokens: PropTypes.array,
+  chosenTokens: PropTypes.object,
   onTokenToggle: PropTypes.func,
 };
 

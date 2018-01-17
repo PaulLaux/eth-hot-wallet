@@ -29,6 +29,8 @@ export const HIDE_SEND_TOKEN = 'eth-hot-wallet/HomePage/HIDE_SEND_TOKEN';
 export const SHOW_TOKEN_CHOOSER = 'eth-hot-wallet/HomePage/SHOW_TOKEN_CHOOSER';
 export const HIDE_TOKEN_CHOOSER = 'eth-hot-wallet/HomePage/HIDE_TOKEN_CHOOSER';
 
+export const UPDATE_TOKEN_INFO = 'eth-hot-wallet/HomePage/UPDATE_TOKEN_INFO';
+
 export const GENERATE_ADDRESS = 'eth-hot-wallet/HomePage/GENERATE_ADDRESS';
 export const GENERATE_ADDRESS_SUCCESS = 'eth-hot-wallet/HomePage/GENERATE_ADDRESS_SUCCESS';
 export const GENERATE_ADDRESS_ERROR = 'eth-hot-wallet/HomePage/GENERATE_ADDRESS_ERROR';
@@ -54,3 +56,4 @@ export const SAVE_WALLET_ERROR = 'eth-hot-wallet/HomePage/SAVE_WALLET_ERROR';
 export const LOAD_WALLET = 'eth-hot-wallet/HomePage/LOAD_WALLET';
 export const LOAD_WALLET_SUCCESS = 'eth-hot-wallet/HomePage/LOAD_WALLET_SUCCESS';
 export const LOAD_WALLET_ERROR = 'eth-hot-wallet/HomePage/LOAD_WALLET_ERROR';
+

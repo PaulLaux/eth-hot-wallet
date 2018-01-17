@@ -35,6 +35,8 @@ import {
   SHOW_TOKEN_CHOOSER,
   HIDE_TOKEN_CHOOSER,
 
+  UPDATE_TOKEN_INFO,
+
   GENERATE_ADDRESS,
   GENERATE_ADDRESS_SUCCESS,
   GENERATE_ADDRESS_ERROR,
@@ -110,19 +112,16 @@ const initialState = fromJS({
 
   tokenInfo: {
     eth: {
-      icon: '',
       name: 'Ethereum',
       contractAddress: null,
       decimals: 18,
     },
     eos: {
-      icon: 'eos_28.png',
       name: 'EOS',
       contractAddress: '0x86fa049857e0209aa7d5e616f7eb3b3b78ecfdb0',
       decimals: 18,
     },
     symb: {
-      icon: 'populous_28.png',
       name: 'Sample',
       contractAddress: '0x0a460180ec4fd3d5eb9dca8f84e8ca45b2ad9160',
       decimals: 18,
@@ -166,7 +165,7 @@ function homeReducer(state = initialState, action) {
         .set('seed', false)
         .set('isComfirmed', true)
         .set('addressListError', false)
-        .set('addressList', fromJS(action.addressList))
+        .set('addressList', fromJS(action.addressMap))
         .set('generateKeystoreLoading', false);
     case GENERATE_KEYSTORE_ERROR:
       return state
@@ -224,6 +223,13 @@ function homeReducer(state = initialState, action) {
     case HIDE_TOKEN_CHOOSER:
       return state
         .set('isShowTokenChooser', false);
+
+    case UPDATE_TOKEN_INFO:
+      return state
+        .set('isShowTokenChooser', false)
+        .set('addressListError', false)
+        .set('tokenInfo', fromJS(action.tokenInfo))
+        .set('addressList', fromJS(action.addressMap));
 
     case GENERATE_ADDRESS:
       return state

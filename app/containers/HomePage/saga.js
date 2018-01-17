@@ -18,6 +18,8 @@ import {
   LOAD_WALLET,
 } from 'containers/HomePage/constants';
 
+import { CONFIRM_UPDATE_TOKEN_INFO } from 'containers/TokenChooser/constants';
+
 import {
   makeSelectPassword,
   makeSelectSeed,
@@ -58,6 +60,7 @@ import {
   saveWalletError,
   loadWalletSuccess,
   loadWalletError,
+  updateTokenInfo,
 } from './actions';
 
 /**
@@ -209,6 +212,7 @@ export function* generateAddress() {
       yield put(changeBalance(newAddress, 'eth', balance));
     } catch (err) { }  // eslint-disable-line 
   } catch (err) {
+    yield call(timer, 1000); // eye candy
     yield put(generateAddressError(err.message));
   }
 }
@@ -353,6 +357,16 @@ export function* deleteWallet() {
 }
 
 /**
+ * Saga triggered by TokenChooser container to pass tokenInfo for selected tokens
+ * @param {object} action dispatched by tokenChooser
+ * @param {object} action.tokenInfo
+ */
+export function* chosenTokenInfo(action) {
+  const addressList = (yield select(makeSelectKeystore())).getAddresses();
+  yield put(updateTokenInfo(addressList, action.tokenInfo));
+}
+
+/**
  * Root saga manages watcher lifecycle
  */
 export default function* walletData() {
@@ -373,6 +387,7 @@ export default function* walletData() {
   yield takeLatest(SAVE_WALLET, saveWalletS);
   yield takeLatest(LOAD_WALLET, loadWalletS);
 
+  yield takeLatest(CONFIRM_UPDATE_TOKEN_INFO, chosenTokenInfo);
   /*
   while (yield takeLatest(INIT_WALLET, initSeed)) {
     // yield takeLatest(GENERATE_KEYSTORE, genKeystore);

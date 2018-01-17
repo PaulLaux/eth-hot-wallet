@@ -16,7 +16,7 @@ export const TokenSelection = {
       contractAddress: '0x0a460180ec4fd3d5eb9dca8f84e8ca45b2ad9160',
       decimals: 18,
       description: 'The most distributed token ever',
-      url: 'google.com',
+      url: 'https://google.com',
     },
     {
       symbol: 'sym2',
@@ -24,7 +24,7 @@ export const TokenSelection = {
       contractAddress: '0x0a460180ec4fd3d5eb9dca8f84e8ca45b2ad9160',
       decimals: 18,
       description: 'The second most distributed token ever',
-      url: 'google.com',
+      url: 'https://google.com',
     },
   ],
   'Main Net': [

@@ -19,6 +19,10 @@ const makeSelectNetworkName = () => createSelector(
   selectHeaderDomain,
   (substate) => substate.get('networkName')
 );
+const makeSelectPrevNetworkName = () => createSelector(
+  selectHeaderDomain,
+  (substate) => substate.get('prevNetworkName')
+);
 const makeSelectTxExplorer = () => createSelector(
   selectHeaderDomain,
   (substate) => substate ? Network[substate.get('networkName')].tx_explorer : null
@@ -102,6 +106,7 @@ export {
   makeSelectNetworkReady,
   makeSelectLoading,
   makeSelectError,
+  makeSelectPrevNetworkName,
   makeSelectNetworkName,
   makeSelectTxExplorer,
   makeSelectAvailableNetworks,

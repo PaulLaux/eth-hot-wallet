@@ -207,7 +207,7 @@ function AddressTable(props) {
         title="Address"
         dataIndex="address"
         key="address"
-        width="220px"
+        width="240px"
         className="columnCenter"
         colSpan="1"
         rowSpan="3"
@@ -230,7 +230,7 @@ function AddressTable(props) {
         title="Token"
         dataIndex="token"
         key="token"
-        width="50px"
+        width="55px"
         className="columnCenter"
       />
       <Column
@@ -251,7 +251,7 @@ function AddressTable(props) {
         width="70px"
       />
       <Column
-        width="70px"
+        width="65px"
         title="Action"
         key="action"
         render={(text, record) => (

@@ -113,6 +113,7 @@ export function checkBalancesSuccess() {
  * @return {object} An action object with a type of CHECK_BALANCES_ERROR passing the error
  */
 export function CheckBalancesError(error) {
+  message.error(error);
   return {
     type: CHECK_BALANCES_ERROR,
     error,
@@ -165,6 +166,7 @@ export function getExchangeRatesSuccess() {
  * @return {object} An action object with a type of CHECK_BALANCES_ERROR passing the error
  */
 export function getExchangeRatesError(error) {
+  message.error(error);
   return {
     type: GET_EXCHANGE_RATES_ERROR,
     error,

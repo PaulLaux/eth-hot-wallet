@@ -6,19 +6,19 @@
 
 import { fromJS } from 'immutable';
 import {
-  DEFAULT_ACTION,
+  TOGGLE_TOKEN,
 } from './constants';
 
 const initialState = fromJS({
 
-  abs: true,
+  chosenTokens: { eos: true },
 
 });
 
 function tokenChooserReducer(state = initialState, action) {
   switch (action.type) {
-    case DEFAULT_ACTION:
-      return state;
+    case TOGGLE_TOKEN:
+      return state.setIn(['chosenTokens', action.symbol], action.toggle);
     default:
       return state;
   }
