@@ -55,9 +55,31 @@ import '!file-loader?name=[name]!./vendor/github/CNAME'; // for github - domain 
 /* eslint-enable import/no-unresolved, import/extensions */
 
 // token icons
-import '!file-loader?name=token-icons/[name].[ext]!./images/token-icons/eth.png';
+import '!file-loader?name=token-icons/[name].[ext]!./images/token-icons/bat.png';
+import '!file-loader?name=token-icons/[name].[ext]!./images/token-icons/bnb.png';
+import '!file-loader?name=token-icons/[name].[ext]!./images/token-icons/bnt.png';
+import '!file-loader?name=token-icons/[name].[ext]!./images/token-icons/dgd.png';
 import '!file-loader?name=token-icons/[name].[ext]!./images/token-icons/eos.png';
+import '!file-loader?name=token-icons/[name].[ext]!./images/token-icons/eth.png';
+import '!file-loader?name=token-icons/[name].[ext]!./images/token-icons/ethos.png';
+import '!file-loader?name=token-icons/[name].[ext]!./images/token-icons/fun.png';
+import '!file-loader?name=token-icons/[name].[ext]!./images/token-icons/gnt.png';
+import '!file-loader?name=token-icons/[name].[ext]!./images/token-icons/icx.png';
+import '!file-loader?name=token-icons/[name].[ext]!./images/token-icons/knc.png';
+import '!file-loader?name=token-icons/[name].[ext]!./images/token-icons/mkr.png';
+import '!file-loader?name=token-icons/[name].[ext]!./images/token-icons/omg.png';
+import '!file-loader?name=token-icons/[name].[ext]!./images/token-icons/qash.png';
+import '!file-loader?name=token-icons/[name].[ext]!./images/token-icons/qsp.png';
+import '!file-loader?name=token-icons/[name].[ext]!./images/token-icons/qtum.png';
+import '!file-loader?name=token-icons/[name].[ext]!./images/token-icons/rdn.png';
+import '!file-loader?name=token-icons/[name].[ext]!./images/token-icons/rep.png';
+import '!file-loader?name=token-icons/[name].[ext]!./images/token-icons/req.png';
+import '!file-loader?name=token-icons/[name].[ext]!./images/token-icons/rtt.png';
+import '!file-loader?name=token-icons/[name].[ext]!./images/token-icons/snt.png';
+import '!file-loader?name=token-icons/[name].[ext]!./images/token-icons/salt.png';
 import '!file-loader?name=token-icons/[name].[ext]!./images/token-icons/symb.png';
+import '!file-loader?name=token-icons/[name].[ext]!./images/token-icons/trx.png';
+import '!file-loader?name=token-icons/[name].[ext]!./images/token-icons/zrx.png';
 
 import configureStore from './store';
 
