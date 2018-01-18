@@ -274,14 +274,12 @@ export function* unlockWallet() {
 }
 
 /**
- * change source address when opening send modal
+ * change source address and token when opening send modal
  */
 export function* changeSourceAddress(action) {
-  // during the initial load SendToken container isn't attached yet,
   // wait for container to load and then change from address
-  yield call(timer, 200);
   if (action.address) {
-    yield put(changeFrom(action.address));
+    yield put(changeFrom(action.address, action.sendTokenSymbol));
   }
 }
 

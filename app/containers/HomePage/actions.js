@@ -343,14 +343,17 @@ export function changeBalance(address, symbol, balance) {
 /* ******************* Show / hide SEND_TOKEN ***************************** */
 /**
  * Show the SendToken container
+ * @param  {string} address '0xa4b..'
+ * @param  {string} [sendTokenSymbol] 'eth' or other
  *
- * @return {object}    An action object with a type of SHOW_SEND_TOKEN
+ * @return {object} An action object with a type of SHOW_SEND_TOKEN
  */
-export function showSendToken(address) {
+export function showSendToken(address, sendTokenSymbol) {
   // console.log(address);
   return {
     type: SHOW_SEND_TOKEN,
     address,
+    sendTokenSymbol,
   };
 }
 

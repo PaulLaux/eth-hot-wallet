@@ -30,7 +30,6 @@ const initialState = fromJS({
   locked: false,
   sendTokenSymbol: 'eth',
 
-
   comfirmationLoading: false,
   confirmationError: false,
   confirmationMsg: false,
@@ -44,9 +43,10 @@ const initialState = fromJS({
 function sendTokenReducer(state = initialState, action) {
   switch (action.type) {
     case CHANGE_FROM:
+      // update values only if provided:
       return state
-        .set('from', action.address);
-
+        .update('from', (fromValue) => action.address || fromValue)
+        .update('sendTokenSymbol', (sendTokenSymbolValue) => action.sendTokenSymbol || sendTokenSymbolValue);
     case CHANGE_AMOUNT:
       return state
         .set('amount', action.amount);

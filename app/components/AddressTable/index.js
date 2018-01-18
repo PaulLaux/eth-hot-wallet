@@ -259,7 +259,7 @@ function AddressTable(props) {
             {/* <a href="#" >Show QR</a>
             <span className="ant-divider" /> */}
             {/* eslint-disable */}
-            <a onClick={() => onShowSendToken(record.address)}>Send</a>
+            <a onClick={() => onShowSendToken(record.address,record.token)}>Send</a>
             {/* eslint-enable */}
           </span>
         )}

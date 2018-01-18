@@ -11,7 +11,6 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-// import { FormattedMessage } from 'react-intl';
 
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -19,7 +18,7 @@ import { createStructuredSelector } from 'reselect';
 
 /* Components:  */
 import AddressView from 'components/AddressView';
-import SendTokenView from 'components/SendTokenView';
+import SendToken from 'containers/SendToken';
 import TokenChooserView from 'components/TokenChooserView';
 import GenerateWalletModal from 'components/GenerateWalletModal';
 import RestoreWalletModal from 'components/RestoreWalletModal';
@@ -45,7 +44,6 @@ import injectReducer from 'utils/injectReducer';
 import injectSaga from 'utils/injectSaga';
 import reducer from './reducer';
 import saga from './saga';
-// import messages from './messages';
 
 
 /* HomePage */
@@ -83,7 +81,6 @@ import {
   makeSelectIsComfirmed,
   makeSelectUserSeed,
   makeSelectUserPassword,
-  // makeSelectAddressList,
   makeSelectAddressMap,
   makeSelectShowRestoreWallet,
   makeSelectIsShowSendToken,
@@ -91,7 +88,6 @@ import {
   makeSelectAddressListLoading,
   makeSelectAddressListError,
   makeSelectAddressListMsg,
-  // makeSelectExchangeRates,
   makeSelectExchangeRates,
   makeSelectConvertTo,
   makeSelectSaveWalletLoading,
@@ -244,7 +240,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       getExchangeRatesError,
     };
 
-    const sendTokenViewProps = { isShowSendToken, onHideSendToken };
+    const sendTokenProps = { isShowSendToken, onHideSendToken };
     const tokenChooserViewProps = { isShowTokenChooser, onHideTokenChooser };
 
     return (
@@ -255,7 +251,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
           <GenerateWalletModal {...generateWalletProps} />
           <RestoreWalletModal {...restoreWalletModalProps} />
           <AddressView {...addressViewProps} />
-          <SendTokenView {...sendTokenViewProps} />
+          <SendToken {...sendTokenProps} />
           <TokenChooserView {...tokenChooserViewProps} />
         </Content>
         <PageFooter />
@@ -406,8 +402,8 @@ export function mapDispatchToProps(dispatch) {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
       dispatch(checkBalances());
     },
-    onShowSendToken: (address) => {
-      dispatch(showSendToken(address));
+    onShowSendToken: (address, tokenSymbol) => {
+      dispatch(showSendToken(address, tokenSymbol));
     },
     onHideSendToken: () => {
       dispatch(hideSendToken());

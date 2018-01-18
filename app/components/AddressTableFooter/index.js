@@ -74,7 +74,7 @@ function AddressTableFooter(props) {
         onClick={onShowTokenChooser}
         // onClick, loading, error, disabled, popconfirmMsg
       />
-
+      <br /><br />
     </Div>
   );
 }

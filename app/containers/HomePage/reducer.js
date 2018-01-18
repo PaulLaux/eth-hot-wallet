@@ -116,11 +116,6 @@ const initialState = fromJS({
       contractAddress: null,
       decimals: 18,
     },
-    eos: {
-      name: 'EOS',
-      contractAddress: '0x86fa049857e0209aa7d5e616f7eb3b3b78ecfdb0',
-      decimals: 18,
-    },
     symb: {
       name: 'Sample',
       contractAddress: '0x0a460180ec4fd3d5eb9dca8f84e8ca45b2ad9160',
