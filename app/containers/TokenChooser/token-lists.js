@@ -34,7 +34,7 @@ export const TokenSelection = {
       name: 'Tron',
       contractAddress: '0xf230b790e05390fc8295f4d3f60332c93bed42e2',
       decimals: 6,
-      description: 'TRON is a blockchain-based decentralized protocol that aims to construct a worldwide free content entertainment system with the blockchain and distributed storage technology.',
+      description: 'TRON is a blockchain-based decentralized protocol that aims to construct a worldwide free content entertainment system',
       url: 'https://tronlab.com/',
     },
     {

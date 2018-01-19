@@ -18,14 +18,14 @@ const { Column } = Table;
 // import messages from './messages';
 
 const AddrTable = styled(Table) `
-  max-width: 800px;
+  max-width: 850px;
   margin-left: auto;
   margin-right: auto;
   tbody{
     background: white;
   }
   .ant-table{
-    font-size: 12px !important;
+    font-size: 13px !important;
   }
   th.columnCenter,
   td.columnCenter{
@@ -175,7 +175,7 @@ function AddressTable(props) {
     <AddrTable
       dataSource={completeRowList}
       bordered
-      scroll={{ x: 550 }}
+      scroll={{ x: 650 }}
       pagination={false}
       locale={{
         filterTitle: null,
@@ -207,7 +207,7 @@ function AddressTable(props) {
         title="Address"
         dataIndex="address"
         key="address"
-        width="240px"
+        width="230px"
         className="columnCenter"
         colSpan="1"
         rowSpan="3"
@@ -230,7 +230,7 @@ function AddressTable(props) {
         title="Token"
         dataIndex="token"
         key="token"
-        width="55px"
+        width="65px"
         className="columnCenter"
       />
       <Column
