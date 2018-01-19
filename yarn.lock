@@ -7385,13 +7385,13 @@ react-lazy-load@^3.0.12:
     lodash.throttle "^4.0.0"
     prop-types "^15.5.8"
 
-react-loadable@4.0.3:
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/react-loadable/-/react-loadable-4.0.3.tgz#296c5cdfba3d402d66d2120d52fc08c2ca1f3088"
+react-loadable@4.0.5:
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/react-loadable/-/react-loadable-4.0.5.tgz#225eba40a0e67cc5698bcb5db6e783f0d3a9e729"
   dependencies:
     import-inspector "^2.0.0"
     is-webpack-bundle "^1.0.0"
-    webpack-require-weak "^1.0.0"
+    webpack-require-weak "^1.0.1"
 
 react-redux@5.0.6:
   version "5.0.6"
@@ -9129,7 +9129,7 @@ webpack-monitor@^1.0.13:
     opener "^1.4.3"
     purify-css "^1.2.6"
 
-webpack-require-weak@^1.0.0:
+webpack-require-weak@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/webpack-require-weak/-/webpack-require-weak-1.0.1.tgz#a6a8e60871bebbe5b085a915ab0af633a412433f"
   dependencies:
