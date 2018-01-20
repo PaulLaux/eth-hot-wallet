@@ -1,11 +1,7 @@
 {
   "name": "eth-hot-wallet",
-<<<<<<< HEAD
   "version": "0.3.0",
-=======
-  "version": "0.4.0",
->>>>>>> b92ad168b8eff8978fc21b97999b4d6d66ab3439
-  "description": "Ethereum Hot Wallet",
+  "description": "Ethereum and ERC20 Hot Wallet",
   "repository": {
     "type": "git",
     "url": "git://github.com/PaulLaux/eth-hot-wallet.git"
