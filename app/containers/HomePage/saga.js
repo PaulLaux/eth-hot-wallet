@@ -18,12 +18,15 @@ import {
   LOAD_WALLET,
 } from 'containers/HomePage/constants';
 
+import { CONFIRM_UPDATE_TOKEN_INFO } from 'containers/TokenChooser/constants';
+
 import {
   makeSelectPassword,
   makeSelectSeed,
   makeSelectUserSeed,
   makeSelectUserPassword,
   makeSelectKeystore,
+  makeSelectTokenInfoList,
 } from 'containers/HomePage/selectors';
 
 import { loadNetwork } from 'containers/Header/actions';
@@ -36,7 +39,7 @@ import { generatedPasswordLength, hdPathString, offlineModeString, defaultNetwor
 
 import { timer } from 'utils/common';
 
-import { getBalancePromise } from 'containers/Header/saga';
+import { getEthBalancePromise } from 'containers/Header/saga';
 
 import {
   generateWalletSucces,
@@ -57,6 +60,7 @@ import {
   saveWalletError,
   loadWalletSuccess,
   loadWalletError,
+  updateTokenInfo,
 } from './actions';
 
 /**
@@ -153,7 +157,9 @@ export function* genKeystore() {
     const pwDerivedKey = yield call(keyFromPasswordPromise, password);
     ks.generateNewAddress(pwDerivedKey, 2);
 
-    yield put(generateKeystoreSuccess(ks));
+    const tokenList = yield select(makeSelectTokenInfoList());
+
+    yield put(generateKeystoreSuccess(ks, tokenList));
     yield put(loadNetwork(defaultNetwork));
     yield put(saveWallet());
   } catch (err) {
@@ -192,17 +198,21 @@ export function* generateAddress() {
     const pwDerivedKey = yield call(keyFromPasswordPromise, password);
     ks.generateNewAddress(pwDerivedKey, 1);
 
+
+    const tokenList = yield select(makeSelectTokenInfoList());
     // get last address
     const newAddress = ks.getAddresses().slice(-1)[0];
     const index = ks.getAddresses().length; // serial index for sorting by generation order;
-    yield put(generateAddressSuccess(newAddress, index));
+    yield put(generateAddressSuccess(newAddress, index, tokenList));
     yield put(saveWallet());
+
     // balance checking for new address (will be aborted in offline mode)
     try {
-      const balance = yield call(getBalancePromise, newAddress);
-      yield put(changeBalance(newAddress, balance));
+      const balance = yield call(getEthBalancePromise, newAddress);
+      yield put(changeBalance(newAddress, 'eth', balance));
     } catch (err) { }  // eslint-disable-line 
   } catch (err) {
+    yield call(timer, 1000); // eye candy
     yield put(generateAddressError(err.message));
   }
 }
@@ -264,14 +274,12 @@ export function* unlockWallet() {
 }
 
 /**
- * change source address when opening send modal
+ * change source address and token when opening send modal
  */
 export function* changeSourceAddress(action) {
-  // during the initial load SendToken container isn't attached yet,
   // wait for container to load and then change from address
-  yield call(timer, 200);
   if (action.address) {
-    yield put(changeFrom(action.address));
+    yield put(changeFrom(action.address, action.sendTokenSymbol));
   }
 }
 
@@ -329,7 +337,8 @@ export function* loadWalletS() {
     const ksDump = dump.ks;
     const ks = lightwallet.keystore.deserialize(ksDump);
 
-    yield put(generateKeystoreSuccess(ks));
+    const tokenList = yield select(makeSelectTokenInfoList());
+    yield put(generateKeystoreSuccess(ks, tokenList));
     yield put(loadNetwork(defaultNetwork));
     yield put(loadWalletSuccess());
   } catch (err) {
@@ -343,6 +352,16 @@ export function* loadWalletS() {
  */
 export function* deleteWallet() {
   localStore.clearAll();
+}
+
+/**
+ * Saga triggered by TokenChooser container to pass tokenInfo for selected tokens
+ * @param {object} action dispatched by tokenChooser
+ * @param {object} action.tokenInfo
+ */
+export function* chosenTokenInfo(action) {
+  const addressList = (yield select(makeSelectKeystore())).getAddresses();
+  yield put(updateTokenInfo(addressList, action.tokenInfo));
 }
 
 /**
@@ -366,6 +385,7 @@ export default function* walletData() {
   yield takeLatest(SAVE_WALLET, saveWalletS);
   yield takeLatest(LOAD_WALLET, loadWalletS);
 
+  yield takeLatest(CONFIRM_UPDATE_TOKEN_INFO, chosenTokenInfo);
   /*
   while (yield takeLatest(INIT_WALLET, initSeed)) {
     // yield takeLatest(GENERATE_KEYSTORE, genKeystore);

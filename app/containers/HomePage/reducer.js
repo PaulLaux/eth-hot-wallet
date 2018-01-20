@@ -32,6 +32,10 @@ import {
 
   SHOW_SEND_TOKEN,
   HIDE_SEND_TOKEN,
+  SHOW_TOKEN_CHOOSER,
+  HIDE_TOKEN_CHOOSER,
+
+  UPDATE_TOKEN_INFO,
 
   GENERATE_ADDRESS,
   GENERATE_ADDRESS_SUCCESS,
@@ -80,14 +84,14 @@ const initialState = fromJS({
 
   keystore: false,
   addressList: false,
+
   /*
   addressList: {
     address1: {
         order: 1
-        eth: {
-            balance: bigNumber
-            convertBalance: bigNumber
-          }
+        eth: {balance: bigNumber},
+        eos: {balance: bigNumber},
+        ppt: {balance: bigNumber},
       }
   } */
 
@@ -98,15 +102,26 @@ const initialState = fromJS({
   addressListError: false,
   addressListMsg: false,
 
-  isShowSendToken: false, // sent modal is being shown
-
-  isLocalStorageWallet: false, // Does we have wallet in localStorage?
-  checkLocalStorageLoading: false,
+  isShowSendToken: false,
+  isShowTokenChooser: false,
 
   saveWalletLoading: false,
   saveWalletError: false,
   loadWalletLoading: false,
   loadWalletError: false,
+
+  tokenInfo: {
+    eth: {
+      name: 'Ethereum',
+      contractAddress: null,
+      decimals: 18,
+    },
+    symb: {
+      name: 'Sample',
+      contractAddress: '0xd5b3812e67847af90aa5835abd5c253ff5252ec2',
+      decimals: 1,
+    },
+  },
 });
 
 function homeReducer(state = initialState, action) {
@@ -145,7 +160,7 @@ function homeReducer(state = initialState, action) {
         .set('seed', false)
         .set('isComfirmed', true)
         .set('addressListError', false)
-        .set('addressList', fromJS(action.addressList))
+        .set('addressList', fromJS(action.addressMap))
         .set('generateKeystoreLoading', false);
     case GENERATE_KEYSTORE_ERROR:
       return state
@@ -188,7 +203,7 @@ function homeReducer(state = initialState, action) {
 
     case CHANGE_BALANCE:
       return state
-        .setIn(['addressList', action.address, 'eth', 'balance'], action.balance);
+        .setIn(['addressList', action.address, action.symbol, 'balance'], action.balance);
 
     case SHOW_SEND_TOKEN:
       return state
@@ -196,6 +211,20 @@ function homeReducer(state = initialState, action) {
     case HIDE_SEND_TOKEN:
       return state
         .set('isShowSendToken', false);
+
+    case SHOW_TOKEN_CHOOSER:
+      return state
+        .set('isShowTokenChooser', true);
+    case HIDE_TOKEN_CHOOSER:
+      return state
+        .set('isShowTokenChooser', false);
+
+    case UPDATE_TOKEN_INFO:
+      return state
+        .set('isShowTokenChooser', false)
+        .set('addressListError', false)
+        .set('tokenInfo', fromJS(action.tokenInfo))
+        .set('addressList', fromJS(action.addressMap));
 
     case GENERATE_ADDRESS:
       return state
@@ -207,9 +236,7 @@ function homeReducer(state = initialState, action) {
         .set('addressListLoading', false)
         .set('addressListError', false)
         .set('addressListMsg', 'New address generated succesfully')
-        // Add new address as key and set balance as false ('n/a')
-        .setIn(['addressList', action.newAddress, 'eth', 'balance'], false)
-        .setIn(['addressList', action.newAddress, 'index'], action.index);
+        .setIn(['addressList', action.newAddress], fromJS(action.tokenMap));
     case GENERATE_ADDRESS_ERROR:
       return state
         .set('addressListLoading', false)

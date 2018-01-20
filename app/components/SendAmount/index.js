@@ -11,7 +11,7 @@ import { InputNumber } from 'antd';
 
 function SendAmount({ amount, onChangeAmount, locked }) {
   return (
-    <div>
+    <span>
       {'Amount: '}
       <InputNumber
         value={amount}
@@ -20,7 +20,7 @@ function SendAmount({ amount, onChangeAmount, locked }) {
         onChange={(value) => onChangeAmount((value))}
         disabled={locked}
       />
-    </div>
+    </span>
   );
 }
 

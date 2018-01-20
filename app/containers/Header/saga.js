@@ -3,8 +3,19 @@ import SignerProvider from 'vendor/ethjs-provider-signer/ethjs-provider-signer';
 import BigNumber from 'bignumber.js';
 import { take, call, put, select, takeLatest, race, fork } from 'redux-saga/effects';
 
-import { makeSelectKeystore, makeSelectAddressList, makeSelectPassword } from 'containers/HomePage/selectors';
-import { changeBalance, setExchangeRates } from 'containers/HomePage/actions';
+import {
+  makeSelectKeystore,
+  makeSelectAddressList,
+  makeSelectPassword,
+  makeSelectAddressMap,
+  makeSelectTokenInfoList,
+  makeSelectTokenInfo,
+} from 'containers/HomePage/selectors';
+import {
+  changeBalance,
+  setExchangeRates,
+  updateTokenInfo,
+} from 'containers/HomePage/actions';
 import request from 'utils/request';
 
 import {
@@ -18,6 +29,7 @@ import {
   makeSelectTo,
   makeSelectAmount,
   makeSelectGasPrice,
+  makeSelectSendTokenSymbol,
 } from 'containers/SendToken/selectors';
 import {
   COMFIRM_SEND_TRANSACTION,
@@ -28,15 +40,20 @@ import {
   timeBetweenCheckbalances,
   Ether,
   Gwei,
-  maxGasForSendEth,
+  maxGasForEthSend,
+  maxGasForTokenSend,
   offlineModeString,
   checkFaucetAddress,
   askFaucetAddress,
 } from 'utils/constants';
 import { timer } from 'utils/common';
+import { erc20Abi } from 'utils/contracts/abi';
 import { message } from 'antd';
 
-import { makeSelectUsedFaucet } from './selectors';
+import {
+  makeSelectUsedFaucet,
+  makeSelectPrevNetworkName,
+} from './selectors';
 import {
   loadNetworkSuccess,
   loadNetworkError,
@@ -69,9 +86,10 @@ import {
 } from './constants';
 
 import Network from './network';
-const web3 = new Web3();
+const web3 = new Web3(); // eslint-disable-line
+const erc20Contract = web3.eth.contract(erc20Abi);
 
-/* for development, if online = false then most api calls will be replaced by constant values
+/* For development only, if online = false then most api calls will be replaced by constant values
 * affected functions:
 * loadNetwork() will connect to 'Local RPC' but default network name will be showen in gui
 * getRates() will not call rate api
@@ -103,7 +121,6 @@ export function* loadNetwork(action) {
     const keystore = yield select(makeSelectKeystore());
 
     if (keystore) {
-      // console.log(keystore.getAddresses().map((a) => `${a}`));
       const provider = new SignerProvider(rpcAddress, {
         signTransaction: keystore.signTransaction.bind(keystore),
         accounts: (cb) => cb(null, keystore.getAddresses()),
@@ -128,6 +145,13 @@ export function* loadNetwork(action) {
       // actions after succesfull network load :
       yield put(checkBalances());
       yield put(getExchangeRates());
+
+      // clear token list if changed network
+
+      const prevNetwork = yield select(makeSelectPrevNetworkName());
+      if (prevNetwork !== action.networkName) {
+        yield put(updateTokenInfo(keystore.getAddresses, action.tokenInfo));
+      }
 
       const usedFaucet = yield select(makeSelectUsedFaucet());
       if (action.networkName === 'Ropsten Testnet' && !usedFaucet) {
@@ -163,8 +187,8 @@ export function* confirmSendTransaction() {
       throw new Error('Destenation address invalid');
     }
 
-    if (!gasPrice.gte(new BigNumber(1).times(Gwei))) {
-      throw new Error('Gas price must be 1 Gwei at least');
+    if (!(gasPrice > 0.1)) {
+      throw new Error('Gas price must be at least 0.1 Gwei');
     }
 
     const msg = `Transaction created successfully. 
@@ -183,41 +207,62 @@ export function* SendTransaction() {
     const fromAddress = yield select(makeSelectFrom());
     const amount = yield select(makeSelectAmount());
     const toAddress = yield select(makeSelectTo());
-    const gasPrice = yield select(makeSelectGasPrice());
+    const gasPrice = new BigNumber(yield select(makeSelectGasPrice())).times(Gwei);
     const password = yield select(makeSelectPassword());
 
-    if (!password) {
-      throw new Error('No password found - please unlock wallet before sending');
-    }
+    const tokenToSend = yield select(makeSelectSendTokenSymbol());
 
+    if (!password) {
+      throw new Error('No password found - please unlock wallet before send');
+    }
     if (!keystore) {
       throw new Error('No keystore found - please create wallet');
     }
-
     keystore.passwordProvider = (callback) => {
-      // we cannot use selector inside this callback so we just use a const value
+      // we cannot use selector inside this callback so we use a const value
       const ksPassword = password;
       callback(null, ksPassword);
     };
 
-    const sendAmount = new BigNumber(amount).times(Ether);
-
-    const sendParams = { from: fromAddress, to: toAddress, value: sendAmount, gasPrice, gas: maxGasForSendEth };
-
-    function sendTransactionPromise(params) { // eslint-disable-line no-inner-declarations
-      return new Promise((resolve, reject) => {
-        web3.eth.sendTransaction(params, (err, data) => {
-          if (err !== null) return reject(err);
-          return resolve(data);
+    let tx;
+    if (tokenToSend === 'eth') {
+      const sendAmount = new BigNumber(amount).times(Ether);
+      const sendParams = { from: fromAddress, to: toAddress, value: sendAmount, gasPrice, gas: maxGasForEthSend };
+      function sendTransactionPromise(params) { // eslint-disable-line no-inner-declarations
+        return new Promise((resolve, reject) => {
+          web3.eth.sendTransaction(params, (err, data) => {
+            if (err !== null) return reject(err);
+            return resolve(data);
+          });
         });
-      });
-    }
+      }
+      tx = yield call(sendTransactionPromise, sendParams);
+    } else { // any other token
+      const tokenInfo = yield select(makeSelectTokenInfo(tokenToSend));
+      if (!tokenInfo) {
+        throw new Error(`Contract address for token '${tokenToSend}' not found`);
+      }
+      const contractAddress = tokenInfo.contractAddress;
+      const sendParams = { from: fromAddress, value: '0x0', gasPrice, gas: maxGasForTokenSend };
+      const tokenAmount = amount * (10 ** tokenInfo.decimals); // Big Number??
 
-    const tx = yield call(sendTransactionPromise, sendParams);
+      function sendTokenPromise(tokenContractAddress, sendToAddress, sendAmount, params) { // eslint-disable-line no-inner-declarations
+        return new Promise((resolve, reject) => {
+          const tokenContract = erc20Contract.at(tokenContractAddress);
+          tokenContract.transfer.sendTransaction(sendToAddress, sendAmount, params, (err, sendTx) => {
+            if (err) return reject(err);
+            return resolve(sendTx);
+          });
+        });
+      }
+      tx = yield call(sendTokenPromise, contractAddress, toAddress, tokenAmount, sendParams);
+    }
 
     yield put(sendTransactionSuccess(tx));
   } catch (err) {
-    yield put(sendTransactionError(err.message));
+    const loc = err.message.indexOf('at runCall');
+    const errMsg = (loc > -1) ? err.message.slice(0, loc) : err.message;
+    yield put(sendTransactionError(errMsg));
   } finally {
     keystore.passwordProvider = origProvider;
   }
@@ -225,7 +270,7 @@ export function* SendTransaction() {
 
 
 /* *************  Polling saga and polling flow for check balances ***************** */
-export function getBalancePromise(address) {
+export function getEthBalancePromise(address) {
   return new Promise((resolve, reject) => {
     web3.eth.getBalance(address, (err, data) => {
       if (err !== null) return reject(err);
@@ -234,18 +279,63 @@ export function getBalancePromise(address) {
   });
 }
 
+export function getTokenBalancePromise(address, tokenContractAddress) {
+  return new Promise((resolve, reject) => {
+    const tokenContract = erc20Contract.at(tokenContractAddress);
+    tokenContract.balanceOf.call(address, (err, balance) => {
+      if (err) return reject(err);
+      return resolve(balance);
+    });
+  });
+}
+
+
+function* checkTokenBalance(address, symbol) {
+  if (!address || !symbol) {
+    return null;
+  }
+  const tokenInfo = yield select(makeSelectTokenInfo(symbol));
+  const contractAddress = tokenInfo.contractAddress;
+
+  const balance = yield call(getTokenBalancePromise, address, contractAddress);
+
+  yield put(changeBalance(address, symbol, balance));
+
+  return true;
+}
+
+function* checkTokensBalances(address) {
+  const opt = {
+    returnList: true,
+    removeIndex: true,
+    removeEth: true,
+  };
+  const tokenList = yield select(makeSelectAddressMap(address, opt));
+
+  for (let i = 0; i < tokenList.length; i += 1) {
+    const symbol = tokenList[i];
+    // console.log('address: ' + address + ' token: ' + tokenList[i]);
+    yield checkTokenBalance(address, symbol);
+  }
+  // console.log(tokenMap);
+}
+
 export function* checkAllBalances() {
   try {
     let j = 0;
-    const addressList = yield select(makeSelectAddressList());
-    const addressListArr = addressList.keySeq().toArray();
+    const addressList = yield select(makeSelectAddressMap(false, { returnList: true }));
 
     do { // Iterate over all addresses and check for balance
-      const addr = addressListArr[j];
-      const balance = yield call(getBalancePromise, addr);
-      yield put(changeBalance(addr, balance));
+      const address = addressList[j];
+      // handle eth
+      const balance = yield call(getEthBalancePromise, address);
+      yield put(changeBalance(address, 'eth', balance));
+
+      // handle tokens
+      yield checkTokensBalances(address);
+
       j += 1;
-    } while (j < addressListArr.length);
+    } while (j < addressList.length);
 
     yield put(checkBalancesSuccess());
   } catch (err) {
@@ -253,7 +343,7 @@ export function* checkAllBalances() {
   }
 }
 
-// Utility function to delay effects
+// Utility function for delay effects
 function delay(millisec) {
   const promise = new Promise((resolve) => {
     setTimeout(() => resolve(true), millisec);
@@ -292,9 +382,10 @@ function* watchPollData() {
  * Get exchange rates from api
  */
 export function* getRates() {
-  const requestURL = 'https://api.coinmarketcap.com/v1/ticker/ethereum/?convert=EUR';
+  // const requestURL = 'https://api.coinmarketcap.com/v1/ticker/ethereum/?convert=EUR';
+  const requestURL = 'https://api.coinmarketcap.com/v1/ticker/?convert=EUR';
   try {
-    const dummyRates = { // for testin in online = false mode
+    let dummyRates = [{ // for testin in online = false mode
       id: 'ethereum',
       name: 'Ethereum',
       symbol: 'ETH',
@@ -312,14 +403,20 @@ export function* getRates() {
       price_eur: '252.342998284',
       '24h_volume_eur': '263919211.548',
       market_cap_eur: '23954572799.0',
-    };
+    }];
+
+    if (!online) {
+      dummyRates = require('./tests/dummyRates').dummyRates; // eslint-disable-line
+    }
 
     // Call our request helper (see 'utils/request')
-    const apiRates = online ? (yield call(request, requestURL))[0] : dummyRates;
+    const apiRates = online ? (yield call(request, requestURL)) : dummyRates;
 
     // console.log(apiPrices);
 
-    yield put(setExchangeRates(apiRates, requestURL));
+    const tokenList = yield select(makeSelectTokenInfoList());
+
+    yield put(setExchangeRates(apiRates, requestURL, tokenList));
     yield put(getExchangeRatesSuccess());
   } catch (err) {
     yield put(getExchangeRatesError(err));

@@ -8,10 +8,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { Button, Popconfirm } from 'antd';
-import AddressTableFooterErrors from 'components/AddressTableFooterErrors';
-// import { FormattedMessage } from 'react-intl';
-// import messages from './messages';
+import IconButton from 'components/IconButton';
 
 const Div = styled.div`
   margin-top: 14px;
@@ -24,7 +21,6 @@ const Div = styled.div`
 
 function AddressTableFooter(props) {
   const {
-    // checkingBalanceDoneTime,
     checkingBalancesError,
     checkingBalances,
     onCheckBalances,
@@ -34,51 +30,51 @@ function AddressTableFooter(props) {
     onGenerateAddress,
     addressListLoading,
     addressListError,
-    // addressListMsg,
 
     onGetExchangeRates,
-    // getExchangeRatesDoneTime,
     getExchangeRatesLoading,
     getExchangeRatesError,
-  } = props;
 
-  const addressTableFooterErrorsProps = { checkingBalancesError, addressListError, getExchangeRatesError };
+    onShowTokenChooser,
+  } = props;
 
   return (
     <Div>
-      <Button
-        size="large"
-        type="default"
+      <IconButton
+        text="Add address"
         icon="plus"
-        loading={addressListLoading}
         onClick={onGenerateAddress}
+        loading={addressListLoading}
+        error={addressListError}
         disabled={!isComfirmed}
-      >
-        Add address
-      </Button>
-      <Popconfirm title="Refresh balance?" onConfirm={onCheckBalances} okText="Confirm" cancelText="No">
-        <Button
-          size="large"
-          type="default"
-          icon="reload"
-          loading={checkingBalances}
-          disabled={!networkReady}
-        >
-          Check balances
-        </Button>
-      </Popconfirm>
-      <Popconfirm title="Refresh exchange rates?" onConfirm={onGetExchangeRates} okText="Confirm" cancelText="No">
-        <Button
-          size="large"
-          type="default"
-          icon="global"
-          loading={getExchangeRatesLoading}
-          disabled={!networkReady}
-        >
-          Update exchange rates
-        </Button>
-      </Popconfirm>
-      <AddressTableFooterErrors {...addressTableFooterErrorsProps} />
+        popconfirmMsg={false}
+      />
+      <IconButton
+        text="Check balances"
+        icon="reload"
+        onClick={onCheckBalances}
+        loading={checkingBalances}
+        error={checkingBalancesError}
+        disabled={!networkReady}
+        popconfirmMsg="Refresh balance?"
+      />
+      <IconButton
+        text="Update exchange rates"
+        icon="global"
+        onClick={onGetExchangeRates}
+        loading={getExchangeRatesLoading}
+        error={getExchangeRatesError}
+        disabled={!networkReady}
+        popconfirmMsg="Refresh exchange rates?"
+      />
+      <br />
+      <IconButton
+        text="Select Tokens"
+        icon="select"
+        onClick={onShowTokenChooser}
+        // onClick, loading, error, disabled, popconfirmMsg
+      />
+      <br /><br />
     </Div>
   );
 }
@@ -86,7 +82,6 @@ function AddressTableFooter(props) {
 AddressTableFooter.propTypes = {
   onCheckBalances: PropTypes.func,
   networkReady: PropTypes.bool,
-  // checkingBalanceDoneTime: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   checkingBalances: PropTypes.bool,
   checkingBalancesError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
 
@@ -94,12 +89,11 @@ AddressTableFooter.propTypes = {
   onGenerateAddress: PropTypes.func,
   addressListLoading: PropTypes.bool,
   addressListError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
-  // addressListMsg: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
 
   onGetExchangeRates: PropTypes.func,
-  // getExchangeRatesDoneTime: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   getExchangeRatesLoading: PropTypes.bool,
   getExchangeRatesError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
+  onShowTokenChooser: PropTypes.func,
 };
 
 export default AddressTableFooter;

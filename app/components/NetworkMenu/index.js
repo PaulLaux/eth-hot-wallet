@@ -18,6 +18,9 @@ const NetMenu = styled(Menu)`
   border: 0;
   text-align: center;
   z-index: 1 !important;
+  .ant-menu-submenu-title{
+    font-size: 16px;
+  }
 `;
 
 function NetworkMenu(props) {

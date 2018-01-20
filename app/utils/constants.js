@@ -9,10 +9,13 @@ export const generatedPasswordLength = 12;
 export const hdPathString = `m/44'/60'/0'/0`; // eslint-disable-line
 
 // time in ms for check balancess polling
-export const timeBetweenCheckbalances = 60 * 1000;
+export const timeBetweenCheckbalances = 180 * 1000;
 
 /* Max gas for send transaction (not gas price) */
-export const maxGasForSendEth = 25000;
+export const maxGasForEthSend = 25000;
+/* Max gas for token send transaction (not gas price) */
+export const maxGasForTokenSend = 60000;
+
 
 /* Eth unit constants will be saved as strings to prevent accidental manipulation
     usage: convert amount to wei
