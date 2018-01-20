@@ -63,7 +63,7 @@ import { erc20Abi } from 'utils/contracts/abi';
 
 ### Development
 
-3 Major containers were created:
+4 Major containers were created:
 
 - Homepage container - all the actions related to keystore, including manipulation and usage.
 
