@@ -106,7 +106,7 @@ function SendToken(props) {
   };
   const SendProgressProps = { sendInProgress, sendError, sendTx, txExplorer };
 
-  const SendTokenSymbolProps = { sendTokenSymbol, tokenInfoList, onChangeFrom };
+  const SendTokenSymbolProps = { sendTokenSymbol, tokenInfoList, onChangeFrom, locked };
 
   const modalFooter = [
     <Button key="reset" type="default" size="large" onClick={onAbortTransaction}>

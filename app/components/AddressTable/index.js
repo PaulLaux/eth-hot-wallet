@@ -175,7 +175,7 @@ function AddressTable(props) {
     <AddrTable
       dataSource={completeRowList}
       bordered
-      scroll={{ x: 650 }}
+      scroll={{ x: 850 }}
       pagination={false}
       locale={{
         filterTitle: null,
@@ -207,7 +207,7 @@ function AddressTable(props) {
         title="Address"
         dataIndex="address"
         key="address"
-        width="230px"
+        width="255px"
         className="columnCenter"
         colSpan="1"
         rowSpan="3"
@@ -248,7 +248,7 @@ function AddressTable(props) {
         title={<CurrencyDropdown {...currencyDropdownProps} />}
         dataIndex="convert"
         key="convert"
-        width="70px"
+        width="80px"
       />
       <Column
         width="65px"

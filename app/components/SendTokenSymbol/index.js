@@ -12,7 +12,7 @@ const Option = Select.Option;
 
 
 function SendTokenSymbol(props) {
-  const { sendTokenSymbol, tokenInfoList, onChangeFrom } = props;
+  const { sendTokenSymbol, tokenInfoList, onChangeFrom, locked } = props;
 
   const optionsList = tokenInfoList.map((token) =>
     <Option key={token} value={token}>{token.toUpperCase()}</Option>
@@ -25,7 +25,7 @@ function SendTokenSymbol(props) {
         value={sendTokenSymbol}
         style={{ width: 85 }}
         onChange={(tokenSymbol) => onChangeFrom(null, tokenSymbol)}
-        disabled={tokenInfoList.length === 1}
+        disabled={tokenInfoList.length === 1 || locked}
       >
         {optionsList}
       </Select >
@@ -37,6 +37,7 @@ SendTokenSymbol.propTypes = {
   sendTokenSymbol: PropTypes.string,
   tokenInfoList: PropTypes.array,
   onChangeFrom: PropTypes.func,
+  locked: PropTypes.bool,
 };
 
 export default SendTokenSymbol;

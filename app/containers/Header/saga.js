@@ -29,6 +29,7 @@ import {
   makeSelectTo,
   makeSelectAmount,
   makeSelectGasPrice,
+  makeSelectSendTokenSymbol,
 } from 'containers/SendToken/selectors';
 import {
   COMFIRM_SEND_TRANSACTION,
@@ -95,7 +96,7 @@ const erc20Contract = web3.eth.contract(erc20Abi);
 * checkFaucetApi() will not request
 * askFaucetApi() will get costant Tx as success
 */
-const online = false;
+const online = true;
 if (!online) message.warn('Debug mode: online = false in Header/saga.js');
 /**
  * connect to rpc and attach keystore as siger provider
@@ -186,8 +187,8 @@ export function* confirmSendTransaction() {
       throw new Error('Destenation address invalid');
     }
 
-    if (!gasPrice.gte(new BigNumber(1).times(Gwei))) {
-      throw new Error('Gas price must be 1 Gwei at least');
+    if (!(gasPrice > 0.1)) {
+      throw new Error('Gas price must be at least 0.1 Gwei');
     }
 
     const msg = `Transaction created successfully. 
@@ -209,7 +210,7 @@ export function* SendTransaction() {
     const gasPrice = new BigNumber(yield select(makeSelectGasPrice())).times(Gwei);
     const password = yield select(makeSelectPassword());
 
-    const tokenToSend = 'symb';
+    const tokenToSend = yield select(makeSelectSendTokenSymbol());
 
     if (!password) {
       throw new Error('No password found - please unlock wallet before send');

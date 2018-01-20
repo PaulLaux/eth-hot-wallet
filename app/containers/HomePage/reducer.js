@@ -118,8 +118,8 @@ const initialState = fromJS({
     },
     symb: {
       name: 'Sample',
-      contractAddress: '0x0a460180ec4fd3d5eb9dca8f84e8ca45b2ad9160',
-      decimals: 18,
+      contractAddress: '0xd5b3812e67847af90aa5835abd5c253ff5252ec2',
+      decimals: 1,
     },
   },
 });
