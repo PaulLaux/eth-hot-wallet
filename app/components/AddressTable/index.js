@@ -18,7 +18,7 @@ const { Column } = Table;
 // import messages from './messages';
 
 const AddrTable = styled(Table) `
-  max-width: 850px;
+  max-width: 860px;
   margin-left: auto;
   margin-right: auto;
   tbody{
@@ -175,7 +175,7 @@ function AddressTable(props) {
     <AddrTable
       dataSource={completeRowList}
       bordered
-      scroll={{ x: 850 }}
+      scroll={{ x: 860 }}
       pagination={false}
       locale={{
         filterTitle: null,
@@ -207,7 +207,7 @@ function AddressTable(props) {
         title="Address"
         dataIndex="address"
         key="address"
-        width="255px"
+        width="267px"
         className="columnCenter"
         colSpan="1"
         rowSpan="3"

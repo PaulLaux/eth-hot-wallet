@@ -70,8 +70,9 @@ function AddressTableFooter(props) {
       <br />
       <IconButton
         text="Select Tokens"
-        icon="select"
+        icon="bars"
         onClick={onShowTokenChooser}
+        type="primary"
         // onClick, loading, error, disabled, popconfirmMsg
       />
       <br /><br />
