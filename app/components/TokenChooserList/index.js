@@ -9,7 +9,8 @@ import PropTypes from 'prop-types';
 import { List, Switch } from 'antd';
 import styled from 'styled-components';
 import TokenIcon from 'components/TokenIcon';
-
+const ListItem = List.Item;
+const ListItemMeta = List.Item.Meta;
 /*
 tokenList={TokensForNetwork}
 selectedTokens={[]}
@@ -30,13 +31,13 @@ function TokenChooserList(props) {
         itemLayout="horizontal"
         dataSource={tokenList}
         renderItem={(item) => (
-          <List.Item actions={[<Switch checked={chosenTokens[item.symbol]} onChange={(toggle) => onTokenToggle(item.symbol, toggle)} />]}>
-            <List.Item.Meta
+          <ListItem actions={[<Switch checked={chosenTokens[item.symbol]} onChange={(toggle) => onTokenToggle(item.symbol, toggle)} />]}>
+            <ListItemMeta
               avatar={<TokenIcon tokenSymbol={item.symbol} size={32} />}
               title={<a href={item.url} target="_blank" rel="noopener">{item.name} ({item.symbol.toUpperCase()})</a>}
               description={item.description}
             />
-          </List.Item>
+          </ListItem>
         )}
       />
     </LeftDiv>
