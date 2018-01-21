@@ -80,7 +80,7 @@ import { erc20Abi } from 'utils/contracts/abi';
 
 
 
-####npm scripts for eth-hot wallet:
+#### npm scripts for eth-hot wallet:
 
 `npm run build:dll` to build webpack DLL required for development.
 
