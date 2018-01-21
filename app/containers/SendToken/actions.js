@@ -19,11 +19,18 @@ import {
   SEND_TRANSACTION_ERROR,
 } from './constants';
 
-
-export function changeFrom(address) {
+/**
+ * Update from address and token, both parameters are optional
+ * @param  {string} [address] '0xffd..'
+ * @param  {object} [sendTokenSymbol] tokens to send (eth not included)
+ *
+ * @return {object}    An action object with a type of CHANGE_FROM, address and sendTokenSymbol
+ */
+export function changeFrom(address, sendTokenSymbol) {
   return {
     type: CHANGE_FROM,
     address,
+    sendTokenSymbol,
   };
 }
 

@@ -38,6 +38,10 @@ import {
 
   SHOW_SEND_TOKEN,
   HIDE_SEND_TOKEN,
+  SHOW_TOKEN_CHOOSER,
+  HIDE_TOKEN_CHOOSER,
+
+  UPDATE_TOKEN_INFO,
 
   GENERATE_ADDRESS,
   GENERATE_ADDRESS_SUCCESS,
@@ -222,43 +226,82 @@ export function generateKeystore() {
     type: GENERATE_KEYSTORE,
   };
 }
+
 /**
- * create addressList object which contains the info needed for each address such as ballance
- *
- * @param  {keystore} keystore The new keystore
+ * Transforms tokenList to tokenMap.
+ * Example:
+ * ['eth','eos','ppt'] ->
+ * {
+ * eos:{balance: false}
+ * eth:{balance: false}
+ * ppt:{balance: false}
+ * }
+ * Addds index prop if specified
+ * @param {array} tokenList example: ['eth','eos','ppt']
+ * @param {number} [index] address index
+ * @return {object}    a tokenMap
+ */
+function createTokenMap(tokenList, index) {
+  const reducer = (acc, token) => ({
+    ...acc,
+    ...{ [token]: { balance: false } },
+  });
+
+  if (index) {
+    const tokenMap = tokenList.reduce(reducer, {});
+    tokenMap.index = index;
+    return tokenMap;
+  }
+  return tokenList.reduce(reducer, {});
+}
+
+/**
+ * Creates addressMap for given addressList and tokenList
+ * Example:
+ * (['address1'],['eth','eos','ppt'])=>
+ * addressMap: {
+  address1: {
+      index: 1
+      eth: {balance: false},
+      eos: {balance: false},
+      ppt: {balance: false},
+    }
+  }
+ * @param {string[]} addressesList example: ['0xddd...','0xa465...']
+ * @param {string[]} tokenList ['eth','eos','ppt']
+ * @return {object}  addressMap
+ */
+function createAddressMap(addressesList, tokenList) {
+  const addressMap = {};
+  for (let i = 0; i < addressesList.length; i += 1) {
+    addressMap[addressesList[i]] = createTokenMap(tokenList, i + 1);
+  }
+  return addressMap;
+}
+
+/**
+ * create addressList object which contains the info for each address: ballance per token and index
+ * @param {string[]} tokenList example: ['eth','eos','ppt']
+ * @param {keystore} keystore The new keystore
  *
  * @return {object}      An action object with a type of GENERATE_KEYSTORE_SUCCESS passing the repos
  */
-export function generateKeystoreSuccess(keystore) {
+export function generateKeystoreSuccess(keystore, tokenList) {
   const addresses = keystore.getAddresses();
-  /*
-  addressList: {
-    lastIndex: 8
-    address0: {
+  const addressMap = createAddressMap(addresses, tokenList);
+  /* output:
+  addressMap: {
+    address1: {
         index: 1
-        eth: {
-            balance: bigNumber
-            convertBalance: bigNumber
-          }
+        eth: {balance: false},
+        eos: {balance: false},
+        ppt: {balance: false},
       }
   } */
-
-  const addressList = {};
-  for (let i = 0; i < addresses.length; i += 1) {
-    addressList[addresses[i]] = {
-      index: i + 1, // strat from 1 for user display
-      eth: {
-        balance: false,
-        // convertBalance: false,
-      },
-    };
-  }
-  // addressList.lastIndex = addresses.length - 1; TodO
-
   return {
     type: GENERATE_KEYSTORE_SUCCESS,
     keystore,
-    addressList,
+    addressMap,
   };
 }
 
@@ -279,33 +322,38 @@ export function generateKeystoreError(error) {
 
 /* **********************************Change balance ********************** */
 /**
- * Changes ballance for a given address
- * If address dont exist - new address will be created
+ * Changes ballance for a given address and symbol
+ * If address dont exist - new address will be created same for symbol
  *
- * @param  {object} address as string
- * @param  {object} balance BigNumber object
+ * @param  {string} address as string
+ * @param  {string} symbol 'eth' or other
+ * @param  {string} balance BigNumber object
  *
  * @return {object} An action object with a type of CHANGE_BALANCE with address and balance
  */
-export function changeBalance(address, balance) {
+export function changeBalance(address, symbol, balance) {
   return {
     type: CHANGE_BALANCE,
     address,
+    symbol,
     balance,
   };
 }
 
-/** ******************* Show / hide SEND_TOKEN ***************************** */
+/* ******************* Show / hide SEND_TOKEN ***************************** */
 /**
  * Show the SendToken container
+ * @param  {string} address '0xa4b..'
+ * @param  {string} [sendTokenSymbol] 'eth' or other
  *
- * @return {object}    An action object with a type of SHOW_SEND_TOKEN
+ * @return {object} An action object with a type of SHOW_SEND_TOKEN
  */
-export function showSendToken(address) {
+export function showSendToken(address, sendTokenSymbol) {
   // console.log(address);
   return {
     type: SHOW_SEND_TOKEN,
     address,
+    sendTokenSymbol,
   };
 }
 
@@ -317,6 +365,58 @@ export function showSendToken(address) {
 export function hideSendToken() {
   return {
     type: HIDE_SEND_TOKEN,
+  };
+}
+
+/* ******************* Show / hide TOKEN_CHOOSER ***************************** */
+/**
+ * Show the TokenChooser container
+ *
+ * @return {object}    An action object with a type of SHOW_TOKEN_CHOOSER
+ */
+export function showTokenChooser() {
+  return {
+    type: SHOW_TOKEN_CHOOSER,
+  };
+}
+
+/**
+ * Hide the TokenChooser container
+ *
+ * @return {object}    An action object with a type of HIDE_TOKEN_CHOOSER
+ */
+export function hideTokenChooser() {
+  return {
+    type: HIDE_TOKEN_CHOOSER,
+  };
+}
+
+
+/* ******************* UPDATE_TOKEN_INFO ***************************** */
+
+/**
+ * Update tokenInfo object and regenerate addressMap with new tokens
+ * @param  {string[]} addressList ['0xffd..']
+ * @param  {object} newTokenInfo tokens to use (eth not included)
+ *
+ * @return {object}    An action object with a type of UPDATE_TOKEN_INFO, tokenInfo and addressMap
+ */
+export function updateTokenInfo(addressList, newTokenInfo) {
+  const tokenInfo = {
+    eth: {
+      name: 'Ethereum',
+      contractAddress: null,
+      decimals: 18,
+    },
+    ...newTokenInfo,
+  };
+
+  const addressMap = createAddressMap(addressList, Object.keys(tokenInfo));
+
+  return {
+    type: UPDATE_TOKEN_INFO,
+    tokenInfo,
+    addressMap,
   };
 }
 
@@ -337,16 +437,22 @@ export function generateAddress() {
 /**
  * After successfull address generation create new addressList for our store.
  *
- * @param  {newAddress} string the updated keystore
- * @param  {index} number address serial number of generation
+ * @param {string} newAddress the updated keystore
+ * @param {number} index address serial number of generation
+ * @param {string[]} tokenList example: ['eth','eos','ppt']
  *
- * @return {object}      An action object with a type of GENERATE_ADDRESS_SUCCESS and newAddress passing the newly generated address
+ * @return {object} An action object with a type of GENERATE_ADDRESS_SUCCESS,
+ * newAddress and tokenMap for the new address
  */
-export function generateAddressSuccess(newAddress, index) {
+export function generateAddressSuccess(newAddress, index, tokenList) {
+  const tokenMap = createTokenMap(tokenList);// , index);
+  console.log(tokenMap);
+
+  tokenMap.index = index;
   return {
     type: GENERATE_ADDRESS_SUCCESS,
     newAddress,
-    index,
+    tokenMap,
   };
 }
 
@@ -358,6 +464,7 @@ export function generateAddressSuccess(newAddress, index) {
  * @return {object} An action object with a type of GENERATE_ADDRESS_ERROR passing the error
  */
 export function generateAddressError(error) {
+  message.error(error);
   return {
     type: GENERATE_ADDRESS_ERROR,
     error,
@@ -409,7 +516,7 @@ export function unlockWalletSuccess(password) {
 /**
  * Dispatched when password given by user is incorrect
  *
- * @param  {object} error The error
+ * @param  {object} error
  *
  * @return {object} An action object with a type of GENERATE_ADDRESS_ERROR passing the error
  */
@@ -430,13 +537,12 @@ export function unlockWalletError(error) {
  * requestUrl is used as identifier of the apiPrices
  *
  * @param  {string} requestURL the url used to get apiPrices
- * @param  {object} apiRates The response from external api
- *
+ * @param  {object[]} apiRates The response from external api
+ * @param  {string} tokenList list of relevant tokens: ['eth','eos','ppt']
  * @return {object} An action object with a type of SET_EXCHANGE_RATES and rates converted to proper format:
  */
-export function setExchangeRates(apiRates, requestURL) {
-  const rates = extractRates(apiRates, requestURL);
-
+export function setExchangeRates(apiRates, requestURL, tokenList) {
+  const rates = extractRates(apiRates, requestURL, tokenList);
   return {
     type: SET_EXCHANGE_RATES,
     rates,
@@ -533,7 +639,7 @@ export function saveWalletSuccess() {
  * @return {object} An action object with a type of SAVE_WALLET_ERROR
  */
 export function saveWalletError(error) {
-  console.log(error);
+  console.warn(error);
   return {
     type: SAVE_WALLET_ERROR,
     error,
