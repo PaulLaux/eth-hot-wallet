@@ -16,7 +16,7 @@ selectedTokens={[]}
 onTokenToggle={(x) => console.log(x)}
 */
 
-const LeftList = styled(List) `
+const LeftDiv = styled.div`
 .ant-list-item-meta-content{
   text-align:left;
 }
@@ -25,19 +25,21 @@ const LeftList = styled(List) `
 function TokenChooserList(props) {
   const { tokenList, chosenTokens, onTokenToggle } = props;
   return (
-    <LeftList
-      itemLayout="horizontal"
-      dataSource={tokenList}
-      renderItem={(item) => (
-        <List.Item actions={[<Switch checked={chosenTokens[item.symbol]} onChange={(toggle) => onTokenToggle(item.symbol, toggle)} />]}>
-          <List.Item.Meta
-            avatar={<TokenIcon tokenSymbol={item.symbol} size={32} />}
-            title={<a href={item.url} target="_blank" rel="noopener">{item.name} ({item.symbol.toUpperCase()})</a>}
-            description={item.description}
-          />
-        </List.Item>
-      )}
-    />
+    <LeftDiv>
+      <List
+        itemLayout="horizontal"
+        dataSource={tokenList}
+        renderItem={(item) => (
+          <List.Item actions={[<Switch checked={chosenTokens[item.symbol]} onChange={(toggle) => onTokenToggle(item.symbol, toggle)} />]}>
+            <List.Item.Meta
+              avatar={<TokenIcon tokenSymbol={item.symbol} size={32} />}
+              title={<a href={item.url} target="_blank" rel="noopener">{item.name} ({item.symbol.toUpperCase()})</a>}
+              description={item.description}
+            />
+          </List.Item>
+        )}
+      />
+    </LeftDiv>
   );
 }
 
