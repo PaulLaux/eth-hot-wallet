@@ -19,7 +19,7 @@ import { createStructuredSelector } from 'reselect';
 /* Components:  */
 import AddressView from 'components/AddressView';
 import SendToken from 'containers/SendToken';
-import TokenChooserView from 'components/TokenChooserView';
+import TokenChooser from 'containers/TokenChooser';
 import GenerateWalletModal from 'components/GenerateWalletModal';
 import RestoreWalletModal from 'components/RestoreWalletModal';
 import SubHeader from 'components/SubHeader';
@@ -241,7 +241,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     };
 
     const sendTokenProps = { isShowSendToken, onHideSendToken };
-    const tokenChooserViewProps = { isShowTokenChooser, onHideTokenChooser };
+    const tokenChooserProps = { isShowTokenChooser, onHideTokenChooser };
 
     return (
       <div>
@@ -252,7 +252,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
           <RestoreWalletModal {...restoreWalletModalProps} />
           <AddressView {...addressViewProps} />
           <SendToken {...sendTokenProps} />
-          <TokenChooserView {...tokenChooserViewProps} />
+          <TokenChooser {...tokenChooserProps} />
         </Content>
         <PageFooter />
       </div>

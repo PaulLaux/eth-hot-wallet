@@ -295,7 +295,6 @@
     "null-loader": "0.1.1",
     "offline-plugin": "4.8.1",
     "plop": "1.8.0",
-    "pre-commit": "1.2.2",
     "react-test-renderer": "15.5.4",
     "rimraf": "2.6.2",
     "shelljs": "0.7.7",
