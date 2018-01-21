@@ -18,14 +18,24 @@ import injectReducer from 'utils/injectReducer';
 import SendFrom from 'components/SendFrom';
 import SendTo from 'components/SendTo';
 import SendAmount from 'components/SendAmount';
+import SendTokenSymbol from 'components/SendTokenSymbol';
 import SendGasPrice from 'components/SendGasPrice';
 import SendConfirmationView from 'components/SendConfirmationView';
 import SendProgress from 'components/SendProgress';
 
-import { makeSelectAddressList } from 'containers/HomePage/selectors';
+import { makeSelectAddressList, makeSelectTokenInfoList } from 'containers/HomePage/selectors';
 import { makeSelectTxExplorer } from 'containers/Header/selectors';
 
-import { changeFrom, changeAmount, changeTo, changeGasPrice, confirmSendTransaction, sendTransaction, abortTransaction } from './actions';
+import {
+  changeFrom,
+  changeAmount,
+  changeTo,
+  changeGasPrice,
+  confirmSendTransaction,
+  sendTransaction,
+  abortTransaction,
+} from './actions';
+
 import {
   makeSelectFrom,
   makeSelectTo,
@@ -39,6 +49,7 @@ import {
   makeSelectSendInProgress,
   makeSelectSendError,
   makeSelectSendTx,
+  makeSelectSendTokenSymbol,
 } from './selectors';
 import reducer from './reducer';
 // import saga from './saga';
@@ -67,6 +78,9 @@ function SendToken(props) {
     onSendTransaction,
     onAbortTransaction,
 
+    sendTokenSymbol,
+    tokenInfoList,
+
     sendInProgress,
     sendError,
     sendTx,
@@ -92,6 +106,8 @@ function SendToken(props) {
   };
   const SendProgressProps = { sendInProgress, sendError, sendTx, txExplorer };
 
+  const SendTokenSymbolProps = { sendTokenSymbol, tokenInfoList, onChangeFrom, locked };
+
   const modalFooter = [
     <Button key="reset" type="default" size="large" onClick={onAbortTransaction}>
       Reset
@@ -111,7 +127,8 @@ function SendToken(props) {
         footer={modalFooter}
       >
         <SendFrom {...SendFromProps} /> <br />
-        <SendAmount {...SendAmountProps} /> <br />
+        <SendAmount {...SendAmountProps} />
+        <SendTokenSymbol {...SendTokenSymbolProps} /><br /> <br />
         <SendTo {...SendToProps} /> <br />
         <SendGasPrice {...SendGasPriceProps} /> <br />
         <Button onClick={onConfirmSendTransaction} disabled={locked} >
@@ -138,7 +155,10 @@ SendToken.propTypes = {
   to: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
 
   amount: PropTypes.number,
-  gasPrice: PropTypes.object,
+  gasPrice: PropTypes.number,
+  sendTokenSymbol: PropTypes.string,
+  tokenInfoList: PropTypes.array,
+
   locked: PropTypes.bool,
 
   comfirmationLoading: PropTypes.oneOfType([PropTypes.bool]),
@@ -167,6 +187,10 @@ const mapStateToProps = createStructuredSelector({
   amount: makeSelectAmount(),
   addressList: makeSelectAddressList(),
   gasPrice: makeSelectGasPrice(),
+
+  sendTokenSymbol: makeSelectSendTokenSymbol(),
+  tokenInfoList: makeSelectTokenInfoList(),
+
   locked: makeSelectLocked(),
 
   comfirmationLoading: makeSelectComfirmationLoading(),
@@ -185,9 +209,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    onChangeFrom: (address) => {
-      // if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-      dispatch(changeFrom(address));
+    onChangeFrom: (address, sendTokenSymbol) => {
+      dispatch(changeFrom(address, sendTokenSymbol));
     },
     onChangeAmount: (amount) => {
       dispatch(changeAmount(amount));

@@ -68,7 +68,9 @@ export function loadNetworkSuccess(blockNumber) {
  */
 export function loadNetworkError(error) {
   if (error !== offlineModeString) {
-    message.error(error);
+    const err = error.indexOf('Invalid JSON RPC response from host provider') >= 0 ?
+      `${error}, Check Internet connection and connectivity to RPC` : error;
+    message.error(err, 10);
   }
   return {
     type: LOAD_NETWORK_ERROR,
@@ -111,6 +113,7 @@ export function checkBalancesSuccess() {
  * @return {object} An action object with a type of CHECK_BALANCES_ERROR passing the error
  */
 export function CheckBalancesError(error) {
+  message.error(error);
   return {
     type: CHECK_BALANCES_ERROR,
     error,
@@ -163,6 +166,7 @@ export function getExchangeRatesSuccess() {
  * @return {object} An action object with a type of CHECK_BALANCES_ERROR passing the error
  */
 export function getExchangeRatesError(error) {
+  message.error(error);
   return {
     type: GET_EXCHANGE_RATES_ERROR,
     error,

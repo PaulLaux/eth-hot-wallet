@@ -7,7 +7,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Slider, InputNumber, Row, Col } from 'antd';
-import { Gwei } from 'utils/constants';
+// import { Gwei } from 'utils/constants';
 // import BigNumber from 'bignumber.js';
 // import styled from 'styled-components';
 
@@ -25,7 +25,7 @@ function SendGasPrice({ gasPrice, onChangeGasPrice, locked }) {
             max={100}
             step={0.1}
             onChange={onChangeGasPrice} // Bignumber created by reducer
-            value={gasPrice.dividedBy(Gwei).toNumber()}
+            value={gasPrice}
             disabled={locked}
           />
         </Col>
@@ -35,7 +35,7 @@ function SendGasPrice({ gasPrice, onChangeGasPrice, locked }) {
             max={100}
             step={0.1}
             style={{ marginLeft: 16 }}
-            value={gasPrice.dividedBy(Gwei).toNumber()}
+            value={gasPrice}
             onChange={onChangeGasPrice} // Bignumber created by reducer
             disabled={locked}
           />
@@ -48,7 +48,7 @@ function SendGasPrice({ gasPrice, onChangeGasPrice, locked }) {
 SendGasPrice.propTypes = {
   onChangeGasPrice: PropTypes.func.isRequired,
   locked: PropTypes.bool,
-  gasPrice: PropTypes.object,
+  gasPrice: PropTypes.number,
 };
 
 export default SendGasPrice;

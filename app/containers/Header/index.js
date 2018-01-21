@@ -20,7 +20,6 @@ import Logo from 'components/Logo';
 import NetworkMenu from 'components/NetworkMenu';
 
 // import { changeBalance } from 'containers/HomePage/actions';
-import { makeSelectAddressList } from 'containers/HomePage/selectors';
 
 import {
   makeSelectNetworkReady,
@@ -104,7 +103,6 @@ Header.propTypes = {
   availableNetworks: PropTypes.object,
   blockNumber: PropTypes.number,
 
-  // addressList: PropTypes.oneOfType([ PropTypes.bool,PropTypes.object]),
   /* checkingBalanceDoneTime: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   checkingBalances: PropTypes.bool,
   checkingBalancesError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]), */
@@ -117,7 +115,6 @@ const mapStateToProps = createStructuredSelector({
   networkName: makeSelectNetworkName(),
   availableNetworks: makeSelectAvailableNetworks(),
   blockNumber: makeSelectBlockNumber(),
-  addressList: makeSelectAddressList(),
   /* checkingBalanceDoneTime: makeSelectCheckingBalanceDoneTime(),
   checkingBalances: makeSelectCheckingBalances(),
   checkingBalancesError: makeSelectCheckingBalancesError(), */

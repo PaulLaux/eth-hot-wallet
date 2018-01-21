@@ -6,6 +6,7 @@
 
 import { fromJS } from 'immutable';
 import { CLOSE_WALLET } from 'containers/HomePage/constants';
+import { defaultNetwork } from 'utils/constants';
 import {
   LOAD_NETWORK,
   LOAD_NETWORK_SUCCESS,
@@ -24,6 +25,7 @@ import {
 
 } from './constants';
 
+
 import Network from './network';
 
 // The initial state of the App
@@ -31,6 +33,7 @@ const initialState = fromJS({
   loading: false,
   error: false,
   networkReady: false, // true only if network initialized and valid keystore attached
+  prevNetworkName: defaultNetwork,
   networkName: 'Offline',
   blockNumber: 0,
   availableNetworks: Object.keys(Network),
@@ -52,6 +55,8 @@ function headerReducer(state = initialState, action) {
       return state
         .set('loading', true)
         .set('error', false)
+        // dont change prevNetworkName when going online
+        .set('prevNetworkName', (state.get('networkName') === 'Offline') ? state.get('prevNetworkName') : state.get('networkName'))
         .set('networkName', action.networkName);
     case LOAD_NETWORK_SUCCESS:
       return state
@@ -105,7 +110,7 @@ function headerReducer(state = initialState, action) {
 
     case CLOSE_WALLET:
       return state
-      .set('usedFaucet', false);
+        .set('usedFaucet', false);
 
     default:
       return state;

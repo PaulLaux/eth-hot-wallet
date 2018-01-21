@@ -8,7 +8,7 @@ https://eth-hot-wallet.com
 
 #### Work in progress
 
-##### Created by Paul Laux, [@drjackall](https://twitter.com/drjackall) for announcements
+##### Created by Paul Laux, [@dr_laux](https://twitter.com/dr_laux) for announcements
 
 ### Core components
 
@@ -34,9 +34,24 @@ https://eth-hot-wallet.com
 - [x] Responsive design for mobile support.
 
 
+#### ERC20 wallet and native token support
+Eth-hot-wallet supports erc20 tokens. From the user side, the tokens will have the same look and feel like Ether. 
+To interact with contracts, we use 
+```javascript
+web3.eth.contract(erc20Abi)
+```
+Like all other network communication in the wallet, calls to erc20 contracts are done inside `app/containers/Header/saga.js`.
+ERC20 Abi can be imported using 
+```javascript
+import { erc20Abi } from 'utils/contracts/abi';
+```
+
+
+
+
 ### Todo
 
-- [ ] ERC20 native token support
+- [x] ERC20 native token support
 - [x] Local storage
 - [ ] Tests
 - [ ] Event log
@@ -48,7 +63,7 @@ https://eth-hot-wallet.com
 
 ### Development
 
-3 Major containers were created:
+4 Major containers were created:
 
 - Homepage container - all the actions related to keystore, including manipulation and usage.
 
@@ -56,7 +71,29 @@ https://eth-hot-wallet.com
 
 - SendTo container - state and actions related to sendTo modal, actual checks and sending is happening in header container.
 
-After build, webpack monitor will generates stats about bundle size:
+![eth-hot-wallet send token preview](https://paullaux.github.io/eth-hot-wallet/docs/images/eth-hot-wallet-sendToken.jpg)
+
+
+- TokenChooser container - allows the user to select which erc20 token will be used from a pre-defined list. The list of supported tokens can be found in `app/containers/TokenChooser/token-lists.js`. Each network requires a different list.
+
+![eth-hot-wallet erc20 token chooser preview](https://paullaux.github.io/eth-hot-wallet/docs/images/eth-hot-wallet-erc20-tokenChooser.jpg)
+
+
+
+####npm scripts for eth-hot wallet:
+
+`npm run build:dll` to build webpack DLL required for development.
+
+`npm run start` to start development mode. Go to http://localhost:3001 - changes will be reflected in realtime using hot module reloading.
+
+`npm run build` to create bundle for publishing
+
+`npm run generate` to create new components / containers using the generator.
+
+For more documentation regarding the react setup see [react-boiledplate docs](https://eth-hot-wallet.com/docs/react-boilerplate/) here or in the official repo.
+
+
+After build, webpack monitor will generate stats about bundle size:
 
 
 ![eth-hot-wallet webpack-monitor](https://paullaux.github.io/eth-hot-wallet/docs/images/webpack-monitor.JPG)
