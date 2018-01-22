@@ -1,6 +1,6 @@
 # ETH-Hot-Wallet 
 
-### Ethereum open source wallet / web wallet / zero client
+### Ethereum and ERC20 open source wallet / web wallet 
 
 ![eth-hot-wallet ethereum wallet preview](https://paullaux.github.io/eth-hot-wallet/docs/images/eth-hot-wallet-ethereum.PNG)
 
