@@ -8,19 +8,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { Menu } from 'antd';
-const SubMenu = Menu.SubMenu;
-const MenuItemGroup = Menu.ItemGroup;
+import { Menu, Button, Dropdown, Icon } from 'antd';
+// const SubMenu = Menu.SubMenu;
+// const MenuItemGroup = Menu.ItemGroup;
 const MenuItem = Menu.Item;
+// const MenuDivider = Menu.Divider;
 
-const NetMenu = styled(Menu)`
-  line-height: 77px !important;
-  border: 0;
-  text-align: center;
-  z-index: 1 !important;
-  .ant-menu-submenu-title{
-    font-size: 16px;
-  }
+const StyledButton = styled(Button)`
+  margin: 15px;
+`;
+
+const StyledMenuItem = styled(MenuItem)`
+  line-height: 40px;
 `;
 
 function NetworkMenu(props) {
@@ -29,23 +28,27 @@ function NetworkMenu(props) {
   let options;
   if (availableNetworks) {
     options = availableNetworks.map((network) =>
-      <MenuItem key={network}>{network}</MenuItem>
+      <StyledMenuItem key={network}><a tabIndex="0" role="button" onClick={() => onLoadNetwork(network)}>{network}</a></StyledMenuItem>
     );
   }
 
-  return (
-    <NetMenu
-      mode="horizontal"
+  const menu = (
+    <Menu
+      forceSubMenuRender
       defaultSelectedKeys={[networkName]}
       selectedKeys={[networkName]}
-      onClick={(evt) => onLoadNetwork(evt.key)}
     >
-      <SubMenu title={networkName} key="1">
-        <MenuItemGroup title="Select ETH network">
-          {options}
-        </MenuItemGroup>
-      </SubMenu>
-    </NetMenu>
+      <StyledMenuItem disabled key="title">Select ETH network</StyledMenuItem>
+      {options}
+    </Menu>
+  );
+
+  return (
+    <Dropdown overlay={menu}>
+      <StyledButton size="large" icon="wifi">
+        {networkName}<Icon type="down" />
+      </StyledButton>
+    </Dropdown>
   );
 }
 

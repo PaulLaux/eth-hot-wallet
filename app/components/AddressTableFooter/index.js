@@ -59,7 +59,7 @@ function AddressTableFooter(props) {
         popconfirmMsg="Refresh balance?"
       />
       <IconButton
-        text="Update exchange rates"
+        text="Update rates"
         icon="global"
         onClick={onGetExchangeRates}
         loading={getExchangeRatesLoading}
