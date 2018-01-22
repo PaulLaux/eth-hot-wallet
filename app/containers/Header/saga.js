@@ -96,7 +96,7 @@ const erc20Contract = web3.eth.contract(erc20Abi);
 * checkFaucetApi() will not request
 * askFaucetApi() will get costant Tx as success
 */
-const online = false;
+const online = true;
 if (!online) message.warn('Debug mode: online = false in Header/saga.js');
 /**
  * connect to rpc and attach keystore as siger provider
