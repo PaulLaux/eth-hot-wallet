@@ -59,7 +59,7 @@ function AddressTableFooter(props) {
         popconfirmMsg="Refresh balance?"
       />
       <IconButton
-        text="Update exchange rates"
+        text="Update rates"
         icon="global"
         onClick={onGetExchangeRates}
         loading={getExchangeRatesLoading}
@@ -70,8 +70,9 @@ function AddressTableFooter(props) {
       <br />
       <IconButton
         text="Select Tokens"
-        icon="select"
+        icon="bars"
         onClick={onShowTokenChooser}
+        type="primary"
         // onClick, loading, error, disabled, popconfirmMsg
       />
       <br /><br />

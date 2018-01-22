@@ -18,7 +18,7 @@ const ErrorSpan = styled.span`
   }
   `;
 
-const Btn = ({ popconfirm, text, loading, disabled, popconfirmMsg, onClick, icon, ...btnProps }) => (
+const Btn = ({ error, popconfirm, text, loading, disabled, popconfirmMsg, onClick, icon, ...btnProps }) => (
   <Button
     icon={icon}
     type="default"
@@ -56,7 +56,7 @@ const handlePopconfirm = (popConfirmText, onClick, component) => {
 };
 
 function IconButton(props) {
-  const { text, icon, onClick, loading, error, disabled, popconfirmMsg } = props;
+  const { text, icon, onClick, loading, error, disabled, popconfirmMsg, ...btnProps } = props;
 
   const handleError = (err, component) => {
     if (err) {
@@ -71,16 +71,13 @@ function IconButton(props) {
     return (component);
   };
 
+  const BtnProps = { text, icon, onClick, loading, error, disabled, popconfirmMsg, ...btnProps };
   return (
     handleError(error,
       handlePopconfirm(popconfirmMsg, onClick,
         <Btn
-          text={text}
-          loading={loading}
-          disabled={disabled}
-          popconfirmMsg={popconfirmMsg}
-          onClick={onClick}
-          icon={icon}
+          {...BtnProps}
+
         />
       )
     )

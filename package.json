@@ -1,7 +1,7 @@
 {
   "name": "eth-hot-wallet",
-  "version": "0.4.0",
-  "description": "Ethereum Hot Wallet",
+  "version": "0.5.1",
+  "description": "Ethereum and ERC20 Hot Wallet",
   "repository": {
     "type": "git",
     "url": "git://github.com/PaulLaux/eth-hot-wallet.git"
@@ -295,7 +295,6 @@
     "null-loader": "0.1.1",
     "offline-plugin": "4.8.1",
     "plop": "1.8.0",
-    "pre-commit": "1.2.2",
     "react-test-renderer": "15.5.4",
     "rimraf": "2.6.2",
     "shelljs": "0.7.7",
