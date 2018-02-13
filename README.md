@@ -1,6 +1,6 @@
 # ETH-Hot-Wallet 
 
-### Ethereum and ERC20 open source wallet / web wallet 
+## Ethereum wallet with ERC20 support / web wallet 
 
 ![eth-hot-wallet ethereum wallet preview](https://paullaux.github.io/eth-hot-wallet/docs/images/eth-hot-wallet-ethereum.PNG)
 
