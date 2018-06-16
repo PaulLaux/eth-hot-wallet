@@ -39,9 +39,14 @@ function PageFooter() {
 
         <Span>
           <Col sm={12} xs={24}>
-            Donate for development: (ETH/ERC20)<br />
-            0x97325941fafde5a182e6f7e5475a592ac615a3f2
-            </Col>
+            <a href="https://monetaryCoin.org" target="_blank" rel="noopener">
+              MonetaryCoin Homepage
+            </a>
+            <br />
+            <a href="https://monetaryCoin.io" target="_blank" rel="noopener">
+              MonetaryCoin Distribution
+            </a>
+          </Col>
         </Span>
 
       </Row>

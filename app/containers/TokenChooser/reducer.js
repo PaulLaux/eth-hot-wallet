@@ -11,7 +11,7 @@ import {
 
 const initialState = fromJS({
 
-  chosenTokens: { eos: true },
+  chosenTokens: { mero: true },
 
 });
 

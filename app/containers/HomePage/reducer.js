@@ -116,7 +116,7 @@ const initialState = fromJS({
       contractAddress: null,
       decimals: 18,
     },
-    symb: {
+    mero: {
       name: 'Sample',
       contractAddress: '0xd5b3812e67847af90aa5835abd5c253ff5252ec2',
       decimals: 1,

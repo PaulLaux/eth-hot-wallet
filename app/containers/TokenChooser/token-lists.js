@@ -12,6 +12,14 @@ export const TokenSelection = {
       url: 'https://eth-hot-wallet.com',
     },
     {
+      symbol: 'mero',
+      name: 'MonetaryCoin Ero',
+      contractAddress: '0xb39fc5e11281012b4d83407a457d409ba344744f',
+      decimals: 18,
+      description: 'The MonetaryCoin protocol integrates Nobel Prize winning economic theory with blockchain technology.',
+      url: 'https://MonetaryCoin.org',
+    },
+    {
       symbol: 'rtt',
       name: 'Raiden Testnet Token ',
       contractAddress: '0x0a460180ec4fd3d5eb9dca8f84e8ca45b2ad9160',
@@ -21,6 +29,14 @@ export const TokenSelection = {
     },
   ],
   'Main Net': [
+    {
+      symbol: 'mero',
+      name: 'MonetaryCoin Ero',
+      contractAddress: '0x227412a7d92bca453b5e2f790fc8282ca2e1a686',
+      decimals: 18,
+      description: 'The MonetaryCoin protocol integrates Nobel Prize winning economic theory with blockchain technology.',
+      url: 'https://MonetaryCoin.org',
+    },
     {
       symbol: 'eos',
       name: 'EOS',
