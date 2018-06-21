@@ -248,6 +248,7 @@
     "sanitize.css": "5.0.0",
     "store": "^2.0.12",
     "styled-components": "2.0.0",
+    "util": "^0.11.0",
     "warning": "3.0.0",
     "web3": "0.20.3",
     "whatwg-fetch": "2.0.3"
