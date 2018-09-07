@@ -17,7 +17,7 @@ const { Column } = Table;
 // import { FormattedMessage } from 'react-intl';
 // import messages from './messages';
 
-const AddrTable = styled(Table) `
+const AddrTable = styled(Table)`
   max-width: 860px;
   margin-left: auto;
   margin-right: auto;
@@ -165,8 +165,8 @@ function AddressTable(props) {
     onSelectCurrency,
     convertTo,
   } = props;
-  const currencyDropdownProps = { exchangeRates, onSelectCurrency, convertTo };
 
+  const currencyDropdownProps = { exchangeRates, onSelectCurrency, convertTo };
 
   const rowList = transformList(addressMap, tokenDecimalsMap, true);
   const completeRowList = addConvertRates(rowList, exchangeRates, convertTo);
@@ -186,6 +186,29 @@ function AddressTable(props) {
 
     >
       <Column
+        title="Address"
+        dataIndex="address"
+        key="address"
+        width="267px"
+        className="columnCenter"
+        colSpan="1"
+        rowSpan="3"
+        render={(text, record) => {
+          const obj = {
+            children: text,
+            props: {},
+          };
+          if (record.token !== 'eth') {
+            // obj.props.rowSpan = 0;
+            obj.props.rowSpan = 0;
+            // obj.children = '~';
+          } else {
+            obj.props.rowSpan = Object.keys(tokenDecimalsMap).length || 2;
+          }
+          return obj;
+        }}
+      />
+      {/* <Column
         title="#"
         dataIndex="key"
         key="key"
@@ -193,7 +216,7 @@ function AddressTable(props) {
         sorter={(a, b) => parseInt(a.key, 10) - parseInt(b.key, 10)}
         sortOrder="ascend"
         className="columnCenter"
-      />
+      /> */}
       <Column
         title="Icon"
         key="Icon"
@@ -203,35 +226,16 @@ function AddressTable(props) {
         )}
         className="columnCenter"
       />
-      <Column
-        title="Address"
-        dataIndex="address"
-        key="address"
-        width="267px"
-        className="columnCenter"
-        colSpan="1"
-        rowSpan="3"
-        /*
-        render={(text, record) => {
-          const obj = {
-            children: text,
-            props: {},
-          };
-          if (record.token !== 'eth') {
-            // obj.props.rowSpan = 0;
-            obj.children = '~';
-          } else {
-            // obj.props.rowSpan = 3;
-          }
-          return obj;
-        }} */
-      />
+
       <Column
         title="Token"
         dataIndex="token"
         key="token"
         width="65px"
         className="columnCenter"
+        render={(text, record) => (
+          record.token.toUpperCase()
+        )}
       />
       <Column
         title="Balance"
@@ -259,7 +263,7 @@ function AddressTable(props) {
             {/* <a href="#" >Show QR</a>
             <span className="ant-divider" /> */}
             {/* eslint-disable */}
-            <a onClick={() => onShowSendToken(record.address,record.token)}>Send</a>
+            <a onClick={() => onShowSendToken(record.address, record.token)}>Send</a>
             {/* eslint-enable */}
           </span>
         )}

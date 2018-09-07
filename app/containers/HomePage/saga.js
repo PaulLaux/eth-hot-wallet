@@ -155,7 +155,7 @@ export function* genKeystore() {
     };
 
     const pwDerivedKey = yield call(keyFromPasswordPromise, password);
-    ks.generateNewAddress(pwDerivedKey, 2);
+    ks.generateNewAddress(pwDerivedKey, 1);
 
     const tokenList = yield select(makeSelectTokenInfoList());
 

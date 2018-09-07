@@ -67,6 +67,7 @@ import '!file-loader?name=token-icons/[name].[ext]!./images/token-icons/gnt.png'
 import '!file-loader?name=token-icons/[name].[ext]!./images/token-icons/icx.png';
 import '!file-loader?name=token-icons/[name].[ext]!./images/token-icons/knc.png';
 import '!file-loader?name=token-icons/[name].[ext]!./images/token-icons/mkr.png';
+import '!file-loader?name=token-icons/[name].[ext]!./images/token-icons/mero.png';
 import '!file-loader?name=token-icons/[name].[ext]!./images/token-icons/omg.png';
 import '!file-loader?name=token-icons/[name].[ext]!./images/token-icons/qash.png';
 import '!file-loader?name=token-icons/[name].[ext]!./images/token-icons/qsp.png';
