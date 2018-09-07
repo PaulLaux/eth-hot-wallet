@@ -32,7 +32,7 @@ function PageFooter() {
         <Col sm={12} xs={24}>
           {'ETH Hot Wallet - '}
           <a href={github} target="_blank" rel="noopener">
-            Ethereum and ERC20 open source wallet (Github)
+            Ethereum Wallet with ERC20 support (GitHub)
           </a><br />
           Created using: eth-lightwallet, React.js, Ant design...
         </Col>
@@ -43,9 +43,7 @@ function PageFooter() {
               MonetaryCoin Homepage
             </a>
             <br />
-            <a href="https://monetaryCoin.io" target="_blank" rel="noopener">
-              MonetaryCoin Distribution
-            </a>
+            ETH: 0x97325941fafde5a182e6f7e5475a592ac615a3f2
           </Col>
         </Span>
 
