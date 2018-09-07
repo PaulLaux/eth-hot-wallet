@@ -116,10 +116,21 @@ const initialState = fromJS({
       contractAddress: null,
       decimals: 18,
     },
-    mero: {
-      name: 'Sample',
-      contractAddress: '0xd5b3812e67847af90aa5835abd5c253ff5252ec2',
-      decimals: 1,
+    omg: {
+      name: 'OmiseGo',
+      contractAddress: '0xbcad569fe454e78ca90e4120d89b6b69f8db402f',
+      decimals: 18,
+    },
+    bat: {
+      name: 'Basic Attention Token',
+      contractAddress: '0xf3a1c162bc4a82ca5227d7c542c20dd087d2c37b',
+      decimals: 18,
+    },
+    mkr: {
+      symbol: 'mkr',
+      name: 'Maker',
+      contractAddress: '0xece9fa304cc965b00afc186f5d0281a00d3dbbfd',
+      decimals: 18,
     },
   },
 });
