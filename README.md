@@ -6,9 +6,9 @@
 
 https://eth-hot-wallet.com
 
-#### Work in progress
+### Technical review article: [How to build an Ethereum Wallet web app (Medium)](https://medium.freecodecamp.org/how-to-build-an-ethereum-wallet-web-app-ac77dcaac573)
 
-##### Created by Paul Laux, [@dr_laux](https://twitter.com/dr_laux) for announcements
+###### Created by Paul Laux, [@dr_laux](https://twitter.com/dr_laux) for announcements
 
 ### Core components
 
