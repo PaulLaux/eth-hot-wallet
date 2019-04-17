@@ -1,4 +1,4 @@
-# ETH-Hot-Wallet 
+# ETHR WALLET 
 
 ## Ethereum wallet with ERC20 support - A web wallet 
 
