@@ -13,9 +13,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
-import createHistory from 'history/createBrowserHistory';
 import 'sanitize.css/sanitize.css';
-
+import { createBrowserHistory as createHistory } from 'history'
 // Import root app
 import App from 'containers/App';
 
