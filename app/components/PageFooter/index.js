@@ -39,8 +39,8 @@ function PageFooter() {
 
         <Span>
           <Col sm={12} xs={24}>
-            <a href="https://monetaryCoin.org" target="_blank" rel="noopener">
-              MonetaryCoin Homepage
+            <a href="https://medium.freecodecamp.org/how-to-build-an-ethereum-wallet-web-app-ac77dcaac573" target="_blank" rel="noopener">
+            How to build an Ethereum Wallet guide
             </a>
             <br />
             ETH: 0x97325941fafde5a182e6f7e5475a592ac615a3f2
