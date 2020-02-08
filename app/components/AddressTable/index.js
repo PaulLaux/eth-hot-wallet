@@ -189,7 +189,7 @@ function AddressTable(props) {
         title="Address"
         dataIndex="address"
         key="address"
-        width="267px"
+        width="250px"
         className="columnCenter"
         colSpan="1"
         rowSpan="3"
@@ -220,7 +220,7 @@ function AddressTable(props) {
       <Column
         title="Icon"
         key="Icon"
-        width="12px"
+        width="50px"
         render={(text, record) => (
           <TokenIcon tokenSymbol={record.token} />
         )}
