@@ -6,7 +6,7 @@ export const ONCE_TILL_UNMOUNT = '@@saga-injector/once-till-unmount';
 export const generatedPasswordLength = 12;
 
 /* Default HD path string for key generation from seed */
-export const hdPathString = `m/44'/60'/0'/0`; // eslint-disable-line
+export const hdPathString = `m/44'/60'/0'/0`;
 
 // time in ms for check balancess polling
 export const timeBetweenCheckbalances = 180 * 1000;

@@ -81,7 +81,7 @@ describe('reducer injectors', () => {
     });
 
     it('should not assign reducer if already existing', () => {
-      store.replaceReducer = jest.fn();
+      store.replaceReducer = vi.fn();
       injectReducer('test', reducer);
       injectReducer('test', reducer);
 
@@ -89,7 +89,7 @@ describe('reducer injectors', () => {
     });
 
     it('should assign reducer if different implementation for hot reloading', () => {
-      store.replaceReducer = jest.fn();
+      store.replaceReducer = vi.fn();
       injectReducer('test', reducer);
       injectReducer('test', identity);
 

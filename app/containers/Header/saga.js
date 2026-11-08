@@ -2,6 +2,7 @@ import Web3 from 'web3';
 import SignerProvider from 'vendor/ethjs-provider-signer/ethjs-provider-signer';
 import BigNumber from 'bignumber.js';
 import { take, call, put, select, takeLatest, race, fork } from 'redux-saga/effects';
+import { dummyRates } from './tests/dummyRates';
 
 import {
   makeSelectKeystore,
@@ -76,7 +77,7 @@ import {
 } from './constants';
 
 import Network from './network';
-const web3 = new Web3(); // eslint-disable-line
+const web3 = new Web3();
 const erc20Contract = web3.eth.contract(erc20Abi);
 
 /* For development only, if online = false then most api calls will be replaced by constant values
@@ -137,7 +138,7 @@ export function* loadNetwork(action) {
 
       web3.setProvider(provider);
 
-      function getBlockNumberPromise() { // eslint-disable-line no-inner-declarations
+      function getBlockNumberPromise() {
         return new Promise((resolve, reject) => {
           web3.eth.getBlockNumber((err, data) => {
             if (err !== null) return reject(err);
@@ -232,7 +233,7 @@ export function* SendTransaction() {
     if (tokenToSend === 'eth') {
       const sendAmount = new BigNumber(amount).times(Ether);
       const sendParams = { from: fromAddress, to: toAddress, value: sendAmount, gasPrice, gas: maxGasForEthSend };
-      function sendTransactionPromise(params) { // eslint-disable-line no-inner-declarations
+      function sendTransactionPromise(params) {
         return new Promise((resolve, reject) => {
           web3.eth.sendTransaction(params, (err, data) => {
             if (err !== null) return reject(err);
@@ -250,7 +251,7 @@ export function* SendTransaction() {
       const sendParams = { from: fromAddress, value: '0x0', gasPrice, gas: maxGasForTokenSend };
       const tokenAmount = amount * (10 ** tokenInfo.decimals); // Big Number??
 
-      function sendTokenPromise(tokenContractAddress, sendToAddress, sendAmount, params) { // eslint-disable-line no-inner-declarations
+      function sendTokenPromise(tokenContractAddress, sendToAddress, sendAmount, params) {
         return new Promise((resolve, reject) => {
           const tokenContract = erc20Contract.at(tokenContractAddress);
           tokenContract.transfer.sendTransaction(sendToAddress, sendAmount, params, (err, sendTx) => {
@@ -362,7 +363,7 @@ function* pollData() {
     yield call(delay, timeBetweenCheckbalances);
 
     yield put(checkBalances());
-  } catch (error) {
+  } catch {
     // console.log('pollData Error');
     // cancellation error -- can handle this if you wish
   }
@@ -372,9 +373,9 @@ function* pollData() {
 // Wait for successful response or fail, then fire another request
 // Cancel polling on STOP_POLL_BALANCES
 function* watchPollData() {
-  while (true) { // eslint-disable-line
+  while (true) {
     yield take([CHECK_BALANCES_SUCCESS, CHECK_BALANCES_ERROR]);
-    yield race([ // eslint-disable-line
+    yield race([
       call(pollData),
       take(STOP_POLL_BALANCES),
     ]);
@@ -410,7 +411,7 @@ export function* getRates() {
 
     const apiRates = online ?
       coinGeckoToRates(yield call(request, requestURL)) :
-      require('./tests/dummyRates').dummyRates; // eslint-disable-line global-require
+      dummyRates;
 
     yield put(setExchangeRates(apiRates, coinGeckoPriceApi, tokenList));
     yield put(getExchangeRatesSuccess());

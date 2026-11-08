@@ -16,4 +16,4 @@ const Network = {
   },
 };
 
-module.exports = Network;
+export default Network;

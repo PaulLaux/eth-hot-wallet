@@ -1,16 +1,7 @@
 /* eslint-disable */ 
  /* eslint-disable */ 
- (function webpackUniversalModuleDefinition(root, factory) {
-	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory();
-	else if(typeof define === 'function' && define.amd)
-		define("SignerProvider", [], factory);
-	else if(typeof exports === 'object')
-		exports["SignerProvider"] = factory();
-	else
-		root["SignerProvider"] = factory();
-})(this, function() {
-return /******/ (function(modules) { // webpackBootstrap
+ // UMD wrapper replaced with an ES module export
+export default /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 
@@ -357,7 +348,4 @@ module.exports = __webpack_require__(0);
 
 
 /***/ }
-/******/ ])
-});
-;
-//# sourceMappingURL=ethjs-provider-signer.js.map
+/******/ ]);

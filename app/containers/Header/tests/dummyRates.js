@@ -6,7 +6,7 @@ const tokensOnly = (element) =>
     'symb',
     'trx',
   ].indexOf(element.symbol.toLowerCase() >= 0);
-/* eslint-disable */
+
 const rates =
   [
     {
@@ -92,4 +92,4 @@ const rates =
   ]; 
 
 export const dummyRates = rates.filter(tokensOnly);
-/* eslint-enable */
+

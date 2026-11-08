@@ -1,12 +1,12 @@
 import { DEFAULT_LOCALE } from '../containers/App/constants';
 import { formatTranslationMessages } from '../i18n';
 
-jest.mock('../translations/en.json', () => (
-  {
+vi.mock('../translations/en.json', () => ({
+  default: {
     message1: 'default message',
     message2: 'default message 2',
-  }
-));
+  },
+}));
 
 const esTranslationMessages = {
   message1: 'mensaje predeterminado',

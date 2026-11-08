@@ -71,7 +71,7 @@ describe('injectors', () => {
     });
 
     it('should cancel a saga in a default mode', () => {
-      const cancel = jest.fn();
+      const cancel = vi.fn();
       store.injectedSagas.test = { task: { cancel } };
       ejectSaga('test');
 
@@ -79,7 +79,7 @@ describe('injectors', () => {
     });
 
     it('should not cancel a daemon saga', () => {
-      const cancel = jest.fn();
+      const cancel = vi.fn();
       store.injectedSagas.test = { task: { cancel }, mode: DAEMON };
       ejectSaga('test');
 
@@ -156,14 +156,14 @@ describe('injectors', () => {
 
     it('should pass args to saga.run', () => {
       const args = {};
-      store.runSaga = jest.fn();
+      store.runSaga = vi.fn();
       injectSaga('test', { saga: testSaga }, args);
 
       expect(store.runSaga).toHaveBeenCalledWith(testSaga, args);
     });
 
     it('should not start daemon and once-till-unmount sagas if were started before', () => {
-      store.runSaga = jest.fn();
+      store.runSaga = vi.fn();
 
       injectSaga('test1', { saga: testSaga, mode: DAEMON });
       injectSaga('test1', { saga: testSaga, mode: DAEMON });
@@ -174,7 +174,7 @@ describe('injectors', () => {
     });
 
     it('should start any saga that was not started before', () => {
-      store.runSaga = jest.fn();
+      store.runSaga = vi.fn();
 
       injectSaga('test1', { saga: testSaga });
       injectSaga('test2', { saga: testSaga, mode: DAEMON });
@@ -184,9 +184,9 @@ describe('injectors', () => {
     });
 
     it('should restart a saga if different implementation for hot reloading', () => {
-      const cancel = jest.fn();
+      const cancel = vi.fn();
       store.injectedSagas.test = { saga: testSaga, task: { cancel } };
-      store.runSaga = jest.fn();
+      store.runSaga = vi.fn();
 
       function* testSaga1() {
         yield put({ type: 'TEST', payload: 'yup' });
@@ -200,7 +200,7 @@ describe('injectors', () => {
 
     it('should not cancel saga if different implementation in production', () => {
       process.env.NODE_ENV = 'production';
-      const cancel = jest.fn();
+      const cancel = vi.fn();
       store.injectedSagas.test = { saga: testSaga, task: { cancel }, mode: RESTART_ON_REMOUNT };
 
       function* testSaga1() {

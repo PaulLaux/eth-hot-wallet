@@ -16,7 +16,7 @@ https://eth-hot-wallet.com
 - [ ] [Web3.js](https://github.com/ethereum/web3.js/) Ethereum JavaScript API
 - [ ] [React-boilerplate](https://github.com/react-boilerplate/react-boilerplate) as a wrapper of React JS, Redux, Saga, Reselect, ImmutableJS and more
 - [ ] [Ant Design](https://github.com/ant-design/ant-design) React js components
-- [ ] [Webpack 3](https://github.com/webpack/webpack) - A bundler for javascript and friends.
+- [ ] [Vite](https://vite.dev) for development and builds, [Vitest](https://vitest.dev) for tests
 - [ ] Many others, See [package.json](https://github.com/PaulLaux/eth-hot-wallet/blob/master/package.json)
 
 
@@ -90,21 +90,13 @@ import { erc20Abi } from 'utils/contracts/abi';
 
 #### npm scripts for eth-hot wallet:
 
-`npm run build:dll` to build webpack DLL required for development.
+Requires Node.js 20.19+ or 22.12+.
 
-`npm run start` to start development mode. Go to http://localhost:3001 - changes will be reflected in realtime using hot module reloading.
+`npm start` to start development mode. Go to http://localhost:3001 - changes are reflected in realtime.
 
-`npm run build` to create bundle for publishing
+`npm run build` to create the bundle for publishing in `build/`, and `npm run preview` to serve it locally.
 
-`npm run generate` to create new components / containers using the generator.
-
-For more documentation regarding the react setup see [react-boiledplate docs](https://eth-hot-wallet.com/docs/react-boilerplate/) here or in the official repo.
-
-
-After build, webpack monitor will generate stats about bundle size:
-
-
-![eth-hot-wallet webpack-monitor](https://paullaux.github.io/eth-hot-wallet/docs/images/webpack-monitor.JPG)
+`npm test` to run the tests, `npm run lint` to lint.
 
 ## License
 

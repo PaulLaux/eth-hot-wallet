@@ -2,7 +2,7 @@
  * Test EIP-155 transaction signing
  *
  * Runs in node: jsdom has no crypto.getRandomValues, which lightwallet's tweetnacl needs.
- * @jest-environment node
+ * @vitest-environment node
  */
 
 import lightwallet from 'eth-lightwallet';
@@ -11,7 +11,7 @@ import makeSignTransaction from '../signTransaction';
 
 const password = 'test-password';
 const seedPhrase = 'abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about';
-const hdPathString = "m/44'/60'/0'/0"; // eslint-disable-line quotes
+const hdPathString = "m/44'/60'/0'/0";
 const SEPOLIA = 11155111;
 const TIMEOUT = 60000; // scrypt key derivation runs on every signature
 

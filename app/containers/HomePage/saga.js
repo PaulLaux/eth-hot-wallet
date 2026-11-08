@@ -137,7 +137,7 @@ export function* genKeystore() {
     yield call(timer, 300);
 
 
-    function keyFromPasswordPromise(param) { // eslint-disable-line no-inner-declarations
+    function keyFromPasswordPromise(param) {
       return new Promise((resolve, reject) => {
         ks.keyFromPassword(param, (err, data) => {
           if (err !== null) return reject(err);
@@ -150,7 +150,7 @@ export function* genKeystore() {
 
     ks.passwordProvider = (callback) => {
       // const password = yield select(makeSelectPassword());
-      const pw = prompt('Please enter keystore password', 'Password'); // eslint-disable-line
+      const pw = prompt('Please enter keystore password', 'Password');
       callback(null, pw);
     };
 
@@ -186,7 +186,7 @@ export function* generateAddress() {
       throw new Error('Wallet Locked');
     }
 
-    function keyFromPasswordPromise(param) { // eslint-disable-line no-inner-declarations
+    function keyFromPasswordPromise(param) {
       return new Promise((resolve, reject) => {
         ks.keyFromPassword(param, (err, data) => {
           if (err !== null) return reject(err);
@@ -234,7 +234,7 @@ export function* unlockWallet() {
 
     const passwordProvider = ks.passwordProvider;
 
-    function passwordProviderPromise() { // eslint-disable-line no-inner-declarations
+    function passwordProviderPromise() {
       return new Promise((resolve, reject) => {
         passwordProvider((err, data) => {
           if (err !== null) return reject(err);
@@ -243,7 +243,7 @@ export function* unlockWallet() {
       });
     }
 
-    function keyFromPasswordPromise(param) { // eslint-disable-line no-inner-declarations
+    function keyFromPasswordPromise(param) {
       return new Promise((resolve, reject) => {
         ks.keyFromPassword(param, (err, data) => {
           if (err !== null) return reject(err);
