@@ -3,6 +3,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const OfflinePlugin = require('offline-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const WebpackMonitor = require('webpack-monitor');
 
 module.exports = require('./webpack.base.babel')({
@@ -18,6 +19,11 @@ module.exports = require('./webpack.base.babel')({
   },
 
   plugins: [
+    // Minify with uglify-es instead of `webpack -p`: dependencies such as secp256k1 ship
+    // ES2015 code, which webpack 3's built-in (ES5-only) UglifyJsPlugin cannot parse.
+    new UglifyJsPlugin({ parallel: true }),
+    new webpack.LoaderOptionsPlugin({ minimize: true }),
+
     new webpack.optimize.ModuleConcatenationPlugin(),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',

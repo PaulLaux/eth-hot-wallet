@@ -4,19 +4,17 @@ Updating the dependencies is a tedious job. This doc is intended to help streaml
 
 ## Maintain Update Log
 
-There's a sample `Update Log` at the end of this document. Create a new file where you can dump the Version Diff, Test results, Chrome/Node/Yarn versions. Mention the dependencies that you had to roll back along with the reason. Optionally you can mention the errors/warnings that you encountered while updating dependencies.
+There's a sample `Update Log` at the end of this document. Create a new file where you can dump the Version Diff, Test results, Chrome/Node/npm versions. Mention the dependencies that you had to roll back along with the reason. Optionally you can mention the errors/warnings that you encountered while updating dependencies.
 
 ## Managing Node Versions
 It is recommended that you use [Node Version Manager](https://github.com/creationix/nvm) or [Node Version Control](https://github.com/tj/n) to switch node versions quickly in order to run and test this project on multiple node versions.
 
 ## Update Tooling
 
-**Update Yarn:** 
+**Update npm:** 
 
-1. For OSX users- `brew unlink yarn && brew install yarn`
-
-2. For other users, follow [yarn docs](https://yarnpkg.com/en/docs/install).
-3. Run `yarn --version` and record yarn version in `Update Log`.
+1. Run `npm install -g npm`.
+2. Run `npm --version` and record npm version in `Update Log`.
 
 **Update Chrome**
 
@@ -25,7 +23,7 @@ It is recommended that you use [Node Version Manager](https://github.com/creatio
 2. Go to `Chrome -> About` and record version number in `Update Log`
 
 ## Update Dependencies
-[npm-check-updates](https://github.com/tjunnone/npm-check-updates) is a great tool to update your dependencies. It will only update your `package.json`. Run `npm install` or `yarn` if you want to install updated package versions. There are 3 useful commands. 
+[npm-check-updates](https://github.com/tjunnone/npm-check-updates) is a great tool to update your dependencies. It will only update your `package.json`. Run `npm install` if you want to install updated package versions. There are 3 useful commands. 
 
 1. `ncu -u --semverLevel minor`
 2. `ncu -u --semverLevel major`
@@ -42,7 +40,7 @@ At this point, you should copy and paste the version diff from the terminal into
 
 ## Correct Errors and Rollback Dependencies
 
-Run `yarn` to install updated versions and then start the example app by running `npm start`. Make sure that the project is running smoothly. If not, track down the dependencies that are causing problems and try to roll them back one by one and check if the example application is running.
+Run `npm install` to install updated versions and then start the example app by running `npm start`. Make sure that the project is running smoothly. If not, track down the dependencies that are causing problems and try to roll them back one by one and check if the example application is running.
 
 Note down the rolled back dependencies and state the reason in your `Update Log`.
 
@@ -52,13 +50,12 @@ Most of the errors/warnings would go away once you roll back the problemetic dep
 
 **Example App:**
 
-- `rm -rf node_modules && rm yarn.lock`
-- `yarn && npm start`
+- `rm -rf node_modules && rm package-lock.json`
+- `npm install && npm start`
 
 - Browse example app on development server
     - Browse Features page, change language to `de`
     - Browse NotFound page
-- Browse example app on dev tunnel
 - Browse example app on Production server
 - Browse example app offline
 
@@ -83,7 +80,6 @@ Identify problems that occur and try to resolve them by rolling back the respect
 
 - Node 7.5.0
 - npm 4.1.2
-- yarn 0.20.0
 - Mac OS 10.11.6
 - Chrome 56.0.2924.87 (64-bit)
 
@@ -114,7 +110,6 @@ Identify problems that occur and try to resolve them by rolling back the respect
  html-loader                             0.4.4  →    0.4.5 
  imports-loader                          0.7.0  →    0.7.1 
  lint-staged                             3.3.0  →    3.3.2 
- ngrok                                   2.2.6  →    2.2.9 
  offline-plugin                          4.6.1  →    4.6.2 
  shelljs                                 0.7.6  →    0.7.7 
  sinon                             2.0.0-pre.5  →    2.0.0 

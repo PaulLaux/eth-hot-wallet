@@ -31,11 +31,6 @@ import {
   /* makeSelectCheckingBalanceDoneTime,
   makeSelectCheckingBalances,
   makeSelectCheckingBalancesError, */
-  makeSelectCheckFaucetLoading,
-  makeSelectCheckFaucetSuccess,
-  makeSelectAskFaucetLoading,
-  makeSelectAskFaucetSuccess,
-  makeSelectAskFaucetError,
 } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
@@ -118,11 +113,6 @@ const mapStateToProps = createStructuredSelector({
   /* checkingBalanceDoneTime: makeSelectCheckingBalanceDoneTime(),
   checkingBalances: makeSelectCheckingBalances(),
   checkingBalancesError: makeSelectCheckingBalancesError(), */
-  checkFaucetLoading: makeSelectCheckFaucetLoading(),
-  checkFaucetSuccess: makeSelectCheckFaucetSuccess(),
-  askFaucetLoading: makeSelectAskFaucetLoading(),
-  askFaucetSuccess: makeSelectAskFaucetSuccess(),
-  askFaucetError: makeSelectAskFaucetError(),
 });
 
 function mapDispatchToProps(dispatch) {

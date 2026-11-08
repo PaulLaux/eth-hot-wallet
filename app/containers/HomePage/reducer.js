@@ -110,26 +110,21 @@ const initialState = fromJS({
   loadWalletLoading: false,
   loadWalletError: false,
 
+  // default tokens - must exist on defaultNetwork (see TokenChooser/token-lists.js)
   tokenInfo: {
     eth: {
       name: 'Ethereum',
       contractAddress: null,
       decimals: 18,
     },
-    omg: {
-      name: 'OmiseGo',
-      contractAddress: '0xbcad569fe454e78ca90e4120d89b6b69f8db402f',
-      decimals: 18,
+    usdc: {
+      name: 'USD Coin (Sepolia)',
+      contractAddress: '0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238',
+      decimals: 6,
     },
-    bat: {
-      name: 'Basic Attention Token',
-      contractAddress: '0xf3a1c162bc4a82ca5227d7c542c20dd087d2c37b',
-      decimals: 18,
-    },
-    mkr: {
-      symbol: 'mkr',
-      name: 'Maker',
-      contractAddress: '0xece9fa304cc965b00afc186f5d0281a00d3dbbfd',
+    link: {
+      name: 'Chainlink (Sepolia)',
+      contractAddress: '0x779877A7B0D9E8603169DdbD7836e478b4624789',
       decimals: 18,
     },
   },

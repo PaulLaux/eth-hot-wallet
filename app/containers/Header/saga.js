@@ -5,7 +5,6 @@ import { take, call, put, select, takeLatest, race, fork } from 'redux-saga/effe
 
 import {
   makeSelectKeystore,
-  makeSelectAddressList,
   makeSelectPassword,
   makeSelectAddressMap,
   makeSelectTokenInfoList,
@@ -43,15 +42,14 @@ import {
   maxGasForEthSend,
   maxGasForTokenSend,
   offlineModeString,
-  checkFaucetAddress,
-  askFaucetAddress,
+  coinGeckoPriceApi,
 } from 'utils/constants';
 import { timer } from 'utils/common';
 import { erc20Abi } from 'utils/contracts/abi';
+import makeSignTransaction from 'utils/signTransaction';
 import { message } from 'antd';
 
 import {
-  makeSelectUsedFaucet,
   makeSelectPrevNetworkName,
 } from './selectors';
 import {
@@ -66,12 +64,6 @@ import {
   getExchangeRates,
   getExchangeRatesSuccess,
   getExchangeRatesError,
-
-  checkFaucet,
-  checkFaucetSuccess,
-  checkFaucetError,
-  askFaucetSuccess,
-  askFaucetError,
 } from './actions';
 
 import {
@@ -81,8 +73,6 @@ import {
   CHECK_BALANCES_ERROR,
   STOP_POLL_BALANCES,
   GET_EXCHANGE_RATES,
-  CHECK_FAUCET,
-  ASK_FAUCET,
 } from './constants';
 
 import Network from './network';
@@ -93,11 +83,23 @@ const erc20Contract = web3.eth.contract(erc20Abi);
 * affected functions:
 * loadNetwork() will connect to 'Local RPC' but default network name will be showen in gui
 * getRates() will not call rate api
-* checkFaucetApi() will not request
-* askFaucetApi() will get costant Tx as success
 */
 const online = true;
 if (!online) message.warn('Debug mode: online = false in Header/saga.js');
+
+/**
+ * Ask the node which chain it serves (EIP-695 eth_chainId)
+ */
+export function getChainIdPromise(provider) {
+  return new Promise((resolve, reject) => {
+    provider.sendAsync({ jsonrpc: '2.0', id: 1, method: 'eth_chainId', params: [] }, (err, res) => {
+      if (err) return reject(err instanceof Error ? err : new Error(err));
+      if (res.error) return reject(new Error(res.error.message));
+      return resolve(parseInt(res.result, 16));
+    });
+  });
+}
+
 /**
  * connect to rpc and attach keystore as siger provider
  */
@@ -121,10 +123,17 @@ export function* loadNetwork(action) {
     const keystore = yield select(makeSelectKeystore());
 
     if (keystore) {
+      let chainId = null; // set below, before the provider is attached to web3
       const provider = new SignerProvider(rpcAddress, {
-        signTransaction: keystore.signTransaction.bind(keystore),
+        signTransaction: (txParams, callback) => makeSignTransaction(keystore, chainId)(txParams, callback),
         accounts: (cb) => cb(null, keystore.getAddresses()),
       });
+
+      chainId = yield call(getChainIdPromise, provider);
+      const expectedChainId = online ? Network[action.networkName].chainId : undefined;
+      if (expectedChainId && chainId !== expectedChainId) {
+        throw new Error(`RPC for ${action.networkName} serves chain ID ${chainId}, expected ${expectedChainId}`);
+      }
 
       web3.setProvider(provider);
 
@@ -150,12 +159,7 @@ export function* loadNetwork(action) {
 
       const prevNetwork = yield select(makeSelectPrevNetworkName());
       if (prevNetwork !== action.networkName) {
-        yield put(updateTokenInfo(keystore.getAddresses, action.tokenInfo));
-      }
-
-      const usedFaucet = yield select(makeSelectUsedFaucet());
-      if (action.networkName === 'Ropsten Testnet' && !usedFaucet) {
-        yield put(checkFaucet());
+        yield put(updateTokenInfo(keystore.getAddresses(), action.tokenInfo));
       }
     } else {
       throw new Error('keystore not initiated - Create wallet before connecting');
@@ -379,89 +383,39 @@ function* watchPollData() {
 /* ******************************************************************************** */
 
 /**
- * Get exchange rates from api
+ * Convert a CoinGecko /simple/price response ({ eth: { usd, eur, btc }, ... }) into the
+ * [{ symbol, price_usd, price_eur, price_btc }] list that utils/unitConverter expects.
+ * Coins missing any of the three prices are skipped.
+ */
+export function coinGeckoToRates(prices) {
+  const currencies = ['usd', 'eur', 'btc'];
+  return Object.keys(prices)
+    .filter((symbol) => currencies.every((c) => typeof prices[symbol][c] === 'number'))
+    .map((symbol) => ({
+      symbol: symbol.toUpperCase(),
+      price_usd: String(prices[symbol].usd),
+      price_eur: String(prices[symbol].eur),
+      price_btc: String(prices[symbol].btc),
+    }));
+}
+
+/**
+ * Get exchange rates for eth and all known tokens from CoinGecko
  */
 export function* getRates() {
-  // const requestURL = 'https://api.coinmarketcap.com/v1/ticker/ethereum/?convert=EUR';
-  const requestURL = 'https://api.coinmarketcap.com/v1/ticker/?convert=EUR';
   try {
-    let dummyRates = [{ // for testin in online = false mode
-      id: 'ethereum',
-      name: 'Ethereum',
-      symbol: 'ETH',
-      rank: '2',
-      price_usd: '295.412',
-      price_btc: '0.0684231',
-      '24h_volume_usd': '308964000.0',
-      market_cap_usd: '28043053731.0',
-      available_supply: '94928621.0',
-      total_supply: '94928621.0',
-      percent_change_1h: '-1.46',
-      percent_change_24h: '-1.84',
-      percent_change_7d: '1.35',
-      last_updated: '1507010353',
-      price_eur: '252.342998284',
-      '24h_volume_eur': '263919211.548',
-      market_cap_eur: '23954572799.0',
-    }];
-
-    if (!online) {
-      dummyRates = require('./tests/dummyRates').dummyRates; // eslint-disable-line
-    }
-
-    // Call our request helper (see 'utils/request')
-    const apiRates = online ? (yield call(request, requestURL)) : dummyRates;
-
-    // console.log(apiPrices);
-
     const tokenList = yield select(makeSelectTokenInfoList());
+    const symbols = ['eth', ...tokenList.filter((symbol) => symbol !== 'eth')];
+    const requestURL = `${coinGeckoPriceApi}?symbols=${symbols.join(',')}&vs_currencies=usd,eur,btc`;
 
-    yield put(setExchangeRates(apiRates, requestURL, tokenList));
+    const apiRates = online ?
+      coinGeckoToRates(yield call(request, requestURL)) :
+      require('./tests/dummyRates').dummyRates; // eslint-disable-line global-require
+
+    yield put(setExchangeRates(apiRates, coinGeckoPriceApi, tokenList));
     yield put(getExchangeRatesSuccess());
   } catch (err) {
     yield put(getExchangeRatesError(err));
-  }
-}
-
-/**
- * Check if faucet ready via api
- */
-export function* checkFaucetApi() {
-  const requestURL = checkFaucetAddress;
-  // console.log(`requestURL: ${requestURL}`);
-  try {
-    const result = online ? yield call(request, requestURL) :
-      { message: { serviceReady: true } };
-
-    if (result.message.serviceReady) {
-      yield put(checkFaucetSuccess());
-    } else {
-      yield put(checkFaucetError('faucet not ready'));
-    }
-  } catch (err) {
-    yield put(checkFaucetError(err));
-  }
-}
-
-
-/**
- * Check if faucet ready via api
- */
-export function* askFaucetApi() {
-  const addressList = yield select(makeSelectAddressList());
-  const askAddress = addressList.keySeq().toArray()[0];
-  const requestURL = `${askFaucetAddress}?address=${askAddress}`;
-  // console.log(`requestURL: ${requestURL}`);
-  try {
-    const result = online ? yield call(request, requestURL) :
-      { message: { tx: '0x0f71ca4a8af03e67f06910bf301308ecd701064bd2183b51e1e3ca18af9bc9f8' } };
-    if (result.message.tx) {
-      yield put(askFaucetSuccess(result.message.tx));
-    } else {
-      yield put(askFaucetError(result.message));
-    }
-  } catch (err) {
-    yield put(askFaucetError(err));
   }
 }
 
@@ -469,14 +423,9 @@ export function* askFaucetApi() {
 // Individual exports for testing
 export default function* defaultSaga() {
   yield takeLatest(LOAD_NETWORK, loadNetwork);
-  // yield takeLatest(LOAD_NETWORK, checkFaucetApi);
   yield takeLatest(COMFIRM_SEND_TRANSACTION, confirmSendTransaction);
   yield takeLatest(SEND_TRANSACTION, SendTransaction);
   yield takeLatest(GET_EXCHANGE_RATES, getRates);
-
-  yield takeLatest(CHECK_FAUCET, checkFaucetApi);
-  yield takeLatest(ASK_FAUCET, askFaucetApi);
-
 
   /* poll check balances */
   yield [

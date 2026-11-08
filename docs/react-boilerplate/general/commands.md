@@ -54,8 +54,7 @@ npm start
 ```
 
 Starts the development server and makes your application accessible at
-`localhost:3000`. Tunnels that server with `ngrok`, which means the website
-accessible anywhere! Changes in the application code will be hot-reloaded.
+`localhost:3000`. Changes in the application code will be hot-reloaded.
 
 ### Production
 
@@ -115,14 +114,6 @@ npm run test:watch
 ```
 
 Watches changes to your application and re-runs tests whenever a file changes.
-
-### Remote testing
-
-```Shell
-npm run start:tunnel
-```
-Starts the development server and tunnels it with `ngrok`, making the website
-available on the entire world. Useful for testing on different devices in different locations!
 
 ### Dependency size test
 

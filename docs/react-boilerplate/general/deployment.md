@@ -22,7 +22,7 @@
 
 ### Easy 7-Step Deployment Process
 
-*Step 1:* Run `yarn` to install dependencies, then `npm run build` to create the `./build` folder.
+*Step 1:* Run `npm install` to install dependencies, then `npm run build` to create the `./build` folder.
 
 *Step 2:* Navigate to [AWS S3](https://aws.amazon.com/s3) and login (or sign up if you don't have an account). Click on `Services` followed by `S3` in the dropdown.
 

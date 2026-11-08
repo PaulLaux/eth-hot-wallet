@@ -199,5 +199,3 @@ describe('<Button />', () => {
 ```
 
 And that's how you unit test your components and make sure they work correctly!
-
-*Continue to learn how to test your components [remotely](remote-testing.md)!*

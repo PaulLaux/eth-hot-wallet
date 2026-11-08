@@ -16,7 +16,6 @@
 - [Testing](testing)
   - [Unit Testing](testing/unit-testing.md)
   - [Component Testing](testing/component-testing.md)
-  - [Remote Testing](testing/remote-testing.md)
 - [Styling (CSS)](css/README.md)
   - [Next Generation CSS](css/README.md#next-generation-css)
   - [CSS Support](css/README.md#css-we-support)
@@ -115,11 +114,6 @@ write head tags can be found [here](https://github.com/nfl/react-helmet#examples
 
 For a thorough explanation of the testing procedure, see the
 [testing documentation](./testing/README.md)!
-
-#### Browser testing
-
-`npm run start:tunnel` makes your locally-running app globally available on the web
-via a temporary URL: great for testing on different devices, client demos, etc!
 
 #### Unit testing
 

@@ -84,11 +84,8 @@ If you're facing any inexplicable problems while installing dependencies, buildi
 Remove node_modules
 - `rm -rf node_modules`
 
-Using yarn (recommended)
-- `yarn install`
-
-Using npm
-- `npm cache clean`
+Reinstall dependencies
+- `npm cache verify`
 - `npm install`
 
 Build project

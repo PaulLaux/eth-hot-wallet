@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js';
+import { coinGeckoPriceApi } from 'utils/constants';
 // limit presision for inverse
 BigNumber.config({ POW_PRECISION: 10 });
 
@@ -47,6 +48,14 @@ const ratesMaps =
         path: { symbol: 'eth', key: 'price_usd', isInverse: false },
         path2: { symbol: 'eos', key: 'price_usd', isInverse: true },
       },
+    },
+
+    // CoinGecko responses are converted to the list format above by Header/saga.js getRates()
+    [coinGeckoPriceApi]: {
+      eth_eth: { path: { const: 1 }, name: 'ETH' },
+      eth_usd: { path: { symbol: 'eth', key: 'price_usd' }, name: 'USD' },
+      eth_btc: { path: { symbol: 'eth', key: 'price_btc' }, name: 'BTC' },
+      eth_eur: { path: { symbol: 'eth', key: 'price_eur' }, name: 'EURO' },
     },
   };
 

@@ -22,8 +22,16 @@ https://eth-hot-wallet.com
 
 ### API Providers
 
-- [ ] [Infura.io](https://infura.io/) as JsonRPC provider
-- [ ] [Coinmarketcap](https://coinmarketcap.com/) as exchange rates provider
+- [ ] [PublicNode](https://ethereum-rpc.publicnode.com) keyless JsonRPC endpoints by default (Main Net and Sepolia Testnet)
+- [ ] [CoinGecko](https://www.coingecko.com/) as exchange rates provider
+
+To use your own RPC provider (e.g. Infura or Alchemy), set it when starting or building:
+
+```bash
+MAINNET_RPC_URL=https://mainnet.infura.io/v3/<project-id> SEPOLIA_RPC_URL=https://sepolia.infura.io/v3/<project-id> npm start
+```
+
+The wallet checks that each endpoint serves the expected chain ID and signs transactions with it (EIP-155).
 
 
 ### Features

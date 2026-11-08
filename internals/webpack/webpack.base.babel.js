@@ -102,6 +102,9 @@ module.exports = (options) => ({
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+        // Optional RPC overrides, see app/containers/Header/network.js
+        MAINNET_RPC_URL: JSON.stringify(process.env.MAINNET_RPC_URL || ''),
+        SEPOLIA_RPC_URL: JSON.stringify(process.env.SEPOLIA_RPC_URL || ''),
       },
     }),
     new webpack.NamedModulesPlugin(),
