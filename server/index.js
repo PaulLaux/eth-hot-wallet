@@ -18,9 +18,9 @@ setup(app, {
   publicPath: '/',
 });
 
-// get the intended host and port number, use localhost and port 3000 if not provided
+// get the intended host and port number; listen on loopback only unless a host is given
 const customHost = argv.host || process.env.HOST;
-const host = customHost || null; // Let http.Server use its default IPv6/4 host
+const host = customHost || '127.0.0.1';
 const prettyHost = customHost || 'localhost';
 
 // Start your app.
