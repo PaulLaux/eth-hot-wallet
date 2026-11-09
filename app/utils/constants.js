@@ -23,7 +23,6 @@ export const defaultNetwork = 'Sepolia Testnet';
 export const localStorageKey = 'wallet';
 
 // addresses:
-export const website = 'https://eth-hot-wallet.com';
 export const github = 'https://github.com/PaulLaux/eth-hot-wallet';
 
 // APIs:
