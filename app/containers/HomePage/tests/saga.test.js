@@ -1,9 +1,10 @@
 import { call, put } from 'redux-saga/effects';
-import { autoLock, saveWalletS, loadWalletS, deleteWallet } from '../saga';
-import { lockWallet, saveWalletSuccess, saveWalletError, generateKeystoreSuccess, loadWalletSuccess } from '../actions';
+import { autoLock, saveWalletS, loadWalletS, deleteWallet, chosenTokenInfo } from '../saga';
+import { lockWallet, saveWalletSuccess, saveWalletError, generateKeystoreSuccess, loadWalletSuccess, updateTokenInfo, setExchangeRates, selectCurrency } from '../actions';
+import reducer from '../reducer';
 import { LOAD_WALLET_ERROR } from '../constants';
-import { loadNetwork } from 'containers/Header/actions';
-import { defaultNetwork, localStorageKey } from 'utils/constants';
+import { loadNetwork, getExchangeRates, checkBalances } from 'containers/Header/actions';
+import { defaultNetwork, localStorageKey, coinGeckoPriceApi } from 'utils/constants';
 import { timer } from 'utils/common';
 
 // action creators show antd messages, which need a DOM
@@ -90,5 +91,34 @@ describe('wallet in localStorage', () => {
 
     vi.stubGlobal('localStorage', { clear: () => { throw new DOMException('The operation is insecure.', 'SecurityError'); } });
     expect(() => deleteWallet().next()).not.toThrow();
+  });
+});
+
+describe('token list changes', () => {
+  const addresses = ['0x9858EfFD232B4033E47d90003D41EC34EcaEda94'];
+  const tokenInfo = { usds: { name: 'USDS', contractAddress: '0xdC035D45d973E3EC169d2276DDab16f1e407384F', decimals: 18 } };
+
+  it('fetches balances and rates for the chosen tokens, but not in Offline mode', () => {
+    const steps = (networkReady) => {
+      const gen = chosenTokenInfo({ tokenInfo });
+      gen.next(); // select keystore
+      expect(gen.next({ addresses }).value).toEqual(put(updateTokenInfo(addresses, tokenInfo)));
+      gen.next(); // select networkReady
+      return [gen.next(networkReady).value, gen.next().value];
+    };
+    expect(steps(true)).toEqual([put(checkBalances()), put(getExchangeRates())]);
+    expect(steps(false)).toEqual([undefined, undefined]);
+  });
+
+  it('falls back to USD when the chosen currency has no rate any more', () => {
+    const rates = (symbols) => setExchangeRates([
+      { symbol: 'ETH', price_usd: '2000', price_eur: '1800', price_btc: '0.03' },
+      ...symbols.map((symbol) => ({ symbol, price_usd: '1', price_eur: '0.9', price_btc: '0.00001' })),
+    ], coinGeckoPriceApi, ['eth', ...symbols.map((symbol) => symbol.toLowerCase())]);
+    let state = reducer(reducer(undefined, rates(['USDC'])), selectCurrency('eth_usdc'));
+    expect(reducer(state, rates(['USDC'])).convertTo).toBe('eth_usdc');
+    expect(reducer(state, rates(['USDS'])).convertTo).toBe('eth_usd');
+    state = reducer(state, selectCurrency('none'));
+    expect(reducer(state, rates(['USDS'])).convertTo).toBe('none');
   });
 });

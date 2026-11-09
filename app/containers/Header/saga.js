@@ -121,15 +121,15 @@ export function* loadNetwork(action) {
 
     yield put(loadNetworkSuccess(Number(blockNumber)));
 
+    // clear token list if changed network, before balances and rates read it
+    const prevNetwork = yield select(makeSelectPrevNetworkName());
+    if (prevNetwork !== action.networkName) {
+      yield put(updateTokenInfo(keystore.addresses));
+    }
+
     // actions after succesfull network load :
     yield put(checkBalances());
     yield put(getExchangeRates());
-
-    // clear token list if changed network
-    const prevNetwork = yield select(makeSelectPrevNetworkName());
-    if (prevNetwork !== action.networkName) {
-      yield put(updateTokenInfo(keystore.addresses, action.tokenInfo));
-    }
   } catch (err) {
     yield put(loadNetworkError(err.shortMessage || err.message));
   }

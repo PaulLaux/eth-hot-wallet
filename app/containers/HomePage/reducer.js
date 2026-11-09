@@ -204,7 +204,11 @@ export default createReducer(initialState, (builder) => builder
   .addCase(LOCK_WALLET, (s) => { s.password = false; })
   .addCase(UNLOCK_WALLET_SUCCESS, (s, a) => { s.password = a.password; })
 
-  .addCase(SET_EXCHANGE_RATES, (s, a) => { s.exchangeRates = a.rates; })
+  .addCase(SET_EXCHANGE_RATES, (s, a) => {
+    s.exchangeRates = a.rates;
+    // the chosen token left the token list: show USD instead of an empty column
+    if (s.convertTo !== 'none' && !a.rates[s.convertTo]) s.convertTo = 'eth_usd';
+  })
   .addCase(SELECT_CURRENCY, (s, a) => { s.convertTo = a.convertTo; })
 
   .addCase(CLOSE_WALLET, () => initialState)

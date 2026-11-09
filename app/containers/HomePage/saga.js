@@ -28,7 +28,8 @@ import {
   makeSelectTokenInfoList,
 } from 'containers/HomePage/selectors';
 
-import { loadNetwork } from 'containers/Header/actions';
+import { loadNetwork, getExchangeRates, checkBalances } from 'containers/Header/actions';
+import { makeSelectNetworkReady } from 'containers/Header/selectors';
 
 import { changeFrom } from 'containers/SendToken/actions';
 
@@ -286,6 +287,11 @@ export function* deleteWallet() {
 export function* chosenTokenInfo(action) {
   const addressList = (yield select(makeSelectKeystore())).addresses;
   yield put(updateTokenInfo(addressList, action.tokenInfo));
+  // the new list starts without balances or rates: fetch them (not in Offline mode)
+  if (yield select(makeSelectNetworkReady())) {
+    yield put(checkBalances());
+    yield put(getExchangeRates());
+  }
 }
 
 /**
