@@ -136,11 +136,25 @@ export function* loadNetwork(action) {
 }
 
 
+/**
+ * parseUnits that never rounds: parseUnits would round 0.0000005 USDC up to 0.000001,
+ * and 0.0000001 USDC down to 0. More decimals than the token has is an error instead.
+ */
+export function toUnits(amount, decimals) {
+  const fraction = String(amount).split('.')[1] || '';
+  if (fraction.replace(/0+$/, '').length > decimals) {
+    throw new Error(`Amount can have at most ${decimals} decimals`);
+  }
+  return parseUnits(String(amount), decimals);
+}
+
 export function* confirmSendTransaction() {
   try {
     const fromAddress = yield select(makeSelectFrom());
     const amount = yield select(makeSelectAmount());
     const toAddress = yield select(makeSelectTo());
+    const tokenSymbol = yield select(makeSelectSendTokenSymbol());
+    const tokenInfo = yield select(makeSelectTokenInfo(tokenSymbol));
 
     if (!isAddress(fromAddress)) {
       throw new Error('Source address invalid');
@@ -149,6 +163,11 @@ export function* confirmSendTransaction() {
     if (amount <= 0) {
       throw new Error('Amount must be possitive');
     }
+
+    if (!tokenInfo) {
+      throw new Error(`Token '${tokenSymbol}' not found`);
+    }
+    toUnits(amount, tokenInfo.decimals);
 
     if (!isAddress(toAddress)) {
       throw new Error('Destenation address invalid');
@@ -169,7 +188,7 @@ export function* SendTransaction() {
   const keystore = yield select(makeSelectKeystore());
   try {
     const fromAddress = yield select(makeSelectFrom());
-    const amount = String(yield select(makeSelectAmount())); // decimal string for parseUnits
+    const amount = yield select(makeSelectAmount());
     const toAddress = yield select(makeSelectTo());
     const password = yield select(makeSelectPassword());
 
@@ -188,7 +207,7 @@ export function* SendTransaction() {
 
     let tx;
     if (tokenToSend === 'eth') {
-      tx = yield call([client, client.sendTransaction], { account, chainId, to: toAddress, value: parseUnits(amount, 18) });
+      tx = yield call([client, client.sendTransaction], { account, chainId, to: toAddress, value: toUnits(amount, 18) });
     } else { // any other token
       const tokenInfo = yield select(makeSelectTokenInfo(tokenToSend));
       if (!tokenInfo) {
@@ -200,7 +219,7 @@ export function* SendTransaction() {
         address: tokenInfo.contractAddress,
         abi: erc20Abi,
         functionName: 'transfer',
-        args: [toAddress, parseUnits(amount, tokenInfo.decimals)],
+        args: [toAddress, toUnits(amount, tokenInfo.decimals)],
       });
     }
 
