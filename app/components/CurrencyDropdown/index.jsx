@@ -6,32 +6,26 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Menu, Dropdown, Icon } from 'antd';
-// import styled from 'styled-components';
-const MenuItem = Menu.Item;
+import { Dropdown } from 'antd';
+import { DownOutlined } from '@ant-design/icons';
 
 function CurrencyDropdown(props) {
-  const { exchangeRates, onSelectCurrency, convertTo } = props;
+  const { exchangeRates = {}, onSelectCurrency, convertTo } = props;
 
   const convertToSymbol = convertTo.length > 4 ? convertTo.slice(4).toUpperCase() : 'none';
 
-  const convertMenuOptions = [];
-  if (exchangeRates) {
-    Object.keys(exchangeRates).forEach((currency) => {
-      convertMenuOptions.push(<MenuItem key={currency}>{exchangeRates[currency].name}</MenuItem>);
-    });
-  }
-  const convertToMenu = (
-    <Menu onClick={(evt) => onSelectCurrency(evt.key)}>
-      <MenuItem key={'none'}>None</MenuItem>
-      {convertMenuOptions}
-    </Menu>
-  );
+  const menu = {
+    items: [
+      { key: 'none', label: 'None' },
+      ...Object.keys(exchangeRates).map((currency) => ({ key: currency, label: exchangeRates[currency].name })),
+    ],
+    onClick: ({ key }) => onSelectCurrency(key),
+  };
 
   return (
-    <Dropdown overlay={convertToMenu}>
+    <Dropdown menu={menu}>
       <span>
-        {convertToSymbol === 'none' ? 'Convert' : `${convertToSymbol}`}<Icon type="down" />
+        {convertToSymbol === 'none' ? 'Convert' : `${convertToSymbol}`}<DownOutlined />
       </span>
     </Dropdown>
   );

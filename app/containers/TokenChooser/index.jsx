@@ -34,7 +34,7 @@ function TokenChooser(props) {
   return (
     <div style={{ maxWidth: '600px', margin: 'auto' }}>
       <Modal
-        visible={isShowTokenChooser}
+        open={isShowTokenChooser}
         title={`Select Tokens - ${networkName}`}
         onOk={onHideTokenChooser}
         onCancel={onHideTokenChooser}

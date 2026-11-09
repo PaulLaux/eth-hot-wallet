@@ -9,14 +9,9 @@ export default defineConfig({
   base: './',
   plugins: [react()],
   resolve: {
-    alias: [
-      { find: /^(components|containers|utils)\//, replacement: `${app}/$1/` },
-      // antd 3 imports all icons as a namespace; the CommonJS build adds a `default` entry it can't register
-      { find: '@ant-design/icons/lib/dist', replacement: '@ant-design/icons/lib/index.es.js' },
-    ],
+    alias: [{ find: /^(components|containers|utils)\//, replacement: `${app}/$1/` }],
   },
   define: {
-    global: 'globalThis', // used by antd 3's draft-js dependency
     // Optional RPC overrides, see app/containers/Header/network.js
     'process.env.MAINNET_RPC_URL': JSON.stringify(process.env.MAINNET_RPC_URL || ''),
     'process.env.SEPOLIA_RPC_URL': JSON.stringify(process.env.SEPOLIA_RPC_URL || ''),

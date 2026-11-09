@@ -8,7 +8,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import 'sanitize.css/sanitize.css';
-import 'antd/dist/antd.css';
+import 'antd/dist/reset.css';
 
 import App from 'containers/App';
 import createStore from './store';

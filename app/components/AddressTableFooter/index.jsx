@@ -7,6 +7,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { BarsOutlined, GlobalOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
 
 import IconButton from 'components/IconButton';
 
@@ -42,7 +43,7 @@ function AddressTableFooter(props) {
     <Div>
       <IconButton
         text="Add address"
-        icon="plus"
+        icon={<PlusOutlined />}
         onClick={onGenerateAddress}
         loading={addressListLoading}
         error={addressListError}
@@ -51,7 +52,7 @@ function AddressTableFooter(props) {
       />
       <IconButton
         text="Check balances"
-        icon="reload"
+        icon={<ReloadOutlined />}
         onClick={onCheckBalances}
         loading={checkingBalances}
         error={checkingBalancesError}
@@ -60,7 +61,7 @@ function AddressTableFooter(props) {
       />
       <IconButton
         text="Update rates"
-        icon="global"
+        icon={<GlobalOutlined />}
         onClick={onGetExchangeRates}
         loading={getExchangeRatesLoading}
         error={getExchangeRatesError}
@@ -70,7 +71,7 @@ function AddressTableFooter(props) {
       <br />
       <IconButton
         text="Select Tokens"
-        icon="bars"
+        icon={<BarsOutlined />}
         onClick={onShowTokenChooser}
         type="primary"
         // onClick, loading, error, disabled, popconfirmMsg

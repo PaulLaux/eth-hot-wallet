@@ -81,14 +81,14 @@ let chainId = null;
 * getRates() will not call rate api
 */
 const online = true;
-if (!online) message.warn('Debug mode: online = false in Header/saga.js');
+if (!online) message.warning('Debug mode: online = false in Header/saga.js');
 
 /**
  * connect to rpc and check that it serves the expected chain
  */
 export function* loadNetwork(action) {
   if (!online) {
-    message.warn('debug mode: online = false in Header/saga.js');
+    message.warning('debug mode: online = false in Header/saga.js');
   }
   try {
     const rpcAddress = online ? Network[action.networkName].rpc : Network['Local RPC'].rpc;

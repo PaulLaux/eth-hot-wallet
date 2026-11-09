@@ -34,7 +34,7 @@ const Btn = ({ error, popconfirm, text, loading, disabled, popconfirmMsg, onClic
 Btn.propTypes = {
   popconfirm: PropTypes.bool,
   text: PropTypes.string.isRequired,
-  icon: PropTypes.string.isRequired,
+  icon: PropTypes.node.isRequired,
 
   onClick: PropTypes.func,
   loading: PropTypes.bool,
@@ -86,7 +86,7 @@ function IconButton(props) {
 
 IconButton.propTypes = {
   text: PropTypes.string.isRequired,
-  icon: PropTypes.string.isRequired,
+  icon: PropTypes.node.isRequired,
 
   onClick: PropTypes.func,
   loading: PropTypes.bool,

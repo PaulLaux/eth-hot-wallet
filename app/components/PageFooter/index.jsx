@@ -20,9 +20,8 @@ const Footer = styled(StickyFooter)`
   font-size: 14px;
 `;
 
-const Span = styled.span`
+const GreyCol = styled(Col)`
   color: #b9b9b9;
-  margin-top:3px;
 `;
 
 function PageFooter() {
@@ -37,15 +36,13 @@ function PageFooter() {
           Created using: viem, React.js, Ant design...
         </Col>
 
-        <Span>
-          <Col sm={12} xs={24}>
-            <a href="https://medium.freecodecamp.org/how-to-build-an-ethereum-wallet-web-app-ac77dcaac573" target="_blank" rel="noopener noreferrer">
-            How to build an Ethereum Wallet guide
-            </a>
-            <br />
-            ETH: 0x97325941fafde5a182e6f7e5475a592ac615a3f2
-          </Col>
-        </Span>
+        <GreyCol sm={12} xs={24}>
+          <a href="https://medium.freecodecamp.org/how-to-build-an-ethereum-wallet-web-app-ac77dcaac573" target="_blank" rel="noopener noreferrer">
+          How to build an Ethereum Wallet guide
+          </a>
+          <br />
+          ETH: 0x97325941fafde5a182e6f7e5475a592ac615a3f2
+        </GreyCol>
 
       </Row>
     </Footer>

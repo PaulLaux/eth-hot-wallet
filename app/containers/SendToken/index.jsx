@@ -108,7 +108,7 @@ function SendToken(props) {
   return (
     <div style={{ maxWidth: '600px', margin: 'auto' }}>
       <Modal
-        visible={isShowSendToken}
+        open={isShowSendToken}
         title="Send Token"
         onOk={onHideSendToken}
         onCancel={onHideSendToken}

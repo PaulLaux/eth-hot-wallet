@@ -6,6 +6,7 @@
 
 import React from 'react';
 import { Button, Popconfirm } from 'antd';
+import { CloseSquareOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import LockButton from 'components/LockButton';
@@ -56,7 +57,7 @@ function SubHeader(props) {
   const existingWalletSubHeader = [
     <LockButton key="lock_button" {...lockButtonProps} />,
     <Popconfirm key="close_wallet" placement="bottom" title="Wallet will be deleted from memory and LocalStorage" onConfirm={onCloseWallet} okText="Confirm" cancelText="Abort">
-      <Button key="close_wallet" type="default" icon="close-square-o" size="large">
+      <Button key="close_wallet" type="default" icon={<CloseSquareOutlined />} size="large">
         Close wallet
       </Button>
     </Popconfirm>,

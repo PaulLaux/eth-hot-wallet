@@ -8,6 +8,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 import { Modal, Button, Alert } from 'antd';
+import { ReloadOutlined } from '@ant-design/icons';
 
 function GenerateWalletModal(props) {
   const {
@@ -24,7 +25,7 @@ function GenerateWalletModal(props) {
 
   return (
     <Modal
-      visible={isShowGenerateWallet}
+      open={isShowGenerateWallet}
       title="New Wallet"
       onOk={onGenerateKeystore}
       onCancel={onGenerateWalletCancel}
@@ -55,7 +56,7 @@ function GenerateWalletModal(props) {
         type="info"
       />
       <br />
-      <Button shape="circle" icon="reload" loading={generateWalletLoading} key="back" size="large" onClick={onGenerateWallet} />
+      <Button shape="circle" icon={<ReloadOutlined />} loading={generateWalletLoading} key="back" size="large" onClick={onGenerateWallet} />
     </Modal>
   );
 }

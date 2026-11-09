@@ -6,7 +6,8 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Input, Icon } from 'antd';
+import { Input } from 'antd';
+import { ContactsOutlined } from '@ant-design/icons';
 // import styled from 'styled-components';
 
 function SendTo({ to, onChangeTo, locked }) {
@@ -15,7 +16,7 @@ function SendTo({ to, onChangeTo, locked }) {
       <Input
         style={{ width: '300px' }}
         placeholder="Send to address"
-        prefix={<Icon type="contacts" />}
+        prefix={<ContactsOutlined />}
         value={to}
         onChange={onChangeTo}
         disabled={locked}

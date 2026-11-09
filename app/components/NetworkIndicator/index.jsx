@@ -9,7 +9,8 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 // import { FormattedMessage } from 'react-intl';
-import { Icon, Tooltip } from 'antd';
+import { Tooltip } from 'antd';
+import { CloseCircleOutlined, LoadingOutlined } from '@ant-design/icons';
 
 // import messages from './messages';
 import { offlineModeString } from 'utils/constants';
@@ -23,12 +24,12 @@ function NetworkIndicator(props) {
   const { loading, error } = props;
   let component = null;
   if (loading) {
-    component = <Icon type="loading" />;
+    component = <LoadingOutlined />;
   }
   if (error && error !== offlineModeString) {
     component =
       (<Tooltip placement="bottom" title={error}>
-        <Icon type="close-circle-o" style={{ color: 'red' }} />
+        <CloseCircleOutlined style={{ color: 'red' }} />
       </Tooltip>);
   }
 

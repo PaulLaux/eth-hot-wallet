@@ -7,6 +7,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Alert, Button, Spin } from 'antd';
+import { CloseOutlined, VerticalAlignTopOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 
 const Div = styled.div`
@@ -63,11 +64,11 @@ function SendConfirmationView(props) {
           type="info"
         />
         <br />
-        <Button icon="to-top" onClick={onSendTransaction} disabled={isSendComfirmationLocked} >
+        <Button icon={<VerticalAlignTopOutlined />} onClick={onSendTransaction} disabled={isSendComfirmationLocked} >
           {sendError ? 'Try again' : 'Send ETH'}
         </Button>
         {' '}
-        <Button icon="close" onClick={onAbortTransaction} disabled={isSendComfirmationLocked} >
+        <Button icon={<CloseOutlined />} onClick={onAbortTransaction} disabled={isSendComfirmationLocked} >
           Back
         </Button>
       </Div>

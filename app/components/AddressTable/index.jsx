@@ -13,7 +13,6 @@ import CurrencyDropdown from 'components/CurrencyDropdown';
 import TokenIcon from 'components/TokenIcon';
 
 const { Column } = Table;
-// import { LocaleProvider } from 'antd';
 // import { FormattedMessage } from 'react-intl';
 // import messages from './messages';
 
@@ -26,10 +25,6 @@ const AddrTable = styled(Table)`
   }
   .ant-table{
     font-size: 13px !important;
-  }
-  th.columnCenter,
-  td.columnCenter{
-    text-align: center;
   }
 `;
 
@@ -173,7 +168,7 @@ function AddressTable(props) {
     <AddrTable
       dataSource={completeRowList}
       bordered
-      scroll={{ x: 860 }}
+      scroll={{ x: 'max-content' }}
       pagination={false}
       locale={{
         filterTitle: null,
@@ -188,23 +183,8 @@ function AddressTable(props) {
         dataIndex="address"
         key="address"
         width="250px"
-        className="columnCenter"
-        colSpan="1"
-        rowSpan="3"
-        render={(text, record) => {
-          const obj = {
-            children: text,
-            props: {},
-          };
-          if (record.token !== 'eth') {
-            // obj.props.rowSpan = 0;
-            obj.props.rowSpan = 0;
-            // obj.children = '~';
-          } else {
-            obj.props.rowSpan = Object.keys(tokenDecimalsMap).length || 2;
-          }
-          return obj;
-        }}
+        align="center"
+        onCell={(record) => ({ rowSpan: record.token === 'eth' ? Object.keys(tokenDecimalsMap).length || 2 : 0 })}
       />
       {/* <Column
         title="#"
@@ -213,7 +193,7 @@ function AddressTable(props) {
         width="10px"
         sorter={(a, b) => parseInt(a.key, 10) - parseInt(b.key, 10)}
         sortOrder="ascend"
-        className="columnCenter"
+        align="center"
       /> */}
       <Column
         title="Icon"
@@ -222,7 +202,7 @@ function AddressTable(props) {
         render={(text, record) => (
           <TokenIcon tokenSymbol={record.token} />
         )}
-        className="columnCenter"
+        align="center"
       />
 
       <Column
@@ -230,7 +210,7 @@ function AddressTable(props) {
         dataIndex="token"
         key="token"
         width="65px"
-        className="columnCenter"
+        align="center"
         render={(text, record) => (
           record.token.toUpperCase()
         )}
