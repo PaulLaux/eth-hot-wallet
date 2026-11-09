@@ -1,17 +1,18 @@
 /**
  * Wallet operations
  */
-import lightwallet from 'eth-lightwallet';
 import localStore from 'store/dist/store.modern';
 
-import { call, put, select, takeLatest } from 'redux-saga/effects';
+import { call, put, race, select, take, takeLatest } from 'redux-saga/effects';
 
 import {
   GENERATE_WALLET,
   GENERATE_KEYSTORE,
   RESTORE_WALLET_FROM_SEED,
   GENERATE_ADDRESS,
+  LOCK_WALLET,
   UNLOCK_WALLET,
+  UNLOCK_WALLET_SUCCESS,
   CLOSE_WALLET,
   SHOW_SEND_TOKEN,
   SAVE_WALLET,
@@ -34,12 +35,14 @@ import { loadNetwork } from 'containers/Header/actions';
 import { changeFrom } from 'containers/SendToken/actions';
 
 import generateString from 'utils/crypto';
+import askPassword from 'utils/askPassword';
+import { newMnemonic, isMnemonicValid, createVault, openVault, addAddress } from 'utils/wallet';
 
-import { generatedPasswordLength, hdPathString, offlineModeString, defaultNetwork, localStorageKey } from 'utils/constants';
+import { generatedPasswordLength, offlineModeString, defaultNetwork, localStorageKey, autoLockTime } from 'utils/constants';
 
 import { timer } from 'utils/common';
 
-import { getEthBalancePromise } from 'containers/Header/saga';
+import { getEthBalance } from 'containers/Header/saga';
 
 import {
   generateWalletSucces,
@@ -53,6 +56,7 @@ import {
   generateAddressSuccess,
   generateAddressError,
   changeBalance,
+  lockWallet,
   unlockWalletSuccess,
   unlockWalletError,
   saveWallet,
@@ -69,8 +73,7 @@ import {
 export function* generateWallet() {
   try {
     const password = generateString(generatedPasswordLength);
-    const extraEntropy = generateString(generatedPasswordLength);
-    const seed = lightwallet.keystore.generateRandomSeed(extraEntropy);
+    const seed = newMnemonic();
 
     yield call(timer, 500);
 
@@ -93,7 +96,7 @@ export function* restoreFromSeed() {
     yield put(changeUserSeed(userSeed.replace(/^\s+|\s+$/g, '')));
     userSeed = yield select(makeSelectUserSeed());
 
-    if (!lightwallet.keystore.isSeedValid(userSeed)) {
+    if (!isMnemonicValid(userSeed)) {
       yield put(restoreWalletFromSeedError('Invalid seed'));
       return;
     }
@@ -110,53 +113,17 @@ export function* restoreFromSeed() {
   }
 }
 
-/* keyStore.createVault({password: password,
-    seedPhrase: '(opt)seed',entropy: '(opt)additional entropy',salt: '(opt)'}, function (err, ks) {}); */
-function createVaultPromise(param) {
-  return new Promise((resolve, reject) => {
-    lightwallet.keystore.createVault(param, (err, data) => {
-      if (err !== null) return reject(err);
-      return resolve(data);
-    });
-  });
-}
-
 /**
- * Create new keystore and generate some addreses
+ * Create new keystore with the first address
  */
 export function* genKeystore() {
   try {
     const password = yield select(makeSelectPassword());
     const seedPhrase = yield select(makeSelectSeed());
-    const opt = {
-      password,
-      seedPhrase,
-      hdPathString,
-    };
     // allow time to render components before cpu intensive tasks:
     yield call(timer, 300);
 
-
-    function keyFromPasswordPromise(param) {
-      return new Promise((resolve, reject) => {
-        ks.keyFromPassword(param, (err, data) => {
-          if (err !== null) return reject(err);
-          return resolve(data);
-        });
-      });
-    }
-
-    const ks = yield call(createVaultPromise, opt);
-
-    ks.passwordProvider = (callback) => {
-      // const password = yield select(makeSelectPassword());
-      const pw = prompt('Please enter keystore password', 'Password');
-      callback(null, pw);
-    };
-
-    const pwDerivedKey = yield call(keyFromPasswordPromise, password);
-    ks.generateNewAddress(pwDerivedKey, 1);
-
+    const ks = yield call(createVault, seedPhrase, password);
     const tokenList = yield select(makeSelectTokenInfoList());
 
     yield put(generateKeystoreSuccess(ks, tokenList));
@@ -182,35 +149,21 @@ export function* generateAddress() {
 
     const password = yield select(makeSelectPassword());
     if (!password) {
-      // TODO: Handle password
       throw new Error('Wallet Locked');
     }
 
-    function keyFromPasswordPromise(param) {
-      return new Promise((resolve, reject) => {
-        ks.keyFromPassword(param, (err, data) => {
-          if (err !== null) return reject(err);
-          return resolve(data);
-        });
-      });
-    }
-
-    const pwDerivedKey = yield call(keyFromPasswordPromise, password);
-    ks.generateNewAddress(pwDerivedKey, 1);
-
-
+    const newKs = addAddress(ks, yield call(openVault, ks, password));
+    const newAddress = newKs.addresses.slice(-1)[0];
+    const index = newKs.addresses.length; // serial index for sorting by generation order;
     const tokenList = yield select(makeSelectTokenInfoList());
-    // get last address
-    const newAddress = ks.getAddresses().slice(-1)[0];
-    const index = ks.getAddresses().length; // serial index for sorting by generation order;
-    yield put(generateAddressSuccess(newAddress, index, tokenList));
+    yield put(generateAddressSuccess(newKs, newAddress, index, tokenList));
     yield put(saveWallet());
 
     // balance checking for new address (will be aborted in offline mode)
     try {
-      const balance = yield call(getEthBalancePromise, newAddress);
+      const balance = yield call(getEthBalance, newAddress);
       yield put(changeBalance(newAddress, 'eth', balance));
-    } catch (err) { }  // eslint-disable-line 
+    } catch { /* offline */ }
   } catch (err) {
     yield call(timer, 1000); // eye candy
     yield put(generateAddressError(err.message));
@@ -232,44 +185,26 @@ export function* unlockWallet() {
       throw new Error('No keystore to unlock');
     }
 
-    const passwordProvider = ks.passwordProvider;
-
-    function passwordProviderPromise() {
-      return new Promise((resolve, reject) => {
-        passwordProvider((err, data) => {
-          if (err !== null) return reject(err);
-          return resolve(data);
-        });
-      });
-    }
-
-    function keyFromPasswordPromise(param) {
-      return new Promise((resolve, reject) => {
-        ks.keyFromPassword(param, (err, data) => {
-          if (err !== null) return reject(err);
-          return resolve(data);
-        });
-      });
-    }
-
-    const userPassword = yield call(passwordProviderPromise);
-
+    const userPassword = yield call(askPassword);
     if (!userPassword) {
       throw Error('No password entered');
     }
 
-    const pwDerivedKey = yield call(keyFromPasswordPromise, userPassword);
-    // TODO: Move into password provider?
-    const isPasswordCorrect = ks.isDerivedKeyCorrect(pwDerivedKey);
-
-    if (!isPasswordCorrect) {
-      throw Error('Invalid Password');
-    }
-
+    yield call(openVault, ks, userPassword);
     yield put(unlockWalletSuccess(userPassword));
   } catch (err) {
     const errorString = `Unlock wallet error - ${err.message}`;
     yield put(unlockWalletError(errorString));
+  }
+}
+
+/**
+ * Lock the wallet after autoLockTime unless it is locked or closed before
+ */
+export function* autoLock() {
+  const { timeout } = yield race({ timeout: call(timer, autoLockTime), locked: take([LOCK_WALLET, CLOSE_WALLET]) });
+  if (timeout) {
+    yield put(lockWallet());
   }
 }
 
@@ -301,14 +236,7 @@ export function* saveWalletS() {
       throw new Error('No keystore defined');
     }
 
-    const dump = {
-      ver: '1',
-      saved: new Date().toISOString(),
-      ks: ks.serialize(),
-    };
-    // console.log(`Saving len: ${JSON.stringify(dump).length}`);
-
-    localStore.set(localStorageKey, dump);
+    localStore.set(localStorageKey, ks);
 
     yield put(saveWalletSuccess());
   } catch (err) {
@@ -328,14 +256,10 @@ export function* loadWalletS() {
       throw new Error('Existing keystore present  - aborting load form localStorage');
     }
 
-    const dump = localStore.get(localStorageKey);
-    if (!dump) {
+    const ks = localStore.get(localStorageKey);
+    if (!ks) {
       throw new Error('No keystore found in localStorage');
     }
-    // console.log(`Load len: ${JSON.stringify(dump).length}`);
-
-    const ksDump = dump.ks;
-    const ks = lightwallet.keystore.deserialize(ksDump);
 
     const tokenList = yield select(makeSelectTokenInfoList());
     yield put(generateKeystoreSuccess(ks, tokenList));
@@ -360,7 +284,7 @@ export function* deleteWallet() {
  * @param {object} action.tokenInfo
  */
 export function* chosenTokenInfo(action) {
-  const addressList = (yield select(makeSelectKeystore())).getAddresses();
+  const addressList = (yield select(makeSelectKeystore())).addresses;
   yield put(updateTokenInfo(addressList, action.tokenInfo));
 }
 
@@ -373,12 +297,13 @@ export default function* walletData() {
   // It returns task descriptor (just like fork) so we can continue execution
   // It will be cancelled automatically on component unmount
 
-  // yield takeLatest(INIT_SEED, initSeed);
   yield takeLatest(GENERATE_WALLET, generateWallet);
   yield takeLatest(GENERATE_KEYSTORE, genKeystore);
   yield takeLatest(GENERATE_ADDRESS, generateAddress);
   yield takeLatest(RESTORE_WALLET_FROM_SEED, restoreFromSeed);
   yield takeLatest(UNLOCK_WALLET, unlockWallet);
+  // a new or restored wallet starts unlocked
+  yield takeLatest([UNLOCK_WALLET_SUCCESS, GENERATE_KEYSTORE], autoLock);
   yield takeLatest(SHOW_SEND_TOKEN, changeSourceAddress);
   yield takeLatest(CLOSE_WALLET, closeWallet);
 
@@ -386,8 +311,4 @@ export default function* walletData() {
   yield takeLatest(LOAD_WALLET, loadWalletS);
 
   yield takeLatest(CONFIRM_UPDATE_TOKEN_INFO, chosenTokenInfo);
-  /*
-  while (yield takeLatest(INIT_WALLET, initSeed)) {
-    // yield takeLatest(GENERATE_KEYSTORE, genKeystore);
-  } */
 }

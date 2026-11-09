@@ -9,7 +9,6 @@ import { Button, Popconfirm } from 'antd';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import LockButton from 'components/LockButton';
-import IconButton from 'components/IconButton';
 const Div = styled.div`
   margin-top: 45px;
   .ant-btn {

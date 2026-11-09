@@ -31,10 +31,10 @@ function TokenChooserList(props) {
         itemLayout="horizontal"
         dataSource={tokenList}
         renderItem={(item) => (
-          <ListItem actions={[<Switch checked={chosenTokens[item.symbol]} onChange={(toggle) => onTokenToggle(item.symbol, toggle)} />]}>
+          <ListItem actions={[<Switch key="toggle" checked={chosenTokens[item.symbol]} onChange={(toggle) => onTokenToggle(item.symbol, toggle)} />]}>
             <ListItemMeta
               avatar={<TokenIcon tokenSymbol={item.symbol} size={32} />}
-              title={<a href={item.url} target="_blank" rel="noopener">{item.name} ({item.symbol.toUpperCase()})</a>}
+              title={<a href={item.url} target="_blank" rel="noopener noreferrer">{item.name} ({item.symbol.toUpperCase()})</a>}
               description={item.description}
             />
           </ListItem>

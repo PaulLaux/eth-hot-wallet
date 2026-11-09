@@ -31,15 +31,15 @@ function PageFooter() {
       <Row>
         <Col sm={12} xs={24}>
           {'ETH Hot Wallet - '}
-          <a href={github} target="_blank" rel="noopener">
+          <a href={github} target="_blank" rel="noopener noreferrer">
             Ethereum Wallet with ERC20 support (GitHub)
           </a><br />
-          Created using: eth-lightwallet, React.js, Ant design...
+          Created using: viem, React.js, Ant design...
         </Col>
 
         <Span>
           <Col sm={12} xs={24}>
-            <a href="https://medium.freecodecamp.org/how-to-build-an-ethereum-wallet-web-app-ac77dcaac573" target="_blank" rel="noopener">
+            <a href="https://medium.freecodecamp.org/how-to-build-an-ethereum-wallet-web-app-ac77dcaac573" target="_blank" rel="noopener noreferrer">
             How to build an Ethereum Wallet guide
             </a>
             <br />

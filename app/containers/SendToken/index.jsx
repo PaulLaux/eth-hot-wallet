@@ -19,7 +19,6 @@ import SendFrom from 'components/SendFrom';
 import SendTo from 'components/SendTo';
 import SendAmount from 'components/SendAmount';
 import SendTokenSymbol from 'components/SendTokenSymbol';
-import SendGasPrice from 'components/SendGasPrice';
 import SendConfirmationView from 'components/SendConfirmationView';
 import SendProgress from 'components/SendProgress';
 
@@ -30,7 +29,6 @@ import {
   changeFrom,
   changeAmount,
   changeTo,
-  changeGasPrice,
   confirmSendTransaction,
   sendTransaction,
   abortTransaction,
@@ -40,7 +38,6 @@ import {
   makeSelectFrom,
   makeSelectTo,
   makeSelectAmount,
-  makeSelectGasPrice,
   makeSelectLocked,
   makeSelectComfirmationLoading,
   makeSelectConfirmationError,
@@ -68,8 +65,6 @@ function SendToken(props) {
     locked,
     onChangeAmount,
     onChangeTo,
-    gasPrice,
-    onChangeGasPrice,
     comfirmationLoading,
     confirmationError,
     confirmationMsg,
@@ -92,7 +87,6 @@ function SendToken(props) {
   const SendFromProps = { from, addressList, onChangeFrom, locked };
   const SendAmountProps = { amount, onChangeAmount, locked };
   const SendToProps = { to, onChangeTo, locked };
-  const SendGasPriceProps = { gasPrice, onChangeGasPrice, locked };
 
   const SendConfirmationViewProps = {
     comfirmationLoading,
@@ -130,7 +124,6 @@ function SendToken(props) {
         <SendAmount {...SendAmountProps} />
         <SendTokenSymbol {...SendTokenSymbolProps} /><br /> <br />
         <SendTo {...SendToProps} /> <br />
-        <SendGasPrice {...SendGasPriceProps} /> <br />
         <Button onClick={onConfirmSendTransaction} disabled={locked} >
           Create transaction
         </Button>
@@ -146,7 +139,6 @@ SendToken.propTypes = {
   onChangeFrom: PropTypes.func.isRequired,
   onChangeAmount: PropTypes.func.isRequired,
   onChangeTo: PropTypes.func.isRequired,
-  onChangeGasPrice: PropTypes.func.isRequired,
   onConfirmSendTransaction: PropTypes.func.isRequired,
   onSendTransaction: PropTypes.func.isRequired,
   onAbortTransaction: PropTypes.func.isRequired,
@@ -155,7 +147,6 @@ SendToken.propTypes = {
   to: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
 
   amount: PropTypes.number,
-  gasPrice: PropTypes.number,
   sendTokenSymbol: PropTypes.string,
   tokenInfoList: PropTypes.array,
 
@@ -186,7 +177,6 @@ const mapStateToProps = createStructuredSelector({
   to: makeSelectTo(),
   amount: makeSelectAmount(),
   addressList: makeSelectAddressList(),
-  gasPrice: makeSelectGasPrice(),
 
   sendTokenSymbol: makeSelectSendTokenSymbol(),
   tokenInfoList: makeSelectTokenInfoList(),
@@ -217,9 +207,6 @@ function mapDispatchToProps(dispatch) {
     },
     onChangeTo: (evt) => {
       dispatch(changeTo(evt.target.value));
-    },
-    onChangeGasPrice: (value) => {
-      dispatch(changeGasPrice(value));
     },
     onConfirmSendTransaction: (evt) => {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();

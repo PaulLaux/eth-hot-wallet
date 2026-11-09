@@ -125,7 +125,7 @@ const transformList = (addressMap, tokenDecimalsMap, showTokens) => { //eslint-d
 const getConvertRate = (exchangeRates, from, to) => {
   const fromKey = `eth_${from}`;
   // convert token to eth by invert(eth_token)
-  const toEthRate = exchangeRates[fromKey].rate.toPower(-1);
+  const toEthRate = exchangeRates[fromKey].rate.pow(-1);
   const toTokenRate = exchangeRates[to].rate;
   return toEthRate && toTokenRate && toEthRate.times(toTokenRate);
 };
@@ -144,13 +144,13 @@ const addConvertRates = (rowList, exchangeRates, convertTo) =>
     try {
       // const convertToSymbol = convertTo.slice(4).toUpperCase();
       if (`eth_${row.token}` === convertTo) {
-        row.convert = row.balance; // eslint-disable-line
+        row.convert = row.balance;
       } else {
         const convertRate = getConvertRate(exchangeRates, row.token, convertTo);
-        row.convert = convertRate.times(row.balance).round(5).toString(10); // eslint-disable-line
+        row.convert = convertRate.times(row.balance).dp(5).toString(10);
       }
       return row;
-    } catch (err) {
+    } catch {
       // no rates found
       return row;
     }
@@ -262,9 +262,7 @@ function AddressTable(props) {
           <span>
             {/* <a href="#" >Show QR</a>
             <span className="ant-divider" /> */}
-            {/* eslint-disable */}
             <a onClick={() => onShowSendToken(record.address, record.token)}>Send</a>
-            {/* eslint-enable */}
           </span>
         )}
       />

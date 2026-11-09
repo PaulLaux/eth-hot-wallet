@@ -23,7 +23,7 @@ export default ({ key, saga, mode }) => (WrappedComponent) => {
     };
     static displayName = `withSaga(${(WrappedComponent.displayName || WrappedComponent.name || 'Component')})`;
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
       const { injectSaga } = this.injectors;
 
       injectSaga(key, { saga, mode }, this.props);

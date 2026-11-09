@@ -148,7 +148,7 @@ const getRate = (tokenList, path) => {
 
   if (target) {
     const value = new BigNumber(target[path.key]);
-    return path.isInverse ? value.toPower(-1) : value;
+    return path.isInverse ? value.pow(-1) : value;
   }
   return null;
   // return target && value;

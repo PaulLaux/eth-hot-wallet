@@ -287,7 +287,7 @@ function createAddressMap(addressesList, tokenList) {
  * @return {object}      An action object with a type of GENERATE_KEYSTORE_SUCCESS passing the repos
  */
 export function generateKeystoreSuccess(keystore, tokenList) {
-  const addresses = keystore.getAddresses();
+  const addresses = keystore.addresses;
   const addressMap = createAddressMap(addresses, tokenList);
   /* output:
   addressMap: {
@@ -437,20 +437,21 @@ export function generateAddress() {
 /**
  * After successfull address generation create new addressList for our store.
  *
- * @param {string} newAddress the updated keystore
+ * @param {object} keystore the keystore including the new address
+ * @param {string} newAddress the new address
  * @param {number} index address serial number of generation
  * @param {string[]} tokenList example: ['eth','eos','ppt']
  *
  * @return {object} An action object with a type of GENERATE_ADDRESS_SUCCESS,
- * newAddress and tokenMap for the new address
+ * keystore, newAddress and tokenMap for the new address
  */
-export function generateAddressSuccess(newAddress, index, tokenList) {
-  const tokenMap = createTokenMap(tokenList);// , index);
-  console.log(tokenMap);
+export function generateAddressSuccess(keystore, newAddress, index, tokenList) {
+  const tokenMap = createTokenMap(tokenList);
 
   tokenMap.index = index;
   return {
     type: GENERATE_ADDRESS_SUCCESS,
+    keystore,
     newAddress,
     tokenMap,
   };

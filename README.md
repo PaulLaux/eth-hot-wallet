@@ -12,8 +12,7 @@ https://eth-hot-wallet.com
 
 ### Core components
 
-- [ ] [LightWallet V3](https://github.com/ConsenSys/eth-lightwallet) 
-- [ ] [Web3.js](https://github.com/ethereum/web3.js/) Ethereum JavaScript API
+- [ ] [viem](https://viem.sh) for keys, signing and the Ethereum JSON-RPC API
 - [ ] [React-boilerplate](https://github.com/react-boilerplate/react-boilerplate) as a wrapper of React JS, Redux, Saga, Reselect, ImmutableJS and more
 - [ ] [Ant Design](https://github.com/ant-design/ant-design) React js components
 - [ ] [Vite](https://vite.dev) for development and builds, [Vitest](https://vitest.dev) for tests
@@ -36,7 +35,9 @@ The wallet checks that each endpoint serves the expected chain ID and signs tran
 
 ### Features
 
-- [x] Encryption keys generated from seed and stored in the browser.
+- [x] Keys derived from a BIP-39 seed in the browser; the seed is stored encrypted with your password (PBKDF2 + AES-GCM).
+- [x] EIP-1559 fees and gas limits estimated automatically.
+- [x] The wallet locks itself 15 minutes after unlocking.
 - [x] Network selector including local and remote rpc 
 - [x] Eth balance auto converted to btc/usd/euro.
 - [x] Responsive design for mobile support.
@@ -44,15 +45,7 @@ The wallet checks that each endpoint serves the expected chain ID and signs tran
 
 #### ERC20 wallet and native token support
 Eth-hot-wallet supports erc20 tokens. From the user side, the tokens will have the same look and feel like Ether. 
-To interact with contracts, we use 
-```javascript
-web3.eth.contract(erc20Abi)
-```
-Like all other network communication in the wallet, calls to erc20 contracts are done inside `app/containers/Header/saga.js`.
-ERC20 Abi can be imported using 
-```javascript
-import { erc20Abi } from 'utils/contracts/abi';
-```
+Like all other network communication in the wallet, calls to erc20 contracts are done inside `app/containers/Header/saga.js`, using viem's `readContract` / `writeContract` with its built-in `erc20Abi`.
 
 
 
@@ -65,17 +58,16 @@ import { erc20Abi } from 'utils/contracts/abi';
 - [ ] Event log
 - [ ] CI for development and production
 - [ ] External security audit
-- [ ] Upgrade to react 16
-- [ ] Upgrade Enzyme 3
+- [x] Upgrade to react 16
 
 
 ### Development
 
 4 Major containers were created:
 
-- Homepage container - all the actions related to keystore, including manipulation and usage.
+- Homepage container - all the actions related to the wallet (seed, encryption, addresses), see also `app/utils/wallet.js`.
 
-- Header container - all the activities related to network communication / web3 API.
+- Header container - all the activities related to network communication (viem).
 
 - SendTo container - state and actions related to sendTo modal, actual checks and sending is happening in header container.
 

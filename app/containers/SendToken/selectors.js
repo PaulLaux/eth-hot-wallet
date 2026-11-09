@@ -22,11 +22,6 @@ const makeSelectAmount = () => createSelector(
   (substate) => substate.get('amount')
 );
 
-const makeSelectGasPrice = () => createSelector(
-  selectSendTokenDomain,
-  (substate) => substate.get('gasPrice')
-);
-
 const makeSelectSendTokenSymbol = () => createSelector(
   selectSendTokenDomain,
   (substate) => substate.get('sendTokenSymbol')
@@ -79,7 +74,6 @@ export {
   makeSelectFrom,
   makeSelectTo,
   makeSelectAmount,
-  makeSelectGasPrice,
   makeSelectLocked,
   makeSelectSendTokenSymbol,
 

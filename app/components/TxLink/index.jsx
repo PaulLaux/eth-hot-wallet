@@ -16,7 +16,7 @@ function TxLink(props) {
   const { tx, explorer } = props;
   if (explorer) {
     return (
-      <a href={`${explorer}${tx}`} target="_blank" rel="noopener">
+      <a href={`${explorer}${tx}`} target="_blank" rel="noopener noreferrer">
         <Span>{tx}</Span>
       </a>
     );

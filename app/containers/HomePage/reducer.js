@@ -242,6 +242,7 @@ function homeReducer(state = initialState, action) {
         .set('addressListLoading', false)
         .set('addressListError', false)
         .set('addressListMsg', 'New address generated succesfully')
+        .set('keystore', action.keystore)
         .setIn(['addressList', action.newAddress], fromJS(action.tokenMap));
     case GENERATE_ADDRESS_ERROR:
       return state

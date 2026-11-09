@@ -8,7 +8,6 @@ import {
   CHANGE_FROM,
   CHANGE_AMOUNT,
   CHANGE_TO,
-  CHANGE_GAS_PRICE,
 
   COMFIRM_SEND_TRANSACTION,
   COMFIRM_SEND_TRANSACTION_SUCCESS,
@@ -26,7 +25,6 @@ const initialState = fromJS({
   from: '',
   to: '',
   amount: 0,
-  gasPrice: 10, // gwei
   locked: false,
   sendTokenSymbol: 'eth',
 
@@ -54,10 +52,6 @@ function sendTokenReducer(state = initialState, action) {
     case CHANGE_TO:
       return state
         .set('to', action.address);
-
-    case CHANGE_GAS_PRICE:
-      return state
-        .set('gasPrice', action.gasPrice);
 
     case COMFIRM_SEND_TRANSACTION:
       return state
