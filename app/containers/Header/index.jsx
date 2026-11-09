@@ -6,7 +6,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-// import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { Row, Col } from 'antd';
 
@@ -27,7 +26,6 @@ import {
   makeSelectCheckingBalances,
   makeSelectCheckingBalancesError, */
 } from './selectors';
-// import messages from './messages';
 import { loadNetwork } from './actions';
 
 const HeaderWrapped = styled.header`

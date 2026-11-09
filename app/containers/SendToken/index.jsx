@@ -7,7 +7,6 @@
 import React from 'react';
 import { Modal, Button } from 'antd';
 import { connect } from 'react-redux';
-// import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 
 import SendFrom from 'components/SendFrom';
@@ -43,7 +42,6 @@ import {
   makeSelectSendTx,
   makeSelectSendTokenSymbol,
 } from './selectors';
-// import messages from './messages';
 
 function SendToken(props) {
   const {

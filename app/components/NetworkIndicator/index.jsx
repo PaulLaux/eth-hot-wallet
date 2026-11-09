@@ -7,11 +7,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
-// import { FormattedMessage } from 'react-intl';
 import { Tooltip } from 'antd';
 import { CloseCircleOutlined, LoadingOutlined } from '@ant-design/icons';
 
-// import messages from './messages';
 import { offlineModeString } from 'utils/constants';
 
 const Span = styled.span`

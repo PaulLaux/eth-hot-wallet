@@ -13,8 +13,6 @@ const Div = styled.div`
   margin-top: 22px;
 `;
 
-// import { FormattedMessage } from 'react-intl';
-// import messages from './messages';
 
 function SendConfirmationView(props) {
   const {

@@ -12,8 +12,6 @@ import CurrencyDropdown from 'components/CurrencyDropdown';
 import TokenIcon from 'components/TokenIcon';
 
 const { Column } = Table;
-// import { FormattedMessage } from 'react-intl';
-// import messages from './messages';
 
 const AddrTable = styled(Table)`
   max-width: 860px;

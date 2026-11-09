@@ -9,8 +9,6 @@ import { Button, Popconfirm } from 'antd';
 import { LockOutlined, UnlockOutlined } from '@ant-design/icons';
 // import styled from 'styled-components';
 
-// import { FormattedMessage } from 'react-intl';
-// import messages from './messages';
 
 function LockButton(props) {
   const { onLockWallet, password, onUnlockWallet } = props;
