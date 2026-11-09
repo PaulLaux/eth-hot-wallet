@@ -7,7 +7,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
 import 'sanitize.css/sanitize.css';
 import 'antd/dist/antd.css';
 
@@ -16,9 +15,7 @@ import createStore from './store';
 
 ReactDOM.render(
   <Provider store={createStore()}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <App />
   </Provider>,
   document.getElementById('app')
 );
