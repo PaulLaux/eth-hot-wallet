@@ -19,6 +19,17 @@ describe('store', () => {
     expect(makeSelectTokenDecimalsMap()(state)).toEqual({ eth: 18, usdc: 6, link: 18 });
   });
 
+  it('checks that state stays serializable: balances are strings, not bigint', () => {
+    const error = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const store = createStore();
+    store.dispatch(generateKeystoreSuccess({ addresses: [address] }, ['eth']));
+    store.dispatch(changeBalance(address, 'eth', '1500000000000000000'));
+    expect(error).not.toHaveBeenCalled();
+    store.dispatch(changeBalance(address, 'eth', 1n));
+    expect(error.mock.calls.some(([msg]) => msg.includes('non-serializable value was detected in the state'))).toBe(true);
+    error.mockRestore();
+  });
+
   it('remembers the previous network, but not Offline', () => {
     let state = header(undefined, loadNetwork('Main Net'));
     expect(state.prevNetworkName).toBe('Sepolia Testnet'); // the default, since we were Offline

@@ -273,7 +273,9 @@ export function* loadWalletS() {
  * delete all values from localStorage
  */
 export function* deleteWallet() {
-  localStorage.clear();
+  try {
+    localStorage.clear();
+  } catch { /* storage blocked by the browser: nothing was saved */ }
 }
 
 /**

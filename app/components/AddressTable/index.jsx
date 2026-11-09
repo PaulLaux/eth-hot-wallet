@@ -56,7 +56,8 @@ const splitAddrToRows = (tokenDecimalsMap, tokenMapIN, address, startKey) => {
     sameAddressRow.address = address;
     const balance = tokenMap[token].balance;
     const decimals = tokenDecimalsMap[token];
-    sameAddressRow.balance = balance ? formatUnits(BigInt(balance), decimals) : 'n/a';
+    // formatUnits would silently mis-scale the balance without a decimals count
+    sameAddressRow.balance = balance && Number.isInteger(decimals) ? formatUnits(BigInt(balance), decimals) : 'n/a';
     // sameAddressRow.convert = '';
     return sameAddressRow;
   });
@@ -91,7 +92,7 @@ const splitAddrToRows = (tokenDecimalsMap, tokenMapIN, address, startKey) => {
     convert: '13 USD',
   },
 ] */
-const transformList = (addressMap, tokenDecimalsMap, showTokens) => { //eslint-disable-line
+export const transformList = (addressMap, tokenDecimalsMap, showTokens) => { //eslint-disable-line
   // const showTokens = true;
   let iKey = 1;
   const list = Object.keys(addressMap).map((address) => {
@@ -123,7 +124,7 @@ const getConvertRate = (exchangeRates, from, to) => exchangeRates[to].rate / exc
  *
  * @return {Array} array as data for table, see example above
  */
-const addConvertRates = (rowList, exchangeRates, convertTo) =>
+export const addConvertRates = (rowList, exchangeRates, convertTo) =>
   rowList.map((row) => {
     try {
       // const convertToSymbol = convertTo.slice(4).toUpperCase();
