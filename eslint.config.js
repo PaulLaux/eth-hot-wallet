@@ -13,6 +13,7 @@ export default [
     rules: {
       'no-unused-vars': ['error', { ignoreRestSiblings: true }],
       'require-yield': 'off',
+      'react/prop-types': 'off', // React 19 no longer checks propTypes
     },
   },
 ];

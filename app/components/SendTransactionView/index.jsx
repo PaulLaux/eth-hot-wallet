@@ -5,9 +5,7 @@
 */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 // import styled from 'styled-components';
-
 
 function SendTransactionView({ sendInProgress, sendError, sendTx }) {
   if (sendInProgress) {
@@ -29,11 +27,5 @@ function SendTransactionView({ sendInProgress, sendError, sendTx }) {
 
   return null;
 }
-
-SendTransactionView.propTypes = {
-  sendInProgress: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-  sendError: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-  sendTx: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-};
 
 export default SendTransactionView;

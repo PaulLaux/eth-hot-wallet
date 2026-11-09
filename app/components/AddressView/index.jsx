@@ -5,7 +5,6 @@
 */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Spin, Alert } from 'antd';
 import styled from 'styled-components';
 
@@ -99,43 +98,5 @@ function AddressView(props) {
     </Spin>
   );
 }
-
-AddressView.propTypes = {
-  generateKeystoreLoading: PropTypes.bool,
-  generateKeystoreError: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.string,
-    PropTypes.bool,
-  ]),
-  isComfirmed: PropTypes.bool,
-  addressMap: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.bool,
-    PropTypes.array,
-  ]),
-  tokenDecimalsMap: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
-  onShowSendToken: PropTypes.func,
-  onShowTokenChooser: PropTypes.func,
-
-  onGenerateAddress: PropTypes.func,
-  addressListLoading: PropTypes.bool,
-  addressListError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
-  addressListMsg: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-
-  onCheckBalances: PropTypes.func,
-  networkReady: PropTypes.bool,
-  checkingBalanceDoneTime: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-  checkingBalances: PropTypes.bool,
-  checkingBalancesError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
-
-  exchangeRates: PropTypes.object,
-  onSelectCurrency: PropTypes.func,
-  convertTo: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-
-  onGetExchangeRates: PropTypes.func,
-  getExchangeRatesDoneTime: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-  getExchangeRatesLoading: PropTypes.bool,
-  getExchangeRatesError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
-};
 
 export default AddressView;

@@ -5,7 +5,6 @@
 */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Table } from 'antd';
 
@@ -27,7 +26,6 @@ const AddrTable = styled(Table)`
     font-size: 13px !important;
   }
 `;
-
 
 /**
  * Create list of rows, one row per token for given address
@@ -247,14 +245,5 @@ function AddressTable(props) {
     </AddrTable >
   );
 }
-
-AddressTable.propTypes = {
-  addressMap: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
-  tokenDecimalsMap: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
-  onShowSendToken: PropTypes.func,
-  exchangeRates: PropTypes.object,
-  onSelectCurrency: PropTypes.func,
-  convertTo: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-};
 
 export default AddressTable;

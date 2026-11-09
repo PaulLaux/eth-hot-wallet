@@ -6,7 +6,6 @@
 
 import React from 'react';
 // import styled from 'styled-components';
-import PropTypes from 'prop-types';
 import { InputNumber } from 'antd';
 
 function SendAmount({ amount, onChangeAmount, locked }) {
@@ -23,11 +22,5 @@ function SendAmount({ amount, onChangeAmount, locked }) {
     </span>
   );
 }
-
-SendAmount.propTypes = {
-  amount: PropTypes.number,
-  onChangeAmount: PropTypes.func,
-  locked: PropTypes.bool,
-};
 
 export default SendAmount;

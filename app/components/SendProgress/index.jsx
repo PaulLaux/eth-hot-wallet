@@ -5,7 +5,6 @@
 */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Alert, Spin } from 'antd';
 import styled from 'styled-components';
 import TxLink from 'components/TxLink';
@@ -51,12 +50,5 @@ function SendProgress({ sendInProgress, sendError, sendTx, txExplorer }) {
 
   return null;
 }
-
-SendProgress.propTypes = {
-  sendInProgress: PropTypes.oneOfType([PropTypes.bool]),
-  sendError: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
-  sendTx: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
-  txExplorer: PropTypes.string,
-};
 
 export default SendProgress;

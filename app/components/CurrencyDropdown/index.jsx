@@ -5,7 +5,6 @@
 */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Dropdown } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 
@@ -30,11 +29,5 @@ function CurrencyDropdown(props) {
     </Dropdown>
   );
 }
-
-CurrencyDropdown.propTypes = {
-  convertTo: PropTypes.string,
-  exchangeRates: PropTypes.object,
-  onSelectCurrency: PropTypes.func,
-};
 
 export default CurrencyDropdown;

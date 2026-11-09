@@ -5,7 +5,6 @@
 */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Button, Popconfirm } from 'antd';
 import { LockOutlined, UnlockOutlined } from '@ant-design/icons';
 // import styled from 'styled-components';
@@ -32,11 +31,5 @@ function LockButton(props) {
     </Button>
   );
 }
-
-LockButton.propTypes = {
-  onLockWallet: PropTypes.func,
-  password: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-  onUnlockWallet: PropTypes.func,
-};
 
 export default LockButton;

@@ -5,7 +5,6 @@
 */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { BarsOutlined, GlobalOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
 
@@ -18,7 +17,6 @@ const Div = styled.div`
     margin-top: 15px;
   }
 `;
-
 
 function AddressTableFooter(props) {
   const {
@@ -80,22 +78,5 @@ function AddressTableFooter(props) {
     </Div>
   );
 }
-
-AddressTableFooter.propTypes = {
-  onCheckBalances: PropTypes.func,
-  networkReady: PropTypes.bool,
-  checkingBalances: PropTypes.bool,
-  checkingBalancesError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
-
-  isComfirmed: PropTypes.bool,
-  onGenerateAddress: PropTypes.func,
-  addressListLoading: PropTypes.bool,
-  addressListError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
-
-  onGetExchangeRates: PropTypes.func,
-  getExchangeRatesLoading: PropTypes.bool,
-  getExchangeRatesError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
-  onShowTokenChooser: PropTypes.func,
-};
 
 export default AddressTableFooter;

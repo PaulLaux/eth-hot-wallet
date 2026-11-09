@@ -7,7 +7,6 @@
 import React from 'react';
 import { Button, Popconfirm } from 'antd';
 import { CloseSquareOutlined } from '@ant-design/icons';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import LockButton from 'components/LockButton';
 const Div = styled.div`
@@ -73,7 +72,6 @@ function SubHeader(props) {
     />, */
   ];
 
-
   const subHeader = isComfirmed ? existingWalletSubHeader : noWalletSubHeader;
 
   return (
@@ -82,22 +80,5 @@ function SubHeader(props) {
     </Div>
   );
 }
-
-SubHeader.propTypes = {
-  onGenerateWallet: PropTypes.func,
-  onShowRestoreWallet: PropTypes.func,
-  isComfirmed: PropTypes.bool,
-  onCloseWallet: PropTypes.func,
-  onLockWallet: PropTypes.func,
-  password: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-  onUnlockWallet: PropTypes.func,
-  /* optional laod / save buttons
-  onSaveWallet: PropTypes.func,
-  saveWalletLoading: PropTypes.bool,
-  saveWalletError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
-   onLoadWallet: PropTypes.func,
-  loadWalletLoading: PropTypes.bool,
-  loadWalletError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]), */
-};
 
 export default SubHeader;

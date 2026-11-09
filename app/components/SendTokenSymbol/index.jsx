@@ -5,11 +5,9 @@
 */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Select } from 'antd';
 const Option = Select.Option;
 // import styled from 'styled-components';
-
 
 function SendTokenSymbol(props) {
   const { sendTokenSymbol, tokenInfoList, onChangeFrom, locked } = props;
@@ -32,12 +30,5 @@ function SendTokenSymbol(props) {
     </span>
   );
 }
-
-SendTokenSymbol.propTypes = {
-  sendTokenSymbol: PropTypes.string,
-  tokenInfoList: PropTypes.array,
-  onChangeFrom: PropTypes.func,
-  locked: PropTypes.bool,
-};
 
 export default SendTokenSymbol;

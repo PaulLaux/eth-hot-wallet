@@ -5,7 +5,6 @@
 */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Button, Dropdown } from 'antd';
 import { DownOutlined, WifiOutlined } from '@ant-design/icons';
@@ -35,11 +34,5 @@ function NetworkMenu(props) {
     </Dropdown>
   );
 }
-
-NetworkMenu.propTypes = {
-  onLoadNetwork: PropTypes.func.isRequired,
-  networkName: PropTypes.string,
-  availableNetworks: PropTypes.array,
-};
 
 export default NetworkMenu;

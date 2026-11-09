@@ -5,7 +5,6 @@
 */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Button, Popconfirm, Tooltip } from 'antd';
 import styled from 'styled-components';
 
@@ -31,18 +30,6 @@ const Btn = ({ error, popconfirm, text, loading, disabled, popconfirmMsg, onClic
     {text}
   </Button>
 );
-Btn.propTypes = {
-  popconfirm: PropTypes.bool,
-  text: PropTypes.string.isRequired,
-  icon: PropTypes.node.isRequired,
-
-  onClick: PropTypes.func,
-  loading: PropTypes.bool,
-  error: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
-  disabled: PropTypes.bool,
-  popconfirmMsg: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
-};
-
 const handlePopconfirm = (popConfirmText, onClick, component) => {
   if (popConfirmText) {
     return (
@@ -83,18 +70,5 @@ function IconButton(props) {
     )
   );
 }
-
-IconButton.propTypes = {
-  text: PropTypes.string.isRequired,
-  icon: PropTypes.node.isRequired,
-
-  onClick: PropTypes.func,
-  loading: PropTypes.bool,
-  error: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
-  disabled: PropTypes.bool,
-  popconfirmMsg: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
-
-};
-
 
 export default IconButton;

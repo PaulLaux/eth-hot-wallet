@@ -5,7 +5,6 @@
 */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Switch } from 'antd';
 import styled from 'styled-components';
 import TokenIcon from 'components/TokenIcon';
@@ -36,11 +35,5 @@ function TokenChooserList({ tokenList = [], chosenTokens, onTokenToggle }) {
     </Row>
   ));
 }
-
-TokenChooserList.propTypes = {
-  tokenList: PropTypes.array,
-  chosenTokens: PropTypes.object,
-  onTokenToggle: PropTypes.func,
-};
 
 export default TokenChooserList;

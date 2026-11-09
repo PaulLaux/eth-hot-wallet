@@ -5,7 +5,6 @@
 */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Alert, Button, Spin } from 'antd';
 import { CloseOutlined, VerticalAlignTopOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
@@ -79,17 +78,5 @@ function SendConfirmationView(props) {
     null
   );
 }
-
-SendConfirmationView.propTypes = {
-  comfirmationLoading: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
-  confirmationError: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
-  confirmationMsg: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
-  isSendComfirmationLocked: PropTypes.bool,
-
-  onSendTransaction: PropTypes.func.isRequired,
-  onAbortTransaction: PropTypes.func.isRequired,
-
-  sendError: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
-};
 
 export default SendConfirmationView;

@@ -10,7 +10,6 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -88,7 +87,6 @@ import {
   makeSelectLoadwalletError,
   makeSelectTokenDecimalsMap,
 } from './selectors';
-
 
 export class HomePage extends React.PureComponent {
   componentDidMount() {
@@ -251,100 +249,6 @@ export class HomePage extends React.PureComponent {
     );
   }
 }
-
-HomePage.propTypes = {
-  onGenerateWallet: PropTypes.func,
-  onGenerateWalletCancel: PropTypes.func,
-  isShowGenerateWallet: PropTypes.bool,
-  generateWalletLoading: PropTypes.bool,
-  generateWalletError: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.string,
-    PropTypes.bool,
-  ]),
-  seed: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.bool,
-  ]),
-  password: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.bool,
-  ]),
-
-  generateKeystoreLoading: PropTypes.bool,
-  generateKeystoreError: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.string,
-    PropTypes.bool,
-  ]),
-
-  // onInitSeed: PropTypes.func,
-  onGenerateKeystore: PropTypes.func,
-  onGenerateAddress: PropTypes.func,
-  onShowRestoreWallet: PropTypes.func,
-
-  isShowRestoreWallet: PropTypes.bool,
-  userSeed: PropTypes.string,
-  userPassword: PropTypes.string,
-  onChangeUserSeed: PropTypes.func,
-  onChangeUserPassword: PropTypes.func,
-  restoreWalletError: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.string,
-    PropTypes.bool,
-  ]),
-  onRestoreWalletFromSeed: PropTypes.func,
-  onRestoreWalletCancel: PropTypes.func,
-
-  onCheckBalances: PropTypes.func,
-
-  onLockWallet: PropTypes.func,
-  onUnlockWallet: PropTypes.func,
-
-  isComfirmed: PropTypes.bool,
-  addressMap: PropTypes.oneOfType([
-    // PropTypes.array,
-    PropTypes.bool,
-    PropTypes.object,
-  ]),
-  tokenDecimalsMap: PropTypes.oneOfType([
-    PropTypes.bool,
-    PropTypes.object,
-  ]),
-
-  isShowSendToken: PropTypes.bool,
-  onShowSendToken: PropTypes.func,
-  onHideSendToken: PropTypes.func,
-
-  isShowTokenChooser: PropTypes.bool,
-  onShowTokenChooser: PropTypes.func,
-  onHideTokenChooser: PropTypes.func,
-
-  addressListLoading: PropTypes.bool,
-  addressListError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
-  addressListMsg: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-
-  networkReady: PropTypes.bool,
-  checkingBalanceDoneTime: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-  checkingBalances: PropTypes.bool,
-  checkingBalancesError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
-
-  exchangeRates: PropTypes.object,
-  onSelectCurrency: PropTypes.func,
-  convertTo: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-  onGetExchangeRates: PropTypes.func,
-  getExchangeRatesDoneTime: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-  getExchangeRatesLoading: PropTypes.bool,
-  getExchangeRatesError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
-  onCloseWallet: PropTypes.func,
-
-  onSaveWallet: PropTypes.func,
-  saveWalletLoading: PropTypes.bool,
-  saveWalletError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
-  onLoadWallet: PropTypes.func,
-  loadWalletLoading: PropTypes.bool,
-  loadWalletError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]),
-};
 
 export function mapDispatchToProps(dispatch) {
   return {

@@ -5,7 +5,6 @@
 */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const Span = styled.span`
@@ -23,10 +22,5 @@ function TxLink(props) {
   }
   return (<Span>{tx}</Span>);
 }
-
-TxLink.propTypes = {
-  tx: PropTypes.string,
-  explorer: PropTypes.string,
-};
 
 export default TxLink;

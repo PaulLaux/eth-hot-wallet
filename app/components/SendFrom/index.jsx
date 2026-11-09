@@ -5,7 +5,6 @@
 */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Select } from 'antd';
 const Option = Select.Option;
 
@@ -29,19 +28,5 @@ function SendFrom({ addressList, from, onChangeFrom, locked }) {
     </div >
   );
 }
-
-SendFrom.propTypes = {
-  from: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.bool,
-  ]),
-  onChangeFrom: PropTypes.func,
-  addressList: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.bool,
-    // PropTypes.array,
-  ]),
-  locked: PropTypes.bool,
-};
 
 export default SendFrom;

@@ -5,7 +5,6 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Modal, Button } from 'antd';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -56,18 +55,6 @@ function TokenChooser(props) {
     </div>
   );
 }
-
-TokenChooser.propTypes = {
-  // dispatch: PropTypes.func.isRequired,
-  isShowTokenChooser: PropTypes.bool,
-  onHideTokenChooser: PropTypes.func,
-
-  chosenTokens: PropTypes.object,
-  onToggleToken: PropTypes.func,
-  onConfirmNewTokenInfo: PropTypes.func,
-
-  networkName: PropTypes.string,
-};
 
 const mapStateToProps = createStructuredSelector({
   chosenTokens: makeSelectChosenTokens(),

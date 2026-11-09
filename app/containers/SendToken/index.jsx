@@ -5,7 +5,6 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Modal, Button } from 'antd';
 import { connect } from 'react-redux';
 // import { FormattedMessage } from 'react-intl';
@@ -77,7 +76,6 @@ function SendToken(props) {
     txExplorer,
     } = props;
 
-
   const SendFromProps = { from, addressList, onChangeFrom, locked };
   const SendAmountProps = { amount, onChangeAmount, locked };
   const SendToProps = { to, onChangeTo, locked };
@@ -128,43 +126,6 @@ function SendToken(props) {
     </div>
   );
 }
-
-SendToken.propTypes = {
-  onChangeFrom: PropTypes.func.isRequired,
-  onChangeAmount: PropTypes.func.isRequired,
-  onChangeTo: PropTypes.func.isRequired,
-  onConfirmSendTransaction: PropTypes.func.isRequired,
-  onSendTransaction: PropTypes.func.isRequired,
-  onAbortTransaction: PropTypes.func.isRequired,
-
-  from: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
-  to: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
-
-  amount: PropTypes.number,
-  sendTokenSymbol: PropTypes.string,
-  tokenInfoList: PropTypes.array,
-
-  locked: PropTypes.bool,
-
-  comfirmationLoading: PropTypes.oneOfType([PropTypes.bool]),
-  confirmationError: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
-  confirmationMsg: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
-
-  isSendComfirmationLocked: PropTypes.bool,
-
-  sendInProgress: PropTypes.oneOfType([PropTypes.bool]),
-  sendError: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
-  sendTx: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
-
-  isShowSendToken: PropTypes.bool,
-  onHideSendToken: PropTypes.func,
-  addressList: PropTypes.oneOfType([
-    // PropTypes.array,
-    PropTypes.bool,
-    PropTypes.object,
-  ]),
-  txExplorer: PropTypes.string,
-};
 
 const mapStateToProps = createStructuredSelector({
   from: makeSelectFrom(),

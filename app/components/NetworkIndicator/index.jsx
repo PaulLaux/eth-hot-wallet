@@ -5,7 +5,6 @@
 */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 // import { FormattedMessage } from 'react-intl';
@@ -39,14 +38,5 @@ function NetworkIndicator(props) {
     </Span>
   );
 }
-
-NetworkIndicator.propTypes = {
-  loading: PropTypes.bool,
-  error: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.string,
-    PropTypes.bool,
-  ]),
-};
 
 export default NetworkIndicator;

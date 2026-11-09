@@ -4,13 +4,11 @@
  *
  */
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 // import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { Row, Col } from 'antd';
-
 
 import NetworkIndicator from 'components/NetworkIndicator';
 import Logo from 'components/Logo';
@@ -78,25 +76,6 @@ function Header(props) {
     </HeaderWrapped >
   );
 }
-
-Header.propTypes = {
-  onLoadNetwork: PropTypes.func.isRequired,
-  // onCheckBalances: PropTypes.func.isRequired,
-
-  loading: PropTypes.bool,
-  error: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.string,
-    PropTypes.bool,
-  ]),
-  networkName: PropTypes.string,
-  availableNetworks: PropTypes.array,
-  blockNumber: PropTypes.number,
-
-  /* checkingBalanceDoneTime: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-  checkingBalances: PropTypes.bool,
-  checkingBalancesError: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool]), */
-};
 
 const mapStateToProps = createStructuredSelector({
   networkReady: makeSelectNetworkReady(),

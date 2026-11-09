@@ -5,7 +5,6 @@
 */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 
 function NetworkSelector({ networkName, availableNetworks, onLoadNetwork }) {
@@ -30,11 +29,5 @@ function NetworkSelector({ networkName, availableNetworks, onLoadNetwork }) {
     </div>
   );
 }
-
-NetworkSelector.propTypes = {
-  networkName: PropTypes.string,
-  onLoadNetwork: PropTypes.func.isRequired,
-  availableNetworks: PropTypes.object,
-};
 
 export default NetworkSelector;

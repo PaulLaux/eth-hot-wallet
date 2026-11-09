@@ -5,7 +5,6 @@
 */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const Img = styled.img`
@@ -28,10 +27,5 @@ function TokenIcon({ tokenSymbol, size = 24 }) {
     </span>
   );
 }
-
-TokenIcon.propTypes = {
-  tokenSymbol: PropTypes.string,
-  size: PropTypes.number,
-};
 
 export default TokenIcon;

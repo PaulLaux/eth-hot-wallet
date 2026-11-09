@@ -5,7 +5,6 @@
 */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 
 function CheckBalancesStatus({ checkingBalanceDoneTime, checkingBalances, checkingBalancesError }) {
@@ -25,18 +24,5 @@ function CheckBalancesStatus({ checkingBalanceDoneTime, checkingBalances, checki
     </div>
   );
 }
-
-CheckBalancesStatus.propTypes = {
-  checkingBalanceDoneTime: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.bool,
-  ]),
-  checkingBalances: PropTypes.bool,
-  checkingBalancesError: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.string,
-    PropTypes.bool,
-  ]),
-};
 
 export default CheckBalancesStatus;

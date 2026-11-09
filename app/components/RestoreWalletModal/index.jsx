@@ -5,7 +5,6 @@
 */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Modal, Button, Input, Tooltip } from 'antd';
 import { CloseCircleOutlined, KeyOutlined, WalletOutlined } from '@ant-design/icons';
@@ -73,20 +72,5 @@ function RestoreWalletModal(props) {
     </Modal>
   );
 }
-
-RestoreWalletModal.propTypes = {
-  isShowRestoreWallet: PropTypes.bool,
-  userSeed: PropTypes.string,
-  userPassword: PropTypes.string,
-  onChangeUserSeed: PropTypes.func,
-  onChangeUserPassword: PropTypes.func,
-  restoreWalletError: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.string,
-    PropTypes.bool,
-  ]),
-  onRestoreWalletCancel: PropTypes.func,
-  onRestoreWalletFromSeed: PropTypes.func,
-};
 
 export default RestoreWalletModal;
