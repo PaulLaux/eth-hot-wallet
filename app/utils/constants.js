@@ -7,9 +7,6 @@ export const timeBetweenCheckbalances = 180 * 1000;
 // an unlocked wallet locks itself after this time (ms)
 export const autoLockTime = 15 * 60 * 1000;
 
-/* Wei per ether, as a string for BigNumber: balance.div(Ether) */
-export const Ether = (1.0e18).toString();
-
 /* offline mode is special case of error */
 export const offlineModeString = 'Offline';
 /* Default network to connect after wallet creation (see network.js) */

@@ -327,7 +327,7 @@ export function generateKeystoreError(error) {
  *
  * @param  {string} address as string
  * @param  {string} symbol 'eth' or other
- * @param  {string} balance BigNumber object
+ * @param  {string} balance in wei / token base units, as a decimal string
  *
  * @return {object} An action object with a type of CHANGE_BALANCE with address and balance
  */

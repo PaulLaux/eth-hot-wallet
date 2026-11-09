@@ -77,7 +77,7 @@ export function* generateWallet() {
 
     yield put(generateWalletSucces(seed, password));
   } catch (err) {
-    yield put(generateWalletError(err));
+    yield put(generateWalletError(err.message));
   }
 }
 
@@ -107,7 +107,7 @@ export function* restoreFromSeed() {
     yield put(restoreWalletFromSeedSuccess(userSeed, userPassword));
     yield put(generateKeystore());
   } catch (err) {
-    yield put(restoreWalletFromSeedError(err));
+    yield put(restoreWalletFromSeedError(err.message));
   }
 }
 

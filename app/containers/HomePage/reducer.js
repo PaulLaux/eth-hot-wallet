@@ -82,9 +82,9 @@ const initialState = {
   addressList: {
     address1: {
         order: 1
-        eth: {balance: bigNumber},
-        eos: {balance: bigNumber},
-        ppt: {balance: bigNumber},
+        eth: {balance: weiString / false},
+        eos: {balance: weiString / false},
+        ppt: {balance: weiString / false},
       }
   } */
 

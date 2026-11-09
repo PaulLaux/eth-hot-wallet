@@ -7,6 +7,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Table } from 'antd';
+import { formatUnits } from 'viem';
 
 import CurrencyDropdown from 'components/CurrencyDropdown';
 import TokenIcon from 'components/TokenIcon';
@@ -55,7 +56,7 @@ const splitAddrToRows = (tokenDecimalsMap, tokenMapIN, address, startKey) => {
     sameAddressRow.address = address;
     const balance = tokenMap[token].balance;
     const decimals = tokenDecimalsMap[token];
-    sameAddressRow.balance = balance ? balance.div((10 ** decimals).toString()).toString(10) : 'n/a';
+    sameAddressRow.balance = balance ? formatUnits(BigInt(balance), decimals) : 'n/a';
     // sameAddressRow.convert = '';
     return sameAddressRow;
   });
@@ -104,20 +105,14 @@ const transformList = (addressMap, tokenDecimalsMap, showTokens) => { //eslint-d
 };
 
 /**
- * return conversion rate from given token
+ * return conversion rate from given token: token to eth by invert(eth_token), then eth to target
  * @param  {object} exchangeRates available exchange rates
  * @param  {string} from symbol to convert from: 'eth' / 'usd' / ..
  * @param  {string} to the convertion pair to use: ie "eth_usd"
  *
- * @return {Array} array as data for table, see example above
+ * @return {number} conversion rate
  */
-const getConvertRate = (exchangeRates, from, to) => {
-  const fromKey = `eth_${from}`;
-  // convert token to eth by invert(eth_token)
-  const toEthRate = exchangeRates[fromKey].rate.pow(-1);
-  const toTokenRate = exchangeRates[to].rate;
-  return toEthRate && toTokenRate && toEthRate.times(toTokenRate);
-};
+const getConvertRate = (exchangeRates, from, to) => exchangeRates[to].rate / exchangeRates[`eth_${from}`].rate;
 
 /**
  * Add converted rates to all rows
@@ -135,8 +130,8 @@ const addConvertRates = (rowList, exchangeRates, convertTo) =>
       if (`eth_${row.token}` === convertTo) {
         row.convert = row.balance;
       } else {
-        const convertRate = getConvertRate(exchangeRates, row.token, convertTo);
-        row.convert = convertRate.times(row.balance).dp(5).toString(10);
+        const value = getConvertRate(exchangeRates, row.token, convertTo) * row.balance;
+        if (Number.isFinite(value)) row.convert = String(+value.toFixed(5));
       }
       return row;
     } catch {

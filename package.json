@@ -24,7 +24,6 @@
     "@reduxjs/toolkit": "^2.13.0",
     "@scure/bip39": "^1.6.0",
     "antd": "^6.6.8",
-    "bignumber.js": "^11.1.5",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "react-redux": "^9.3.0",

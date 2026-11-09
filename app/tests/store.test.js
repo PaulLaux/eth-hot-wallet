@@ -10,11 +10,11 @@ describe('store', () => {
   it('keeps addresses and balances as plain objects', () => {
     const store = createStore();
     store.dispatch(generateKeystoreSuccess({ addresses: [address] }, ['eth', 'usdc']));
-    store.dispatch(changeBalance(address, 'usdc', 5));
+    store.dispatch(changeBalance(address, 'usdc', '5000000'));
     store.dispatch(changeBalance(address, 'dai', 1)); // token not in the list: ignored
     const state = store.getState();
 
-    expect(makeSelectAddressMap()(state)).toEqual({ [address]: { index: 1, eth: { balance: false }, usdc: { balance: 5 } } });
+    expect(makeSelectAddressMap()(state)).toEqual({ [address]: { index: 1, eth: { balance: false }, usdc: { balance: '5000000' } } });
     expect(makeSelectAddressMap(address, { returnList: true, removeIndex: true, removeEth: true })(state)).toEqual(['usdc']);
     expect(makeSelectTokenDecimalsMap()(state)).toEqual({ eth: 18, usdc: 6, link: 18 });
   });

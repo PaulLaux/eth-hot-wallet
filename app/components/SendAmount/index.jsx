@@ -16,6 +16,7 @@ function SendAmount({ amount, onChangeAmount, locked }) {
         value={amount}
         min={0}
         step={0.1}
+        stringMode
         onChange={(value) => onChangeAmount((value))}
         disabled={locked}
       />

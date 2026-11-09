@@ -1,4 +1,3 @@
-import BigNumber from 'bignumber.js';
 import { createWalletClient, erc20Abi, http, isAddress, parseUnits, publicActions } from 'viem';
 import { all, take, call, delay, put, select, takeLatest, race, fork } from 'redux-saga/effects';
 import { dummyRates } from './tests/dummyRates';
@@ -170,8 +169,7 @@ export function* SendTransaction() {
   const keystore = yield select(makeSelectKeystore());
   try {
     const fromAddress = yield select(makeSelectFrom());
-    // decimal string (no exponent) for parseUnits
-    const amount = new BigNumber(yield select(makeSelectAmount())).toFixed();
+    const amount = String(yield select(makeSelectAmount())); // decimal string for parseUnits
     const toAddress = yield select(makeSelectTo());
     const password = yield select(makeSelectPassword());
 
@@ -214,16 +212,16 @@ export function* SendTransaction() {
 
 
 /* *************  Polling saga and polling flow for check balances ***************** */
-// Balances are kept as BigNumber (wei / token base units) for the UI
+// Balances are kept as decimal strings (wei / token base units): Redux state must be serializable
 export function* getEthBalance(address) {
-  return new BigNumber((yield call([client, client.getBalance], { address })).toString());
+  return (yield call([client, client.getBalance], { address })).toString();
 }
 
 function* getTokenBalance(address, tokenContractAddress) {
   const balance = yield call([client, client.readContract], {
     address: tokenContractAddress, abi: erc20Abi, functionName: 'balanceOf', args: [address],
   });
-  return new BigNumber(balance.toString());
+  return balance.toString();
 }
 
 
@@ -340,7 +338,7 @@ export function* getRates() {
     yield put(setExchangeRates(apiRates, coinGeckoPriceApi, tokenList));
     yield put(getExchangeRatesSuccess());
   } catch (err) {
-    yield put(getExchangeRatesError(err));
+    yield put(getExchangeRatesError(err.message));
   }
 }
 

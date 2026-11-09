@@ -13,8 +13,7 @@ export default function createStore() {
   const sagaMiddleware = createSagaMiddleware();
   const store = configureStore({
     reducer: { home, header, sendtoken, tokenchooser },
-    // the state holds BigNumber balances, which are not serializable
-    middleware: (getDefault) => getDefault({ thunk: false, serializableCheck: false }).concat(sagaMiddleware),
+    middleware: (getDefault) => getDefault({ thunk: false }).concat(sagaMiddleware),
   });
   sagaMiddleware.run(function* rootSaga() {
     yield all([homeSaga(), headerSaga()]);

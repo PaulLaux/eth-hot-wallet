@@ -26,14 +26,14 @@ describe('extractRates with CoinGecko rates', () => {
   const rates = extractRates(coinGeckoToRates(response), coinGeckoPriceApi, ['eth', 'usdc', 'mero']);
 
   it('extracts eth rates', () => {
-    expect(rates.eth_eth.rate.toNumber()).toBe(1);
-    expect(rates.eth_usd.rate.toNumber()).toBe(2238.55);
-    expect(rates.eth_eur.rate.toNumber()).toBe(2007.67);
-    expect(rates.eth_btc.rate.toNumber()).toBe(0.02945029);
+    expect(rates.eth_eth.rate).toBe(1);
+    expect(rates.eth_usd.rate).toBe(2238.55);
+    expect(rates.eth_eur.rate).toBe(2007.67);
+    expect(rates.eth_btc.rate).toBe(0.02945029);
   });
 
   it('extracts token rates via usd and skips tokens without a price', () => {
-    expect(rates.eth_usdc.rate.toNumber()).toBeCloseTo(2238.55 / 0.999413, 4);
+    expect(rates.eth_usdc.rate).toBeCloseTo(2238.55 / 0.999413, 4);
     expect(rates.eth_mero).toBeUndefined();
   });
 });

@@ -96,9 +96,9 @@ const makeSelectAddressList = () => createSelector(
  * returns map for specific given address or map of all addresses if no address is given
  * {
  *   index: 1 // optional
- *   eth: {balance: bigNumber / false},
- *   eos: {balance: bigNumber / false},
- *   ppt: {balance: bigNumber / false},
+ *   eth: {balance: weiString / false},
+ *   eos: {balance: weiString / false},
+ *   ppt: {balance: weiString / false},
  * }
  * to return array of all adresses use: makeSelectAddress(false, { returnList: true })
  *
