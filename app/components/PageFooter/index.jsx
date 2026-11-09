@@ -40,8 +40,6 @@ function PageFooter() {
           <a href="https://medium.freecodecamp.org/how-to-build-an-ethereum-wallet-web-app-ac77dcaac573" target="_blank" rel="noopener noreferrer">
           How to build an Ethereum Wallet guide
           </a>
-          <br />
-          ETH: 0x97325941fafde5a182e6f7e5475a592ac615a3f2
         </GreyCol>
 
       </Row>

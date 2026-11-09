@@ -13,7 +13,7 @@ function SendTo({ to, onChangeTo, locked }) {
   return (
     <div>
       <Input
-        style={{ width: '300px' }}
+        style={{ width: '100%', maxWidth: 300 }}
         placeholder="Send to address"
         prefix={<ContactsOutlined />}
         value={to}
