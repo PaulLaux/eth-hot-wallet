@@ -14,7 +14,9 @@ export default function askPassword() {
           onPressEnter={() => { dialog.destroy(); resolve(password); }}
         />
       ),
-      autoFocusButton: null, // keep focus in the password field
+      // keep focus in the password field. Deprecated, but the replacement focusable.autoFocusButton
+      // is merged with `||` in antd (6.6.8, 6.7.0), so null becomes 'ok' and the OK button takes focus
+      autoFocusButton: null,
       onOk: () => resolve(password),
       onCancel: () => resolve(''),
     });
