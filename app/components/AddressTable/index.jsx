@@ -53,9 +53,7 @@ const AddrTable = styled(Table)`
 } */
 const splitAddrToRows = (tokenDecimalsMap, tokenMapIN, address, startKey) => {
   let key = startKey;
-  const tokenMap = tokenMapIN;
-  const index = tokenMap.index;
-  delete tokenMap.index;
+  const { index, ...tokenMap } = tokenMapIN;
 
   return Object.keys(tokenMap).map((token) => {
     const sameAddressRow = {};

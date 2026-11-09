@@ -43,7 +43,7 @@ Requires Node.js 20.19+ or 22.12+.
 | `npm test` | Run the tests (Vitest) |
 | `npm run lint` | Lint (ESLint) |
 
-Built with [viem](https://viem.sh) (keys, signing, JSON-RPC), [react-boilerplate](https://github.com/react-boilerplate/react-boilerplate) (React, Redux, Redux-Saga, Reselect, Immutable), [Ant Design](https://github.com/ant-design/ant-design) and [Vite](https://vite.dev).
+Built with [viem](https://viem.sh) (keys, signing, JSON-RPC), [react-boilerplate](https://github.com/react-boilerplate/react-boilerplate) (React, Redux, Redux-Saga, Reselect), [Ant Design](https://github.com/ant-design/ant-design) and [Vite](https://vite.dev).
 
 ### Code layout
 

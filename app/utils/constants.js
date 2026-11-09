@@ -1,7 +1,3 @@
-export const RESTART_ON_REMOUNT = '@@saga-injector/restart-on-remount';
-export const DAEMON = '@@saga-injector/daemon';
-export const ONCE_TILL_UNMOUNT = '@@saga-injector/once-till-unmount';
-
 /* Auto generated password lenght */
 export const generatedPasswordLength = 12;
 

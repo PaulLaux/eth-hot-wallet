@@ -9,9 +9,6 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 // import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
-import { compose } from 'redux';
-import injectSaga from 'utils/injectSaga';
-import injectReducer from 'utils/injectReducer';
 import { Row, Col } from 'antd';
 
 
@@ -32,8 +29,6 @@ import {
   makeSelectCheckingBalances,
   makeSelectCheckingBalancesError, */
 } from './selectors';
-import reducer from './reducer';
-import saga from './saga';
 // import messages from './messages';
 import { loadNetwork } from './actions';
 
@@ -95,7 +90,7 @@ Header.propTypes = {
     PropTypes.bool,
   ]),
   networkName: PropTypes.string,
-  availableNetworks: PropTypes.object,
+  availableNetworks: PropTypes.array,
   blockNumber: PropTypes.number,
 
   /* checkingBalanceDoneTime: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
@@ -124,13 +119,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-const withConnect = connect(mapStateToProps, mapDispatchToProps);
-
-const withReducer = injectReducer({ key: 'header', reducer });
-const withSaga = injectSaga({ key: 'header', saga });
-
-export default compose(
-  withReducer,
-  withSaga,
-  withConnect,
-)(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

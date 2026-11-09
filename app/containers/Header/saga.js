@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
 import { createWalletClient, erc20Abi, http, isAddress, parseUnits, publicActions } from 'viem';
-import { take, call, put, select, takeLatest, race, fork } from 'redux-saga/effects';
+import { all, take, call, delay, put, select, takeLatest, race, fork } from 'redux-saga/effects';
 import { dummyRates } from './tests/dummyRates';
 
 import {
@@ -280,19 +280,11 @@ export function* checkAllBalances() {
   }
 }
 
-// Utility function for delay effects
-function delay(millisec) {
-  const promise = new Promise((resolve) => {
-    setTimeout(() => resolve(true), millisec);
-  });
-  return promise;
-}
-
 // Fetch data every X seconds
 function* pollData() {
   try {
     // console.log('pollData');
-    yield call(delay, timeBetweenCheckbalances);
+    yield delay(timeBetweenCheckbalances);
 
     yield put(checkBalances());
   } catch {
@@ -361,9 +353,9 @@ export default function* defaultSaga() {
   yield takeLatest(GET_EXCHANGE_RATES, getRates);
 
   /* poll check balances */
-  yield [
+  yield all([
     fork(watchPollData),
     takeLatest(CHECK_BALANCES, checkAllBalances),
-  ];
+  ]);
   /* End of poll check balances */
 }

@@ -7,23 +7,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { ConnectedRouter } from 'react-router-redux';
-import { createBrowserHistory as createHistory } from 'history';
+import { BrowserRouter } from 'react-router-dom';
 import 'sanitize.css/sanitize.css';
 import 'antd/dist/antd.css';
 
 import App from 'containers/App';
-import configureStore from './store';
-
-// Create redux store with history
-const history = createHistory();
-export const store = configureStore({}, history);
+import createStore from './store';
 
 ReactDOM.render(
-  <Provider store={store}>
-    <ConnectedRouter history={history}>
+  <Provider store={createStore()}>
+    <BrowserRouter>
       <App />
-    </ConnectedRouter>
+    </BrowserRouter>
   </Provider>,
   document.getElementById('app')
 );

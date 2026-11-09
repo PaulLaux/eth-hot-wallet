@@ -3,13 +3,8 @@
  *
  * The reducer takes care of our data. Using actions, we can change our
  * application state.
- * To add a new action, add it to the switch statement in the reducer function
- *
- * Example:
- * case YOUR_ACTION_CONSTANT:
- *   return state.set('yourStateVariable', true);
  */
-import { fromJS } from 'immutable';
+import { createReducer } from '@reduxjs/toolkit';
 
 import {
   GENERATE_WALLET,
@@ -42,9 +37,7 @@ import {
   GENERATE_ADDRESS_ERROR,
 
   LOCK_WALLET,
-  UNLOCK_WALLET,
   UNLOCK_WALLET_SUCCESS,
-  UNLOCK_WALLET_ERROR,
 
   SET_EXCHANGE_RATES,
   SELECT_CURRENCY,
@@ -65,7 +58,7 @@ import {
 } from './constants';
 
 // The initial state of the App
-const initialState = fromJS({
+const initialState = {
   isShowGenerateWallet: false,
   generateWalletLoading: false,  // generate new seed and password
   generateWalletError: false,
@@ -128,195 +121,114 @@ const initialState = fromJS({
       decimals: 18,
     },
   },
-});
+};
 
-function homeReducer(state = initialState, action) {
-  switch (action.type) {
+export default createReducer(initialState, (builder) => builder
+  .addCase(GENERATE_WALLET, (s) => {
+    Object.assign(s, { isShowGenerateWallet: true, generateWalletLoading: true, generateWalletError: false });
+  })
+  .addCase(GENERATE_WALLET_SUCCESS, (s, a) => {
+    Object.assign(s, { generateWalletLoading: false, seed: a.seed, password: a.password });
+  })
+  .addCase(GENERATE_WALLET_ERROR, (s, a) => {
+    Object.assign(s, { generateWalletLoading: false, generateWalletError: a.error });
+  })
+  .addCase(GENERATE_WALLET_CANCEL, (s) => {
+    Object.assign(s, { isShowGenerateWallet: false, generateWalletLoading: true, generateWalletError: false, password: false, seed: false });
+  })
 
-    case GENERATE_WALLET:
-      return state
-        .set('isShowGenerateWallet', true)
-        .set('generateWalletLoading', true)
-        .set('generateWalletError', false);
-    case GENERATE_WALLET_SUCCESS:
-      return state
-        .set('generateWalletLoading', false)
-        .set('seed', action.seed)
-        .set('password', action.password);
-    case GENERATE_WALLET_ERROR:
-      return state
-        .set('generateWalletLoading', false)
-        .set('generateWalletError', action.error);
-    case GENERATE_WALLET_CANCEL:
-      return state
-        .set('isShowGenerateWallet', false)
-        .set('generateWalletLoading', true)
-        .set('generateWalletError', false)
-        .set('password', false)
-        .set('seed', false);
+  .addCase(GENERATE_KEYSTORE, (s) => {
+    Object.assign(s, { isShowGenerateWallet: false, generateKeystoreLoading: true, generateKeystoreError: false });
+  })
+  .addCase(GENERATE_KEYSTORE_SUCCESS, (s, a) => {
+    Object.assign(s, {
+      keystore: a.keystore,
+      seed: false,
+      isComfirmed: true,
+      addressListError: false,
+      addressList: a.addressMap,
+      generateKeystoreLoading: false,
+    });
+  })
+  .addCase(GENERATE_KEYSTORE_ERROR, (s, a) => {
+    Object.assign(s, { generateKeystoreLoading: false, generateKeystoreError: a.error, isComfirmed: false });
+  })
 
-    case GENERATE_KEYSTORE:
-      return state
-        .set('isShowGenerateWallet', false)
-        .set('generateKeystoreLoading', true)
-        .set('generateKeystoreError', false);
-    case GENERATE_KEYSTORE_SUCCESS:
-      return state
-        .set('keystore', action.keystore)
-        .set('seed', false)
-        .set('isComfirmed', true)
-        .set('addressListError', false)
-        .set('addressList', fromJS(action.addressMap))
-        .set('generateKeystoreLoading', false);
-    case GENERATE_KEYSTORE_ERROR:
-      return state
-        .set('generateKeystoreLoading', false)
-        .set('generateKeystoreError', action.error)
-        .set('isComfirmed', false);
+  .addCase(SHOW_RESTORE_WALLET, (s) => {
+    Object.assign(s, { isShowRestoreWallet: true, seed: false, userSeed: '' });
+  })
+  .addCase(RESTORE_WALLET_CANCEL, (s) => {
+    Object.assign(s, { isShowRestoreWallet: false, userPassword: '', userSeed: '', restoreWalletError: false });
+  })
+  .addCase(CHANGE_USER_SEED, (s, a) => { s.userSeed = a.userSeed; })
+  .addCase(CHANGE_USER_PASSWORD, (s, a) => { s.userPassword = a.password; })
+  .addCase(RESTORE_WALLET_FROM_SEED, (s) => {
+    Object.assign(s, { restoreWalletError: false, isComfirmed: false });
+  })
+  .addCase(RESTORE_WALLET_FROM_SEED_ERROR, (s, a) => { s.restoreWalletError = a.error; })
+  .addCase(RESTORE_WALLET_FROM_SEED_SUCCESS, (s, a) => {
+    Object.assign(s, { isShowRestoreWallet: false, seed: a.userSeed, password: a.userPassword, userSeed: '', userPassword: '' });
+  })
 
-    case SHOW_RESTORE_WALLET:
-      return state
-        .set('isShowRestoreWallet', true)
-        .set('seed', false)
-        .set('userSeed', '');
-    case RESTORE_WALLET_CANCEL:
-      return state
-        .set('isShowRestoreWallet', false)
-        .set('userPassword', '')
-        .set('userSeed', '')
-        .set('restoreWalletError', false);
-    case CHANGE_USER_SEED:
-      return state
-        .set('userSeed', action.userSeed); // Delete prefixed space from user seed
-    case CHANGE_USER_PASSWORD:
-      return state
-        .set('userPassword', action.password);
-    case RESTORE_WALLET_FROM_SEED:
-      return state
-        .set('restoreWalletError', false)
-        .set('isComfirmed', false);
-    case RESTORE_WALLET_FROM_SEED_ERROR:
-      return state
-        .set('restoreWalletError', action.error);
-    case RESTORE_WALLET_FROM_SEED_SUCCESS:
-      return state
-        .set('isShowRestoreWallet', false)
-        .set('seed', action.userSeed)
-        .set('password', action.userPassword)
-        .set('userSeed', '')
-        .set('userPassword', '');
+  .addCase(CHANGE_BALANCE, (s, a) => {
+    // ignore balances that arrive after the address or token was removed
+    const token = s.addressList && s.addressList[a.address] && s.addressList[a.address][a.symbol];
+    if (token) token.balance = a.balance;
+  })
 
+  .addCase(SHOW_SEND_TOKEN, (s) => { s.isShowSendToken = true; })
+  .addCase(HIDE_SEND_TOKEN, (s) => { s.isShowSendToken = false; })
+  .addCase(SHOW_TOKEN_CHOOSER, (s) => { s.isShowTokenChooser = true; })
+  .addCase(HIDE_TOKEN_CHOOSER, (s) => { s.isShowTokenChooser = false; })
 
-    case CHANGE_BALANCE:
-      return state
-        .setIn(['addressList', action.address, action.symbol, 'balance'], action.balance);
+  .addCase(UPDATE_TOKEN_INFO, (s, a) => {
+    Object.assign(s, { isShowTokenChooser: false, addressListError: false, tokenInfo: a.tokenInfo, addressList: a.addressMap });
+  })
 
-    case SHOW_SEND_TOKEN:
-      return state
-        .set('isShowSendToken', true);
-    case HIDE_SEND_TOKEN:
-      return state
-        .set('isShowSendToken', false);
+  .addCase(GENERATE_ADDRESS, (s) => {
+    Object.assign(s, { addressListLoading: true, addressListError: false, addressListMsg: false });
+  })
+  .addCase(GENERATE_ADDRESS_SUCCESS, (s, a) => {
+    Object.assign(s, {
+      addressListLoading: false,
+      addressListError: false,
+      addressListMsg: 'New address generated succesfully',
+      keystore: a.keystore,
+    });
+    s.addressList[a.newAddress] = a.tokenMap;
+  })
+  .addCase(GENERATE_ADDRESS_ERROR, (s, a) => {
+    Object.assign(s, { addressListLoading: false, addressListError: a.error });
+  })
 
-    case SHOW_TOKEN_CHOOSER:
-      return state
-        .set('isShowTokenChooser', true);
-    case HIDE_TOKEN_CHOOSER:
-      return state
-        .set('isShowTokenChooser', false);
+  .addCase(LOCK_WALLET, (s) => { s.password = false; })
+  .addCase(UNLOCK_WALLET_SUCCESS, (s, a) => { s.password = a.password; })
 
-    case UPDATE_TOKEN_INFO:
-      return state
-        .set('isShowTokenChooser', false)
-        .set('addressListError', false)
-        .set('tokenInfo', fromJS(action.tokenInfo))
-        .set('addressList', fromJS(action.addressMap));
+  .addCase(SET_EXCHANGE_RATES, (s, a) => { s.exchangeRates = a.rates; })
+  .addCase(SELECT_CURRENCY, (s, a) => { s.convertTo = a.convertTo; })
 
-    case GENERATE_ADDRESS:
-      return state
-        .set('addressListLoading', true)
-        .set('addressListError', false)
-        .set('addressListMsg', false);
-    case GENERATE_ADDRESS_SUCCESS:
-      return state
-        .set('addressListLoading', false)
-        .set('addressListError', false)
-        .set('addressListMsg', 'New address generated succesfully')
-        .set('keystore', action.keystore)
-        .setIn(['addressList', action.newAddress], fromJS(action.tokenMap));
-    case GENERATE_ADDRESS_ERROR:
-      return state
-        .set('addressListLoading', false)
-        .set('addressListError', action.error);
+  .addCase(CLOSE_WALLET, () => initialState)
 
+  .addCase(CHECK_LOCAL_STORAGE, (s) => { s.checkLocalStorageLoading = true; })
+  .addCase(LOCAL_STORAGE_EXIST, (s) => {
+    Object.assign(s, { checkLocalStorageLoading: false, isLocalStorageWallet: true });
+  })
+  .addCase(LOCAL_STORAGE_NOT_EXIST, (s) => {
+    Object.assign(s, { checkLocalStorageLoading: false, isLocalStorageWallet: false });
+  })
 
-    case LOCK_WALLET:
-      return state
-        .set('password', false);
-    case UNLOCK_WALLET:
-      return state;
-    case UNLOCK_WALLET_SUCCESS:
-      return state
-        .set('password', action.password);
-    case UNLOCK_WALLET_ERROR:
-      return state;
+  .addCase(SAVE_WALLET, (s) => {
+    Object.assign(s, { saveWalletLoading: true, saveWalletError: false });
+  })
+  .addCase(SAVE_WALLET_SUCCESS, (s) => { s.saveWalletLoading = false; })
+  .addCase(SAVE_WALLET_ERROR, (s, a) => {
+    Object.assign(s, { saveWalletLoading: false, saveWalletError: a.error });
+  })
 
-
-    case SET_EXCHANGE_RATES:
-      return state
-        .set('exchangeRates', fromJS(action.rates));
-    case SELECT_CURRENCY:
-      return state
-        .set('convertTo', fromJS(action.convertTo));
-
-    case CLOSE_WALLET:
-      return initialState;
-
-    case CHECK_LOCAL_STORAGE:
-      return state
-        .set('checkLocalStorageLoading', true);
-    case LOCAL_STORAGE_EXIST:
-      return state
-        .set('checkLocalStorageLoading', false)
-        .set('isLocalStorageWallet', true);
-    case LOCAL_STORAGE_NOT_EXIST:
-      return state
-        .set('checkLocalStorageLoading', false)
-        .set('isLocalStorageWallet', false);
-
-    case SAVE_WALLET:
-      return state
-        .set('saveWalletLoading', true)
-        .set('saveWalletError', false);
-    case SAVE_WALLET_SUCCESS:
-      return state
-        .set('saveWalletLoading', false);
-    case SAVE_WALLET_ERROR:
-      return state
-        .set('saveWalletLoading', false)
-        .set('saveWalletError', action.error);
-
-    case LOAD_WALLET:
-      return state
-        .set('loadWalletLoading', true)
-        .set('loadWalletError', false);
-    case LOAD_WALLET_SUCCESS:
-      return state
-        .set('loadWalletLoading', false);
-    case LOAD_WALLET_ERROR:
-      return state
-        .set('loadWalletLoading', false)
-        .set('loadWalletError', action.error);
-
-    default:
-      return state;
-  }
-}
-/*
-  LOCK_WALLET,
-  UNLOCK_WALLET,
-  UNLOCK_WALLET_SUCCESS,
-  UNLOCK_WALLET_ERROR,
-*/
-
-export default homeReducer;
+  .addCase(LOAD_WALLET, (s) => {
+    Object.assign(s, { loadWalletLoading: true, loadWalletError: false });
+  })
+  .addCase(LOAD_WALLET_SUCCESS, (s) => { s.loadWalletLoading = false; })
+  .addCase(LOAD_WALLET_ERROR, (s, a) => {
+    Object.assign(s, { loadWalletLoading: false, loadWalletError: a.error });
+  }));

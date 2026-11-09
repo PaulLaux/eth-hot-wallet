@@ -13,7 +13,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
-import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 
 /* Components:  */
@@ -38,13 +37,6 @@ import {
   makeSelectGetExchangeRatesLoading,
   makeSelectGetExchangeRatesError,
 } from 'containers/Header/selectors';
-
-/* General */
-import injectReducer from 'utils/injectReducer';
-import injectSaga from 'utils/injectSaga';
-import reducer from './reducer';
-import saga from './saga';
-
 
 /* HomePage */
 import {
@@ -487,13 +479,4 @@ const mapStateToProps = createStructuredSelector({
   loadWalletError: makeSelectLoadwalletError(),
 });
 
-const withConnect = connect(mapStateToProps, mapDispatchToProps);
-
-const withReducer = injectReducer({ key: 'home', reducer });
-const withSaga = injectSaga({ key: 'home', saga });
-
-export default compose(
-  withReducer,
-  withSaga,
-  withConnect,
-)(HomePage);
+export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

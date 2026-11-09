@@ -1,42 +1,28 @@
-/**
- * Test store addons
- */
+import createStore from '../store';
+import header from 'containers/Header/reducer';
+import { loadNetwork } from 'containers/Header/actions';
+import { generateKeystoreSuccess, changeBalance } from 'containers/HomePage/actions';
+import { makeSelectAddressMap, makeSelectTokenDecimalsMap } from 'containers/HomePage/selectors';
 
-import { browserHistory } from 'react-router-dom';
-import configureStore from '../store';
+const address = '0x9858EfFD232B4033E47d90003D41EC34EcaEda94';
 
-describe('configureStore', () => {
-  let store;
+describe('store', () => {
+  it('keeps addresses and balances as plain objects', () => {
+    const store = createStore();
+    store.dispatch(generateKeystoreSuccess({ addresses: [address] }, ['eth', 'usdc']));
+    store.dispatch(changeBalance(address, 'usdc', 5));
+    store.dispatch(changeBalance(address, 'dai', 1)); // token not in the list: ignored
+    const state = store.getState();
 
-  beforeAll(() => {
-    store = configureStore({}, browserHistory);
+    expect(makeSelectAddressMap()(state)).toEqual({ [address]: { index: 1, eth: { balance: false }, usdc: { balance: 5 } } });
+    expect(makeSelectAddressMap(address, { returnList: true, removeIndex: true, removeEth: true })(state)).toEqual(['usdc']);
+    expect(makeSelectTokenDecimalsMap()(state)).toEqual({ eth: 18, usdc: 6, link: 18 });
   });
 
-  describe('injectedReducers', () => {
-    it('should contain an object for reducers', () => {
-      expect(typeof store.injectedReducers).toBe('object');
-    });
-  });
-
-  describe('injectedSagas', () => {
-    it('should contain an object for sagas', () => {
-      expect(typeof store.injectedSagas).toBe('object');
-    });
-  });
-
-  describe('runSaga', () => {
-    it('should contain a hook for `sagaMiddleware.run`', () => {
-      expect(typeof store.runSaga).toBe('function');
-    });
-  });
-});
-
-describe('configureStore params', () => {
-  it('should call window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__', () => {
-    const compose = vi.fn();
-    vi.stubGlobal('window', { __REDUX_DEVTOOLS_EXTENSION_COMPOSE__: () => compose });
-    configureStore(undefined, browserHistory);
-    expect(compose).toHaveBeenCalled();
-    vi.unstubAllGlobals();
+  it('remembers the previous network, but not Offline', () => {
+    let state = header(undefined, loadNetwork('Main Net'));
+    expect(state.prevNetworkName).toBe('Sepolia Testnet'); // the default, since we were Offline
+    state = header(state, loadNetwork('Local RPC'));
+    expect(state).toMatchObject({ prevNetworkName: 'Main Net', networkName: 'Local RPC' });
   });
 });

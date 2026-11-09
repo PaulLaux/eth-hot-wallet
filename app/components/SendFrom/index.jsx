@@ -14,13 +14,8 @@ const Option = Select.Option;
 function SendFrom({ addressList, from, onChangeFrom, locked }) {
   // let options;
   let selectOptions;
-  if (addressList && addressList.keySeq().toArray()) {
-    // console.log(addressList.keySeq().toArray());
-
-    /* options = addressList.keySeq().toArray().map((address) =>
-      <option value={address} key={address}>{address}</option>
-    ); */
-    selectOptions = addressList.keySeq().toArray().map((address) =>
+  if (addressList) {
+    selectOptions = Object.keys(addressList).map((address) =>
       <Option value={address} key={address}>{address}</Option>
     );
   }

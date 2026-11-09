@@ -9,19 +9,12 @@ import PropTypes from 'prop-types';
 import { Modal, Button } from 'antd';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { compose } from 'redux';
-
-// import injectSaga from 'utils/injectSaga';
-import injectReducer from 'utils/injectReducer';
 
 import TokenChooserList from 'components/TokenChooserList';
 import { makeSelectNetworkName } from 'containers/Header/selectors';
 import { makeSelectChosenTokens } from './selectors';
 import { toggleToken, confirmNewTokenInfo } from './actions';
 // import { makeSelectTokenChooser } from './selectors';
-import reducer from './reducer';
-// import saga from './saga';
-
 import TokenSelection from './token-lists';
 
 function TokenChooser(props) {
@@ -94,13 +87,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-const withConnect = connect(mapStateToProps, mapDispatchToProps);
-
-const withReducer = injectReducer({ key: 'tokenchooser', reducer });
-// const withSaga = injectSaga({ key: 'tokenchooser', saga });
-
-export default compose(
-  withReducer,
-  // withSaga,
-  withConnect,
-)(TokenChooser);
+export default connect(mapStateToProps, mapDispatchToProps)(TokenChooser);

@@ -4,24 +4,16 @@
  *
  */
 
-import { fromJS } from 'immutable';
+import { createReducer } from '@reduxjs/toolkit';
 import {
   TOGGLE_TOKEN,
 } from './constants';
 
-const initialState = fromJS({
+const initialState = {
 
   chosenTokens: { mero: true },
 
-});
+};
 
-function tokenChooserReducer(state = initialState, action) {
-  switch (action.type) {
-    case TOGGLE_TOKEN:
-      return state.setIn(['chosenTokens', action.symbol], action.toggle);
-    default:
-      return state;
-  }
-}
-
-export default tokenChooserReducer;
+export default createReducer(initialState, (builder) => builder
+  .addCase(TOGGLE_TOKEN, (s, a) => { s.chosenTokens[a.symbol] = a.toggle; }));

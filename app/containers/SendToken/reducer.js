@@ -3,7 +3,7 @@
  * SendToken reducer
  *
  */
-import { fromJS } from 'immutable';
+import { createReducer } from '@reduxjs/toolkit';
 import {
   CHANGE_FROM,
   CHANGE_AMOUNT,
@@ -21,7 +21,7 @@ import {
 } from './constants';
 
 
-const initialState = fromJS({
+const initialState = {
   from: '',
   to: '',
   amount: 0,
@@ -36,65 +36,36 @@ const initialState = fromJS({
   sendError: false,
   sendTx: false,
 
-});
+};
 
-function sendTokenReducer(state = initialState, action) {
-  switch (action.type) {
-    case CHANGE_FROM:
-      // update values only if provided:
-      return state
-        .update('from', (fromValue) => action.address || fromValue)
-        .update('sendTokenSymbol', (sendTokenSymbolValue) => action.sendTokenSymbol || sendTokenSymbolValue);
-    case CHANGE_AMOUNT:
-      return state
-        .set('amount', action.amount);
+export default createReducer(initialState, (builder) => builder
+  .addCase(CHANGE_FROM, (s, a) => {
+    // update values only if provided:
+    s.from = a.address || s.from;
+    s.sendTokenSymbol = a.sendTokenSymbol || s.sendTokenSymbol;
+  })
+  .addCase(CHANGE_AMOUNT, (s, a) => { s.amount = a.amount; })
+  .addCase(CHANGE_TO, (s, a) => { s.to = a.address; })
 
-    case CHANGE_TO:
-      return state
-        .set('to', action.address);
+  .addCase(COMFIRM_SEND_TRANSACTION, (s) => {
+    Object.assign(s, { comfirmationLoading: true, locked: true });
+  })
+  .addCase(COMFIRM_SEND_TRANSACTION_SUCCESS, (s, a) => {
+    Object.assign(s, { comfirmationLoading: false, confirmationMsg: a.msg, confirmationError: false });
+  })
+  .addCase(COMFIRM_SEND_TRANSACTION_ERROR, (s, a) => {
+    Object.assign(s, { comfirmationLoading: false, confirmationError: a.error, locked: false });
+  })
+  .addCase(ABORT_TRANSACTION, (s) => {
+    Object.assign(s, { comfirmationLoading: false, confirmationMsg: false, confirmationError: false, locked: false, sendError: false, sendTx: false });
+  })
 
-    case COMFIRM_SEND_TRANSACTION:
-      return state
-        .set('comfirmationLoading', true)
-        .set('locked', true);
-    case COMFIRM_SEND_TRANSACTION_SUCCESS:
-      return state
-        .set('comfirmationLoading', false)
-        .set('confirmationMsg', action.msg)
-        .set('confirmationError', false);
-    case COMFIRM_SEND_TRANSACTION_ERROR:
-      return state
-        .set('comfirmationLoading', false)
-        .set('confirmationError', action.error)
-        .set('locked', false);
-    case ABORT_TRANSACTION:
-      return state
-        .set('comfirmationLoading', false)
-        .set('confirmationMsg', false)
-        .set('confirmationError', false)
-        .set('locked', false)
-        .set('sendError', false)
-        .set('sendTx', false);
-
-    case SEND_TRANSACTION:
-      return state
-        .set('sendInProgress', true)
-        .set('sendError', false)
-        .set('sendTx', false);
-    case SEND_TRANSACTION_SUCCESS:
-      return state
-        .set('sendInProgress', false)
-        .set('sendError', false)
-        .set('sendTx', action.tx);
-    case SEND_TRANSACTION_ERROR:
-      return state
-        .set('sendInProgress', false)
-        .set('sendError', action.error)
-        .set('sendTx', false);
-
-    default:
-      return state;
-  }
-}
-
-export default sendTokenReducer;
+  .addCase(SEND_TRANSACTION, (s) => {
+    Object.assign(s, { sendInProgress: true, sendError: false, sendTx: false });
+  })
+  .addCase(SEND_TRANSACTION_SUCCESS, (s, a) => {
+    Object.assign(s, { sendInProgress: false, sendError: false, sendTx: a.tx });
+  })
+  .addCase(SEND_TRANSACTION_ERROR, (s, a) => {
+    Object.assign(s, { sendInProgress: false, sendError: a.error, sendTx: false });
+  }));

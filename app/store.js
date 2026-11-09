@@ -1,50 +1,23 @@
-/**
- * Create the store with dynamic reducers
- */
-
-import { createStore, applyMiddleware, compose } from 'redux';
-import { fromJS } from 'immutable';
-import { routerMiddleware } from 'react-router-redux';
+import { configureStore } from '@reduxjs/toolkit';
 import createSagaMiddleware from 'redux-saga';
-import createReducer from './reducers';
+import { all } from 'redux-saga/effects';
 
-const sagaMiddleware = createSagaMiddleware();
+import home from 'containers/HomePage/reducer';
+import homeSaga from 'containers/HomePage/saga';
+import header from 'containers/Header/reducer';
+import headerSaga from 'containers/Header/saga';
+import sendtoken from 'containers/SendToken/reducer';
+import tokenchooser from 'containers/TokenChooser/reducer';
 
-export default function configureStore(initialState = {}, history) {
-  // Create the store with two middlewares
-  // 1. sagaMiddleware: Makes redux-sagas work
-  // 2. routerMiddleware: Syncs the location/URL path to the state
-  const middlewares = [
-    sagaMiddleware,
-    routerMiddleware(history),
-  ];
-
-  const enhancers = [
-    applyMiddleware(...middlewares),
-  ];
-
-  // If Redux DevTools Extension is installed use it, otherwise use Redux compose
-  const composeEnhancers =
-    process.env.NODE_ENV !== 'production' &&
-    typeof window === 'object' &&
-    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-      ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-        // TODO Try to remove when `react-router-redux` is out of beta, LOCATION_CHANGE should not be fired more than once after hot reloading
-        // Prevent recomputing reducers for `replaceReducer`
-        shouldHotReload: false,
-      })
-      : compose;
-
-  const store = createStore(
-    createReducer(),
-    fromJS(initialState),
-    composeEnhancers(...enhancers)
-  );
-
-  // Extensions
-  store.runSaga = sagaMiddleware.run;
-  store.injectedReducers = {}; // Reducer registry
-  store.injectedSagas = {}; // Saga registry
-
+export default function createStore() {
+  const sagaMiddleware = createSagaMiddleware();
+  const store = configureStore({
+    reducer: { home, header, sendtoken, tokenchooser },
+    // the state holds BigNumber balances, which are not serializable
+    middleware: (getDefault) => getDefault({ thunk: false, serializableCheck: false }).concat(sagaMiddleware),
+  });
+  sagaMiddleware.run(function* rootSaga() {
+    yield all([homeSaga(), headerSaga()]);
+  });
   return store;
 }

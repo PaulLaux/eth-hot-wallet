@@ -55,7 +55,7 @@ function NetworkMenu(props) {
 NetworkMenu.propTypes = {
   onLoadNetwork: PropTypes.func.isRequired,
   networkName: PropTypes.string,
-  availableNetworks: PropTypes.object,
+  availableNetworks: PropTypes.array,
 };
 
 export default NetworkMenu;
