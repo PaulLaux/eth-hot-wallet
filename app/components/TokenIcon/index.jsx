@@ -13,6 +13,7 @@ const Img = styled.img`
     color: #dbd9ff;
     font: 20px Impact;
     text-transform: uppercase;
+    white-space: nowrap; /* alt text shown when the icon is missing */
   }
 `;
 
