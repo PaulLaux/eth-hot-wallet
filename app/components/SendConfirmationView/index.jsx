@@ -34,7 +34,7 @@ function SendConfirmationView(props) {
           spinning
           style={{ position: 'static' }}
           size="large"
-          tip="checking transaction...."
+          description="checking transaction...."
         >
           <br />
         </Spin>
@@ -46,7 +46,7 @@ function SendConfirmationView(props) {
     return (
       <Div>
         <Alert
-          message="Transaction not created"
+          title="Transaction not created"
           description={confirmationError}
           type="error"
           showIcon
@@ -59,7 +59,7 @@ function SendConfirmationView(props) {
     return (
       <Div>
         <Alert
-          message="Transaction is valid"
+          title="Transaction is valid"
           description={confirmationMsg}
           type="info"
         />

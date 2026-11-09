@@ -69,7 +69,7 @@ function AddressView(props) {
     <Div>
       {generateKeystoreError ?
         <Alert
-          message="Generate Keystore Error"
+          title="Generate Keystore Error"
           description={generateKeystoreError}
           type="error"
           showIcon
@@ -93,7 +93,7 @@ function AddressView(props) {
       spinning={generateKeystoreLoading}
       style={{ position: 'static' }}
       size="large"
-      tip="Loading..."
+      description="Loading..."
     >
       {addressViewContent}
     </Spin>

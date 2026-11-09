@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import 'sanitize.css/sanitize.css';
 import 'antd/dist/reset.css';
@@ -13,9 +13,8 @@ import 'antd/dist/reset.css';
 import App from 'containers/App';
 import createStore from './store';
 
-ReactDOM.render(
+createRoot(document.getElementById('app')).render(
   <Provider store={createStore()}>
     <App />
-  </Provider>,
-  document.getElementById('app')
+  </Provider>
 );

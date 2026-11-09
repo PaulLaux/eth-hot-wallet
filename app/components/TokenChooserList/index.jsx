@@ -6,42 +6,35 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { List, Switch } from 'antd';
+import { Switch } from 'antd';
 import styled from 'styled-components';
 import TokenIcon from 'components/TokenIcon';
-const ListItem = List.Item;
-const ListItemMeta = List.Item.Meta;
-/*
-tokenList={TokensForNetwork}
-selectedTokens={[]}
-onTokenToggle={(x) => console.log(x)}
-*/
 
-const LeftDiv = styled.div`
-.ant-list-item-meta-content{
-  text-align:left;
-}
+const Row = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+  text-align: left;
 `;
 
-function TokenChooserList(props) {
-  const { tokenList, chosenTokens, onTokenToggle } = props;
-  return (
-    <LeftDiv>
-      <List
-        itemLayout="horizontal"
-        dataSource={tokenList}
-        renderItem={(item) => (
-          <ListItem actions={[<Switch key="toggle" checked={chosenTokens[item.symbol]} onChange={(toggle) => onTokenToggle(item.symbol, toggle)} />]}>
-            <ListItemMeta
-              avatar={<TokenIcon tokenSymbol={item.symbol} size={32} />}
-              title={<a href={item.url} target="_blank" rel="noopener noreferrer">{item.name} ({item.symbol.toUpperCase()})</a>}
-              description={item.description}
-            />
-          </ListItem>
-        )}
-      />
-    </LeftDiv>
-  );
+const Text = styled.div`
+  flex: 1;
+  color: rgba(0, 0, 0, 0.45);
+`;
+
+function TokenChooserList({ tokenList = [], chosenTokens, onTokenToggle }) {
+  return tokenList.map((item) => (
+    <Row key={item.symbol}>
+      <TokenIcon tokenSymbol={item.symbol} size={32} />
+      <Text>
+        <a href={item.url} target="_blank" rel="noopener noreferrer">{item.name} ({item.symbol.toUpperCase()})</a>
+        <div>{item.description}</div>
+      </Text>
+      <Switch checked={chosenTokens[item.symbol]} onChange={(toggle) => onTokenToggle(item.symbol, toggle)} />
+    </Row>
+  ));
 }
 
 TokenChooserList.propTypes = {

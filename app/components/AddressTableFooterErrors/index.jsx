@@ -24,9 +24,9 @@ function AddressTableFooterErrors(props) {
   const { checkingBalancesError, addressListError, getExchangeRatesError } = props;
   return (
     <Div>
-      {checkingBalancesError ? <Alert type="error" message="Check Balances Error" description={checkingBalancesError} /> : null}
-      {addressListError ? <PaddedAlert type="error" message="Add Addresss Error" description={addressListError} /> : null}
-      {getExchangeRatesError ? <PaddedAlert type="error" message="Update Exchange Rates Error" description={getExchangeRatesError.toString()} /> : null}
+      {checkingBalancesError ? <Alert type="error" title="Check Balances Error" description={checkingBalancesError} /> : null}
+      {addressListError ? <PaddedAlert type="error" title="Add Addresss Error" description={addressListError} /> : null}
+      {getExchangeRatesError ? <PaddedAlert type="error" title="Update Exchange Rates Error" description={getExchangeRatesError.toString()} /> : null}
     </Div>
   );
 }

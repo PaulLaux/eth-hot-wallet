@@ -21,7 +21,7 @@ function SendProgress({ sendInProgress, sendError, sendTx, txExplorer }) {
         spinning
         style={{ position: 'static' }}
         size="large"
-        tip="Sending..."
+        description="Sending..."
       >
         <br /><br />
       </Spin>
@@ -32,7 +32,7 @@ function SendProgress({ sendInProgress, sendError, sendTx, txExplorer }) {
   if (sendError !== false) {
     return (
       <Alert
-        message="Send Error"
+        title="Send Error"
         description={sendError}
         type="error"
       />
@@ -42,7 +42,7 @@ function SendProgress({ sendInProgress, sendError, sendTx, txExplorer }) {
   if (sendTx) {
     return (
       <Alert
-        message="Send sucessfull"
+        title="Send sucessfull"
         description={<Span> TX: <br /> <TxLink tx={sendTx} explorer={txExplorer} /> </Span>}
         type="success"
       />
