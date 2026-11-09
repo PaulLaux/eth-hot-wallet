@@ -39,7 +39,9 @@ describe('confirmSendTransaction', () => {
   };
 
   it('accepts an amount the token can hold', () => {
-    expect(confirm('0.000001').payload.action.type).toBe(COMFIRM_SEND_TRANSACTION_SUCCESS);
+    const { action } = confirm('0.000001').payload;
+    expect(action.type).toBe(COMFIRM_SEND_TRANSACTION_SUCCESS);
+    expect(action.msg).toMatch(/Sending 0\.000001 USDC from \.\.\.Eda94 to \.\.\.0dEaD/);
   });
 
   it('rejects zero, too many decimals, and unknown tokens', () => {

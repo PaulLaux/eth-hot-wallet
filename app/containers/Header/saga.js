@@ -174,7 +174,7 @@ export function* confirmSendTransaction() {
     }
 
     const msg = `Transaction created successfully. 
-    Sending ${amount} from ...${fromAddress.slice(-5)} to ...${toAddress.slice(-5)}`;
+    Sending ${amount} ${tokenSymbol.toUpperCase()} from ...${fromAddress.slice(-5)} to ...${toAddress.slice(-5)}`;
     yield put(confirmSendTransactionSuccess(msg));
   } catch (err) {
     yield put(confirmSendTransactionError(err.message));

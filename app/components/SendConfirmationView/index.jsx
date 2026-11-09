@@ -23,7 +23,8 @@ function SendConfirmationView(props) {
     onAbortTransaction,
     isSendComfirmationLocked,
     sendError,
-       } = props;
+    sendTokenSymbol,
+  } = props;
   if (comfirmationLoading) {
     return (
       <Div>
@@ -62,7 +63,7 @@ function SendConfirmationView(props) {
         />
         <br />
         <Button icon={<VerticalAlignTopOutlined />} onClick={onSendTransaction} disabled={isSendComfirmationLocked} >
-          {sendError ? 'Try again' : 'Send ETH'}
+          {sendError ? 'Try again' : `Send ${sendTokenSymbol.toUpperCase()}`}
         </Button>
         {' '}
         <Button icon={<CloseOutlined />} onClick={onAbortTransaction} disabled={isSendComfirmationLocked} >

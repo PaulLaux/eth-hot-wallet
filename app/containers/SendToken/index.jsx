@@ -87,6 +87,7 @@ function SendToken(props) {
     sendInProgress,
     isSendComfirmationLocked,
     sendError,
+    sendTokenSymbol,
   };
   const SendProgressProps = { sendInProgress, sendError, sendTx, txExplorer };
 
