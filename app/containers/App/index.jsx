@@ -15,6 +15,7 @@ import React from 'react';
 // import { Helmet } from 'react-helmet';
 import { Switch, Route } from 'react-router-dom';
 
+import GlobalStyle from '../../global-styles';
 import HomePage from 'containers/HomePage/Loadable';
 // import NotFoundPage from 'containers/NotFoundPage/Loadable';
 
@@ -23,6 +24,7 @@ export default class App extends React.PureComponent {
   render() {
     return (
       <div>
+        <GlobalStyle />
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route component={HomePage} />

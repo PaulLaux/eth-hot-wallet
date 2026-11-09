@@ -42,7 +42,7 @@
     "reselect": "^3.0.1",
     "sanitize.css": "^5.0.0",
     "store": "^2.0.12",
-    "styled-components": "^2.4.1",
+    "styled-components": "^6.6.0",
     "viem": "2.57.11"
   },
   "devDependencies": {

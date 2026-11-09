@@ -12,8 +12,8 @@ import styled from 'styled-components';
 import { StickyFooter } from './sticky';
 
 
-const Footer = StickyFooter.extend`
-  textAlign: center;
+const Footer = styled(StickyFooter)`
+  text-align: center;
   background: #efeeee;
   color: #5a5a5a;
   padding: 10px;

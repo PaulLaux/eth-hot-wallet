@@ -14,7 +14,6 @@ import 'antd/dist/antd.css';
 
 import App from 'containers/App';
 import configureStore from './store';
-import './global-styles';
 
 // Create redux store with history
 const history = createHistory();
