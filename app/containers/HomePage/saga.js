@@ -1,8 +1,6 @@
 /**
  * Wallet operations
  */
-import localStore from 'store/dist/store.modern';
-
 import { call, put, race, select, take, takeLatest } from 'redux-saga/effects';
 
 import {
@@ -236,7 +234,7 @@ export function* saveWalletS() {
       throw new Error('No keystore defined');
     }
 
-    localStore.set(localStorageKey, ks);
+    localStorage.setItem(localStorageKey, JSON.stringify(ks));
 
     yield put(saveWalletSuccess());
   } catch (err) {
@@ -256,7 +254,7 @@ export function* loadWalletS() {
       throw new Error('Existing keystore present  - aborting load form localStorage');
     }
 
-    const ks = localStore.get(localStorageKey);
+    const ks = JSON.parse(localStorage.getItem(localStorageKey));
     if (!ks) {
       throw new Error('No keystore found in localStorage');
     }
@@ -275,7 +273,7 @@ export function* loadWalletS() {
  * delete all values from localStorage
  */
 export function* deleteWallet() {
-  localStore.clearAll();
+  localStorage.clear();
 }
 
 /**
