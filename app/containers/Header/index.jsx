@@ -13,7 +13,7 @@ import NetworkIndicator from 'components/NetworkIndicator';
 import Logo from 'components/Logo';
 import NetworkMenu from 'components/NetworkMenu';
 
-// import { changeBalance } from 'containers/HomePage/actions';
+import { makeSelectIsComfirmed } from 'containers/HomePage/selectors';
 
 import {
   makeSelectNetworkReady,
@@ -44,6 +44,7 @@ function Header(props) {
     blockNumber,
     availableNetworks,
     onLoadNetwork,
+    isComfirmed,
    } = props;
 
   const networkIndicatorProps = {
@@ -64,12 +65,14 @@ function Header(props) {
         <Col sm={{ span: 6, offset: 1 }} xs={24}>
           <Logo />
         </Col>
-        <Col sm={{ span: 8, offset: 2 }} xs={24}>
-          <Row align="middle" justify="center">
-            <NetworkIndicator {...networkIndicatorProps} />
-            <NetworkMenu {...networkMenuProps} />
-          </Row>
-        </Col>
+        {isComfirmed && (
+          <Col sm={{ span: 8, offset: 2 }} xs={24}>
+            <Row align="middle" justify="center">
+              <NetworkIndicator {...networkIndicatorProps} />
+              <NetworkMenu {...networkMenuProps} />
+            </Row>
+          </Col>
+        )}
       </Row >
     </HeaderWrapped >
   );
@@ -82,6 +85,7 @@ const mapStateToProps = createStructuredSelector({
   networkName: makeSelectNetworkName(),
   availableNetworks: makeSelectAvailableNetworks(),
   blockNumber: makeSelectBlockNumber(),
+  isComfirmed: makeSelectIsComfirmed(),
   /* checkingBalanceDoneTime: makeSelectCheckingBalanceDoneTime(),
   checkingBalances: makeSelectCheckingBalances(),
   checkingBalancesError: makeSelectCheckingBalancesError(), */
