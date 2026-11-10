@@ -14,6 +14,7 @@ Background: [How to build an Ethereum Wallet web app](https://medium.freecodecam
 - ETH and ERC-20 tokens look and work the same
 - EIP-1559 fees and gas limits are estimated automatically
 - Locks itself 15 minutes after unlocking
+- Content Security Policy: the page runs only its own scripts and connects only to its RPC nodes and CoinGecko
 - Network selector: Main Net, Sepolia, local node or offline
 - Balances converted to USD, EUR and BTC
 - Responsive layout for mobile
