@@ -52,7 +52,7 @@ Built with [viem](https://viem.sh) (keys, signing, JSON-RPC), [react-boilerplate
 - `app/containers/HomePage`: wallet actions (create, restore, unlock, add address, save and load)
 - `app/containers/Header`: all network communication (RPC, balances, sending, exchange rates) in `saga.js`
 - `app/containers/SendToken`: state of the send dialog; checks and sending happen in Header
-- `app/containers/TokenChooser`: pick ERC-20 tokens from per-network lists in `token-lists.js`
+- `app/containers/TokenChooser`: pick ERC-20 tokens from `tokens.tokenlist.json` ([tokenlists.org](https://tokenlists.org) format)
 
 ![ERC-20 token chooser](docs/images/eth-hot-wallet-erc20-tokenChooser.jpg)
 

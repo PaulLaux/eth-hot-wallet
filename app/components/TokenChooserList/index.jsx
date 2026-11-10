@@ -24,16 +24,19 @@ const Text = styled.div`
 `;
 
 function TokenChooserList({ tokenList = [], chosenTokens, onTokenToggle }) {
-  return tokenList.map((item) => (
-    <Row key={item.symbol}>
-      <TokenIcon tokenSymbol={item.symbol} size={32} />
-      <Text>
-        <a href={item.url} target="_blank" rel="noopener noreferrer">{item.name} ({item.symbol.toUpperCase()})</a>
-        <div>{item.description}</div>
-      </Text>
-      <Switch checked={chosenTokens[item.symbol]} onChange={(toggle) => onTokenToggle(item.symbol, toggle)} />
-    </Row>
-  ));
+  return tokenList.map((item) => {
+    const label = `${item.name} (${item.symbol.toUpperCase()})`;
+    return (
+      <Row key={item.symbol}>
+        <TokenIcon tokenSymbol={item.symbol} size={32} />
+        <Text>
+          {item.url ? <a href={item.url} target="_blank" rel="noopener noreferrer">{label}</a> : label}
+          <div>{item.description}</div>
+        </Text>
+        <Switch checked={chosenTokens[item.symbol]} onChange={(toggle) => onTokenToggle(item.symbol, toggle)} />
+      </Row>
+    );
+  });
 }
 
 export default TokenChooserList;

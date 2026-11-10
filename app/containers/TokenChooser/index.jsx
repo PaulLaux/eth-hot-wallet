@@ -14,7 +14,7 @@ import { makeSelectNetworkName } from 'containers/Header/selectors';
 import { makeSelectChosenTokens } from './selectors';
 import { toggleToken, confirmNewTokenInfo } from './actions';
 // import { makeSelectTokenChooser } from './selectors';
-import TokenSelection from './token-lists';
+import { tokensFor } from './tokens';
 
 function TokenChooser(props) {
   const {
@@ -28,8 +28,6 @@ function TokenChooser(props) {
 
    } = props;
 
-  const TokensForNetwork = TokenSelection[networkName];
-
   return (
     <div style={{ maxWidth: '600px', margin: 'auto' }}>
       <Modal
@@ -40,7 +38,7 @@ function TokenChooser(props) {
         footer={null}
       >
         <TokenChooserList
-          tokenList={TokensForNetwork}
+          tokenList={tokensFor(networkName)}
           chosenTokens={chosenTokens}
           onTokenToggle={onToggleToken}
         />

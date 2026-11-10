@@ -103,7 +103,7 @@ const initialState = {
   loadWalletLoading: false,
   loadWalletError: false,
 
-  // default tokens - must exist on defaultNetwork (see TokenChooser/token-lists.js)
+  // default tokens - must exist on defaultNetwork (see TokenChooser/tokens.tokenlist.json)
   tokenInfo: {
     eth: {
       name: 'Ethereum',
