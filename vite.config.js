@@ -36,11 +36,9 @@ export default defineConfig({
   resolve: {
     alias: [{ find: /^(components|containers|utils)\//, replacement: `${app}/$1/` }],
   },
-  define: {
-    // Optional RPC overrides, see app/containers/Header/network.js
-    'process.env.MAINNET_RPC_URL': JSON.stringify(process.env.MAINNET_RPC_URL || ''),
-    'process.env.SEPOLIA_RPC_URL': JSON.stringify(process.env.SEPOLIA_RPC_URL || ''),
-  },
+  // Optional RPC overrides, see app/containers/Header/network.js
+  define: Object.fromEntries(['MAINNET', 'SEPOLIA', 'BASE', 'ARBITRUM', 'OPTIMISM'].map((n) => `${n}_RPC_URL`)
+    .map((v) => [`process.env.${v}`, JSON.stringify(process.env[v] || '')])),
   server: { port: 3001, strictPort: true },
   preview: { port: 3001, strictPort: true },
   build: { outDir: '../build', emptyOutDir: true },

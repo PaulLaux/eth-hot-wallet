@@ -15,13 +15,13 @@ Background: [How to build an Ethereum Wallet web app](https://medium.freecodecam
 - EIP-1559 fees and gas limits are estimated automatically
 - Locks itself 15 minutes after unlocking
 - Content Security Policy: the page runs only its own scripts and connects only to its RPC nodes and CoinGecko
-- Network selector: Main Net, Sepolia, local node or offline
+- Network selector: Main Net, Base, Arbitrum One, OP Mainnet, Sepolia, local node or offline
 - Balances converted to USD, EUR and BTC
 - Responsive layout for mobile
 
 ## Networks and APIs
 
-- [PublicNode](https://ethereum-rpc.publicnode.com) keyless JSON-RPC endpoints for Main Net and Sepolia by default
+- [PublicNode](https://ethereum-rpc.publicnode.com) keyless JSON-RPC endpoints for every network by default
 - [CoinGecko](https://www.coingecko.com/) for exchange rates
 
 To use your own RPC provider (e.g. Infura or Alchemy), set it when starting or building:
@@ -29,6 +29,8 @@ To use your own RPC provider (e.g. Infura or Alchemy), set it when starting or b
 ```bash
 MAINNET_RPC_URL=https://mainnet.infura.io/v3/<project-id> SEPOLIA_RPC_URL=https://sepolia.infura.io/v3/<project-id> npm start
 ```
+
+`BASE_RPC_URL`, `ARBITRUM_RPC_URL` and `OPTIMISM_RPC_URL` work the same way.
 
 The wallet checks that each endpoint serves the expected chain ID and signs transactions with it (EIP-155).
 

@@ -3,7 +3,7 @@
   "timestamp": "2026-11-10T00:00:00.000Z",
   "version": {
     "major": 1,
-    "minor": 0,
+    "minor": 1,
     "patch": 0
   },
   "tokens": [
@@ -224,6 +224,336 @@
       "extensions": {
         "description": "Stablecoin of World Liberty Financial",
         "url": "https://worldlibertyfinancial.com/"
+      }
+    },
+    {
+      "chainId": 8453,
+      "address": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+      "symbol": "USDC",
+      "name": "USD Coin",
+      "decimals": 6,
+      "extensions": {
+        "description": "US dollar stablecoin issued by Circle",
+        "url": "https://www.circle.com/usdc"
+      }
+    },
+    {
+      "chainId": 8453,
+      "address": "0x820C137fa70C8691f0e44Dc420a5e53c168921Dc",
+      "symbol": "USDS",
+      "name": "USDS",
+      "decimals": 18,
+      "extensions": {
+        "description": "Sky stablecoin, successor to DAI",
+        "url": "https://sky.money/"
+      }
+    },
+    {
+      "chainId": 8453,
+      "address": "0x88Fb150BDc53A65fe94Dea0c9BA0a6dAf8C6e196",
+      "symbol": "LINK",
+      "name": "Chainlink",
+      "decimals": 18,
+      "extensions": {
+        "description": "Pays for Chainlink oracle services",
+        "url": "https://chain.link/"
+      }
+    },
+    {
+      "chainId": 8453,
+      "address": "0x5d3a1Ff2b6BAb83b63cd9AD0787074081a52ef34",
+      "symbol": "USDE",
+      "name": "Ethena USDe",
+      "decimals": 18,
+      "extensions": {
+        "description": "Synthetic dollar backed by hedged crypto",
+        "url": "https://ethena.fi/"
+      }
+    },
+    {
+      "chainId": 8453,
+      "address": "0x58538e6A46E07434d7E7375Bc268D3cb839C0133",
+      "symbol": "ENA",
+      "name": "Ethena",
+      "decimals": 18,
+      "extensions": {
+        "description": "Governance token of the Ethena protocol",
+        "url": "https://ethena.fi/"
+      }
+    },
+    {
+      "chainId": 8453,
+      "address": "0x63706e401c06ac8513145b7687A14804d17f814b",
+      "symbol": "AAVE",
+      "name": "Aave",
+      "decimals": 18,
+      "extensions": {
+        "description": "Governance token of the Aave protocol",
+        "url": "https://aave.com/"
+      }
+    },
+    {
+      "chainId": 8453,
+      "address": "0xBAa5CC21fd487B8Fcc2F632f3F4E8D37262a0842",
+      "symbol": "MORPHO",
+      "name": "Morpho",
+      "decimals": 18,
+      "extensions": {
+        "description": "Governance token of the Morpho protocol",
+        "url": "https://morpho.org/"
+      }
+    },
+    {
+      "chainId": 8453,
+      "address": "0xacfE6019Ed1A7Dc6f7B508C02d1b04ec88cC21bf",
+      "symbol": "VVV",
+      "name": "Venice Token",
+      "decimals": 18,
+      "extensions": {
+        "description": "Staked for API access to Venice AI",
+        "url": "https://venice.ai/"
+      }
+    },
+    {
+      "chainId": 8453,
+      "address": "0xB2000000000000000000002fEb517dFeC7415344",
+      "symbol": "OUSD",
+      "name": "Open USD",
+      "decimals": 6,
+      "extensions": {
+        "description": "US dollar stablecoin of Open Standard",
+        "url": "https://joinopenstandard.com/"
+      }
+    },
+    {
+      "chainId": 8453,
+      "address": "0x6Bb7a212910682DCFdbd5BCBb3e28FB4E8da10Ee",
+      "symbol": "GHO",
+      "name": "GHO",
+      "decimals": 18,
+      "extensions": {
+        "description": "Stablecoin of the Aave protocol",
+        "url": "https://aave.com/"
+      }
+    },
+    {
+      "chainId": 42161,
+      "address": "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9",
+      "symbol": "USDT",
+      "name": "USDT0",
+      "decimals": 6,
+      "extensions": {
+        "description": "Tether's USDT on L2s, issued as USDT0",
+        "url": "https://usdt0.to/"
+      }
+    },
+    {
+      "chainId": 42161,
+      "address": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+      "symbol": "USDC",
+      "name": "USD Coin",
+      "decimals": 6,
+      "extensions": {
+        "description": "US dollar stablecoin issued by Circle",
+        "url": "https://www.circle.com/usdc"
+      }
+    },
+    {
+      "chainId": 42161,
+      "address": "0x6491c05A82219b8D1479057361ff1654749b876b",
+      "symbol": "USDS",
+      "name": "USDS",
+      "decimals": 18,
+      "extensions": {
+        "description": "Sky stablecoin, successor to DAI",
+        "url": "https://sky.money/"
+      }
+    },
+    {
+      "chainId": 42161,
+      "address": "0xf97f4df75117a78c1A5a0DBb814Af92458539FB4",
+      "symbol": "LINK",
+      "name": "Chainlink",
+      "decimals": 18,
+      "extensions": {
+        "description": "Pays for Chainlink oracle services",
+        "url": "https://chain.link/"
+      }
+    },
+    {
+      "chainId": 42161,
+      "address": "0x5d3a1Ff2b6BAb83b63cd9AD0787074081a52ef34",
+      "symbol": "USDE",
+      "name": "Ethena USDe",
+      "decimals": 18,
+      "extensions": {
+        "description": "Synthetic dollar backed by hedged crypto",
+        "url": "https://ethena.fi/"
+      }
+    },
+    {
+      "chainId": 42161,
+      "address": "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1",
+      "symbol": "DAI",
+      "name": "Dai",
+      "decimals": 18,
+      "extensions": {
+        "description": "Stablecoin of the Maker protocol (now Sky)",
+        "url": "https://sky.money/"
+      }
+    },
+    {
+      "chainId": 42161,
+      "address": "0xFa7F8980b0f1E64A2062791cc3b0871572f1F7f0",
+      "symbol": "UNI",
+      "name": "Uniswap",
+      "decimals": 18,
+      "extensions": {
+        "description": "Governance token of the Uniswap protocol",
+        "url": "https://uniswap.org/"
+      }
+    },
+    {
+      "chainId": 42161,
+      "address": "0x25118290e6A5f4139381D072181157035864099d",
+      "symbol": "RAIN",
+      "name": "Rain",
+      "decimals": 18,
+      "extensions": {
+        "description": "Token of the Rain prediction markets",
+        "url": "https://rain.one/"
+      }
+    },
+    {
+      "chainId": 42161,
+      "address": "0x46850aD61C2B7d64d08c9C754F45254596696984",
+      "symbol": "PYUSD",
+      "name": "PayPal USD",
+      "decimals": 6,
+      "extensions": {
+        "description": "US dollar stablecoin issued by PayPal",
+        "url": "https://www.paypal.com/pyusd"
+      }
+    },
+    {
+      "chainId": 42161,
+      "address": "0x004B506865409877C9fA29bfb1ebA929984B9bbC",
+      "symbol": "USDG",
+      "name": "Global Dollar",
+      "decimals": 6,
+      "extensions": {
+        "description": "US dollar stablecoin issued by Paxos",
+        "url": "https://globaldollar.com/"
+      }
+    },
+    {
+      "chainId": 10,
+      "address": "0x01bFF41798a0BcF287b996046Ca68b395DbC1071",
+      "symbol": "USDT",
+      "name": "USDT0",
+      "decimals": 6,
+      "extensions": {
+        "description": "Tether's USDT on L2s, issued as USDT0",
+        "url": "https://usdt0.to/"
+      }
+    },
+    {
+      "chainId": 10,
+      "address": "0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85",
+      "symbol": "USDC",
+      "name": "USD Coin",
+      "decimals": 6,
+      "extensions": {
+        "description": "US dollar stablecoin issued by Circle",
+        "url": "https://www.circle.com/usdc"
+      }
+    },
+    {
+      "chainId": 10,
+      "address": "0x350a791Bfc2C21F9Ed5d10980Dad2e2638ffa7f6",
+      "symbol": "LINK",
+      "name": "Chainlink",
+      "decimals": 18,
+      "extensions": {
+        "description": "Pays for Chainlink oracle services",
+        "url": "https://chain.link/"
+      }
+    },
+    {
+      "chainId": 10,
+      "address": "0x5d3a1Ff2b6BAb83b63cd9AD0787074081a52ef34",
+      "symbol": "USDE",
+      "name": "Ethena USDe",
+      "decimals": 18,
+      "extensions": {
+        "description": "Synthetic dollar backed by hedged crypto",
+        "url": "https://ethena.fi/"
+      }
+    },
+    {
+      "chainId": 10,
+      "address": "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1",
+      "symbol": "DAI",
+      "name": "Dai",
+      "decimals": 18,
+      "extensions": {
+        "description": "Stablecoin of the Maker protocol (now Sky)",
+        "url": "https://sky.money/"
+      }
+    },
+    {
+      "chainId": 10,
+      "address": "0x6fd9d7AD17242c41f7131d257212c54A0e816691",
+      "symbol": "UNI",
+      "name": "Uniswap",
+      "decimals": 18,
+      "extensions": {
+        "description": "Governance token of the Uniswap protocol",
+        "url": "https://uniswap.org/"
+      }
+    },
+    {
+      "chainId": 10,
+      "address": "0x58538e6A46E07434d7E7375Bc268D3cb839C0133",
+      "symbol": "ENA",
+      "name": "Ethena",
+      "decimals": 18,
+      "extensions": {
+        "description": "Governance token of the Ethena protocol",
+        "url": "https://ethena.fi/"
+      }
+    },
+    {
+      "chainId": 10,
+      "address": "0x76FB31fb4af56892A25e32cFC43De717950c9278",
+      "symbol": "AAVE",
+      "name": "Aave",
+      "decimals": 18,
+      "extensions": {
+        "description": "Governance token of the Aave protocol",
+        "url": "https://aave.com/"
+      }
+    },
+    {
+      "chainId": 10,
+      "address": "0xdC6fF44d5d932Cbd77B52E5612Ba0529DC6226F1",
+      "symbol": "WLD",
+      "name": "Worldcoin",
+      "decimals": 18,
+      "extensions": {
+        "description": "Token of the World identity network",
+        "url": "https://world.org/"
+      }
+    },
+    {
+      "chainId": 10,
+      "address": "0x6985884C4392D348587B19cb9eAAf157F13271cd",
+      "symbol": "ZRO",
+      "name": "LayerZero",
+      "decimals": 18,
+      "extensions": {
+        "description": "Governance token of LayerZero",
+        "url": "https://layerzero.network/"
       }
     }
   ]
