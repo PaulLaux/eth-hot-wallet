@@ -58,12 +58,6 @@ Built with [viem](https://viem.sh) (keys, signing, JSON-RPC), [react-boilerplate
 
 ![ERC-20 token chooser](docs/images/eth-hot-wallet-erc20-tokenChooser.jpg)
 
-## Roadmap
-
-- [ ] Event log
-- [ ] CI
-- [ ] External security audit
-
 ## License
 
 MIT, see `LICENSE.md`.

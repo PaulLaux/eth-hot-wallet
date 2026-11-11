@@ -3,6 +3,7 @@ name: CI
 on:
   push:
     branches: [master]
+    tags: ['v*']
   pull_request:
 
 jobs:
@@ -18,3 +19,25 @@ jobs:
       - run: npm run lint
       - run: npm test
       - run: npm run build
+      - if: github.event_name == 'push'
+        run: cp -r docs build/
+      - if: github.event_name == 'push'
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: build
+
+  # Publish the tested build of master and v* tags to GitHub Pages
+  deploy:
+    needs: ci
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    concurrency: pages
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v5
