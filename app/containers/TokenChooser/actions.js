@@ -7,7 +7,7 @@ import {
   TOGGLE_TOKEN,
   CONFIRM_UPDATE_TOKEN_INFO,
 } from './constants';
-import { TokenSelection } from './token-lists';
+import { tokensFor } from './tokens';
 
 /**
  * Changes whether a single token is selected
@@ -38,7 +38,7 @@ export function confirmNewTokenInfo(chosenTokens, networkName) {
     return { type: CONFIRM_UPDATE_TOKEN_INFO, tokenInfo: {} };
   }
 
-  const filteredArray = TokenSelection[networkName].filter((x) => chosenTokens[x.symbol]);
+  const filteredArray = tokensFor(networkName).filter((x) => chosenTokens[x.symbol]);
 
   const tokenInfo = filteredArray.reduce((acc, current) => {
     const { symbol, description, ...newObject } = current; // remove symbol,description

@@ -4,72 +4,67 @@ import { createSelector } from 'reselect';
 /**
  * Direct selector to the sendToken state domain
  */
-const selectSendTokenDomain = (state) => state.get('sendtoken');
+const selectSendTokenDomain = (state) => state.sendtoken;
 
 
 const makeSelectFrom = () => createSelector(
   selectSendTokenDomain,
-  (substate) => substate.get('from')
+  (substate) => substate.from
 );
 
 const makeSelectTo = () => createSelector(
   selectSendTokenDomain,
-  (substate) => substate.get('to')
+  (substate) => substate.to
 );
 
 const makeSelectAmount = () => createSelector(
   selectSendTokenDomain,
-  (substate) => substate.get('amount')
-);
-
-const makeSelectGasPrice = () => createSelector(
-  selectSendTokenDomain,
-  (substate) => substate.get('gasPrice')
+  (substate) => substate.amount
 );
 
 const makeSelectSendTokenSymbol = () => createSelector(
   selectSendTokenDomain,
-  (substate) => substate.get('sendTokenSymbol')
+  (substate) => substate.sendTokenSymbol
 );
 
 const makeSelectComfirmationLoading = () => createSelector(
   selectSendTokenDomain,
-  (substate) => substate.get('comfirmationLoading')
+  (substate) => substate.comfirmationLoading
 );
 
 const makeSelectConfirmationError = () => createSelector(
   selectSendTokenDomain,
-  (substate) => substate.get('confirmationError')
+  (substate) => substate.confirmationError
 );
 
 const makeSelectConfirmationMsg = () => createSelector(
   selectSendTokenDomain,
-  (substate) => substate.get('confirmationMsg')
+  (substate) => substate.confirmationMsg
 );
 
 const makeSelectSendInProgress = () => createSelector(
   selectSendTokenDomain,
-  (substate) => substate.get('sendInProgress')
+  (substate) => substate.sendInProgress
 );
 
 const makeSelectSendError = () => createSelector(
   selectSendTokenDomain,
-  (substate) => substate.get('sendError')
+  (substate) => substate.sendError
 );
 
 const makeSelectSendTx = () => createSelector(
   selectSendTokenDomain,
-  (substate) => substate.get('sendTx')
+  (substate) => substate.sendTx
 );
 
 const makeSelectLocked = () => createSelector(
   selectSendTokenDomain,
-  (substate) => substate.get('locked')
+  (substate) => substate.locked
 );
 
 const makeSelectIsSendComfirmationLocked = () => createSelector(
   selectSendTokenDomain,
-  (substate) => substate.get('sendInProgress') !== false || substate.get('sendTx') !== false
+  (substate) => substate.sendInProgress !== false || substate.sendTx !== false
 );
 
 // export default makeSelectSendToken;
@@ -79,7 +74,6 @@ export {
   makeSelectFrom,
   makeSelectTo,
   makeSelectAmount,
-  makeSelectGasPrice,
   makeSelectLocked,
   makeSelectSendTokenSymbol,
 

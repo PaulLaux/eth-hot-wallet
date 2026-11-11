@@ -1,0 +1,54 @@
+/**
+*
+* SendProgress
+*
+*/
+
+import React from 'react';
+import { Alert, Spin } from 'antd';
+import styled from 'styled-components';
+import TxLink from 'components/TxLink';
+
+const Span = styled.span`
+  overflow-wrap: break-word;
+`;
+
+function SendProgress({ sendInProgress, sendError, sendTx, txExplorer }) {
+  if (sendInProgress) {
+    return (
+      <Spin
+        spinning
+        style={{ position: 'static' }}
+        size="large"
+        description="Sending..."
+      >
+        <br /><br />
+      </Spin>
+
+    );
+  }
+
+  if (sendError !== false) {
+    return (
+      <Alert
+        title="Send Error"
+        description={sendError}
+        type="error"
+      />
+    );
+  }
+
+  if (sendTx) {
+    return (
+      <Alert
+        title="Send sucessfull"
+        description={<Span> TX: <br /> <TxLink tx={sendTx} explorer={txExplorer} /> </Span>}
+        type="success"
+      />
+    );
+  }
+
+  return null;
+}
+
+export default SendProgress;

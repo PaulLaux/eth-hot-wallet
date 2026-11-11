@@ -53,11 +53,6 @@
 
 - Sendto container - contains state and actions related to sendto modal, actual checks and sending is happning in header container.
 
-After build, webpack monitor will generates stats about bundle size:
-
-
-![eth-hot-wallet webpack-monitor](https://paullaux.github.io/eth-hot-wallet/docs/images/webpack-monitor.JPG)
-
 ## License
 
 This project is licensed under the MIT license, Copyright (c) 2017 Paul Laux For more information see `LICENSE.md`.

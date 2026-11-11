@@ -7,7 +7,6 @@ import {
   CHANGE_AMOUNT,
   CHANGE_FROM,
   CHANGE_TO,
-  CHANGE_GAS_PRICE,
 
   COMFIRM_SEND_TRANSACTION,
   COMFIRM_SEND_TRANSACTION_SUCCESS,
@@ -47,20 +46,6 @@ export function changeTo(inputAddress) {
   return {
     type: CHANGE_TO,
     address,
-  };
-}
-
-export function changeGasPrice(gasPrice) {
-  if (gasPrice === '') {
-    return {
-      type: CHANGE_GAS_PRICE,
-      gasPrice: 0,
-    };
-  }
-
-  return {
-    type: CHANGE_GAS_PRICE,
-    gasPrice,
   };
 }
 

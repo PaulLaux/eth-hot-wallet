@@ -4,8 +4,7 @@
  *
  */
 
-import { fromJS } from 'immutable';
-import { CLOSE_WALLET } from 'containers/HomePage/constants';
+import { createReducer } from '@reduxjs/toolkit';
 import { defaultNetwork } from 'utils/constants';
 import {
   LOAD_NETWORK,
@@ -19,17 +18,13 @@ import {
   GET_EXCHANGE_RATES,
   GET_EXCHANGE_RATES_SUCCESS,
   GET_EXCHANGE_RATES_ERROR,
-
-  ASK_FAUCET_ERROR,
-  ASK_FAUCET_SUCCESS,
-
 } from './constants';
 
 
 import Network from './network';
 
 // The initial state of the App
-const initialState = fromJS({
+const initialState = {
   loading: false,
   error: false,
   networkReady: false, // true only if network initialized and valid keystore attached
@@ -45,76 +40,37 @@ const initialState = fromJS({
   getExchangeRatesDoneTime: false, // should update after every succesfull exchange rate check
   getExchangeRatesLoading: false,
   getExchangeRatesError: false,
+};
 
-  usedFaucet: false, // to prevent offer more then once
-});
+export default createReducer(initialState, (builder) => builder
+  .addCase(LOAD_NETWORK, (s, a) => {
+    // dont change prevNetworkName when going online
+    if (s.networkName !== 'Offline') s.prevNetworkName = s.networkName;
+    Object.assign(s, { loading: true, error: false, networkName: a.networkName });
+  })
+  .addCase(LOAD_NETWORK_SUCCESS, (s, a) => {
+    Object.assign(s, { loading: false, error: false, blockNumber: a.blockNumber, networkReady: true });
+  })
+  .addCase(LOAD_NETWORK_ERROR, (s, a) => {
+    Object.assign(s, { loading: false, error: a.error, networkReady: false });
+  })
 
-function headerReducer(state = initialState, action) {
-  switch (action.type) {
-    case LOAD_NETWORK:
-      return state
-        .set('loading', true)
-        .set('error', false)
-        // dont change prevNetworkName when going online
-        .set('prevNetworkName', (state.get('networkName') === 'Offline') ? state.get('prevNetworkName') : state.get('networkName'))
-        .set('networkName', action.networkName);
-    case LOAD_NETWORK_SUCCESS:
-      return state
-        .set('loading', false)
-        .set('error', false)
-        .set('blockNumber', action.blockNumber)
-        .set('networkReady', true);
-    case LOAD_NETWORK_ERROR:
-      return state
-        .set('loading', false)
-        .set('error', action.error)
-        .set('networkReady', false);
+  .addCase(CHECK_BALANCES, (s) => {
+    Object.assign(s, { checkingBalances: true, checkingBalancesError: false, checkingBalanceDoneTime: false });
+  })
+  .addCase(CHECK_BALANCES_SUCCESS, (s, a) => {
+    Object.assign(s, { checkingBalances: false, checkingBalancesError: false, checkingBalanceDoneTime: a.timeString });
+  })
+  .addCase(CHECK_BALANCES_ERROR, (s, a) => {
+    Object.assign(s, { checkingBalances: false, checkingBalancesError: a.error, checkingBalanceDoneTime: false });
+  })
 
-    case CHECK_BALANCES:
-      return state
-        .set('checkingBalances', true)
-        .set('checkingBalancesError', false)
-        .set('checkingBalanceDoneTime', false);
-    case CHECK_BALANCES_SUCCESS:
-      return state
-        .set('checkingBalances', false)
-        .set('checkingBalancesError', false)
-        .set('checkingBalanceDoneTime', action.timeString);
-    case CHECK_BALANCES_ERROR:
-      return state
-        .set('checkingBalances', false)
-        .set('checkingBalancesError', action.error)
-        .set('checkingBalanceDoneTime', false);
-
-    case GET_EXCHANGE_RATES:
-      return state
-        .set('getExchangeRatesLoading', true)
-        .set('getExchangeRatesError', false)
-        .set('getExchangeRatesDoneTime', false);
-    case GET_EXCHANGE_RATES_SUCCESS:
-      return state
-        .set('getExchangeRatesLoading', false)
-        .set('getExchangeRatesError', false)
-        .set('getExchangeRatesDoneTime', action.timeString);
-    case GET_EXCHANGE_RATES_ERROR:
-      return state
-        .set('getExchangeRatesLoading', false)
-        .set('getExchangeRatesError', action.error)
-        .set('getExchangeRatesDoneTime', false);
-
-    case ASK_FAUCET_SUCCESS:
-      return state
-        .set('usedFaucet', true);
-    case ASK_FAUCET_ERROR:
-      return state;
-
-    case CLOSE_WALLET:
-      return state
-        .set('usedFaucet', false);
-
-    default:
-      return state;
-  }
-}
-
-export default headerReducer;
+  .addCase(GET_EXCHANGE_RATES, (s) => {
+    Object.assign(s, { getExchangeRatesLoading: true, getExchangeRatesError: false, getExchangeRatesDoneTime: false });
+  })
+  .addCase(GET_EXCHANGE_RATES_SUCCESS, (s, a) => {
+    Object.assign(s, { getExchangeRatesLoading: false, getExchangeRatesError: false, getExchangeRatesDoneTime: a.timeString });
+  })
+  .addCase(GET_EXCHANGE_RATES_ERROR, (s, a) => {
+    Object.assign(s, { getExchangeRatesLoading: false, getExchangeRatesError: a.error, getExchangeRatesDoneTime: false });
+  }));

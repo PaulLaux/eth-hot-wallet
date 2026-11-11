@@ -3,11 +3,11 @@ import { createSelector } from 'reselect';
 /**
  * Direct selector to the tokenChooser state domain
  */
-const selectTokenChooserDomain = (state) => state.get('tokenchooser');
+const selectTokenChooserDomain = (state) => state.tokenchooser;
 
 const makeSelectChosenTokens = () => createSelector(
   selectTokenChooserDomain,
-  (substate) => substate.get('chosenTokens').toJS()
+  (substate) => substate.chosenTokens
 );
 
 export {

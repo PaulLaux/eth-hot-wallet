@@ -11,7 +11,7 @@ export default function generateString(len) {
     array = Array.apply([], array); /* turn into non-typed array */
     array = array.filter((x) => (x > 32 && x < 127));
       /* strip non-printables: if we transform into desirable range we have a propability bias, so I suppose we better skip this character */
-    return String.fromCharCode.apply(String, array); // eslint-disable-line
+    return String.fromCharCode.apply(String, array);
   }
   let tmp = genString();
   while (tmp.length < MINLEN) {

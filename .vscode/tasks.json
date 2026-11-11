@@ -7,11 +7,6 @@
             "type": "npm",
             "script": "start",
             "problemMatcher": []
-        },
-        {
-            "type": "npm",
-            "script": "generate",
-            "problemMatcher": []
         }
     ]
 }

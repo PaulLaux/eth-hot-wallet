@@ -3,101 +3,73 @@ import Network from './network';
 /**
  * Direct selector to the header state domain
  */
-const selectHeaderDomain = (state) => state.get('header');
+const selectHeaderDomain = (state) => state.header;
 
 const makeSelectLoading = () => createSelector(
   selectHeaderDomain,
-  (substate) => substate.get('loading')
+  (substate) => substate.loading
 );
 
 const makeSelectError = () => createSelector(
   selectHeaderDomain,
-  (substate) => substate.get('error')
+  (substate) => substate.error
 );
 
 const makeSelectNetworkName = () => createSelector(
   selectHeaderDomain,
-  (substate) => substate.get('networkName')
+  (substate) => substate.networkName
 );
 const makeSelectPrevNetworkName = () => createSelector(
   selectHeaderDomain,
-  (substate) => substate.get('prevNetworkName')
+  (substate) => substate.prevNetworkName
 );
 const makeSelectTxExplorer = () => createSelector(
   selectHeaderDomain,
-  (substate) => substate ? Network[substate.get('networkName')].tx_explorer : null
+  (substate) => Network[substate.networkName].tx_explorer
 );
 const makeSelectAvailableNetworks = () => createSelector(
   selectHeaderDomain,
-  (substate) => substate.get('availableNetworks')
+  (substate) => substate.availableNetworks
 );
 
 const makeSelectBlockNumber = () => createSelector(
   selectHeaderDomain,
-  (substate) => substate.get('blockNumber')
+  (substate) => substate.blockNumber
 );
 
-/* Will return null if header didn't loaded yet (initial load) */
 const makeSelectNetworkReady = () => createSelector(
   selectHeaderDomain,
-  (substate) => substate ? substate.get('networkReady') : null
+  (substate) => substate.networkReady
 );
 
 const makeSelectCheckingBalanceDoneTime = () => createSelector(
   selectHeaderDomain,
-  (substate) => substate ? substate.get('checkingBalanceDoneTime') : null
+  (substate) => substate.checkingBalanceDoneTime
 );
 
 const makeSelectCheckingBalances = () => createSelector(
   selectHeaderDomain,
-  (substate) => substate ? substate.get('checkingBalances') : null
+  (substate) => substate.checkingBalances
 );
 
 const makeSelectCheckingBalancesError = () => createSelector(
   selectHeaderDomain,
-  (substate) => substate ? substate.get('checkingBalancesError') : null
+  (substate) => substate.checkingBalancesError
 );
 
 const makeSelectGetExchangeRatesDoneTime = () => createSelector(
   selectHeaderDomain,
-  (substate) => substate ? substate.get('getExchangeRatesDoneTime') : null
+  (substate) => substate.getExchangeRatesDoneTime
 );
 
 const makeSelectGetExchangeRatesLoading = () => createSelector(
   selectHeaderDomain,
-  (substate) => substate ? substate.get('getExchangeRatesLoading') : null
+  (substate) => substate.getExchangeRatesLoading
 );
 
 const makeSelectGetExchangeRatesError = () => createSelector(
   selectHeaderDomain,
-  (substate) => substate ? substate.get('getExchangeRatesError') : null
-);
-
-// faucet
-const makeSelectUsedFaucet = () => createSelector(
-  selectHeaderDomain,
-  (substate) => substate ? substate.get('usedFaucet') : null
-);
-
-const makeSelectCheckFaucetLoading = () => createSelector(
-  selectHeaderDomain,
-  (substate) => substate ? substate.get('checkFaucetLoading') : null
-);
-const makeSelectCheckFaucetSuccess = () => createSelector(
-  selectHeaderDomain,
-  (substate) => substate ? substate.get('checkFaucetSuccess') : null
-);
-const makeSelectAskFaucetLoading = () => createSelector(
-  selectHeaderDomain,
-  (substate) => substate ? substate.get('askFaucetLoading') : null
-);
-const makeSelectAskFaucetSuccess = () => createSelector(
-  selectHeaderDomain,
-  (substate) => substate ? substate.get('askFaucetSuccess') : null
-);
-const makeSelectAskFaucetError = () => createSelector(
-  selectHeaderDomain,
-  (substate) => substate ? substate.get('askFaucetError') : null
+  (substate) => substate.getExchangeRatesError
 );
 
 // export default makeSelectHeader;
@@ -117,10 +89,4 @@ export {
   makeSelectGetExchangeRatesDoneTime,
   makeSelectGetExchangeRatesLoading,
   makeSelectGetExchangeRatesError,
-  makeSelectUsedFaucet,
-  makeSelectCheckFaucetLoading,
-  makeSelectCheckFaucetSuccess,
-  makeSelectAskFaucetLoading,
-  makeSelectAskFaucetSuccess,
-  makeSelectAskFaucetError,
 };
