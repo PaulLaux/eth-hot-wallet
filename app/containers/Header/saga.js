@@ -1,4 +1,4 @@
-import { createWalletClient, erc20Abi, http, isAddress, parseUnits, publicActions } from 'viem';
+import { createWalletClient, encodeFunctionData, erc20Abi, formatEther, getAddress, http, isAddress, parseUnits, publicActions } from 'viem';
 import { all, take, call, delay, put, select, takeLatest, race, fork } from 'redux-saga/effects';
 import { dummyRates } from './tests/dummyRates';
 
@@ -27,6 +27,7 @@ import {
   makeSelectTo,
   makeSelectAmount,
   makeSelectSendTokenSymbol,
+  makeSelectFee,
 } from 'containers/SendToken/selectors';
 import {
   COMFIRM_SEND_TRANSACTION,
@@ -43,6 +44,7 @@ import { openVault, accountFor } from 'utils/wallet';
 import { message } from 'antd';
 
 import {
+  makeSelectNetworkName,
   makeSelectPrevNetworkName,
 } from './selectors';
 import {
@@ -148,6 +150,18 @@ export function toUnits(amount, decimals) {
   return parseUnits(String(amount), decimals);
 }
 
+/** The transaction that sends amount: a plain ETH transfer, or an ERC-20 transfer call */
+export function txRequest(symbol, tokenInfo, to, amount) {
+  const value = toUnits(amount, tokenInfo.decimals);
+  if (symbol === 'eth') return { to, value };
+  return { to: tokenInfo.contractAddress, data: encodeFunctionData({ abi: erc20Abi, functionName: 'transfer', args: [to, value] }) };
+}
+
+/**
+ * Check the transaction and estimate gas and fees. The user confirms the full addresses, the network
+ * and the max gas fee, and SendTransaction signs with exactly this gas and these fee caps.
+ * (On Base and OP Mainnet a small L1 data fee comes on top.)
+ */
 export function* confirmSendTransaction() {
   try {
     const fromAddress = yield select(makeSelectFrom());
@@ -173,16 +187,34 @@ export function* confirmSendTransaction() {
       throw new Error('Destenation address invalid');
     }
 
-    const msg = `Transaction created successfully. 
-    Sending ${amount} ${tokenSymbol.toUpperCase()} from ...${fromAddress.slice(-5)} to ...${toAddress.slice(-5)}`;
-    yield put(confirmSendTransactionSuccess(msg));
+    if (!client) {
+      throw new Error('Not connected to a network');
+    }
+
+    const request = txRequest(tokenSymbol, tokenInfo, toAddress, amount);
+    const [gas, { maxFeePerGas, maxPriorityFeePerGas }] = yield all([
+      call([client, client.estimateGas], { account: fromAddress, ...request }),
+      call([client, client.estimateFeesPerGas]),
+    ]);
+    const networkName = yield select(makeSelectNetworkName());
+
+    const msg = [
+      `Send ${amount} ${tokenSymbol.toUpperCase()} on ${networkName}`,
+      `From: ${getAddress(fromAddress)}`,
+      `To: ${getAddress(toAddress)}`,
+      `Max gas fee: ${formatEther(gas * maxFeePerGas)} ETH`,
+    ].join('\n');
+    const fee = { gas: String(gas), maxFeePerGas: String(maxFeePerGas), maxPriorityFeePerGas: String(maxPriorityFeePerGas) };
+    yield put(confirmSendTransactionSuccess(msg, fee));
   } catch (err) {
-    yield put(confirmSendTransactionError(err.message));
+    yield put(confirmSendTransactionError(err.shortMessage || err.message));
   }
 }
 
 /**
- * Sign and send ETH or an ERC-20 transfer. Fees (EIP-1559) and gas are estimated by viem.
+ * Sign the confirmed ETH or ERC-20 transfer locally and broadcast it. Not client.sendTransaction:
+ * viem lets the node fill in the transaction (eth_fillTransaction), and the node's chain ID, gas
+ * and fees then replace ours.
  */
 export function* SendTransaction() {
   const keystore = yield select(makeSelectKeystore());
@@ -191,8 +223,10 @@ export function* SendTransaction() {
     const amount = yield select(makeSelectAmount());
     const toAddress = yield select(makeSelectTo());
     const password = yield select(makeSelectPassword());
+    const fee = yield select(makeSelectFee());
 
     const tokenToSend = yield select(makeSelectSendTokenSymbol());
+    const tokenInfo = yield select(makeSelectTokenInfo(tokenToSend));
 
     if (!password) {
       throw new Error('No password found - please unlock wallet before send');
@@ -203,25 +237,21 @@ export function* SendTransaction() {
     if (!client) {
       throw new Error('Not connected to a network');
     }
+    if (!tokenInfo) {
+      throw new Error(`Token '${tokenToSend}' not found`);
+    }
     const account = accountFor(keystore, yield call(openVault, keystore, password), fromAddress);
 
-    let tx;
-    if (tokenToSend === 'eth') {
-      tx = yield call([client, client.sendTransaction], { account, chainId, to: toAddress, value: toUnits(amount, 18) });
-    } else { // any other token
-      const tokenInfo = yield select(makeSelectTokenInfo(tokenToSend));
-      if (!tokenInfo) {
-        throw new Error(`Contract address for token '${tokenToSend}' not found`);
-      }
-      tx = yield call([client, client.writeContract], {
-        account,
-        chainId,
-        address: tokenInfo.contractAddress,
-        abi: erc20Abi,
-        functionName: 'transfer',
-        args: [toAddress, toUnits(amount, tokenInfo.decimals)],
-      });
-    }
+    const nonce = yield call([client, client.getTransactionCount], { address: account.address, blockTag: 'pending' });
+    const serializedTransaction = yield call([account, account.signTransaction], {
+      chainId,
+      nonce,
+      ...txRequest(tokenToSend, tokenInfo, toAddress, amount),
+      gas: BigInt(fee.gas),
+      maxFeePerGas: BigInt(fee.maxFeePerGas),
+      maxPriorityFeePerGas: BigInt(fee.maxPriorityFeePerGas),
+    });
+    const tx = yield call([client, client.sendRawTransaction], { serializedTransaction });
 
     yield put(sendTransactionSuccess(tx));
   } catch (err) {
