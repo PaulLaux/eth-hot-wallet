@@ -58,7 +58,7 @@
       "name": "Uniswap (Sepolia)",
       "decimals": 18,
       "extensions": {
-        "description": "Same address as on Main Net",
+        "description": "Same address as on Ethereum",
         "url": "https://uniswap.org/"
       }
     },

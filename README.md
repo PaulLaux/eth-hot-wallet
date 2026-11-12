@@ -17,7 +17,7 @@ Background: [How to build an Ethereum Wallet web app](https://medium.freecodecam
 - EIP-1559 fees and gas limits are estimated automatically
 - Locks itself 15 minutes after unlocking
 - Content Security Policy: the page runs only its own scripts and connects only to its RPC nodes and CoinGecko
-- Network selector: Main Net, Base, Arbitrum One, OP Mainnet, Sepolia, local node or offline
+- Network selector: Ethereum Mainnet, Base, Arbitrum One, Optimism, Sepolia, local node or offline
 - Balances converted to USD, EUR and BTC
 - Responsive layout for mobile
 

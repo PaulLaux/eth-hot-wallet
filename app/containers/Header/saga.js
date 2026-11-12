@@ -160,7 +160,7 @@ export function txRequest(symbol, tokenInfo, to, amount) {
 /**
  * Check the transaction and estimate gas and fees. The user confirms the full addresses, the network
  * and the max gas fee, and SendTransaction signs with exactly this gas and these fee caps.
- * (On Base and OP Mainnet a small L1 data fee comes on top.)
+ * (On Base and Optimism a small L1 data fee comes on top.)
  */
 export function* confirmSendTransaction() {
   try {
