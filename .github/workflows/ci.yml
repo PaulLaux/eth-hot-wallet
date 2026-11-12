@@ -6,11 +6,17 @@ on:
     tags: ['v*']
   pull_request:
 
+# Dependencies run during lint, test and build: give them a read-only token
+permissions:
+  contents: read
+
 jobs:
   ci:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+        with:
+          persist-credentials: false # keep the token out of .git/config
       - uses: actions/setup-node@v7
         with:
           node-version: lts/*
