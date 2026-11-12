@@ -14,6 +14,8 @@ export default function createStore() {
   const store = configureStore({
     reducer: { home, header, sendtoken, tokenchooser },
     middleware: (getDefault) => getDefault({ thunk: false }).concat(sagaMiddleware),
+    // actions carry the seed and password: never hand them to the DevTools extension in production
+    devTools: import.meta.env.DEV,
   });
   sagaMiddleware.run(function* rootSaga() {
     yield all([homeSaga(), headerSaga()]);

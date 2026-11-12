@@ -31,9 +31,9 @@ describe('store', () => {
   });
 
   it('remembers the previous network, but not Offline', () => {
-    let state = header(undefined, loadNetwork('Main Net'));
+    let state = header(undefined, loadNetwork('Ethereum Mainnet'));
     expect(state.prevNetworkName).toBe('Sepolia Testnet'); // the default, since we were Offline
     state = header(state, loadNetwork('Local RPC'));
-    expect(state).toMatchObject({ prevNetworkName: 'Main Net', networkName: 'Local RPC' });
+    expect(state).toMatchObject({ prevNetworkName: 'Ethereum Mainnet', networkName: 'Local RPC' });
   });
 });

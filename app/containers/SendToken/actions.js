@@ -66,17 +66,11 @@ export function confirmSendTransaction() {
  *
  * @return {object}    An action object with a type of COMFIRM_SEND_TRANSACTION_SUCCESS
  */
-export function confirmSendTransactionSuccess(msg) {
-  if (msg) {
-    return {
-      type: COMFIRM_SEND_TRANSACTION_SUCCESS,
-      msg,
-    };
-  }
-
+export function confirmSendTransactionSuccess(msg, fee) {
   return {
     type: COMFIRM_SEND_TRANSACTION_SUCCESS,
-    msg: 'Transaction confirmed successfully, Send to transmit',
+    msg,
+    fee,
   };
 }
 

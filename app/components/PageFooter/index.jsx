@@ -24,6 +24,9 @@ const GreyCol = styled(Col)`
   color: #b9b9b9;
 `;
 
+// Set by GitHub Actions (see vite.config.js), empty in local builds
+const sha = process.env.GITHUB_SHA;
+
 function PageFooter() {
   return (
     <Footer>
@@ -39,7 +42,15 @@ function PageFooter() {
         <GreyCol sm={12} xs={24}>
           <a href="https://medium.freecodecamp.org/how-to-build-an-ethereum-wallet-web-app-ac77dcaac573" target="_blank" rel="noopener noreferrer">
           How to build an Ethereum Wallet guide
-          </a>
+          </a><br />
+          {sha ? (
+            <>
+              {'Build '}
+              <a href={`${github}/commit/${sha}`} target="_blank" rel="noopener noreferrer">{sha.slice(0, 7)}</a>
+              {' ('}
+              <a href={`${github}/actions/runs/${process.env.GITHUB_RUN_ID}`} target="_blank" rel="noopener noreferrer">CI log</a>)
+            </>
+          ) : 'Local build'}
         </GreyCol>
 
       </Row>

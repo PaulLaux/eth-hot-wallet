@@ -31,6 +31,7 @@ const initialState = {
   comfirmationLoading: false,
   confirmationError: false,
   confirmationMsg: false,
+  fee: false, // confirmed gas and fee caps as decimal strings: { gas, maxFeePerGas, maxPriorityFeePerGas }
 
   sendInProgress: false,
   sendError: false,
@@ -51,13 +52,13 @@ export default createReducer(initialState, (builder) => builder
     Object.assign(s, { comfirmationLoading: true, locked: true });
   })
   .addCase(COMFIRM_SEND_TRANSACTION_SUCCESS, (s, a) => {
-    Object.assign(s, { comfirmationLoading: false, confirmationMsg: a.msg, confirmationError: false });
+    Object.assign(s, { comfirmationLoading: false, confirmationMsg: a.msg, fee: a.fee, confirmationError: false });
   })
   .addCase(COMFIRM_SEND_TRANSACTION_ERROR, (s, a) => {
     Object.assign(s, { comfirmationLoading: false, confirmationError: a.error, locked: false });
   })
   .addCase(ABORT_TRANSACTION, (s) => {
-    Object.assign(s, { comfirmationLoading: false, confirmationMsg: false, confirmationError: false, locked: false, sendError: false, sendTx: false });
+    Object.assign(s, { comfirmationLoading: false, confirmationMsg: false, fee: false, confirmationError: false, locked: false, sendError: false, sendTx: false });
   })
 
   .addCase(SEND_TRANSACTION, (s) => {

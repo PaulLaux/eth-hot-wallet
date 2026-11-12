@@ -1,8 +1,10 @@
 # ETH Hot Wallet
 
-An embeddable Ethereum web wallet with ERC-20 support. Keys are generated, stored and used for signing inside the page, so it needs no external signer such as MetaMask.
+An embeddable web wallet for Ethereum, Base, Arbitrum and Optimism with ERC-20 support. Keys are generated, stored and used for signing inside the page, so it needs no external signer such as MetaMask.
 
-![ETH Hot Wallet with ERC-20 tokens and the network menu open](docs/images/eth-hot-wallet-networks.png)
+Live: [eth.hot-wallet.org](https://eth.hot-wallet.org)
+
+[![ETH Hot Wallet with ERC-20 tokens and the network menu open](docs/images/eth-hot-wallet-networks.png)](https://eth.hot-wallet.org)
 
 Background: [How to build an Ethereum Wallet web app](https://medium.freecodecamp.org/how-to-build-an-ethereum-wallet-web-app-ac77dcaac573) (Medium).
 
@@ -15,7 +17,7 @@ Background: [How to build an Ethereum Wallet web app](https://medium.freecodecam
 - EIP-1559 fees and gas limits are estimated automatically
 - Locks itself 15 minutes after unlocking
 - Content Security Policy: the page runs only its own scripts and connects only to its RPC nodes and CoinGecko
-- Network selector: Main Net, Base, Arbitrum One, OP Mainnet, Sepolia, local node or offline
+- Network selector: Ethereum Mainnet, Base, Arbitrum One, Optimism, Sepolia, local node or offline
 - Balances converted to USD, EUR and BTC
 - Responsive layout for mobile
 
@@ -56,7 +58,7 @@ Built with [viem](https://viem.sh) (keys, signing, JSON-RPC), [react-boilerplate
 - `app/containers/SendToken`: state of the send dialog; checks and sending happen in Header
 - `app/containers/TokenChooser`: pick ERC-20 tokens from `tokens.tokenlist.json` ([tokenlists.org](https://tokenlists.org) format)
 
-![ERC-20 token chooser](docs/images/eth-hot-wallet-erc20-tokenChooser.jpg)
+[![ERC-20 token chooser](docs/images/eth-hot-wallet-erc20-tokenChooser.jpg)](https://eth.hot-wallet.org)
 
 ## License
 

@@ -13,6 +13,12 @@ const Div = styled.div`
   margin-top: 22px;
 `;
 
+// one line each for amount, from, to and fee; full addresses wrap on narrow screens
+const Msg = styled.div`
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+`;
+
 
 function SendConfirmationView(props) {
   const {
@@ -57,8 +63,8 @@ function SendConfirmationView(props) {
     return (
       <Div>
         <Alert
-          title="Transaction is valid"
-          description={confirmationMsg}
+          title="Check the transaction before sending"
+          description={<Msg>{confirmationMsg}</Msg>}
           type="info"
         />
         <br />

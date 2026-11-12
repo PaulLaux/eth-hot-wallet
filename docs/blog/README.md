@@ -2,7 +2,7 @@
 
 ### Ethereum open source wallet / zero client
 
-![eth-hot-wallet ethereum wallet preview](https://paullaux.github.io/eth-hot-wallet/docs/images/eth-hot-wallet-ethereum.PNG)
+![eth-hot-wallet ethereum wallet preview](https://eth.hot-wallet.org/docs/images/eth-hot-wallet-ethereum.PNG)
 
 
 #### Version 0.1 - work in progress
