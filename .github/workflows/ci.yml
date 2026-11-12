@@ -22,6 +22,8 @@ jobs:
           node-version: lts/*
           cache: npm
       - run: npm ci
+      # fail on a high or critical advisory in a package that ships in the app
+      - run: npm audit --omit=dev --audit-level=high
       - run: npm run lint
       - run: npm test
       - run: npm run build
