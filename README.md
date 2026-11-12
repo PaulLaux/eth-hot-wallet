@@ -4,7 +4,7 @@ An embeddable web wallet for Ethereum, Base, Arbitrum and Optimism with ERC-20 s
 
 Live: [eth.hot-wallet.org](https://eth.hot-wallet.org)
 
-![ETH Hot Wallet with ERC-20 tokens and the network menu open](docs/images/eth-hot-wallet-networks.png)
+[![ETH Hot Wallet with ERC-20 tokens and the network menu open](docs/images/eth-hot-wallet-networks.png)](https://eth.hot-wallet.org)
 
 Background: [How to build an Ethereum Wallet web app](https://medium.freecodecamp.org/how-to-build-an-ethereum-wallet-web-app-ac77dcaac573) (Medium).
 
@@ -58,7 +58,7 @@ Built with [viem](https://viem.sh) (keys, signing, JSON-RPC), [react-boilerplate
 - `app/containers/SendToken`: state of the send dialog; checks and sending happen in Header
 - `app/containers/TokenChooser`: pick ERC-20 tokens from `tokens.tokenlist.json` ([tokenlists.org](https://tokenlists.org) format)
 
-![ERC-20 token chooser](docs/images/eth-hot-wallet-erc20-tokenChooser.jpg)
+[![ERC-20 token chooser](docs/images/eth-hot-wallet-erc20-tokenChooser.jpg)](https://eth.hot-wallet.org)
 
 ## License
 
