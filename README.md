@@ -1,6 +1,6 @@
 # ETH Hot Wallet
 
-An embeddable Ethereum web wallet with ERC-20 support. Keys are generated, stored and used for signing inside the page, so it needs no external signer such as MetaMask.
+An embeddable web wallet for Ethereum, Base, Arbitrum and Optimism with ERC-20 support. Keys are generated, stored and used for signing inside the page, so it needs no external signer such as MetaMask.
 
 Live: [eth.hot-wallet.org](https://eth.hot-wallet.org)
 
