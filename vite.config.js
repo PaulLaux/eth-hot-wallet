@@ -36,9 +36,10 @@ export default defineConfig({
   resolve: {
     alias: [{ find: /^(components|containers|utils)\//, replacement: `${app}/$1/` }],
   },
-  // Optional RPC overrides, see app/containers/Header/network.js
-  define: Object.fromEntries(['MAINNET', 'SEPOLIA', 'BASE', 'ARBITRUM', 'OPTIMISM'].map((n) => `${n}_RPC_URL`)
-    .map((v) => [`process.env.${v}`, JSON.stringify(process.env[v] || '')])),
+  // Optional RPC overrides (see app/containers/Header/network.js), and the commit and run of a
+  // GitHub Actions build for the footer
+  define: Object.fromEntries([...['MAINNET', 'SEPOLIA', 'BASE', 'ARBITRUM', 'OPTIMISM'].map((n) => `${n}_RPC_URL`),
+    'GITHUB_SHA', 'GITHUB_RUN_ID'].map((v) => [`process.env.${v}`, JSON.stringify(process.env[v] || '')])),
   server: { port: 3001, strictPort: true },
   preview: { port: 3001, strictPort: true },
   build: { outDir: '../build', emptyOutDir: true },
